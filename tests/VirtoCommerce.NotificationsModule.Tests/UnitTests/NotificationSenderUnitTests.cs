@@ -338,7 +338,6 @@ namespace VirtoCommerce.NotificationsModule.Tests.UnitTests
         public async Task EmailNotification_ArgumentNullException()
         {
             //Arrange
-            var language = "default";
             NotificationMessage message = null;
             _messageServiceMock.Setup(ms => ms.SaveNotificationMessagesAsync(new[] { message }));
 
