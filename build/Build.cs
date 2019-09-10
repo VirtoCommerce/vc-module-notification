@@ -73,7 +73,7 @@ class Build : NukeBuild
         });
 
     Target Pack => _ => _
-      .DependsOn(Compile)
+      .DependsOn(Test)
       .Executes(() =>
       {
           DotNetPack(s => s
@@ -101,7 +101,7 @@ class Build : NukeBuild
        });
 
     Target Publish => _ => _
-        .DependsOn(Clean, Test, Pack)
+        .DependsOn(Clean, Compile, Test, Pack)
         .Requires(() => ApiKey)
         .Executes(() =>
         {
@@ -151,13 +151,17 @@ class Build : NukeBuild
                 CopyFileToDirectory(ModuleManifest, ModuleOutputDirectory, FileExistsPolicy.Overwrite);
                 foreach (var moduleFolder in ModuleContentFolders)
                 {
-                    CopyDirectoryRecursively(WebProject.Directory / moduleFolder, ModuleOutputDirectory / moduleFolder, DirectoryExistsPolicy.Merge, FileExistsPolicy.Overwrite);
+                    var srcModuleFolder = WebProject.Directory / moduleFolder;
+                    if (DirectoryExists(srcModuleFolder))
+                    {
+                        CopyDirectoryRecursively(srcModuleFolder, ModuleOutputDirectory / moduleFolder, DirectoryExistsPolicy.Merge, FileExistsPolicy.Overwrite);
+                    }
                 }
             }
         });
 
     Target Compress => _ => _
-     .DependsOn(Clean, Pack)
+     .DependsOn(Clean, Compile, Test, WebPackBuild)
      .Executes(() =>
      {
          var ignoredFiles = HttpTasks.HttpDownloadString(GlobalModuleIgnoreFileUrl).SplitLineBreaks();
