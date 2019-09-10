@@ -63,43 +63,47 @@ namespace VirtoCommerce.NotificationsModule.Tests.IntegrationTests
 
             _notificationRegistrar.RegisterNotification<RegistrationEmailNotification>();
             _notificationRegistrar.RegisterNotification<ResetPasswordEmailNotification>();
-        }
 
-        [Fact]
-        public async Task SmtpEmailNotificationMessageSender_SuccessSentMessage()
-        {
-            //Arrange
-            var number = Guid.NewGuid().ToString();
-            var subject = "Order #{{customer_order.number}}";
-            var body = "You have order #{{customer_order.number}}";
-            var notification = new OrderSentEmailNotification()
-            {
-                CustomerOrder = new CustomerOrder() { Number = number },
-                From = "tasker.for.test@gmail.com",
-                To = "tasker.for.test@gmail.com",
-                Templates = new List<NotificationTemplate>()
-                {
-                    new EmailNotificationTemplate()
-                    {
-                        Subject = subject,
-                        Body = body,
-                    }
-                },
-                TenantIdentity = new TenantIdentity(null, null)
-            };
+            if (!AbstractTypeFactory<NotificationScriptObject>.AllTypeInfos.SelectMany(x => x.AllSubclasses).Contains(typeof(NotificationScriptObject)))
+                AbstractTypeFactory<NotificationScriptObject>.RegisterType<NotificationScriptObject>()
+                    .WithFactory(() => new NotificationScriptObject(null, null));
 
             _emailSendingOptionsMock.Setup(opt => opt.Value).Returns(_emailSendingOptions);
             _messageSender = new SmtpEmailNotificationMessageSender(_emailSendingOptionsMock.Object);
             _notificationMessageSenderProviderFactory = new NotificationMessageSenderProviderFactory(new List<INotificationMessageSender>() { _messageSender });
             _notificationMessageSenderProviderFactory.RegisterSenderForType<EmailNotification, SmtpEmailNotificationMessageSender>();
-            _notificationSender = new NotificationSender(_templateRender, _messageServiceMock.Object, _logNotificationSenderMock.Object, _notificationMessageSenderProviderFactory);
-
-            //Act
-            var result = await _notificationSender.SendNotificationAsync(notification);
-
-            //Assert
-            Assert.True(result.IsSuccess);
         }
+
+        //TODO uncomment and set password in SmtpSenderOptions
+        //[Fact]
+        //public async Task SmtpEmailNotificationMessageSender_SuccessSentMessage()
+        //{
+        //    //Arrange
+        //    var number = Guid.NewGuid().ToString();
+        //    var subject = "Order #{{customer_order.number}}";
+        //    var body = "You have order #{{customer_order.number}}";
+        //    var notification = new OrderSentEmailNotification()
+        //    {
+        //        CustomerOrder = new CustomerOrder() { Number = number },
+        //        From = "tasker.for.test@gmail.com",
+        //        To = "tasker.for.test@gmail.com",
+        //        Templates = new List<NotificationTemplate>()
+        //        {
+        //            new EmailNotificationTemplate()
+        //            {
+        //                Subject = subject,
+        //                Body = body,
+        //            }
+        //        },
+        //        TenantIdentity = new TenantIdentity(null, null)
+        //    };
+
+        //    //Act
+        //    var result = await _notificationSender.SendNotificationAsync(notification);
+
+        //    //Assert
+        //    Assert.True(result.IsSuccess);
+        //}
 
         [Fact]
         public async Task SmtpEmailNotificationMessageSender_FailSendMessage()

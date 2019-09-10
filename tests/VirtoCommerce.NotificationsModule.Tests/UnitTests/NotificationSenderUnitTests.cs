@@ -50,6 +50,9 @@ namespace VirtoCommerce.NotificationsModule.Tests.UnitTests
             if (!AbstractTypeFactory<NotificationMessage>.AllTypeInfos.SelectMany(x => x.AllSubclasses).Contains(typeof(EmailNotificationMessage)))
                 AbstractTypeFactory<NotificationMessage>.RegisterType<EmailNotificationMessage>().MapToType<NotificationMessageEntity>();
 
+            if (!AbstractTypeFactory<NotificationScriptObject>.AllTypeInfos.SelectMany(x => x.AllSubclasses).Contains(typeof(NotificationScriptObject)))
+                AbstractTypeFactory<NotificationScriptObject>.RegisterType<NotificationScriptObject>()
+                    .WithFactory(() => new NotificationScriptObject(null, null));
         }
 
         [Fact]

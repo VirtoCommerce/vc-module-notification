@@ -19,90 +19,90 @@ using Xunit;
 
 namespace VirtoCommerce.NotificationsModule.Tests.IntegrationTests
 {
-    public class TwitterNotificationServiceIntegrationTest
-    {
-        private readonly INotificationService _notificationService;
-        private readonly INotificationSearchService _notificationSearchService;
+    //public class TwitterNotificationServiceIntegrationTest
+    //{
+    //    private readonly INotificationService _notificationService;
+    //    private readonly INotificationSearchService _notificationSearchService;
 
-        public TwitterNotificationServiceIntegrationTest()
-        {
-            var container = new ServiceCollection();
-            container.AddDbContext<TwitterNotificationDbContext>(options => options.UseSqlServer("Data Source=(local);Initial Catalog=VirtoCommerce3;Persist Security Info=True;User ID=virto;Password=virto;MultipleActiveResultSets=True;Connect Timeout=30"));
-            container.AddScoped<INotificationRepository, TwitterNotificationRepository>();
-            container.AddScoped<INotificationService, NotificationService>();
-            container.AddScoped<Func<INotificationRepository>>(provider => () => provider.CreateScope().ServiceProvider.GetService<INotificationRepository>());
-            container.AddScoped<IEventPublisher, InProcessBus>();
-            container.AddScoped<INotificationRegistrar, NotificationRegistrar>();
-            container.AddScoped<INotificationSearchService, NotificationSearchService>();
+    //    public TwitterNotificationServiceIntegrationTest()
+    //    {
+    //        var container = new ServiceCollection();
+    //        container.AddDbContext<TwitterNotificationDbContext>(options => options.UseSqlServer("Data Source=(local);Initial Catalog=VirtoCommerce3;Persist Security Info=True;User ID=virto;Password=virto;MultipleActiveResultSets=True;Connect Timeout=30"));
+    //        container.AddScoped<INotificationRepository, TwitterNotificationRepository>();
+    //        container.AddScoped<INotificationService, NotificationService>();
+    //        container.AddScoped<Func<INotificationRepository>>(provider => () => provider.CreateScope().ServiceProvider.GetService<INotificationRepository>());
+    //        container.AddScoped<IEventPublisher, InProcessBus>();
+    //        container.AddScoped<INotificationRegistrar, NotificationRegistrar>();
+    //        container.AddScoped<INotificationSearchService, NotificationSearchService>();
 
-            var serviceProvider = container.BuildServiceProvider();
-            _notificationService = serviceProvider.GetService<INotificationService>();
-            _notificationSearchService = serviceProvider.GetService<INotificationSearchService>();
+    //        var serviceProvider = container.BuildServiceProvider();
+    //        _notificationService = serviceProvider.GetService<INotificationService>();
+    //        _notificationSearchService = serviceProvider.GetService<INotificationSearchService>();
 
-            if (!AbstractTypeFactory<NotificationEntity>.AllTypeInfos.SelectMany(x => x.AllSubclasses).Contains(typeof(TwitterNotificationEntity)))
-                AbstractTypeFactory<NotificationEntity>.RegisterType<TwitterNotificationEntity>();
+    //        if (!AbstractTypeFactory<NotificationEntity>.AllTypeInfos.SelectMany(x => x.AllSubclasses).Contains(typeof(TwitterNotificationEntity)))
+    //            AbstractTypeFactory<NotificationEntity>.RegisterType<TwitterNotificationEntity>();
 
-            if (!AbstractTypeFactory<NotificationTemplate>.AllTypeInfos.SelectMany(x => x.AllSubclasses).Contains(typeof(EmailNotificationTemplate)))
-                AbstractTypeFactory<NotificationTemplate>.RegisterType<EmailNotificationTemplate>().MapToType<NotificationTemplateEntity>();
+    //        if (!AbstractTypeFactory<NotificationTemplate>.AllTypeInfos.SelectMany(x => x.AllSubclasses).Contains(typeof(EmailNotificationTemplate)))
+    //            AbstractTypeFactory<NotificationTemplate>.RegisterType<EmailNotificationTemplate>().MapToType<NotificationTemplateEntity>();
 
-            if (!AbstractTypeFactory<NotificationMessage>.AllTypeInfos.SelectMany(x => x.AllSubclasses).Contains(typeof(EmailNotificationMessage)))
-                AbstractTypeFactory<NotificationMessage>.RegisterType<EmailNotificationMessage>().MapToType<NotificationMessageEntity>();
+    //        if (!AbstractTypeFactory<NotificationMessage>.AllTypeInfos.SelectMany(x => x.AllSubclasses).Contains(typeof(EmailNotificationMessage)))
+    //            AbstractTypeFactory<NotificationMessage>.RegisterType<EmailNotificationMessage>().MapToType<NotificationMessageEntity>();
 
-            var registrar = serviceProvider.GetService<INotificationRegistrar>();
-            registrar.RegisterNotification<PostTwitterNotification>();
-        }
+    //        var registrar = serviceProvider.GetService<INotificationRegistrar>();
+    //        registrar.RegisterNotification<PostTwitterNotification>();
+    //    }
 
-        [Fact]
-        public async Task SaveChangesAsync_CreateTwitterNotification()
-        {
-            //Arrange
-            var notifications = new List<TwitterNotification>()
-            {
-                new PostTwitterNotification
-                {
-                    Type = nameof(PostTwitterNotification), IsActive = true,
-                    TenantIdentity = new TenantIdentity("Platform", null),
-                    Post = $"Post {DateTime.Now}"
-                }
-            };
+    //    [Fact]
+    //    public async Task SaveChangesAsync_CreateTwitterNotification()
+    //    {
+    //        //Arrange
+    //        var notifications = new List<TwitterNotification>()
+    //        {
+    //            new PostTwitterNotification
+    //            {
+    //                Type = nameof(PostTwitterNotification), IsActive = true,
+    //                TenantIdentity = new TenantIdentity("Platform", null),
+    //                Post = $"Post {DateTime.Now}"
+    //            }
+    //        };
 
-            //Act
-            await _notificationService.SaveChangesAsync(notifications.ToArray());
+    //        //Act
+    //        await _notificationService.SaveChangesAsync(notifications.ToArray());
 
-            //Assert
-        }
+    //        //Assert
+    //    }
 
-        [Fact]
-        public async Task SearchNotifications_ContainsTwitterNotification()
-        {
-            //Arrange
-            var criteria = AbstractTypeFactory<NotificationSearchCriteria>.TryCreateInstance();
-            criteria.Take = int.MaxValue;
+    //    [Fact]
+    //    public async Task SearchNotifications_ContainsTwitterNotification()
+    //    {
+    //        //Arrange
+    //        var criteria = AbstractTypeFactory<NotificationSearchCriteria>.TryCreateInstance();
+    //        criteria.Take = int.MaxValue;
 
-            //Act
-            var result = await _notificationSearchService.SearchNotificationsAsync(criteria);
+    //        //Act
+    //        var result = await _notificationSearchService.SearchNotificationsAsync(criteria);
 
-            //Assert
-            Assert.Contains(result.Results, n => n.Type == nameof(PostTwitterNotification) && n.IsActive);
-        }
+    //        //Assert
+    //        Assert.Contains(result.Results, n => n.Type == nameof(PostTwitterNotification) && n.IsActive);
+    //    }
 
-        [Fact]
-        public async Task SaveChangesAsync_UpdateTwitterNotification()
-        {
-            //Arrange
-            var criteria = AbstractTypeFactory<NotificationSearchCriteria>.TryCreateInstance();
-            criteria.Take = int.MaxValue;
-            var notifications = await _notificationSearchService.SearchNotificationsAsync(criteria);
-            var notification = notifications.Results.FirstOrDefault();
-            if (notification is TwitterNotification twitterNotification)
-            {
-                twitterNotification.Post = $"Post {DateTime.Now}";
-            }
+    //    [Fact]
+    //    public async Task SaveChangesAsync_UpdateTwitterNotification()
+    //    {
+    //        //Arrange
+    //        var criteria = AbstractTypeFactory<NotificationSearchCriteria>.TryCreateInstance();
+    //        criteria.Take = int.MaxValue;
+    //        var notifications = await _notificationSearchService.SearchNotificationsAsync(criteria);
+    //        var notification = notifications.Results.FirstOrDefault();
+    //        if (notification is TwitterNotification twitterNotification)
+    //        {
+    //            twitterNotification.Post = $"Post {DateTime.Now}";
+    //        }
 
-            //Act
-            await _notificationService.SaveChangesAsync(new[] { notification });
+    //        //Act
+    //        await _notificationService.SaveChangesAsync(new[] { notification });
 
-            //Assert
-        }
-    }
+    //        //Assert
+    //    }
+    //}
 }
