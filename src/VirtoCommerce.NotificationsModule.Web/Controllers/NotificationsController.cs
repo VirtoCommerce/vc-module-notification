@@ -15,8 +15,6 @@ using VirtoCommerce.Platform.Core.Common;
 
 namespace VirtoCommerce.NotificationsModule.Web.Controllers
 {
-    [Route("api/notifications")]
-    [Route("api/platform/notification")]
     [Authorize(ModuleConstants.Security.Permissions.Access)]
     public class NotificationsController : Controller
     {
@@ -47,7 +45,7 @@ namespace VirtoCommerce.NotificationsModule.Web.Controllers
         /// <param name="searchCriteria">criteria for search(keyword, skip, take and etc.)</param>
         /// <returns></returns>
         [HttpPost]
-        [Route("")]
+        [Route("api/notifications")]
         [Authorize(ModuleConstants.Security.Permissions.Read)]
         public async Task<ActionResult<NotificationSearchResult>> GetNotifications([FromBody]NotificationSearchCriteria searchCriteria)
         {
@@ -68,7 +66,7 @@ namespace VirtoCommerce.NotificationsModule.Web.Controllers
         /// </remarks>
         /// <returns></returns>
         [HttpGet]
-        [Route("{type}")]
+        [Route("api/notifications/{type}")]
         [Authorize(ModuleConstants.Security.Permissions.Access)]
         public async Task<ActionResult<Notification>> GetNotificationByTypeId(string type, string tenantId = null, string tenantType = null)
         {
@@ -83,7 +81,7 @@ namespace VirtoCommerce.NotificationsModule.Web.Controllers
         /// <param name="notification">Notification</param>
         /// <returns></returns>
         [HttpPut]
-        [Route("{type}")]
+        [Route("api/notifications/{type}")]
         [Authorize(ModuleConstants.Security.Permissions.Update)]
         public async Task<ActionResult> UpdateNotification([FromBody]Notification notification)
         {
@@ -100,7 +98,7 @@ namespace VirtoCommerce.NotificationsModule.Web.Controllers
         /// <param name="request">request of Notification Template with text and data</param>
         /// <returns></returns>
         [HttpPost]
-        [Route("{type}/templates/{language}/rendercontent")]
+        [Route("api/notifications/{type}/templates/{language}/rendercontent")]
         [Authorize(ModuleConstants.Security.Permissions.ReadTemplates)]
         public async Task<ActionResult> RenderingTemplate([FromBody]NotificationTemplateRequest request, string language)
         {
@@ -114,7 +112,7 @@ namespace VirtoCommerce.NotificationsModule.Web.Controllers
         /// Sending notification
         /// </summary>
         [HttpPost]
-        [Route("send")]
+        [Route("api/notifications/send")]
         public async Task<ActionResult<NotificationSendResult>> SendNotification([FromBody]Notification notificationRequest)
         {
             var notification = await _notificationSearchService.GetNotificationAsync(notificationRequest.Type, notificationRequest.TenantIdentity);
@@ -133,7 +131,7 @@ namespace VirtoCommerce.NotificationsModule.Web.Controllers
         /// </remarks>
         /// <param name="request">Notification request</param>
         [HttpPost]
-        [Route("template/sendnotification")]
+        [Route("api/platform/notification/template/sendnotification")]
         [Obsolete("for backward compatibility")]
         public async Task<ActionResult<NotificationSendResult>> SendNotificationByRequest([FromBody]NotificationRequest request)
         {
@@ -159,7 +157,7 @@ namespace VirtoCommerce.NotificationsModule.Web.Controllers
         /// </remarks>
         /// <param name="criteria"></param>
         [HttpPost]
-        [Route("journal")]
+        [Route("api/notifications/journal")]
         public async Task<ActionResult<NotificationMessageSearchResult>> GetNotificationJournal([FromBody]NotificationMessageSearchCriteria criteria)
         {
             var result = await _notificationMessageSearchService.SearchMessageAsync(criteria);
@@ -168,7 +166,7 @@ namespace VirtoCommerce.NotificationsModule.Web.Controllers
         }
 
         [HttpGet]
-        [Route("journal/{id}")]
+        [Route("api/notifications/journal/{id}")]
         public async Task<ActionResult<NotificationMessage>> GetObjectNotificationJournal(string id)
         {
             var result = (await _notificationMessageService.GetNotificationsMessageByIds(new[] { id })).FirstOrDefault();
