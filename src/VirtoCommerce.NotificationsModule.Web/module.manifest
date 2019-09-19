@@ -13,6 +13,9 @@
     <owners>
         <owner>Virto Commerce</owner>
     </owners>
+	<groups>
+        <group>commerce</group>
+    </groups>
     <projectUrl>https://virtocommerce.com/apps/extensions/virto-module-notification</projectUrl>
     <iconUrl>Modules/$(VirtoCommerce.Notifications)/Content/logoVC.png</iconUrl>
     <releaseNotes></releaseNotes>
