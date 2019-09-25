@@ -57,7 +57,7 @@ namespace VirtoCommerce.NotificationsModule.Data.Model
             notification.ModifiedBy = ModifiedBy;
             notification.ModifiedDate = ModifiedDate;
 
-            notification.TenantIdentity = string.IsNullOrEmpty(TenantId) ? TenantIdentity.Empty : new TenantIdentity(TenantId, TenantType);
+            notification.TenantIdentity = new TenantIdentity(TenantId, TenantType);
             notification.IsActive = IsActive;
             notification.Type = Type;
 
