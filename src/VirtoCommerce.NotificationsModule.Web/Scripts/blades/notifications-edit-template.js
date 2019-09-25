@@ -21,6 +21,7 @@
         }
         else {
             blade.currentEntity.createdDate = now;
+            blade.currentEntity.isReadonly = false;
             blade.origEntity = angular.copy(blade.currentEntity);
         }
         var ind = blade.notification.templates.findIndex(function (element) {

@@ -22,7 +22,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="columns clearfix">
+                <div class="columns clearfix" ng-if="blade.notification.kind ==='EmailNotification'">
                     <div class="column">
                         <div class="form-group" style="margin:0">
                             <label class="form-label" style="margin:0">{{'notifications.blades.notifications-edit-template.labels.subject' | translate}}</label>
@@ -37,13 +37,25 @@
                         </div>
                     </div>
                 </div>
-                <div class="inner-block">
+                <div class="inner-block" ng-if="blade.notification.kind ==='EmailNotification'">
                     <div class="column">
                         <div class="form-group" style="margin:0">
                             <label class="form-label" style="margin:0">{{'notifications.blades.notifications-edit-template.labels.template' | translate}}</label>
                             <div class="form-group" style="margin:0">
                                 <input id="fileUploader" type="file" multiple style="display: none;" uploader="fileUploader" nv-file-select />
                                 <textarea vc-uk-htmleditor ng-model="blade.currentEntity.body" file-uploader="fileUploader"></textarea>
+                            </div>
+
+                        </div>
+                    </div>        
+                </div>
+                <div class="inner-block" ng-if="blade.notification.kind ==='SmsNotification'">
+                    <div class="column">
+                        <div class="form-group" style="margin:0">
+                            <label class="form-label" style="margin:0">{{'notifications.blades.notifications-edit-template.labels.template' | translate}}</label>
+                            <div class="form-group" style="margin:0">
+                                <input id="fileUploader" type="file" multiple style="display: none;" uploader="fileUploader" nv-file-select />
+                                <textarea vc-uk-htmleditor ng-model="blade.currentEntity.message" file-uploader="fileUploader"></textarea>
                             </div>
 
                         </div>

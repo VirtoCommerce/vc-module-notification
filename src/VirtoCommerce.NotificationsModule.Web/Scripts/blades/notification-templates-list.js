@@ -113,6 +113,8 @@ angular.module('virtoCommerce.notificationsModule')
         // ui-grid
         $scope.setGridOptions = function (gridOptions) {
           uiGridHelper.initialize($scope, gridOptions, function (gridApi) {
+              //update gridApi for current grid
+              $scope.gridApi = gridApi;
               uiGridHelper.bindRefreshOnSortChanged($scope);
           });
           bladeUtils.initializePagination($scope);
