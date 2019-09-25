@@ -107,6 +107,16 @@ angular.module(moduleTemplateName, ['textAngular'])
                 },
                 knownChildrenTypes: ['Email', 'Sms']
             }); 
+
+            // register templates
+            notificationTemplatesResolverService.registerTemplate({
+                type: 'SmsNotification',
+                icon: 'fa fa-comment',
+                detailBlade: {
+                  template: 'Modules/$(VirtoCommerce.Notifications)/Scripts/blades/notifications-edit-template.tpl.html',
+                },
+                knownChildrenTypes: ['Email', 'Sms']
+            });
             
             // predefine search filters for search
             predefinedSearchFilters.register(1485892981, 'notificationsJournalSearchFiltersDate', [
