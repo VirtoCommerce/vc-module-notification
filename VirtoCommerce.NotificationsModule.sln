@@ -21,8 +21,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VirtoCommerce.Notifications
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VirtoCommerce.NotificationsModule.Tests", "tests\VirtoCommerce.NotificationsModule.Tests\VirtoCommerce.NotificationsModule.Tests.csproj", "{F793636B-22AB-44F7-96A6-6AD913061534}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "_build", "build\_build.csproj", "{B726F0F0-55C9-4574-A59D-A38A98B2E6E7}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "samples", "samples", "{802FA90C-5EAF-4363-B535-17D3CB010AB4}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VirtoCommerce.NotificationsSampleModule.Web", "samples\VirtoCommerce.NotificationsSampleModule.Web\VirtoCommerce.NotificationsSampleModule.Web.csproj", "{F671BD7A-60AC-4299-8F1E-63D61101BA22}"
@@ -61,8 +59,6 @@ Global
 		{F793636B-22AB-44F7-96A6-6AD913061534}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F793636B-22AB-44F7-96A6-6AD913061534}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F793636B-22AB-44F7-96A6-6AD913061534}.Release|Any CPU.Build.0 = Release|Any CPU
-		{B726F0F0-55C9-4574-A59D-A38A98B2E6E7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B726F0F0-55C9-4574-A59D-A38A98B2E6E7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F671BD7A-60AC-4299-8F1E-63D61101BA22}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{F671BD7A-60AC-4299-8F1E-63D61101BA22}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F671BD7A-60AC-4299-8F1E-63D61101BA22}.Release|Any CPU.ActiveCfg = Release|Any CPU
