@@ -105,7 +105,7 @@ namespace VirtoCommerce.NotificationsModule.Web
                     Name = x
                 }).ToArray());
 
-            var mvcJsonOptions = appBuilder.ApplicationServices.GetService<IOptions<MvcJsonOptions>>();
+            var mvcJsonOptions = appBuilder.ApplicationServices.GetService<IOptions<MvcNewtonsoftJsonOptions>>();
             mvcJsonOptions.Value.SerializerSettings.Converters.Add(new NotificationPolymorphicJsonConverter());
 
             using (var serviceScope = appBuilder.ApplicationServices.CreateScope())

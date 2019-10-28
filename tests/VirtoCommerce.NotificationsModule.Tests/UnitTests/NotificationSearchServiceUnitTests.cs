@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using MockQueryable.Moq;
 using Moq;
 using VirtoCommerce.NotificationsModule.Core.Extensions;
 using VirtoCommerce.NotificationsModule.Core.Model;
@@ -44,8 +45,8 @@ namespace VirtoCommerce.NotificationsModule.Tests.UnitTests
             //Arrange
             var type = nameof(RegistrationEmailNotification);
 
-            var mockNotifications = new Common.TestAsyncEnumerable<NotificationEntity>(new List<NotificationEntity>());
-            _repositoryMock.Setup(r => r.Notifications).Returns(mockNotifications.AsQueryable());
+            var mockNotifications = new List<NotificationEntity>().AsQueryable().BuildMock();
+            _repositoryMock.Setup(r => r.Notifications).Returns(mockNotifications.Object);
             _notificationRegistrar.RegisterNotification<RegistrationEmailNotification>();
 
             //Act
@@ -75,8 +76,8 @@ namespace VirtoCommerce.NotificationsModule.Tests.UnitTests
                 }
             };
 
-            var mockNotifications = new Common.TestAsyncEnumerable<NotificationEntity>(notifications);
-            _repositoryMock.Setup(r => r.Notifications).Returns(mockNotifications.AsQueryable());
+            var mockNotifications = notifications.AsQueryable().BuildMock();
+            _repositoryMock.Setup(r => r.Notifications).Returns(mockNotifications.Object);
             var ids = notifications.Select(n => n.Id).ToArray();
             _notificationServiceMock.Setup(ns => ns.GetByIdsAsync(ids, null))
                 .ReturnsAsync(notifications.Select(n => n.ToModel(AbstractTypeFactory<Notification>.TryCreateInstance(n.Type))).ToArray());
@@ -100,8 +101,8 @@ namespace VirtoCommerce.NotificationsModule.Tests.UnitTests
             var searchCriteria = AbstractTypeFactory<NotificationSearchCriteria>.TryCreateInstance();
             searchCriteria.Take = 2;
             searchCriteria.Skip = 0;
-            var mockNotifications = new Common.TestAsyncEnumerable<NotificationEntity>(new List<NotificationEntity>());
-            _repositoryMock.Setup(r => r.Notifications).Returns(mockNotifications.AsQueryable());
+            var mockNotifications = new List<NotificationEntity>().AsQueryable().BuildMock();
+            _repositoryMock.Setup(r => r.Notifications).Returns(mockNotifications.Object);
 
             //Act
             var result = await _notificationSearchService.SearchNotificationsAsync(searchCriteria);
@@ -127,8 +128,8 @@ namespace VirtoCommerce.NotificationsModule.Tests.UnitTests
                 new EmailNotificationEntity { Type  = nameof(OrderSentEmailNotification), Kind = nameof(EmailNotification), Id = Guid.NewGuid().ToString(), IsActive = true },
                 new EmailNotificationEntity { Type  = nameof(RegistrationEmailNotification), Kind = nameof(EmailNotification), Id = Guid.NewGuid().ToString(), IsActive = true }
             };
-            var mockNotifications = new Common.TestAsyncEnumerable<NotificationEntity>(notificationEntities);
-            _repositoryMock.Setup(r => r.Notifications).Returns(mockNotifications.AsQueryable());
+            var mockNotifications = notificationEntities.AsQueryable().BuildMock();
+            _repositoryMock.Setup(r => r.Notifications).Returns(mockNotifications.Object);
             var notifications = notificationEntities.Select(n => n.ToModel(AbstractTypeFactory<Notification>.TryCreateInstance(n.Type))).ToArray();
             var ids = notificationEntities.Select(n => n.Id).ToArray();
             _notificationServiceMock.Setup(ns => ns.GetByIdsAsync(ids, responseGroup))
@@ -140,5 +141,8 @@ namespace VirtoCommerce.NotificationsModule.Tests.UnitTests
             //Assert
             Assert.True(result.Results.Where(n => ids.Contains(n.Id)).All(r => r.IsActive));
         }
+
+
+        
     }
 }
