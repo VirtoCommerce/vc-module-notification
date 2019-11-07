@@ -198,10 +198,6 @@
             "displayName": "Email confirmation notification",
             "description": "This e-mail notification is for confirmation a new registered user e-mail"
         },
-        "StoreDynamicEmailNotification": {
-            "displayName": "Sending custom form from storefront",
-            "description": "This notification sends by email to client when he complite some form on storefront, for example contact us form"
-        },
         "NewSubscriptionEmailNotification": {
             "displayName": "New subscription notification",
             "description": "This notification sends by email to client when created new subscription"
