@@ -198,14 +198,6 @@
             "displayName": "Email confirmation notification",
             "description": "This e-mail notification is for confirmation a new registered user e-mail"
         },
-        "NewSubscriptionEmailNotification": {
-            "displayName": "New subscription notification",
-            "description": "This notification sends by email to client when created new subscription"
-        },
-        "SubscriptionCanceledEmailNotification": {
-            "displayName": "Subscription canceled notification",
-            "description": "This notification sends by email to client when subscription was canceled"
-        },
         "ChangePhoneNumberSmsNotification": {
             "displayName": "Phone number change notification",
             "description": "This notification sends by sms to client when phone number is changed"
