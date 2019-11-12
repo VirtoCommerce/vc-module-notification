@@ -131,7 +131,6 @@ namespace VirtoCommerce.NotificationsModule.Web
                     break;
             }
 
-            var assembly = typeof(INotificationRepository).Assembly;
             var registrar = appBuilder.ApplicationServices.GetService<INotificationRegistrar>();
             registrar.RegisterNotification<ResetPasswordEmailNotification>();
             registrar.RegisterNotification<ConfirmationEmailNotification>();
@@ -146,6 +145,7 @@ namespace VirtoCommerce.NotificationsModule.Web
 
         public void Uninstall()
         {
+            //Nothing todo
         }
 
         public async Task ExportAsync(Stream outStream, ExportImportOptions options, Action<ExportImportProgressInfo> progressCallback, ICancellationToken cancellationToken)

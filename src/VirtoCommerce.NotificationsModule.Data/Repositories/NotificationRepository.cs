@@ -39,15 +39,15 @@ namespace VirtoCommerce.NotificationsModule.Data.Repositories
                 {
                     if (notificaionResponseGroup.HasFlag(NotificationResponseGroup.WithTemplates))
                     {
-                        var templates = await DbContext.Set<NotificationTemplateEntity>().Where(t => ids.Contains(t.NotificationId)).ToListAsync();
+                        await DbContext.Set<NotificationTemplateEntity>().Where(t => ids.Contains(t.NotificationId)).LoadAsync();
                     }
                     if (notificaionResponseGroup.HasFlag(NotificationResponseGroup.WithAttachments))
                     {
-                        var attachments = await DbContext.Set<EmailAttachmentEntity>().Where(t => ids.Contains(t.NotificationId)).ToListAsync();
+                        await DbContext.Set<EmailAttachmentEntity>().Where(t => ids.Contains(t.NotificationId)).LoadAsync();
                     }
                     if (notificaionResponseGroup.HasFlag(NotificationResponseGroup.WithRecipients))
                     {
-                        var recipients = await DbContext.Set<NotificationEmailRecipientEntity>().Where(t => ids.Contains(t.NotificationId)).ToListAsync();
+                        await DbContext.Set<NotificationEmailRecipientEntity>().Where(t => ids.Contains(t.NotificationId)).LoadAsync();
                     }
                 }
             }
@@ -69,7 +69,7 @@ namespace VirtoCommerce.NotificationsModule.Data.Repositories
                 var notificationIds = result.Select(m => m.NotificationId).ToArray();
                 if (notificationIds.Any())
                 {
-                    var notifications = await Notifications.Where(x => notificationIds.Contains(x.Id)).OrderBy(x => x.Type).ToArrayAsync();
+                    await Notifications.Where(x => notificationIds.Contains(x.Id)).OrderBy(x => x.Type).LoadAsync();
                 }
             }
             return result;
