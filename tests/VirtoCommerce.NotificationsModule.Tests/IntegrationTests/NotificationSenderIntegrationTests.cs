@@ -9,15 +9,14 @@ using VirtoCommerce.NotificationsModule.Core.Model;
 using VirtoCommerce.NotificationsModule.Core.Services;
 using VirtoCommerce.NotificationsModule.Core.Types;
 using VirtoCommerce.NotificationsModule.Data.Model;
-using VirtoCommerce.NotificationsModule.Data.Repositories;
 using VirtoCommerce.NotificationsModule.Data.Senders;
 using VirtoCommerce.NotificationsModule.Data.Services;
 using VirtoCommerce.NotificationsModule.LiquidRenderer;
+using VirtoCommerce.NotificationsModule.SendGrid;
 using VirtoCommerce.NotificationsModule.Smtp;
 using VirtoCommerce.NotificationsModule.Tests.Model;
 using VirtoCommerce.NotificationsModule.Tests.NotificationTypes;
 using VirtoCommerce.Platform.Core.Common;
-using VirtoCommerce.Platform.Core.Events;
 using Xunit;
 
 namespace VirtoCommerce.NotificationsModule.Tests.IntegrationTests
@@ -26,15 +25,11 @@ namespace VirtoCommerce.NotificationsModule.Tests.IntegrationTests
     public class NotificationSenderIntegrationTests
     {
         private INotificationMessageSender _messageSender;
-        private NotificationSender _notificationSender;
-        private readonly Mock<INotificationService> _serviceMock;
         private readonly INotificationTemplateRenderer _templateRender;
         private readonly Mock<INotificationMessageService> _messageServiceMock;
         private readonly Mock<IOptions<SmtpSenderOptions>> _emailSendingOptionsMock;
         private readonly INotificationRegistrar _notificationRegistrar;
-        private readonly Mock<INotificationRepository> _repositoryMock;
         private readonly Mock<ILogger<NotificationSender>> _logNotificationSenderMock;
-        private readonly Mock<IEventPublisher> _eventPulisherMock;
         private INotificationMessageSenderProviderFactory _notificationMessageSenderProviderFactory;
         private readonly SmtpSenderOptions _emailSendingOptions;
 
@@ -42,18 +37,16 @@ namespace VirtoCommerce.NotificationsModule.Tests.IntegrationTests
         {
             _emailSendingOptions = new SmtpSenderOptions()
             {
-                SmtpServer = "http://smtp.gmail.com/",
+                SmtpServer = "smtp.gmail.com", // If use smtp.gmail.com then SSL is enabled and check https://www.google.com/settings/security/lesssecureapps
                 Port = 587,
                 Login = "tasker.for.test@gmail.com",
-                Password = ""
+                Password = "",
+                EnableSsl = true
             };
             _templateRender = new LiquidTemplateRenderer();
             _messageServiceMock = new Mock<INotificationMessageService>();
             _emailSendingOptionsMock = new Mock<IOptions<SmtpSenderOptions>>();
-            _serviceMock = new Mock<INotificationService>();
-            _repositoryMock = new Mock<INotificationRepository>();
             _logNotificationSenderMock = new Mock<ILogger<NotificationSender>>();
-            _eventPulisherMock = new Mock<IEventPublisher>();
             _notificationRegistrar = new NotificationRegistrar();
 
             if (!AbstractTypeFactory<NotificationTemplate>.AllTypeInfos.SelectMany(x => x.AllSubclasses).Contains(typeof(EmailNotificationTemplate)))
@@ -70,19 +63,79 @@ namespace VirtoCommerce.NotificationsModule.Tests.IntegrationTests
                     .WithFactory(() => new NotificationScriptObject(null, null));
 
             _emailSendingOptionsMock.Setup(opt => opt.Value).Returns(_emailSendingOptions);
-            _messageSender = new SmtpEmailNotificationMessageSender(_emailSendingOptionsMock.Object);
-            _notificationMessageSenderProviderFactory = new NotificationMessageSenderProviderFactory(new List<INotificationMessageSender>() { _messageSender });
-            _notificationMessageSenderProviderFactory.RegisterSenderForType<EmailNotification, SmtpEmailNotificationMessageSender>();
         }
 
         [Fact]
         public async Task SmtpEmailNotificationMessageSender_SuccessSentMessage()
         {
             //Arrange
+            var notification = GetNotification();
+
+            _messageSender = new SmtpEmailNotificationMessageSender(_emailSendingOptionsMock.Object);
+
+            var notificationSender = GetNotificationSender();
+            _notificationMessageSenderProviderFactory.RegisterSenderForType<EmailNotification, SmtpEmailNotificationMessageSender>();
+
+            //Act
+            var result = await notificationSender.SendNotificationAsync(notification);
+
+            //Assert
+            Assert.True(result.IsSuccess);
+        }
+
+        [Fact]
+        public async Task SmtpEmailNotificationMessageSender_FailSendMessage()
+        {
+            //Arrange
+            var notification = GetNotification();
+
+            _emailSendingOptions.Password = "wrong_password";
+            _emailSendingOptionsMock.Setup(opt => opt.Value).Returns(_emailSendingOptions);
+            _messageSender = new SmtpEmailNotificationMessageSender(_emailSendingOptionsMock.Object);
+
+            var notificationSender = GetNotificationSender();
+            _notificationMessageSenderProviderFactory.RegisterSenderForType<EmailNotification, SmtpEmailNotificationMessageSender>();
+
+
+            //Act
+            var result = await notificationSender.SendNotificationAsync(notification);
+
+            //Assert
+            Assert.False(result.IsSuccess);
+        }
+
+        [Fact]
+        public async Task SendGridNotificationMessageSender_SuccessSentMessage()
+        {
+            //Arrange
+            var notification = GetNotification();
+
+            var sendGridSendingOptionsMock = new Mock<IOptions<SendGridSenderOptions>>();
+            sendGridSendingOptionsMock.Setup(opt => opt.Value).Returns(new SendGridSenderOptions { ApiKey = "" });
+            _messageSender = new SendGridEmailNotificationMessageSender(sendGridSendingOptionsMock.Object);
+
+            var notificationSender = GetNotificationSender();
+            _notificationMessageSenderProviderFactory.RegisterSenderForType<EmailNotification, SendGridEmailNotificationMessageSender>();
+
+            //Act
+            var result = await notificationSender.SendNotificationAsync(notification);
+
+            //Assert
+            Assert.True(result.IsSuccess);
+        }
+
+        private NotificationSender GetNotificationSender()
+        {
+            _notificationMessageSenderProviderFactory = new NotificationMessageSenderProviderFactory(new List<INotificationMessageSender>() { _messageSender });
+            return new NotificationSender(_templateRender, _messageServiceMock.Object, _logNotificationSenderMock.Object, _notificationMessageSenderProviderFactory);
+        }
+
+        private Notification GetNotification()
+        {
             var number = Guid.NewGuid().ToString();
             var subject = "Order #{{customer_order.number}}";
             var body = "You have order #{{customer_order.number}}";
-            var notification = new OrderSentEmailNotification()
+            return new OrderSentEmailNotification()
             {
                 CustomerOrder = new CustomerOrder() { Number = number },
                 From = "tasker.for.test@gmail.com",
@@ -97,48 +150,6 @@ namespace VirtoCommerce.NotificationsModule.Tests.IntegrationTests
                 },
                 TenantIdentity = new TenantIdentity(null, null)
             };
-
-            //Act
-            var result = await _notificationSender.SendNotificationAsync(notification);
-
-            //Assert
-            Assert.True(result.IsSuccess);
-        }
-
-        [Fact]
-        public async Task SmtpEmailNotificationMessageSender_FailSendMessage()
-        {
-            //Arrange
-            var number = Guid.NewGuid().ToString();
-            var subject = "Order #{{customer_order.number}}";
-            var body = "You have order #{{customer_order.number}}";
-            var notification = new OrderSentEmailNotification()
-            {
-                CustomerOrder = new CustomerOrder() { Number = number },
-                From = "tasker.for.test@gmail.com",
-                To = "tasker.for.test@gmail.com",
-                Templates = new List<NotificationTemplate>()
-                {
-                    new EmailNotificationTemplate()
-                    {
-                        Subject = subject,
-                        Body = body,
-                    }
-                }
-            };
-
-
-            _emailSendingOptions.Password = "wrong_password";
-            _emailSendingOptionsMock.Setup(opt => opt.Value).Returns(_emailSendingOptions);
-            _messageSender = new SmtpEmailNotificationMessageSender(_emailSendingOptionsMock.Object);
-            _notificationSender = new NotificationSender(_templateRender, _messageServiceMock.Object, _logNotificationSenderMock.Object,
-                _notificationMessageSenderProviderFactory);
-
-            //Act
-            var result = await _notificationSender.SendNotificationAsync(notification);
-
-            //Assert
-            Assert.False(result.IsSuccess);
         }
     }
 }
