@@ -8,7 +8,6 @@ using VirtoCommerce.NotificationsModule.Core.Extensions;
 using VirtoCommerce.NotificationsModule.Core.Model;
 using VirtoCommerce.NotificationsModule.Core.Model.Search;
 using VirtoCommerce.NotificationsModule.Core.Services;
-using VirtoCommerce.NotificationsModule.Data.Model;
 using VirtoCommerce.NotificationsModule.Web.Extensions;
 using VirtoCommerce.NotificationsModule.Web.Model;
 using VirtoCommerce.Platform.Core.Common;

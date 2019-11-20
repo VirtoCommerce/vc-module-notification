@@ -45,9 +45,6 @@ namespace VirtoCommerce.NotificationsModule.Data.Migrations
 
                     b.Property<string>("NotificationId");
 
-                    b.Property<string>("OuterId")
-                        .HasMaxLength(128);
-
                     b.Property<string>("Size")
                         .HasMaxLength(128);
 
@@ -155,9 +152,6 @@ namespace VirtoCommerce.NotificationsModule.Data.Migrations
                     b.Property<string>("NotificationId");
 
                     b.Property<string>("NotificationType")
-                        .HasMaxLength(128);
-
-                    b.Property<string>("OuterId")
                         .HasMaxLength(128);
 
                     b.Property<int>("SendAttemptCount");

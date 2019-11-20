@@ -36,6 +36,11 @@ namespace VirtoCommerce.NotificationsModule.Tests.UnitTests
             _repositoryFactory = () => _repositoryMock.Object;
             _notificationServiceMock = new Mock<INotificationService>();
             _notificationSearchService = new NotificationSearchService(_repositoryFactory, _notificationServiceMock.Object);
+
+            _notificationRegistrar.RegisterNotification<RemindUserNameEmailNotification>();
+            _notificationRegistrar.RegisterNotification<RegistrationEmailNotification>();
+            _notificationRegistrar.RegisterNotification<InvoiceEmailNotification>();
+            _notificationRegistrar.RegisterNotification<OrderSentEmailNotification>();
         }
 
         [Fact]
@@ -57,14 +62,59 @@ namespace VirtoCommerce.NotificationsModule.Tests.UnitTests
         }
 
         [Fact]
+        public async Task GetNotificationByAliasAsync_ReturnTransientNotification()
+        {
+            //Arrange
+            var type = "RemindUserNameNotification";
+
+            var mockNotifications = new Common.TestAsyncEnumerable<NotificationEntity>(new List<NotificationEntity>());
+            _repositoryMock.Setup(r => r.Notifications).Returns(mockNotifications.AsQueryable());
+
+
+            //Act
+            var result = await _notificationSearchService.GetNotificationAsync(type);
+
+            //Assert
+            Assert.NotNull(result);
+            Assert.Equal(nameof(RemindUserNameEmailNotification), result.Type);
+        }
+
+        [Fact]
+        public async Task GetNotificationByAliasAsync_ReturnActiveNotification()
+        {
+            //Arrange
+            var type = "RemindUserNameNotification";
+
+            var notifications = new List<NotificationEntity>
+            {
+                new EmailNotificationEntity
+                {
+                    Type = nameof(RemindUserNameEmailNotification), Kind = nameof(EmailNotification),
+                    Id = Guid.NewGuid().ToString(), IsActive = true
+                }
+            };
+
+            var mockNotifications = new Common.TestAsyncEnumerable<NotificationEntity>(notifications);
+            _repositoryMock.Setup(r => r.Notifications).Returns(mockNotifications.AsQueryable());
+            var ids = notifications.Select(n => n.Id).ToArray();
+            _notificationServiceMock.Setup(ns => ns.GetByIdsAsync(ids, null))
+                .ReturnsAsync(notifications.Select(n => n.ToModel(AbstractTypeFactory<Notification>.TryCreateInstance(n.Type))).ToArray());
+
+            //Act
+            var result = await _notificationSearchService.GetNotificationAsync(type);
+
+            //Assert
+            Assert.NotNull(result);
+            Assert.Equal(nameof(RemindUserNameEmailNotification), result.Type);
+            Assert.True(result.IsActive);
+        }
+
+        [Fact]
         public async Task SearchNotificationsAsync_GetItems()
         {
             //Arrange
             var searchCriteria = AbstractTypeFactory<NotificationSearchCriteria>.TryCreateInstance();
             searchCriteria.Take = 20;
-            _notificationRegistrar.RegisterNotification<RegistrationEmailNotification>();
-            _notificationRegistrar.RegisterNotification<InvoiceEmailNotification>();
-            _notificationRegistrar.RegisterNotification<OrderSentEmailNotification>();
 
             var notifications = new List<NotificationEntity>
             {
@@ -86,17 +136,15 @@ namespace VirtoCommerce.NotificationsModule.Tests.UnitTests
 
             //Assert
             Assert.NotEmpty(result.Results);
+            Assert.Equal(4, result.Results.Count());
             Assert.Equal(1, result.Results.Count(r => r.IsActive));
-            //Assert.Equal(2, result.Results.Count(r => !r.IsActive));
+            Assert.Equal(3, result.Results.Count(r => !r.IsActive));
         }
 
         [Fact]
         public async Task SearchNotificationsAsync_GetTwoItems()
         {
             //Arrange
-            _notificationRegistrar.RegisterNotification<RegistrationEmailNotification>();
-            _notificationRegistrar.RegisterNotification<InvoiceEmailNotification>();
-            _notificationRegistrar.RegisterNotification<OrderSentEmailNotification>();
             var searchCriteria = AbstractTypeFactory<NotificationSearchCriteria>.TryCreateInstance();
             searchCriteria.Take = 2;
             searchCriteria.Skip = 0;
@@ -114,9 +162,6 @@ namespace VirtoCommerce.NotificationsModule.Tests.UnitTests
         public async Task SearchNotificationsAsync_AllActiveNotifications()
         {
             //Arrange
-            _notificationRegistrar.RegisterNotification<RegistrationEmailNotification>();
-            _notificationRegistrar.RegisterNotification<InvoiceEmailNotification>();
-            _notificationRegistrar.RegisterNotification<OrderSentEmailNotification>();
 
             var responseGroup = NotificationResponseGroup.Default.ToString();
             var searchCriteria = AbstractTypeFactory<NotificationSearchCriteria>.TryCreateInstance();

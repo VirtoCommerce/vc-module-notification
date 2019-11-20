@@ -6,7 +6,7 @@ namespace VirtoCommerce.NotificationsModule.Core.Model
     /// <summary>
     /// Template of Notification with a different language
     /// </summary>
-    public abstract class NotificationTemplate : AuditableEntity, IHasLanguageCode, ICloneable
+    public abstract class NotificationTemplate : AuditableEntity, IHasLanguageCode, ICloneable, IHasOuterId
     {
         /// <summary>
         /// Code of Language
@@ -18,6 +18,8 @@ namespace VirtoCommerce.NotificationsModule.Core.Model
         public abstract string Kind { get; }
 
         public bool IsReadonly { get; set; }
+
+        public string OuterId { get; set; }
 
         #region ICloneable members
 

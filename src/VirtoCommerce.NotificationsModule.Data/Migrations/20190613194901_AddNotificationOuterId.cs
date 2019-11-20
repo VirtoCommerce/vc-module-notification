@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace VirtoCommerce.NotificationsModule.Data.Migrations
 {
@@ -13,22 +13,10 @@ namespace VirtoCommerce.NotificationsModule.Data.Migrations
                 nullable: true);
 
             migrationBuilder.AddColumn<string>(
-                name: "OuterId",
-                table: "NotificationMessage",
-                maxLength: 128,
-                nullable: true);
-
-            migrationBuilder.AddColumn<string>(
-                name: "OuterId",
-                table: "NotificationEmailAttachment",
-                maxLength: 128,
-                nullable: true);
-
-            migrationBuilder.AddColumn<string>(
-                name: "OuterId",
-                table: "Notification",
-                maxLength: 128,
-                nullable: true);
+                 name: "OuterId",
+                 table: "Notification",
+                 maxLength: 128,
+                 nullable: true);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -36,14 +24,6 @@ namespace VirtoCommerce.NotificationsModule.Data.Migrations
             migrationBuilder.DropColumn(
                 name: "OuterId",
                 table: "NotificationTemplate");
-
-            migrationBuilder.DropColumn(
-                name: "OuterId",
-                table: "NotificationMessage");
-
-            migrationBuilder.DropColumn(
-                name: "OuterId",
-                table: "NotificationEmailAttachment");
 
             migrationBuilder.DropColumn(
                 name: "OuterId",

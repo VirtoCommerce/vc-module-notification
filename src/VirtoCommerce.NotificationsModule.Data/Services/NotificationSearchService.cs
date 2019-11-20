@@ -25,60 +25,74 @@ namespace VirtoCommerce.NotificationsModule.Data.Services
         public async Task<NotificationSearchResult> SearchNotificationsAsync(NotificationSearchCriteria criteria)
         {
             var result = AbstractTypeFactory<NotificationSearchResult>.TryCreateInstance();
-            var notificaionResponseGroup = EnumUtility.SafeParseFlags(criteria.ResponseGroup, NotificationResponseGroup.Full);
 
+            var transientNotifications = GetTransientNotifications(criteria);
+
+            if (!transientNotifications.IsNullOrEmpty())
+            {
+                criteria.NotificationTypes = transientNotifications.Select(x => x.Type).Distinct().ToArray();
+                result.Results = await GetActiveNotifications(criteria);
+                result.TotalCount = result.Results.Count();
+            }
+
+            if (criteria.Take > 0)
+            {
+                var allPersistentProvidersTypes = result.Results.Select(x => x.GetType()).Distinct();
+                var transientNotificationsQuery = transientNotifications.Where(x => !allPersistentProvidersTypes.Contains(x.GetType()));
+
+                result.TotalCount += transientNotificationsQuery.Count();
+                result.Results = result.Results.Concat(transientNotificationsQuery)
+                    .AsQueryable()
+                    .OrderBySortInfos(BuildSortExpression(criteria)).ToList();
+            }
+
+            return result;
+        }
+
+        protected virtual Notification[] GetTransientNotifications(NotificationSearchCriteria criteria)
+        {
+            var transientNotificationsQuery = AbstractTypeFactory<Notification>.AllTypeInfos.Select(x =>
+            {
+                return AbstractTypeFactory<Notification>.TryCreateInstance(x.Type.Name);
+            })
+                                                                              .OfType<Notification>().AsQueryable();
+            if (!string.IsNullOrEmpty(criteria.NotificationType))
+            {
+                transientNotificationsQuery = transientNotificationsQuery.Where(x => x.Type.EqualsInvariant(criteria.NotificationType)
+                                                                                    || x.Alias.EqualsInvariant(criteria.NotificationType));
+            }
+
+            transientNotificationsQuery = transientNotificationsQuery.Where(x => !x.Kind.EqualsInvariant(x.Type));
+
+            var transientNotifications = transientNotificationsQuery.Skip(criteria.Skip).Take(criteria.Take).ToArray();
+            foreach (var transientNotification in transientNotifications)
+            {
+                transientNotification.ReduceDetails(criteria.ResponseGroup);
+            }
+
+            return transientNotifications;
+        }
+
+        protected virtual async Task<Notification[]> GetActiveNotifications(NotificationSearchCriteria criteria)
+        {
+            var result = Array.Empty<Notification>();
             var sortInfos = BuildSortExpression(criteria);
-            var tmpSkip = 0;
-            var tmpTake = 0;
 
             using (var repository = _repositoryFactory())
             {
                 var query = BuildQuery(repository, criteria, sortInfos);
 
-                result.TotalCount = await query.CountAsync();
                 if (criteria.Take > 0)
                 {
-                    var notificationIds = await query.OrderBySortInfos(sortInfos).ThenBy(x=>x.Id)
+                    var notificationIds = await query.OrderBySortInfos(sortInfos).ThenBy(x => x.Id)
                                                      .Select(x => x.Id)
                                                      .Skip(criteria.Skip).Take(criteria.Take)
                                                      .ToArrayAsync();
                     var unorderedResults = await _notificationService.GetByIdsAsync(notificationIds, criteria.ResponseGroup);
-                    result.Results = unorderedResults.OrderBy(x => Array.IndexOf(notificationIds, x.Id)).ToList();
+                    result = unorderedResults.OrderBy(x => Array.IndexOf(notificationIds, x.Id)).ToArray();
                 }
             }
-            tmpSkip = Math.Min(result.TotalCount, criteria.Skip);
-            tmpTake = Math.Min(criteria.Take, Math.Max(0, result.TotalCount - criteria.Skip));
 
-            criteria.Skip -= tmpSkip;
-            criteria.Take -= tmpTake;
-
-            if (criteria.Take > 0)
-            {
-                var transientNotificationsQuery = AbstractTypeFactory<Notification>.AllTypeInfos.Select(x =>
-                {
-                    return AbstractTypeFactory<Notification>.TryCreateInstance(x.Type.Name);
-                })
-                                                                              .OfType<Notification>().AsQueryable();
-                if (!string.IsNullOrEmpty(criteria.NotificationType))
-                {
-                    transientNotificationsQuery = transientNotificationsQuery.Where(x => x.Type.EqualsInvariant(criteria.NotificationType));
-                }
-
-                var allPersistentProvidersTypes = result.Results.Select(x => x.GetType()).Distinct();
-                transientNotificationsQuery = transientNotificationsQuery.Where(x => !allPersistentProvidersTypes.Contains(x.GetType()));
-
-                transientNotificationsQuery = transientNotificationsQuery.Where(x => !x.Kind.EqualsInvariant(x.Type));
-
-                result.TotalCount += transientNotificationsQuery.Count();
-                var transientNotifications = transientNotificationsQuery.Skip(criteria.Skip).Take(criteria.Take).ToList();
-                foreach(var transientNotification in transientNotifications)
-                {
-                    transientNotification.ReduceDetails(criteria.ResponseGroup);
-                }
-                result.Results = result.Results.Concat(transientNotifications)
-                    .AsQueryable()
-                    .OrderBySortInfos(sortInfos).ToList();
-            }
             return result;
         }
 
@@ -86,7 +100,11 @@ namespace VirtoCommerce.NotificationsModule.Data.Services
         {
             var query = repository.Notifications;
 
-            if (!string.IsNullOrEmpty(criteria.NotificationType))
+            if (!criteria.NotificationTypes.IsNullOrEmpty())
+            {
+                query = query.Where(x => criteria.NotificationTypes.Contains(x.Type));
+            }
+            else if (!string.IsNullOrEmpty(criteria.NotificationType))
             {
                 query = query.Where(x => x.Type == criteria.NotificationType);
             }
