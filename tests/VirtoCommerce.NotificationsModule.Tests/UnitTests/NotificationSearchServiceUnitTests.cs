@@ -41,6 +41,7 @@ namespace VirtoCommerce.NotificationsModule.Tests.UnitTests
             _notificationRegistrar.RegisterNotification<RegistrationEmailNotification>();
             _notificationRegistrar.RegisterNotification<InvoiceEmailNotification>();
             _notificationRegistrar.RegisterNotification<OrderSentEmailNotification>();
+            _notificationRegistrar.RegisterNotification<OrderPaidEmailNotification>();
         }
 
         [Fact]
@@ -110,11 +111,11 @@ namespace VirtoCommerce.NotificationsModule.Tests.UnitTests
         }
 
         [Fact]
-        public async Task SearchNotificationsAsync_GetItems()
+        public async Task SearchNotificationsAsync_GetOnActiveItemsAndTreeItems()
         {
             //Arrange
             var searchCriteria = AbstractTypeFactory<NotificationSearchCriteria>.TryCreateInstance();
-            searchCriteria.Take = 20;
+            searchCriteria.Take = 4;
 
             var notifications = new List<NotificationEntity>
             {
@@ -159,7 +160,7 @@ namespace VirtoCommerce.NotificationsModule.Tests.UnitTests
         }
 
         [Fact]
-        public async Task SearchNotificationsAsync_AllActiveNotifications()
+        public async Task SearchNotificationsAsync_ContainsActiveNotifications()
         {
             //Arrange
 
@@ -184,6 +185,39 @@ namespace VirtoCommerce.NotificationsModule.Tests.UnitTests
 
             //Assert
             Assert.True(result.Results.Where(n => ids.Contains(n.Id)).All(r => r.IsActive));
+        }
+
+        [Theory]
+        [InlineData(0, 20, 3, 2)]
+        [InlineData(0, 3, 3, 0)]
+        [InlineData(2, 3, 1, 2)]
+        [InlineData(4, 1, 0, 1)]
+        public async Task SearchNotificationsAsync_PagingNotifications(int skip, int take, int activeExpectedCount, int transientExpectedCount)
+        {
+            //Arrange
+            var responseGroup = NotificationResponseGroup.Default.ToString();
+            var searchCriteria = AbstractTypeFactory<NotificationSearchCriteria>.TryCreateInstance();
+            searchCriteria.Take = take;
+            searchCriteria.Skip = skip;
+            searchCriteria.ResponseGroup = responseGroup;
+            var notificationEntities = new List<NotificationEntity> {
+                new EmailNotificationEntity { Type  = nameof(InvoiceEmailNotification), Kind = nameof(EmailNotification), Id = Guid.NewGuid().ToString(), IsActive = true },
+                new EmailNotificationEntity { Type  = nameof(OrderSentEmailNotification), Kind = nameof(EmailNotification), Id = Guid.NewGuid().ToString(), IsActive = true },
+                new EmailNotificationEntity { Type  = nameof(RegistrationEmailNotification), Kind = nameof(EmailNotification), Id = Guid.NewGuid().ToString(), IsActive = true }
+            };
+            var mockNotifications = new Common.TestAsyncEnumerable<NotificationEntity>(notificationEntities);
+            _repositoryMock.Setup(r => r.Notifications).Returns(mockNotifications.AsQueryable());
+            var notifications = notificationEntities.Select(n => n.ToModel(AbstractTypeFactory<Notification>.TryCreateInstance(n.Type))).Skip(skip).Take(take).ToArray();
+            var ids = notificationEntities.Select(n => n.Id).Skip(skip).Take(take).ToArray();
+            _notificationServiceMock.Setup(ns => ns.GetByIdsAsync(ids, responseGroup))
+                .ReturnsAsync(notifications);
+
+            //Act
+            var result = await _notificationSearchService.SearchNotificationsAsync(searchCriteria);
+
+            //Assert
+            Assert.Equal(activeExpectedCount, result.Results.Count(x => x.IsActive));
+            Assert.Equal(transientExpectedCount, result.Results.Count(x => !x.IsActive));
         }
     }
 }
