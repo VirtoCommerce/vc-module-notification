@@ -10,12 +10,13 @@ using VirtoCommerce.NotificationsModule.Core.Services;
 using VirtoCommerce.NotificationsModule.Data.Model;
 using VirtoCommerce.NotificationsModule.Data.Repositories;
 using VirtoCommerce.NotificationsModule.Data.Services;
+using VirtoCommerce.NotificationsModule.Tests.Common;
 using VirtoCommerce.Platform.Core.Common;
 using VirtoCommerce.Platform.Core.Domain;
 using VirtoCommerce.Platform.Core.Events;
 using Xunit;
 
-namespace VirtoCommerce.NotificationsModule.Tests.UnitTests
+namespace VirtoCommerce.NotificationsSampleModule.Tests
 {
     public class SocialNetworkNotificationEntity : NotificationEntity
     {
@@ -64,7 +65,7 @@ namespace VirtoCommerce.NotificationsModule.Tests.UnitTests
         public override string Kind => nameof(SocialNetworkNotification);
         public override void SetFromToMembers(string from, string to)
         {
-            
+
         }
     }
 
@@ -106,13 +107,14 @@ namespace VirtoCommerce.NotificationsModule.Tests.UnitTests
 
         }
 
+        //that just samples how to use extensions for notification
         [Fact]
         public async Task GetNotificationByTypeAsync_ReturnNotification()
         {
             //Arrange
             var type = nameof(RegistrationSocialNetworkNotification);
 
-            var mockNotifications = new Common.TestAsyncEnumerable<NotificationEntity>(new List<NotificationEntity>());
+            var mockNotifications = new TestAsyncEnumerable<NotificationEntity>(new List<NotificationEntity>());
             _repositoryMock.Setup(r => r.Notifications).Returns(mockNotifications.AsQueryable());
             _notificationRegistrar.RegisterNotification<RegistrationSocialNetworkNotification>();
 

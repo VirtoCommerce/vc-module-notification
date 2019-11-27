@@ -17,7 +17,7 @@ using VirtoCommerce.Platform.Core.Common;
 using VirtoCommerce.Platform.Core.Events;
 using Xunit;
 
-namespace VirtoCommerce.NotificationsModule.Tests.IntegrationTests
+namespace VirtoCommerce.NotificationsSapmleModule.Tests
 {
     [Trait("Category", "IntegrationTest")]
     public class TwitterNotificationServiceIntegrationTest
