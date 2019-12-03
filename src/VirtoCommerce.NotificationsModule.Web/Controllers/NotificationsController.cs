@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using VirtoCommerce.NotificationsModule.Core;
 using VirtoCommerce.NotificationsModule.Core.Extensions;
@@ -82,6 +83,7 @@ namespace VirtoCommerce.NotificationsModule.Web.Controllers
         [HttpPut]
         [Route("api/notifications/{type}")]
         [Authorize(ModuleConstants.Security.Permissions.Update)]
+        [ProducesResponseType(typeof(void), StatusCodes.Status204NoContent)]
         public async Task<ActionResult> UpdateNotification([FromBody]Notification notification)
         {
             await _notificationService.SaveChangesAsync(new[] { notification });
@@ -131,7 +133,6 @@ namespace VirtoCommerce.NotificationsModule.Web.Controllers
         /// <param name="request">Notification request</param>
         [HttpPost]
         [Route("api/platform/notification/template/sendnotification")]
-        [Obsolete("for backward compatibility")]
         public async Task<ActionResult<NotificationSendResult>> SendNotificationByRequest([FromBody]NotificationRequest request)
         {
             var notification = await _notificationSearchService.GetNotificationAsync(request.Type, new TenantIdentity(request.ObjectId, request.ObjectTypeId));
