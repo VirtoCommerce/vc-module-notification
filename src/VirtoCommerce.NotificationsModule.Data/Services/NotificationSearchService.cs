@@ -26,21 +26,25 @@ namespace VirtoCommerce.NotificationsModule.Data.Services
         {
             var result = AbstractTypeFactory<NotificationSearchResult>.TryCreateInstance();
 
-            var transientNotifications = GetTransientNotifications(criteria);
+            var allTransientNotifications = GetAllTransientNotifications(criteria);
+            result.TotalCount = allTransientNotifications.Count();
 
-            if (!transientNotifications.IsNullOrEmpty())
+            var batchTransientNotifications = allTransientNotifications.Skip(criteria.Skip).Take(criteria.Take).ToArray();
+
+            if (!batchTransientNotifications.IsNullOrEmpty())
             {
-                criteria.NotificationTypes = transientNotifications.Select(x => x.Type).Distinct().ToArray();
-                result.Results = await GetActiveNotifications(criteria);
-                result.TotalCount = result.Results.Count();
+                criteria.NotificationTypes = batchTransientNotifications.Select(x => x.Type).ToArray();
+                criteria.Skip = 0; //that need to search persisted notifications
+                result.Results = await GetPersistedNotifications(criteria);
+
+                criteria.Take -= result.Results.Count();
             }
 
             if (criteria.Take > 0)
             {
-                var allPersistentProvidersTypes = result.Results.Select(x => x.GetType()).Distinct();
-                var transientNotificationsQuery = transientNotifications.Where(x => !allPersistentProvidersTypes.Contains(x.GetType()));
+                var allPersistedProvidersTypes = result.Results.Select(x => x.GetType()).Distinct();
+                var transientNotificationsQuery = batchTransientNotifications.Where(x => !allPersistedProvidersTypes.Contains(x.GetType()));
 
-                result.TotalCount += transientNotificationsQuery.Count();
                 result.Results = result.Results.Concat(transientNotificationsQuery)
                     .AsQueryable()
                     .OrderBySortInfos(BuildSortExpression(criteria)).ToList();
@@ -49,22 +53,23 @@ namespace VirtoCommerce.NotificationsModule.Data.Services
             return result;
         }
 
-        protected virtual Notification[] GetTransientNotifications(NotificationSearchCriteria criteria)
+        protected virtual Notification[] GetAllTransientNotifications(NotificationSearchCriteria criteria)
         {
             var transientNotificationsQuery = AbstractTypeFactory<Notification>.AllTypeInfos.Select(x =>
             {
                 return AbstractTypeFactory<Notification>.TryCreateInstance(x.Type.Name);
-            })
-                                                                              .OfType<Notification>().AsQueryable();
+            }).AsQueryable();
+
             if (!string.IsNullOrEmpty(criteria.NotificationType))
             {
                 transientNotificationsQuery = transientNotificationsQuery.Where(x => x.Type.EqualsInvariant(criteria.NotificationType)
                                                                                     || x.Alias.EqualsInvariant(criteria.NotificationType));
             }
 
-            transientNotificationsQuery = transientNotificationsQuery.Where(x => !x.Kind.EqualsInvariant(x.Type));
+            transientNotificationsQuery = transientNotificationsQuery.Where(x => !x.Kind.EqualsInvariant(x.Type))
+                                                                     .OrderBySortInfos(BuildSortExpression(criteria));
 
-            var transientNotifications = transientNotificationsQuery.Skip(criteria.Skip).Take(criteria.Take).ToArray();
+            var transientNotifications = transientNotificationsQuery.Distinct().ToArray();
             foreach (var transientNotification in transientNotifications)
             {
                 transientNotification.ReduceDetails(criteria.ResponseGroup);
@@ -73,7 +78,7 @@ namespace VirtoCommerce.NotificationsModule.Data.Services
             return transientNotifications;
         }
 
-        protected virtual async Task<Notification[]> GetActiveNotifications(NotificationSearchCriteria criteria)
+        protected virtual async Task<Notification[]> GetPersistedNotifications(NotificationSearchCriteria criteria)
         {
             var result = Array.Empty<Notification>();
             var sortInfos = BuildSortExpression(criteria);
@@ -90,6 +95,11 @@ namespace VirtoCommerce.NotificationsModule.Data.Services
                                                      .ToArrayAsync();
                     var unorderedResults = await _notificationService.GetByIdsAsync(notificationIds, criteria.ResponseGroup);
                     result = unorderedResults.OrderBy(x => Array.IndexOf(notificationIds, x.Id)).ToArray();
+
+                    foreach (var notification in result)
+                    {
+                        notification.ReduceDetails(criteria.ResponseGroup);
+                    }
                 }
             }
 
@@ -117,6 +127,11 @@ namespace VirtoCommerce.NotificationsModule.Data.Services
             if (!string.IsNullOrEmpty(criteria.TenantType))
             {
                 query = query.Where(x => x.TenantType == criteria.TenantType);
+            }
+
+            if (criteria.IsActive)
+            {
+                query = query.Where(x => x.IsActive);
             }
 
             query = query.OrderBySortInfos(sortInfos);

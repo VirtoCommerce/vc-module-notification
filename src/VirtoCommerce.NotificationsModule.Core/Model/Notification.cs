@@ -17,6 +17,12 @@ namespace VirtoCommerce.NotificationsModule.Core.Model
         public TenantIdentity TenantIdentity { get; set; } = TenantIdentity.Empty;
         public bool IsActive { get; set; }
         public string LanguageCode { get; set; }
+
+        /// <summary>
+        /// This field represents an alias for the notification type
+        /// and is used only for backward compatibility with old notification names
+        /// that are stored and used by API clients.
+        /// </summary>
         public string Alias { get; set; }
 
         /// <summary>

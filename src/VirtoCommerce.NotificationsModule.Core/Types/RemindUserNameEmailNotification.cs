@@ -6,6 +6,7 @@ namespace VirtoCommerce.NotificationsModule.Core.Types
     {
         public RemindUserNameEmailNotification()
         {
+            //for backward compatibility v.2
             Alias = "RemindUserNameNotification";
         }
     }

@@ -31,11 +31,11 @@ namespace VirtoCommerce.NotificationsModule.Core.Extensions
             criteria.ResponseGroup = responseGroup;
             var searchResult = await service.SearchNotificationsAsync(criteria);
             //Find first global notification (without tenant)
-            var result = searchResult.Results.Where(x => x.TenantIdentity.IsEmpty).FirstOrDefault();
+            var result = searchResult.Results.FirstOrDefault(x => x.TenantIdentity.IsEmpty);
             if (tenant != null)
             {
                 //If tenant is specified try to find a notification belongs to concrete tenant or use default as fallback
-                result = searchResult.Results.Where(x => x.TenantIdentity == tenant).FirstOrDefault() ?? result;
+                result = searchResult.Results.FirstOrDefault(x => x.TenantIdentity == tenant) ?? result;
             }
             return result;
         }
