@@ -3,12 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using FluentValidation;
+using Microsoft.Extensions.Caching.Memory;
 using VirtoCommerce.NotificationsModule.Core.Events;
 using VirtoCommerce.NotificationsModule.Core.Model;
 using VirtoCommerce.NotificationsModule.Core.Services;
+using VirtoCommerce.NotificationsModule.Data.Caching;
 using VirtoCommerce.NotificationsModule.Data.Model;
 using VirtoCommerce.NotificationsModule.Data.Repositories;
 using VirtoCommerce.NotificationsModule.Data.Validation;
+using VirtoCommerce.Platform.Core.Caching;
 using VirtoCommerce.Platform.Core.Common;
 using VirtoCommerce.Platform.Core.Events;
 
@@ -19,23 +22,33 @@ namespace VirtoCommerce.NotificationsModule.Data.Services
     {
         private readonly IEventPublisher _eventPublisher;
         private readonly Func<INotificationRepository> _repositoryFactory;
+        private readonly IPlatformMemoryCache _platformMemoryCache;
 
-        public NotificationService(Func<INotificationRepository> repositoryFactory, IEventPublisher eventPublisher)
+        public NotificationService(Func<INotificationRepository> repositoryFactory, IEventPublisher eventPublisher,
+            IPlatformMemoryCache platformMemoryCache)
         {
             _repositoryFactory = repositoryFactory;
             _eventPublisher = eventPublisher;
+            _platformMemoryCache = platformMemoryCache;
         }
 
 
         public async Task<Notification[]> GetByIdsAsync(string[] ids, string responseGroup = null)
         {
-            using (var repository = _repositoryFactory())
+            var cacheKey = CacheKey.With(GetType(), nameof(GetByIdsAsync), string.Join("-", ids), responseGroup);
+            return await _platformMemoryCache.GetOrCreateExclusiveAsync(cacheKey, async (cacheEntry) =>
             {
-                var notifications = await repository.GetByIdsAsync(ids, responseGroup);
-                return notifications.Select(n => {
-                    return n.ToModel(AbstractTypeFactory<Notification>.TryCreateInstance(n.Type));
+                cacheEntry.AddExpirationToken(NotificationCacheRegion.CreateChangeToken());
+
+                using (var repository = _repositoryFactory())
+                {
+                    var notifications = await repository.GetByIdsAsync(ids, responseGroup);
+                    return notifications.Select(n =>
+                    {
+                        return n.ToModel(AbstractTypeFactory<Notification>.TryCreateInstance(n.Type));
                     }).ToArray();
-            }
+                }
+            });
         }
 
         public async Task SaveChangesAsync(Notification[] notifications)
@@ -73,10 +86,12 @@ namespace VirtoCommerce.NotificationsModule.Data.Services
                     pkMap.ResolvePrimaryKeys();
                     await _eventPublisher.Publish(new NotificationChangedEvent(changedEntries));
                 }
+
+                NotificationCacheRegion.ExpireRegion();
             }
         }
 
-      
+
         private void ValidateNotificationProperties(IEnumerable<Notification> notifications)
         {
             if (notifications == null)
@@ -88,6 +103,6 @@ namespace VirtoCommerce.NotificationsModule.Data.Services
             {
                 validator.ValidateAndThrow(notification);
             }
-        }       
+        }
     }
 }

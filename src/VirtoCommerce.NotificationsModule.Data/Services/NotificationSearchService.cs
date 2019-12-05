@@ -30,32 +30,38 @@ namespace VirtoCommerce.NotificationsModule.Data.Services
 
         public async Task<NotificationSearchResult> SearchNotificationsAsync(NotificationSearchCriteria criteria)
         {
-            var result = AbstractTypeFactory<NotificationSearchResult>.TryCreateInstance();
-
-            var sortInfos = BuildSortExpression(criteria);
-
-            using (var repository = _repositoryFactory())
+            var cacheKey = CacheKey.With(GetType(), nameof(SearchNotificationsAsync), criteria.GetCacheKey());
+            return await _platformMemoryCache.GetOrCreateExclusiveAsync(cacheKey, async (cacheEntry) =>
             {
-                var query = BuildQuery(repository, criteria, sortInfos);
-                result.TotalCount = await query.CountAsync();
+                cacheEntry.AddExpirationToken(NotificationCacheRegion.CreateChangeToken());
 
-                if (criteria.Take > 0)
+                var result = AbstractTypeFactory<NotificationSearchResult>.TryCreateInstance();
+
+                var sortInfos = BuildSortExpression(criteria);
+
+                using (var repository = _repositoryFactory())
                 {
-                    var notificationIds = await query.OrderBySortInfos(sortInfos).ThenBy(x => x.Id)
-                                                     .Select(x => x.Id)
-                                                     .Skip(criteria.Skip).Take(criteria.Take)
-                                                     .ToArrayAsync();
-                    var unorderedResults = await _notificationService.GetByIdsAsync(notificationIds, criteria.ResponseGroup);
-                    result.Results = unorderedResults.OrderBy(x => Array.IndexOf(notificationIds, x.Id)).ToArray();
+                    var query = BuildQuery(repository, criteria, sortInfos);
+                    result.TotalCount = await query.CountAsync();
 
-                    foreach (var notification in result.Results)
+                    if (criteria.Take > 0)
                     {
-                        notification.ReduceDetails(criteria.ResponseGroup);
+                        var notificationIds = await query.OrderBySortInfos(sortInfos).ThenBy(x => x.Id)
+                                                         .Select(x => x.Id)
+                                                         .Skip(criteria.Skip).Take(criteria.Take)
+                                                         .ToArrayAsync();
+                        var unorderedResults = await _notificationService.GetByIdsAsync(notificationIds, criteria.ResponseGroup);
+                        result.Results = unorderedResults.OrderBy(x => Array.IndexOf(notificationIds, x.Id)).ToArray();
+
+                        foreach (var notification in result.Results)
+                        {
+                            notification.ReduceDetails(criteria.ResponseGroup);
+                        }
                     }
                 }
-            }
 
-            return result;
+                return result;
+            });
         }
 
         protected virtual IQueryable<NotificationEntity> BuildQuery(INotificationRepository repository, NotificationSearchCriteria criteria, IEnumerable<SortInfo> sortInfos)
