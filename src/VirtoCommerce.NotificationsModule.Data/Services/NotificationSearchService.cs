@@ -3,10 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Memory;
 using VirtoCommerce.NotificationsModule.Core.Model;
 using VirtoCommerce.NotificationsModule.Core.Services;
+using VirtoCommerce.NotificationsModule.Data.Caching;
 using VirtoCommerce.NotificationsModule.Data.Model;
 using VirtoCommerce.NotificationsModule.Data.Repositories;
+using VirtoCommerce.Platform.Core.Caching;
 using VirtoCommerce.Platform.Core.Common;
 
 namespace VirtoCommerce.NotificationsModule.Data.Services
@@ -15,71 +18,50 @@ namespace VirtoCommerce.NotificationsModule.Data.Services
     {
         private readonly Func<INotificationRepository> _repositoryFactory;
         private readonly INotificationService _notificationService;
+        private readonly IPlatformMemoryCache _platformMemoryCache;
 
-        public NotificationSearchService(Func<INotificationRepository> repositoryFactory, INotificationService notificationService)
+        public NotificationSearchService(Func<INotificationRepository> repositoryFactory, INotificationService notificationService,
+            IPlatformMemoryCache platformMemoryCache)
         {
             _repositoryFactory = repositoryFactory;
             _notificationService = notificationService;
+            _platformMemoryCache = platformMemoryCache;
         }
 
         public async Task<NotificationSearchResult> SearchNotificationsAsync(NotificationSearchCriteria criteria)
         {
-            var result = AbstractTypeFactory<NotificationSearchResult>.TryCreateInstance();
-            var notificaionResponseGroup = EnumUtility.SafeParseFlags(criteria.ResponseGroup, NotificationResponseGroup.Full);
-
-            var sortInfos = BuildSortExpression(criteria);
-            var tmpSkip = 0;
-            var tmpTake = 0;
-
-            using (var repository = _repositoryFactory())
+            var cacheKey = CacheKey.With(GetType(), nameof(SearchNotificationsAsync), criteria.GetCacheKey());
+            return await _platformMemoryCache.GetOrCreateExclusiveAsync(cacheKey, async (cacheEntry) =>
             {
-                var query = BuildQuery(repository, criteria, sortInfos);
+                cacheEntry.AddExpirationToken(NotificationCacheRegion.CreateChangeToken());
 
-                result.TotalCount = await query.CountAsync();
-                if (criteria.Take > 0)
-                {
-                    var notificationIds = await query.OrderBySortInfos(sortInfos).ThenBy(x=>x.Id)
-                                                     .Select(x => x.Id)
-                                                     .Skip(criteria.Skip).Take(criteria.Take)
-                                                     .ToArrayAsync();
-                    var unorderedResults = await _notificationService.GetByIdsAsync(notificationIds, criteria.ResponseGroup);
-                    result.Results = unorderedResults.OrderBy(x => Array.IndexOf(notificationIds, x.Id)).ToList();
-                }
-            }
-            tmpSkip = Math.Min(result.TotalCount, criteria.Skip);
-            tmpTake = Math.Min(criteria.Take, Math.Max(0, result.TotalCount - criteria.Skip));
+                var result = AbstractTypeFactory<NotificationSearchResult>.TryCreateInstance();
 
-            criteria.Skip -= tmpSkip;
-            criteria.Take -= tmpTake;
+                var sortInfos = BuildSortExpression(criteria);
 
-            if (criteria.Take > 0)
-            {
-                var transientNotificationsQuery = AbstractTypeFactory<Notification>.AllTypeInfos.Select(x =>
+                using (var repository = _repositoryFactory())
                 {
-                    return AbstractTypeFactory<Notification>.TryCreateInstance(x.Type.Name);
-                })
-                                                                              .OfType<Notification>().AsQueryable();
-                if (!string.IsNullOrEmpty(criteria.NotificationType))
-                {
-                    transientNotificationsQuery = transientNotificationsQuery.Where(x => x.Type.EqualsInvariant(criteria.NotificationType));
+                    var query = BuildQuery(repository, criteria, sortInfos);
+                    result.TotalCount = await query.CountAsync();
+
+                    if (criteria.Take > 0)
+                    {
+                        var notificationIds = await query.OrderBySortInfos(sortInfos).ThenBy(x => x.Id)
+                                                         .Select(x => x.Id)
+                                                         .Skip(criteria.Skip).Take(criteria.Take)
+                                                         .ToArrayAsync();
+                        var unorderedResults = await _notificationService.GetByIdsAsync(notificationIds, criteria.ResponseGroup);
+                        result.Results = unorderedResults.OrderBy(x => Array.IndexOf(notificationIds, x.Id)).ToArray();
+
+                        foreach (var notification in result.Results)
+                        {
+                            notification.ReduceDetails(criteria.ResponseGroup);
+                        }
+                    }
                 }
 
-                var allPersistentProvidersTypes = result.Results.Select(x => x.GetType()).Distinct();
-                transientNotificationsQuery = transientNotificationsQuery.Where(x => !allPersistentProvidersTypes.Contains(x.GetType()));
-
-                transientNotificationsQuery = transientNotificationsQuery.Where(x => !x.Kind.EqualsInvariant(x.Type));
-
-                result.TotalCount += transientNotificationsQuery.Count();
-                var transientNotifications = transientNotificationsQuery.Skip(criteria.Skip).Take(criteria.Take).ToList();
-                foreach(var transientNotification in transientNotifications)
-                {
-                    transientNotification.ReduceDetails(criteria.ResponseGroup);
-                }
-                result.Results = result.Results.Concat(transientNotifications)
-                    .AsQueryable()
-                    .OrderBySortInfos(sortInfos).ToList();
-            }
-            return result;
+                return result;
+            });
         }
 
         protected virtual IQueryable<NotificationEntity> BuildQuery(INotificationRepository repository, NotificationSearchCriteria criteria, IEnumerable<SortInfo> sortInfos)
@@ -88,7 +70,7 @@ namespace VirtoCommerce.NotificationsModule.Data.Services
 
             if (!string.IsNullOrEmpty(criteria.NotificationType))
             {
-                query = query.Where(x => x.Type == criteria.NotificationType);
+                query = query.Where(x => x.Type == GetNotificationType(criteria.NotificationType));
             }
 
             if (!string.IsNullOrEmpty(criteria.TenantId))
@@ -99,6 +81,11 @@ namespace VirtoCommerce.NotificationsModule.Data.Services
             if (!string.IsNullOrEmpty(criteria.TenantType))
             {
                 query = query.Where(x => x.TenantType == criteria.TenantType);
+            }
+
+            if (criteria.IsActive)
+            {
+                query = query.Where(x => x.IsActive);
             }
 
             query = query.OrderBySortInfos(sortInfos);
@@ -119,6 +106,27 @@ namespace VirtoCommerce.NotificationsModule.Data.Services
                 };
             }
             return sortInfos;
+        }
+
+        protected virtual string GetNotificationType(string notificationType)
+        {
+            return GetTransientNotifications()
+                .FirstOrDefault(x => x.Type.EqualsInvariant(notificationType) || x.Alias.EqualsInvariant(notificationType))
+                .Type;
+        }
+
+        private Notification[] GetTransientNotifications()
+        {
+            var cacheKey = CacheKey.With(GetType(), "GetTransientNotifications");
+            return _platformMemoryCache.GetOrCreateExclusive(cacheKey, (cacheEntry) =>
+            {
+                cacheEntry.AddExpirationToken(NotificationTypesCacheRegion.CreateChangeToken());
+                return AbstractTypeFactory<Notification>.AllTypeInfos.Select(x =>
+                {
+                    return AbstractTypeFactory<Notification>.TryCreateInstance(x.Type.Name);
+                }).ToArray();
+            });
+
         }
     }
 }

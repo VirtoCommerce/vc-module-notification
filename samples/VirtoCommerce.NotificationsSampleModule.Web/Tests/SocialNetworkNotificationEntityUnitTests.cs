@@ -10,12 +10,14 @@ using VirtoCommerce.NotificationsModule.Core.Services;
 using VirtoCommerce.NotificationsModule.Data.Model;
 using VirtoCommerce.NotificationsModule.Data.Repositories;
 using VirtoCommerce.NotificationsModule.Data.Services;
+using VirtoCommerce.NotificationsModule.Tests.Common;
+using VirtoCommerce.Platform.Core.Caching;
 using VirtoCommerce.Platform.Core.Common;
 using VirtoCommerce.Platform.Core.Domain;
 using VirtoCommerce.Platform.Core.Events;
 using Xunit;
 
-namespace VirtoCommerce.NotificationsModule.Tests.UnitTests
+namespace VirtoCommerce.NotificationsSampleModule.Tests
 {
     public class SocialNetworkNotificationEntity : NotificationEntity
     {
@@ -64,7 +66,7 @@ namespace VirtoCommerce.NotificationsModule.Tests.UnitTests
         public override string Kind => nameof(SocialNetworkNotification);
         public override void SetFromToMembers(string from, string to)
         {
-            
+
         }
     }
 
@@ -87,6 +89,7 @@ namespace VirtoCommerce.NotificationsModule.Tests.UnitTests
         private readonly Mock<IEventPublisher> _eventPublisherMock;
         private readonly NotificationService _notificationService;
         private readonly Mock<INotificationService> _notificationServiceMock;
+        private readonly Mock<IPlatformMemoryCache> _platformMemoryCacheMock;
         private readonly NotificationSearchService _notificationSearchService;
 
         public SocialNetworkNotificationEntityUnitTests()
@@ -96,23 +99,25 @@ namespace VirtoCommerce.NotificationsModule.Tests.UnitTests
             _mockUnitOfWork = new Mock<IUnitOfWork>();
             _repositoryMock.Setup(ss => ss.UnitOfWork).Returns(_mockUnitOfWork.Object);
             _eventPublisherMock = new Mock<IEventPublisher>();
-            _notificationService = new NotificationService(_repositoryFactory, _eventPublisherMock.Object);
-            _notificationRegistrar = new NotificationRegistrar();
+            _platformMemoryCacheMock = new Mock<IPlatformMemoryCache>();
+            _notificationService = new NotificationService(_repositoryFactory, _eventPublisherMock.Object, _platformMemoryCacheMock.Object);
             _notificationServiceMock = new Mock<INotificationService>();
-            _notificationSearchService = new NotificationSearchService(_repositoryFactory, _notificationServiceMock.Object);
+            _notificationSearchService = new NotificationSearchService(_repositoryFactory, _notificationServiceMock.Object, _platformMemoryCacheMock.Object);
+            _notificationRegistrar = new NotificationRegistrar(_notificationServiceMock.Object, _notificationSearchService);
 
             if (!AbstractTypeFactory<NotificationEntity>.AllTypeInfos.SelectMany(x => x.AllSubclasses).Contains(typeof(SocialNetworkNotificationEntity)))
                 AbstractTypeFactory<NotificationEntity>.RegisterType<SocialNetworkNotificationEntity>();
 
         }
 
+        //that just samples how to use extensions for notification
         [Fact]
         public async Task GetNotificationByTypeAsync_ReturnNotification()
         {
             //Arrange
             var type = nameof(RegistrationSocialNetworkNotification);
 
-            var mockNotifications = new Common.TestAsyncEnumerable<NotificationEntity>(new List<NotificationEntity>());
+            var mockNotifications = new TestAsyncEnumerable<NotificationEntity>(new List<NotificationEntity>());
             _repositoryMock.Setup(r => r.Notifications).Returns(mockNotifications.AsQueryable());
             _notificationRegistrar.RegisterNotification<RegistrationSocialNetworkNotification>();
 

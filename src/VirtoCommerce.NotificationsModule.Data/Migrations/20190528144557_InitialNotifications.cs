@@ -188,9 +188,24 @@ namespace VirtoCommerce.NotificationsModule.Data.Migrations
 	                            (SELECT TOP 1 pnt2.ModifiedBy FROM [PlatformNotificationTemplate] pnt2 WHERE pnt2.NotificationTypeId = pnt.NotificationTypeId), 
 	                            (SELECT TOP 1 pnt2.ObjectId FROM [PlatformNotificationTemplate] pnt2 WHERE pnt2.NotificationTypeId = pnt.NotificationTypeId), 
 	                            (SELECT TOP 1 pnt2.ObjectTypeId FROM [PlatformNotificationTemplate] pnt2 WHERE pnt2.NotificationTypeId = pnt.NotificationTypeId), 
-	                            1, [NotificationTypeId], 
-	                            CASE WHEN [NotificationTypeId] LIKE '%EmailNotification%' THEN 'EmailNotification' ELSE 'SmsNotification' END,
-	                            CASE WHEN [NotificationTypeId] LIKE '%EmailNotification%' THEN 'EmailNotificationEntity' ELSE 'SmsNotificationEntity' END,
+	                            1, 
+								CASE
+									WHEN (pnt.[NotificationTypeId] = 'EmailConfirmationNotification') THEN 'ConfirmationEmailNotification' 
+									WHEN (pnt.[NotificationTypeId] = 'RemindUserNameNotification') THEN 'RemindUserNameEmailNotification' 
+									WHEN (pnt.[NotificationTypeId] = 'RegistrationInvitationNotification') THEN 'RegistrationInvitationEmailNotification' 
+									ELSE [NotificationTypeId]         
+								END
+								,
+	                            CASE WHEN ([NotificationTypeId] LIKE '%EmailNotification%' 
+									OR [NotificationTypeId] = 'RemindUserNameNotification'
+									OR [NotificationTypeId] = 'RegistrationInvitationNotification'
+									OR [NotificationTypeId] = 'EmailConfirmationNotification') 
+									THEN 'EmailNotification' ELSE 'SmsNotification' END,
+	                            CASE WHEN ([NotificationTypeId] LIKE '%EmailNotification%' 
+									OR [NotificationTypeId] = 'RemindUserNameNotification'
+									OR [NotificationTypeId] = 'RegistrationInvitationNotification'
+									OR [NotificationTypeId] = 'EmailConfirmationNotification')
+									THEN 'EmailNotificationEntity' ELSE 'SmsNotificationEntity' END,
 	                            null, null
                             FROM [PlatformNotificationTemplate] pnt
                             GROUP BY [NotificationTypeId]

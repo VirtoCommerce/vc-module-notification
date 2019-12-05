@@ -7,7 +7,11 @@ namespace VirtoCommerce.NotificationsModule.Core.Model
     /// </summary>
     public class NotificationSearchCriteria : SearchCriteriaBase
     {
+        /// <summary>
+        /// 
+        /// </summary>
         public string NotificationType { get; set; }
+
         /// <summary>
         /// Owner Id of Notification
         /// </summary>

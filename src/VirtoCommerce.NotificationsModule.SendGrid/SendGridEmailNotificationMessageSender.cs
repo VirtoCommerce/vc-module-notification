@@ -1,4 +1,5 @@
 using System;
+using System.Net;
 using System.Net.Mail;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Options;
@@ -32,15 +33,17 @@ namespace VirtoCommerce.NotificationsModule.SendGrid
                 }
 
                 var fromAddress = new EmailAddress(emailNotificationMessage.From);
+                var toAddress = new EmailAddress(emailNotificationMessage.To);
 
                 var client = new SendGridClient(_emailSendingOptions.ApiKey);
                 var mailMsg = new SendGridMessage
                 {
                     From = fromAddress,
                     Subject = emailNotificationMessage.Subject,
-                    HtmlContent = emailNotificationMessage.Body
+                    HtmlContent = emailNotificationMessage.Body,
                 };
-                mailMsg.SetReplyTo(fromAddress);
+
+                mailMsg.AddTo(toAddress);
 
                 if (!emailNotificationMessage.CC.IsNullOrEmpty())
                 {
@@ -57,7 +60,13 @@ namespace VirtoCommerce.NotificationsModule.SendGrid
                     }
                 }
 
-                await client.SendEmailAsync(mailMsg);
+                var response = await client.SendEmailAsync(mailMsg);
+
+                if (response.StatusCode != HttpStatusCode.Accepted)
+                {
+                    var errorBody = await response.Body.ReadAsStringAsync();
+                    throw new SentNotificationException(errorBody);
+                }
             }
             catch (SmtpException ex)
             {

@@ -45,9 +45,6 @@ namespace VirtoCommerce.NotificationsModule.Data.Migrations
 
                     b.Property<string>("NotificationId");
 
-                    b.Property<string>("OuterId")
-                        .HasMaxLength(128);
-
                     b.Property<string>("Size")
                         .HasMaxLength(128);
 
@@ -92,8 +89,9 @@ namespace VirtoCommerce.NotificationsModule.Data.Migrations
 
                     b.Property<DateTime>("CreatedDate");
 
-                    b.Property<string>("Discriminator").HasMaxLength(128)
-                        .IsRequired();
+                    b.Property<string>("Discriminator")
+                        .IsRequired()
+                        .HasMaxLength(128);
 
                     b.Property<bool>("IsActive");
 
@@ -135,8 +133,9 @@ namespace VirtoCommerce.NotificationsModule.Data.Migrations
 
                     b.Property<DateTime>("CreatedDate");
 
-                    b.Property<string>("Discriminator").HasMaxLength(128)
-                        .IsRequired();
+                    b.Property<string>("Discriminator")
+                        .IsRequired()
+                        .HasMaxLength(128);
 
                     b.Property<string>("LanguageCode")
                         .HasMaxLength(10);
@@ -155,9 +154,6 @@ namespace VirtoCommerce.NotificationsModule.Data.Migrations
                     b.Property<string>("NotificationId");
 
                     b.Property<string>("NotificationType")
-                        .HasMaxLength(128);
-
-                    b.Property<string>("OuterId")
                         .HasMaxLength(128);
 
                     b.Property<int>("SendAttemptCount");
@@ -190,8 +186,9 @@ namespace VirtoCommerce.NotificationsModule.Data.Migrations
 
                     b.Property<DateTime>("CreatedDate");
 
-                    b.Property<string>("Discriminator").HasMaxLength(128)
-                        .IsRequired();
+                    b.Property<string>("Discriminator")
+                        .IsRequired()
+                        .HasMaxLength(128);
 
                     b.Property<string>("LanguageCode")
                         .HasMaxLength(10);

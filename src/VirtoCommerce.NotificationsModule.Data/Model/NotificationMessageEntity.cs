@@ -135,6 +135,6 @@ namespace VirtoCommerce.NotificationsModule.Data.Model
             message.LastSendError = LastSendError;
             message.LastSendAttemptDate = LastSendAttemptDate;
             message.SendDate = SendDate;
-        }        
+        }
     }
 }

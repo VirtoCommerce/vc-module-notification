@@ -66,8 +66,6 @@ namespace VirtoCommerce.NotificationsModule.Smtp
                         await client.SendMailAsync(mailMsg);
                     }
                 }
-
-                ;
             }
             catch (SmtpException ex)
             {
@@ -79,7 +77,7 @@ namespace VirtoCommerce.NotificationsModule.Smtp
         {
             return new SmtpClient(_emailSendingOptions.SmtpServer, _emailSendingOptions.Port)
             {
-                EnableSsl = true,
+                EnableSsl = _emailSendingOptions.EnableSsl,
                 Credentials = new NetworkCredential(_emailSendingOptions.Login, _emailSendingOptions.Password)
             };
         }

@@ -5,7 +5,6 @@ using System.Net.Mail;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using Moq;
-using Newtonsoft.Json.Linq;
 using VirtoCommerce.NotificationsModule.Core.Model;
 using VirtoCommerce.NotificationsModule.Core.Services;
 using VirtoCommerce.NotificationsModule.Core.Types;
@@ -16,8 +15,6 @@ using VirtoCommerce.NotificationsModule.Tests.Common;
 using VirtoCommerce.NotificationsModule.Tests.Model;
 using VirtoCommerce.NotificationsModule.Tests.NotificationTypes;
 using VirtoCommerce.Platform.Core.Common;
-using VirtoCommerce.Platform.Core.Localizations;
-using VirtoCommerce.Platform.Data.Localizations;
 using Xunit;
 
 namespace VirtoCommerce.NotificationsModule.Tests.UnitTests
@@ -31,7 +28,7 @@ namespace VirtoCommerce.NotificationsModule.Tests.UnitTests
         private readonly Mock<INotificationMessageSender> _messageSenderMock;
         private readonly Mock<ILogger<NotificationSender>> _logNotificationSenderMock;
         private readonly Mock<INotificationMessageSenderProviderFactory> _senderFactoryMock;
-        
+
         public NotificationSenderUnitTests()
         {
             _templateRender = new LiquidTemplateRenderer();
@@ -83,7 +80,8 @@ namespace VirtoCommerce.NotificationsModule.Tests.UnitTests
                         LanguageCode = "en-US"
                     }
                 },
-                LanguageCode = language
+                LanguageCode = language,
+                IsActive = true
             };
             var date = new DateTime(2018, 02, 20, 10, 00, 00);
             var message = new EmailNotificationMessage()
@@ -143,7 +141,8 @@ namespace VirtoCommerce.NotificationsModule.Tests.UnitTests
                         Body = body,
                     }
                 },
-                LanguageCode = language
+                LanguageCode = language,
+                IsActive = true
             };
             var date = new DateTime(2018, 02, 20, 10, 00, 00);
             var message = new EmailNotificationMessage()
@@ -186,7 +185,8 @@ namespace VirtoCommerce.NotificationsModule.Tests.UnitTests
                         Body = body,
                     }
                 },
-                LanguageCode = language
+                LanguageCode = language,
+                IsActive = true
             };
             var date = new DateTime(2018, 02, 20, 10, 00, 00);
             var message = new EmailNotificationMessage()
@@ -234,7 +234,8 @@ namespace VirtoCommerce.NotificationsModule.Tests.UnitTests
                         Body = body,
                     }
                 },
-                LanguageCode = language
+                LanguageCode = language,
+                IsActive = true
             };
             var date = new DateTime(2018, 02, 20, 10, 00, 00);
             var message = new EmailNotificationMessage()
@@ -274,7 +275,8 @@ namespace VirtoCommerce.NotificationsModule.Tests.UnitTests
                     }
                 },
                 TenantIdentity = new TenantIdentity(null, null),
-                LanguageCode = language
+                LanguageCode = language,
+                IsActive = true
             };
 
             var message = new EmailNotificationMessage()
@@ -329,6 +331,33 @@ namespace VirtoCommerce.NotificationsModule.Tests.UnitTests
 
             _messageServiceMock.Setup(ms => ms.SaveNotificationMessagesAsync(new NotificationMessage[] { message }));
             _messageSenderMock.Setup(ms => ms.SendNotificationAsync(It.IsAny<NotificationMessage>())).Throws(new SmtpException());
+
+            //Act
+            var result = await _sender.SendNotificationAsync(notification);
+
+            //Assert
+            Assert.False(result.IsSuccess);
+        }
+
+        [Fact]
+        public async Task EmailNotification_NotActiveNotification_FailSend()
+        {
+            //Arrange
+            var language = "default";
+            var subject = "some subject";
+            var body = "some body";
+            var notification = new RegistrationEmailNotification()
+            {
+                Templates = new List<NotificationTemplate>()
+                {
+                    new EmailNotificationTemplate()
+                    {
+                        Subject = subject,
+                        Body = body,
+                    }
+                },
+                LanguageCode = language
+            };
 
             //Act
             var result = await _sender.SendNotificationAsync(notification);
