@@ -24,6 +24,7 @@ namespace VirtoCommerce.NotificationsModule.Tests.UnitTests
         private readonly INotificationRegistrar _notificationRegistrar;
         private readonly Func<INotificationRepository> _repositoryFactory;
         private readonly Mock<IEventPublisher> _eventPublisherMock;
+        private readonly Mock<INotificationSearchService> _notificationSearchServiceMock;
         private readonly NotificationService _notificationService;
 
         public NotificationServiceUnitTests()
@@ -34,7 +35,8 @@ namespace VirtoCommerce.NotificationsModule.Tests.UnitTests
             _repositoryMock.Setup(ss => ss.UnitOfWork).Returns(_mockUnitOfWork.Object);
             _eventPublisherMock = new Mock<IEventPublisher>();
             _notificationService = new NotificationService(_repositoryFactory, _eventPublisherMock.Object);
-            _notificationRegistrar = new NotificationRegistrar();
+            _notificationSearchServiceMock = new Mock<INotificationSearchService>();
+            _notificationRegistrar = new NotificationRegistrar(_notificationService, _notificationSearchServiceMock.Object);
 
             if (!AbstractTypeFactory<NotificationEntity>.AllTypeInfos.SelectMany(x => x.AllSubclasses).Contains(typeof(EmailNotificationEntity)))
                 AbstractTypeFactory<NotificationEntity>.RegisterType<EmailNotificationEntity>();
@@ -49,6 +51,11 @@ namespace VirtoCommerce.NotificationsModule.Tests.UnitTests
             var notifications = new List<NotificationEntity> { new EmailNotificationEntity() { Id = id, Type = nameof(EmailNotification) } };
             _repositoryMock.Setup(n => n.GetByIdsAsync(new[] { id }, responseGroup))
                 .ReturnsAsync(notifications.ToArray());
+            var criteria = AbstractTypeFactory<NotificationSearchCriteria>.TryCreateInstance();
+            criteria.Take = 1;
+
+            criteria.NotificationType = nameof(RegistrationEmailNotification);
+            _notificationSearchServiceMock.Setup(x => x.SearchNotificationsAsync(criteria)).ReturnsAsync(new NotificationSearchResult());
             _notificationRegistrar.RegisterNotification<RegistrationEmailNotification>();
 
             //Act

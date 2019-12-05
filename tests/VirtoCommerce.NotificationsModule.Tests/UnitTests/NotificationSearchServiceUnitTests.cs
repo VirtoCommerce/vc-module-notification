@@ -26,6 +26,7 @@ namespace VirtoCommerce.NotificationsModule.Tests.UnitTests
         private readonly INotificationRegistrar _notificationRegistrar;
         private readonly Mock<IEventPublisher> _eventPublisherMock;
         private readonly Mock<INotificationService> _notificationServiceMock;
+        private readonly Mock<INotificationSearchService> _notificationSearchServiceMock;
         private readonly NotificationSearchService _notificationSearchService;
 
         public NotificationSearchServiceUnitTests()
@@ -33,15 +34,33 @@ namespace VirtoCommerce.NotificationsModule.Tests.UnitTests
             _repositoryMock = new Mock<INotificationRepository>();
             _repositoryFactoryMock = new Mock<Func<INotificationRepository>>();
             _eventPublisherMock = new Mock<IEventPublisher>();
-            _notificationRegistrar = new NotificationRegistrar();
             _repositoryFactory = () => _repositoryMock.Object;
             _notificationServiceMock = new Mock<INotificationService>();
+            _notificationSearchServiceMock = new Mock<INotificationSearchService>();
+            _notificationRegistrar = new NotificationRegistrar(_notificationServiceMock.Object, _notificationSearchServiceMock.Object);
             _notificationSearchService = new NotificationSearchService(_repositoryFactory, _notificationServiceMock.Object);
 
+            var criteria = AbstractTypeFactory<NotificationSearchCriteria>.TryCreateInstance();
+            criteria.Take = 1;
+
+            criteria.NotificationType = nameof(InvoiceEmailNotification);
+            _notificationSearchServiceMock.Setup(x => x.SearchNotificationsAsync(criteria)).ReturnsAsync(new NotificationSearchResult());
             _notificationRegistrar.RegisterNotification<InvoiceEmailNotification>();
+
+            criteria.NotificationType = nameof(OrderSentEmailNotification);
+            _notificationSearchServiceMock.Setup(x => x.SearchNotificationsAsync(criteria)).ReturnsAsync(new NotificationSearchResult());
             _notificationRegistrar.RegisterNotification<OrderSentEmailNotification>();
+
+            criteria.NotificationType = nameof(OrderPaidEmailNotification);
+            _notificationSearchServiceMock.Setup(x => x.SearchNotificationsAsync(criteria)).ReturnsAsync(new NotificationSearchResult());
             _notificationRegistrar.RegisterNotification<OrderPaidEmailNotification>();
+
+            criteria.NotificationType = nameof(RemindUserNameEmailNotification);
+            _notificationSearchServiceMock.Setup(x => x.SearchNotificationsAsync(criteria)).ReturnsAsync(new NotificationSearchResult());
             _notificationRegistrar.RegisterNotification<RemindUserNameEmailNotification>();
+
+            criteria.NotificationType = nameof(RegistrationEmailNotification);
+            _notificationSearchServiceMock.Setup(x => x.SearchNotificationsAsync(criteria)).ReturnsAsync(new NotificationSearchResult());
             _notificationRegistrar.RegisterNotification<RegistrationEmailNotification>();
         }
 
@@ -51,9 +70,21 @@ namespace VirtoCommerce.NotificationsModule.Tests.UnitTests
             //Arrange
             var type = nameof(RegistrationEmailNotification);
 
-            var mockNotifications = new Common.TestAsyncEnumerable<NotificationEntity>(new List<NotificationEntity>());
+            var notifications = new List<NotificationEntity>
+            {
+                new EmailNotificationEntity
+                {
+                    Type = nameof(RegistrationEmailNotification), Kind = nameof(EmailNotification),
+                    Id = Guid.NewGuid().ToString(), IsActive = true,
+                }
+            };
+
+            var mockNotifications = new Common.TestAsyncEnumerable<NotificationEntity>(notifications);
             _repositoryMock.Setup(r => r.Notifications).Returns(mockNotifications.AsQueryable());
             _notificationRegistrar.RegisterNotification<RegistrationEmailNotification>();
+            var ids = notifications.Select(n => n.Id).ToArray();
+            _notificationServiceMock.Setup(ns => ns.GetByIdsAsync(ids, null))
+                .ReturnsAsync(notifications.Select(n => n.ToModel(AbstractTypeFactory<Notification>.TryCreateInstance(n.Type))).ToArray());
 
             //Act
             var result = await _notificationSearchService.GetNotificationAsync(type);
@@ -64,25 +95,7 @@ namespace VirtoCommerce.NotificationsModule.Tests.UnitTests
         }
 
         [Fact]
-        public async Task GetNotificationByAliasAsync_ReturnTransientNotification()
-        {
-            //Arrange
-            var type = "RemindUserNameNotification";
-
-            var mockNotifications = new Common.TestAsyncEnumerable<NotificationEntity>(new List<NotificationEntity>());
-            _repositoryMock.Setup(r => r.Notifications).Returns(mockNotifications.AsQueryable());
-
-
-            //Act
-            var result = await _notificationSearchService.GetNotificationAsync(type);
-
-            //Assert
-            Assert.NotNull(result);
-            Assert.Equal(nameof(RemindUserNameEmailNotification), result.Type);
-        }
-
-        [Fact]
-        public async Task GetNotificationByAliasAsync_ReturnActiveNotification()
+        public async Task GetNotificationByAliasAsync_ReturnNotification()
         {
             //Arrange
             var type = "RemindUserNameNotification";
@@ -92,7 +105,7 @@ namespace VirtoCommerce.NotificationsModule.Tests.UnitTests
                 new EmailNotificationEntity
                 {
                     Type = nameof(RemindUserNameEmailNotification), Kind = nameof(EmailNotification),
-                    Id = Guid.NewGuid().ToString(), IsActive = true
+                    Id = Guid.NewGuid().ToString(), IsActive = true,
                 }
             };
 
@@ -111,8 +124,9 @@ namespace VirtoCommerce.NotificationsModule.Tests.UnitTests
             Assert.True(result.IsActive);
         }
 
+
         [Fact]
-        public async Task SearchNotificationsAsync_GetOnActiveItemsAndTreeItems()
+        public async Task SearchNotificationsAsync_GetOneItem()
         {
             //Arrange
             var searchCriteria = AbstractTypeFactory<NotificationSearchCriteria>.TryCreateInstance();
@@ -138,26 +152,8 @@ namespace VirtoCommerce.NotificationsModule.Tests.UnitTests
 
             //Assert
             Assert.NotEmpty(result.Results);
-            Assert.Equal(4, result.Results.Count());
+            Assert.Single(result.Results);
             Assert.Equal(1, result.Results.Count(r => r.IsActive));
-            Assert.Equal(3, result.Results.Count(r => !r.IsActive));
-        }
-
-        [Fact]
-        public async Task SearchNotificationsAsync_GetTwoItems()
-        {
-            //Arrange
-            var searchCriteria = AbstractTypeFactory<NotificationSearchCriteria>.TryCreateInstance();
-            searchCriteria.Take = 2;
-            searchCriteria.Skip = 0;
-            var mockNotifications = new Common.TestAsyncEnumerable<NotificationEntity>(new List<NotificationEntity>());
-            _repositoryMock.Setup(r => r.Notifications).Returns(mockNotifications.AsQueryable());
-
-            //Act
-            var result = await _notificationSearchService.SearchNotificationsAsync(searchCriteria);
-
-            //Assert
-            Assert.Equal(2, result.Results.Count);
         }
 
         [Fact]
@@ -190,7 +186,7 @@ namespace VirtoCommerce.NotificationsModule.Tests.UnitTests
 
         [Theory]
         [ClassData(typeof(PagingTestData))]
-        public async Task SearchNotificationsAsync_PagingNotifications(int skip, int take, int activeExpectedCount, int transientExpectedCount, string[] expectedTypes)
+        public async Task SearchNotificationsAsync_PagingNotifications(int skip, int take, int expectedCount, string[] expectedTypes)
         {
             //Arrange
             var responseGroup = NotificationResponseGroup.Default.ToString();
@@ -214,21 +210,14 @@ namespace VirtoCommerce.NotificationsModule.Tests.UnitTests
 
             //Assert
             Assert.Equal(expectedTypes, result.Results.Where(x => x.IsActive).Select(y => y.Type));
-            Assert.Equal(activeExpectedCount, result.Results.Count(x => x.IsActive));
-            Assert.Equal(transientExpectedCount, result.Results.Count(x => !x.IsActive));
+            Assert.Equal(expectedCount, result.Results.Count(x => x.IsActive));
         }
 
         public class PagingTestData : IEnumerable<object[]>
         {
             public IEnumerator<object[]> GetEnumerator()
             {
-                yield return new object[] { 0, 20, 3, 2, new[] { nameof(InvoiceEmailNotification), nameof(OrderSentEmailNotification), nameof(RegistrationEmailNotification) } };
-                yield return new object[] { 0, 3, 2, 1, new[] { nameof(InvoiceEmailNotification), nameof(OrderSentEmailNotification) } };
-                yield return new object[] { 1, 3, 1, 2, new[] { nameof(OrderSentEmailNotification) } };
-                yield return new object[] { 2, 3, 1, 2, new[] { nameof(RegistrationEmailNotification) } };
-                yield return new object[] { 3, 1, 0, 1, Array.Empty<string>() };
-                yield return new object[] { 3, 2, 1, 1, new[] { nameof(RegistrationEmailNotification) } };
-                yield return new object[] { 4, 1, 0, 1, Array.Empty<string>() };
+                yield return new object[] { 0, 20, 3, new[] { nameof(InvoiceEmailNotification), nameof(OrderSentEmailNotification), nameof(RegistrationEmailNotification) } };
             }
 
             IEnumerator IEnumerable.GetEnumerator()

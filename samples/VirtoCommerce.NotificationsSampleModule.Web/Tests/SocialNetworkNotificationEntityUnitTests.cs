@@ -98,7 +98,7 @@ namespace VirtoCommerce.NotificationsSampleModule.Tests
             _repositoryMock.Setup(ss => ss.UnitOfWork).Returns(_mockUnitOfWork.Object);
             _eventPublisherMock = new Mock<IEventPublisher>();
             _notificationService = new NotificationService(_repositoryFactory, _eventPublisherMock.Object);
-            _notificationRegistrar = new NotificationRegistrar();
+            _notificationRegistrar = new NotificationRegistrar(_notificationServiceMock.Object);
             _notificationServiceMock = new Mock<INotificationService>();
             _notificationSearchService = new NotificationSearchService(_repositoryFactory, _notificationServiceMock.Object);
 

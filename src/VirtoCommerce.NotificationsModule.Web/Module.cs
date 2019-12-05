@@ -140,7 +140,7 @@ namespace VirtoCommerce.NotificationsModule.Web
             registrar.RegisterNotification<ResetPasswordSmsNotification>();
             registrar.RegisterNotification<TwoFactorEmailNotification>();
             registrar.RegisterNotification<TwoFactorSmsNotification>();
-            registrar.RegisterNotification<ChangePhoneNumberSmsNotification>();            
+            registrar.RegisterNotification<ChangePhoneNumberSmsNotification>();
         }
 
         public void Uninstall()
