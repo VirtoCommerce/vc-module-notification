@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Memory;
 using VirtoCommerce.NotificationsModule.Core.Model;
 using VirtoCommerce.NotificationsModule.Core.Services;
+using VirtoCommerce.NotificationsModule.Data.Caching;
 using VirtoCommerce.NotificationsModule.Data.Model;
 using VirtoCommerce.NotificationsModule.Data.Repositories;
 using VirtoCommerce.Platform.Core.Caching;
@@ -103,21 +105,20 @@ namespace VirtoCommerce.NotificationsModule.Data.Services
         protected virtual string GetNotificationType(string notificationType)
         {
             return GetTransientNotifications()
-                .FirstOrDefault(x => x.Key.EqualsInvariant(notificationType))
-                .Value
+                .FirstOrDefault(x => x.Type.EqualsInvariant(notificationType) || x.Alias.EqualsInvariant(notificationType))
                 .Type;
         }
 
-        private IDictionary<string, Notification> GetTransientNotifications()
+        private Notification[] GetTransientNotifications()
         {
             var cacheKey = CacheKey.With(GetType(), "GetTransientNotifications");
             return _platformMemoryCache.GetOrCreateExclusive(cacheKey, (cacheEntry) =>
             {
+                cacheEntry.AddExpirationToken(NotificationTypesCacheRegion.CreateChangeToken());
                 return AbstractTypeFactory<Notification>.AllTypeInfos.Select(x =>
                 {
                     return AbstractTypeFactory<Notification>.TryCreateInstance(x.Type.Name);
-                }).ToDictionary(k => !string.IsNullOrEmpty(k.Alias) ? k.Alias : k.Type, k => k)
-                .WithDefaultValue(AbstractTypeFactory<Notification>.TryCreateInstance());
+                }).ToArray();
             });
 
         }

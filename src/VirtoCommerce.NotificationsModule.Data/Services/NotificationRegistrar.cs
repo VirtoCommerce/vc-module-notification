@@ -3,6 +3,7 @@ using System.Linq;
 using VirtoCommerce.NotificationsModule.Core.Extensions;
 using VirtoCommerce.NotificationsModule.Core.Model;
 using VirtoCommerce.NotificationsModule.Core.Services;
+using VirtoCommerce.NotificationsModule.Data.Caching;
 using VirtoCommerce.Platform.Core.Common;
 
 namespace VirtoCommerce.NotificationsModule.Data.Services
@@ -32,12 +33,13 @@ namespace VirtoCommerce.NotificationsModule.Data.Services
                     }
                 });
 
+                NotificationTypesCacheRegion.ExpireRegion();
+
                 var notification = _notificationSearchService.GetNotificationAsync<T>().GetAwaiter().GetResult();
                 if (notification == null)
                 {
                     _notificationService.SaveChangesAsync(new[] { AbstractTypeFactory<Notification>.TryCreateInstance(typeof(T).Name) }).GetAwaiter().GetResult();
                 }
-
             }
 
             return result;
