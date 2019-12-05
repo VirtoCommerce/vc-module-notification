@@ -11,6 +11,7 @@ using VirtoCommerce.NotificationsModule.Data.Model;
 using VirtoCommerce.NotificationsModule.Data.Repositories;
 using VirtoCommerce.NotificationsModule.Data.Services;
 using VirtoCommerce.NotificationsModule.Tests.Common;
+using VirtoCommerce.Platform.Core.Caching;
 using VirtoCommerce.Platform.Core.Common;
 using VirtoCommerce.Platform.Core.Domain;
 using VirtoCommerce.Platform.Core.Events;
@@ -88,6 +89,7 @@ namespace VirtoCommerce.NotificationsSampleModule.Tests
         private readonly Mock<IEventPublisher> _eventPublisherMock;
         private readonly NotificationService _notificationService;
         private readonly Mock<INotificationService> _notificationServiceMock;
+        private readonly Mock<IPlatformMemoryCache> _platformMemoryCacheMock;
         private readonly NotificationSearchService _notificationSearchService;
 
         public SocialNetworkNotificationEntityUnitTests()
@@ -97,10 +99,11 @@ namespace VirtoCommerce.NotificationsSampleModule.Tests
             _mockUnitOfWork = new Mock<IUnitOfWork>();
             _repositoryMock.Setup(ss => ss.UnitOfWork).Returns(_mockUnitOfWork.Object);
             _eventPublisherMock = new Mock<IEventPublisher>();
-            _notificationService = new NotificationService(_repositoryFactory, _eventPublisherMock.Object);
-            _notificationRegistrar = new NotificationRegistrar(_notificationServiceMock.Object);
+            _platformMemoryCacheMock = new Mock<IPlatformMemoryCache>();
+            _notificationService = new NotificationService(_repositoryFactory, _eventPublisherMock.Object, _platformMemoryCacheMock.Object);
             _notificationServiceMock = new Mock<INotificationService>();
-            _notificationSearchService = new NotificationSearchService(_repositoryFactory, _notificationServiceMock.Object);
+            _notificationSearchService = new NotificationSearchService(_repositoryFactory, _notificationServiceMock.Object, _platformMemoryCacheMock.Object);
+            _notificationRegistrar = new NotificationRegistrar(_notificationServiceMock.Object, _notificationSearchService);
 
             if (!AbstractTypeFactory<NotificationEntity>.AllTypeInfos.SelectMany(x => x.AllSubclasses).Contains(typeof(SocialNetworkNotificationEntity)))
                 AbstractTypeFactory<NotificationEntity>.RegisterType<SocialNetworkNotificationEntity>();
