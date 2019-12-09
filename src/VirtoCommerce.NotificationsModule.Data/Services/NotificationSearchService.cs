@@ -53,6 +53,8 @@ namespace VirtoCommerce.NotificationsModule.Data.Services
                         var unorderedResults = await _notificationService.GetByIdsAsync(notificationIds, criteria.ResponseGroup);
                         result.Results = unorderedResults.OrderBy(x => Array.IndexOf(notificationIds, x.Id)).ToArray();
 
+                        GetTransientNotifications(criteria, result);
+
                         foreach (var notification in result.Results)
                         {
                             notification.ReduceDetails(criteria.ResponseGroup);
@@ -108,6 +110,30 @@ namespace VirtoCommerce.NotificationsModule.Data.Services
             return sortInfos;
         }
 
+        protected virtual void GetTransientNotifications(NotificationSearchCriteria criteria, NotificationSearchResult result)
+        {
+            var transientNotificationsQuery = GetTransientNotifications();
+
+            if (!string.IsNullOrEmpty(criteria.NotificationType))
+            {
+                transientNotificationsQuery = transientNotificationsQuery.Where(x => x.Type.EqualsInvariant(criteria.NotificationType));
+            }
+
+            var allPersistentProvidersTypes = result.Results.Select(x => x.Type).Distinct();
+
+            transientNotificationsQuery = transientNotificationsQuery.Where(x => !allPersistentProvidersTypes.Contains(x.Type));
+
+            result.TotalCount += transientNotificationsQuery.Count();
+
+            //no skip transient notifications
+            var transientNotifications = transientNotificationsQuery.Take(criteria.Take - result.TotalCount).ToList();
+
+            result.Results = result.Results.Concat(transientNotifications)
+                                           .AsQueryable()
+                                           .OrderBySortInfos(BuildSortExpression(criteria))
+                                           .ToList();
+        }
+
         protected virtual string GetNotificationType(string notificationType)
         {
             return GetTransientNotifications()
@@ -115,7 +141,7 @@ namespace VirtoCommerce.NotificationsModule.Data.Services
                 .Type;
         }
 
-        private Notification[] GetTransientNotifications()
+        private IEnumerable<Notification> GetTransientNotifications()
         {
             var cacheKey = CacheKey.With(GetType(), "GetTransientNotifications");
             return _platformMemoryCache.GetOrCreateExclusive(cacheKey, (cacheEntry) =>

@@ -35,11 +35,11 @@ namespace VirtoCommerce.NotificationsModule.Data.Services
 
                 NotificationTypesCacheRegion.ExpireRegion();
 
-                var notification = _notificationSearchService.GetNotificationAsync<T>().GetAwaiter().GetResult();
-                if (notification == null)
-                {
-                    _notificationService.SaveChangesAsync(new[] { AbstractTypeFactory<Notification>.TryCreateInstance(typeof(T).Name) }).GetAwaiter().GetResult();
-                }
+                //var notification = _notificationSearchService.GetNotificationAsync<T>().GetAwaiter().GetResult();
+                //if (notification == null)
+                //{
+                //    _notificationService.SaveChangesAsync(new[] { AbstractTypeFactory<Notification>.TryCreateInstance(typeof(T).Name) }).GetAwaiter().GetResult();
+                //}
             }
 
             return result;
