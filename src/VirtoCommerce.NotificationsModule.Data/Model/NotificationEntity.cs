@@ -112,5 +112,12 @@ namespace VirtoCommerce.NotificationsModule.Data.Model
                 Templates.Patch(notification.Templates, (sourceTemplate, templateEntity) => sourceTemplate.Patch(templateEntity));
             }
         }
+
+        public virtual bool EqualsByKey(Notification model)
+        {
+            return model.Type.Equals(Type) &&
+                ((!model.TenantIdentity.IsValid && TenantId == null && TenantType == null) ||
+                (model.TenantIdentity.IsValid && model.TenantIdentity.Id.Equals(TenantId) && model.TenantIdentity.Type.Equals(TenantType)));
+        }
     }
 }

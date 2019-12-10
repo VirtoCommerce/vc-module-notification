@@ -61,10 +61,10 @@ namespace VirtoCommerce.NotificationsModule.Data.Services
                 var changedEntries = new List<GenericChangedEntry<Notification>>();
                 using (var repository = _repositoryFactory())
                 {
-                    var existingNotificationEntities = await repository.GetByIdsAsync(notifications.Select(m => m.Id).ToArray(), NotificationResponseGroup.Full.ToString());
+                    var existingNotificationEntities = await repository.GetByNotificationsAsync(notifications, NotificationResponseGroup.Full.ToString());
                     foreach (var notification in notifications)
                     {
-                        var originalEntity = existingNotificationEntities.FirstOrDefault(n => n.Id.Equals(notification.Id));
+                        var originalEntity = existingNotificationEntities.FirstOrDefault(n => n.EqualsByKey(notification));
                         var modifiedEntity = AbstractTypeFactory<NotificationEntity>.TryCreateInstance($"{notification.Kind}Entity").FromModel(notification, pkMap);
 
                         if (originalEntity != null)
