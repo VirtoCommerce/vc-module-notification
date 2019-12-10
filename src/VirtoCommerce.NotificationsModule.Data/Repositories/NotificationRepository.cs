@@ -32,7 +32,7 @@ namespace VirtoCommerce.NotificationsModule.Data.Repositories
             {
                 result = await Notifications.Where(x => ids.Contains(x.Id)).OrderBy(x => x.Type).ToArrayAsync();
                 ids = result.Select(x => x.Id).ToArray();
-                await GetNestedEntitiesAsync(ids, responseGroup);
+                await LoadNotificationDependenciesAsync(ids, responseGroup);
             }
             return result;
         }
@@ -44,7 +44,7 @@ namespace VirtoCommerce.NotificationsModule.Data.Repositories
             var notificationKeys = notifications.Select(x => new { Key1 = x.Type, Key2 = x.TenantIdentity.Id, Key3 = x.TenantIdentity.Type }).ToArray();
             var result = await Notifications.Where(x => notificationKeys.Contains(new { Key1 = x.Type, Key2 = x.TenantId, Key3 = x.TenantType })).OrderBy(x => x.Type).ToArrayAsync();
             var ids = result.Select(x => x.Id).ToArray();
-            await GetNestedEntitiesAsync(ids, responseGroup);
+            await LoadNotificationDependenciesAsync(ids, responseGroup);
 
             return result;
         }
@@ -69,7 +69,7 @@ namespace VirtoCommerce.NotificationsModule.Data.Repositories
         }
 
 
-        private async Task GetNestedEntitiesAsync(string[] ids, string responseGroup)
+        protected virtual async Task LoadNotificationDependenciesAsync(string[] ids, string responseGroup)
         {
             var notificaionResponseGroup = EnumUtility.SafeParseFlags(responseGroup, NotificationResponseGroup.Full);
 
