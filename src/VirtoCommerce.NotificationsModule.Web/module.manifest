@@ -2,7 +2,7 @@
 <module>
     <id>VirtoCommerce.Notifications</id>
     <version>3.0.0</version>
-	<version-tag>rc.1</version-tag>
+	<version-tag>rc.2</version-tag>
     <platformVersion>3.0.0</platformVersion>
     <title>Notifications module</title>
     <description>description</description>
@@ -17,7 +17,7 @@
         <group>commerce</group>
     </groups>
     <projectUrl>https://virtocommerce.com/apps/extensions/virto-module-notification</projectUrl>
-    <iconUrl>Modules/$(VirtoCommerce.Notifications)/Content/logoVC.png</iconUrl>
+    <iconUrl>https://raw.githubusercontent.com/VirtoCommerce/vc-module-notification/release/3.0.0/src/VirtoCommerce.NotificationsModule.Web/Content/logoVC.png</iconUrl>
     <releaseNotes></releaseNotes>
     <copyright>Copyright © 2011-2019 Virto Commerce. All rights reserved</copyright>
     <tags>notifications</tags>

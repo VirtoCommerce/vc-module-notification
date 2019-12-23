@@ -4,7 +4,12 @@ namespace VirtoCommerce.NotificationsModule.Core.Types
 {
     public class RegistrationInvitationEmailNotification : EmailNotification
     {
-        public override string Type { get; set; } = "RegistrationInvitationNotification";
+        public RegistrationInvitationEmailNotification()
+        {
+            //for backward compatibility v.2
+            Alias = "RegistrationInvitationNotification";
+        }
+
         public string InviteUrl { get; set; }
         public string Message { get; set; }
     }

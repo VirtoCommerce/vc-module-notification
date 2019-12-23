@@ -10,7 +10,7 @@ namespace VirtoCommerce.NotificationsModule.Data.Model
     /// <summary>
     /// Entity is Notification
     /// </summary>
-    public abstract class NotificationEntity : AuditableEntity
+    public abstract class NotificationEntity : AuditableEntity, IHasOuterId
     {
         /// <summary>
         /// Tenant id that initiate sending
@@ -41,10 +41,17 @@ namespace VirtoCommerce.NotificationsModule.Data.Model
         [StringLength(128)]
         public string Kind { get; set; }
 
+        /// <summary>
+        /// Outer Id that for external services
+        /// </summary>
+        [StringLength(128)]
+        public string OuterId { get; set; }
+
         #region Navigation Properties
 
         public virtual ObservableCollection<NotificationTemplateEntity> Templates { get; set; }
             = new NullCollection<NotificationTemplateEntity>();
+
 
         #endregion
 
@@ -56,6 +63,7 @@ namespace VirtoCommerce.NotificationsModule.Data.Model
             notification.CreatedDate = CreatedDate;
             notification.ModifiedBy = ModifiedBy;
             notification.ModifiedDate = ModifiedDate;
+            notification.OuterId = OuterId;
 
             notification.TenantIdentity = new TenantIdentity(TenantId, TenantType);
             notification.IsActive = IsActive;
@@ -78,6 +86,7 @@ namespace VirtoCommerce.NotificationsModule.Data.Model
             CreatedDate = notification.CreatedDate;
             ModifiedBy = notification.ModifiedBy;
             ModifiedDate = notification.ModifiedDate;
+            OuterId = notification.OuterId;
 
             TenantId = notification.TenantIdentity?.Id;
             TenantType = notification.TenantIdentity?.Type;
@@ -102,6 +111,6 @@ namespace VirtoCommerce.NotificationsModule.Data.Model
             {
                 Templates.Patch(notification.Templates, (sourceTemplate, templateEntity) => sourceTemplate.Patch(templateEntity));
             }
-        }        
+        }
     }
 }

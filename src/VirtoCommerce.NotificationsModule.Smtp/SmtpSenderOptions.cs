@@ -1,5 +1,3 @@
-using System.ComponentModel.DataAnnotations;
-
 namespace VirtoCommerce.NotificationsModule.Smtp
 {
     /// <summary>
@@ -10,7 +8,6 @@ namespace VirtoCommerce.NotificationsModule.Smtp
         /// <summary>
         /// Server of Sending
         /// </summary>
-        [Url]
         public string SmtpServer { get; set; }
 
         /// <summary>
@@ -27,5 +24,11 @@ namespace VirtoCommerce.NotificationsModule.Smtp
         /// Password of Sending Server
         /// </summary>
         public string Password { get; set; }
+
+        /// <summary>
+        /// Enable SSL option
+        /// If use smtp.gmail.com then SSL is enabled and check https://www.google.com/settings/security/lesssecureapps
+        /// </summary>
+        public bool EnableSsl { get; set; }
     }
 }

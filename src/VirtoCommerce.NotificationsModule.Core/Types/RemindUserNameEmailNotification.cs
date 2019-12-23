@@ -4,7 +4,10 @@ namespace VirtoCommerce.NotificationsModule.Core.Types
 {
     public class RemindUserNameEmailNotification : EmailNotification
     {
-        //need to the storefront
-        public override string Type { get; set; } = "RemindUserNameEmailNotification";
+        public RemindUserNameEmailNotification()
+        {
+            //for backward compatibility v.2
+            Alias = "RemindUserNameNotification";
+        }
     }
 }

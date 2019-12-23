@@ -1,5 +1,6 @@
 using System.Linq;
 using System.Threading.Tasks;
+using VirtoCommerce.NotificationsModule.Core.Model;
 using VirtoCommerce.NotificationsModule.Data.Model;
 using VirtoCommerce.Platform.Core.Common;
 
@@ -10,6 +11,7 @@ namespace VirtoCommerce.NotificationsModule.Data.Repositories
         IQueryable<NotificationEntity> Notifications { get; }
         IQueryable<NotificationMessageEntity> NotifcationMessages { get; }
         Task<NotificationEntity[]> GetByIdsAsync(string[] ids, string responseGroup);
+        Task<NotificationEntity[]> GetByNotificationsAsync(Notification[] notifications, string responseGroup);
         Task<NotificationMessageEntity[]> GetMessagesByIdsAsync(string[] ids);
     }
 }

@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using Newtonsoft.Json;
 using VirtoCommerce.NotificationsModule.Core.Model;
 using VirtoCommerce.NotificationsModule.Core.Services;
-using VirtoCommerce.NotificationsModule.Data.Model;
 using VirtoCommerce.Platform.Core.Common;
 using VirtoCommerce.Platform.Core.ExportImport;
 using VirtoCommerce.Platform.Data.ExportImport;
@@ -48,7 +47,6 @@ namespace VirtoCommerce.NotificationsModule.Data.ExportImport
                     searchCriteria.Take = take;
                     searchCriteria.Skip = skip;
                     searchCriteria.ResponseGroup = NotificationResponseGroup.Full.ToString();
-                    searchCriteria.IsActive = true;
                     var searchResult = await _notificationSearchService.SearchNotificationsAsync(searchCriteria);
                     return (GenericSearchResult<Notification>)searchResult;
                 }, (processedCount, totalCount) =>

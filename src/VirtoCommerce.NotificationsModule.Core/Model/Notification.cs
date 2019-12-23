@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
 using VirtoCommerce.NotificationsModule.Core.Services;
 using VirtoCommerce.Platform.Core.Common;
@@ -10,7 +9,7 @@ namespace VirtoCommerce.NotificationsModule.Core.Model
     /// <summary>
     /// Base class for Notification
     /// </summary>
-    public abstract class Notification : AuditableEntity, ICloneable
+    public abstract class Notification : AuditableEntity, ICloneable, IHasOuterId
     {
         /// <summary>
         /// For detecting owner
@@ -18,6 +17,13 @@ namespace VirtoCommerce.NotificationsModule.Core.Model
         public TenantIdentity TenantIdentity { get; set; } = TenantIdentity.Empty;
         public bool IsActive { get; set; }
         public string LanguageCode { get; set; }
+
+        /// <summary>
+        /// This field represents an alias for the notification type
+        /// and is used only for backward compatibility with old notification names
+        /// that are stored and used by API clients.
+        /// </summary>
+        public string Alias { get; set; }
 
         /// <summary>
         /// Type of notifications, like Identifier
@@ -33,6 +39,7 @@ namespace VirtoCommerce.NotificationsModule.Core.Model
         /// For detecting kind of notifications (email, sms and etc.)
         /// </summary>
         public abstract string Kind { get; }
+        public string OuterId { get; set; }
         public IList<NotificationTemplate> Templates { get; set; }
 
         public virtual void ToMessage(NotificationMessage message, INotificationTemplateRenderer render)
