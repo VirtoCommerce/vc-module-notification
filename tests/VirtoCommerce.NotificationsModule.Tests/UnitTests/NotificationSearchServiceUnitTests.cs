@@ -97,7 +97,16 @@ namespace VirtoCommerce.NotificationsModule.Tests.UnitTests
             //Arrange
             var type = nameof(RegistrationEmailNotification);
 
-            var mockNotifications = new List<NotificationEntity>().AsQueryable().BuildMock();
+            var notifications = new List<NotificationEntity>
+            {
+                new EmailNotificationEntity
+                {
+                    Type = nameof(RegistrationEmailNotification), Kind = nameof(EmailNotification),
+                    Id = Guid.NewGuid().ToString(), IsActive = true,
+                }
+            };
+
+            var mockNotifications = notifications.AsQueryable().BuildMock();
             _repositoryMock.Setup(r => r.Notifications).Returns(mockNotifications.Object);
             _notificationRegistrar.RegisterNotification<RegistrationEmailNotification>();
             var ids = notifications.Select(n => n.Id).ToArray();
@@ -169,7 +178,7 @@ namespace VirtoCommerce.NotificationsModule.Tests.UnitTests
 
             searchCriteria.Take = 2;
             searchCriteria.Skip = 0;
-            var mockNotifications = new List<NotificationEntity>().AsQueryable().BuildMock();
+            var mockNotifications = notifications.AsQueryable().BuildMock();
             _repositoryMock.Setup(r => r.Notifications).Returns(mockNotifications.Object);
             var ids = notifications.Select(n => n.Id).ToArray();
             _notificationServiceMock.Setup(ns => ns.GetByIdsAsync(ids, null))
@@ -233,8 +242,8 @@ namespace VirtoCommerce.NotificationsModule.Tests.UnitTests
                 new EmailNotificationEntity { Type  = nameof(OrderSentEmailNotification), Kind = nameof(EmailNotification), Id = Guid.NewGuid().ToString(), IsActive = true },
                 new EmailNotificationEntity { Type  = nameof(RegistrationEmailNotification), Kind = nameof(EmailNotification), Id = Guid.NewGuid().ToString(), IsActive = true }
             };
-            var mockNotifications = new Common.TestAsyncEnumerable<NotificationEntity>(notificationEntities);
-            _repositoryMock.Setup(r => r.Notifications).Returns(mockNotifications.AsQueryable());
+            var mockNotifications = notificationEntities.AsQueryable().BuildMock();
+            _repositoryMock.Setup(r => r.Notifications).Returns(mockNotifications.Object);
             var notifications = notificationEntities.Select(n => n.ToModel(AbstractTypeFactory<Notification>.TryCreateInstance(n.Type))).ToArray();
             _notificationServiceMock.Setup(ns => ns.GetByIdsAsync(It.IsAny<string[]>(), responseGroup))
                 .ReturnsAsync(notifications.Where(n => expectedTypes.Contains(n.Type)).ToArray());
