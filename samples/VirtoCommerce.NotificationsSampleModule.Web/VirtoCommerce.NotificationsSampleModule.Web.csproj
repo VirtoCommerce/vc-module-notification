@@ -3,9 +3,8 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
       <noWarn>1591</noWarn>
-      <ApplicationIcon />
       <OutputType>Library</OutputType>
-      <StartupObject />
+      <IsPackable>False</IsPackable>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
