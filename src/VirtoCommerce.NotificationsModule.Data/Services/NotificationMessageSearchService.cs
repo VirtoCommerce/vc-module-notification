@@ -9,6 +9,7 @@ using VirtoCommerce.NotificationsModule.Core.Services;
 using VirtoCommerce.NotificationsModule.Data.Model;
 using VirtoCommerce.NotificationsModule.Data.Repositories;
 using VirtoCommerce.Platform.Core.Common;
+using VirtoCommerce.Platform.Data.Infrastructure;
 
 namespace VirtoCommerce.NotificationsModule.Data.Services
 {
@@ -29,6 +30,9 @@ namespace VirtoCommerce.NotificationsModule.Data.Services
 
             using (var repository = _repositoryFactory())
             {
+                //Optimize performance and CPU usage
+                repository.DisableChangesTracking();
+
                 result.Results = new List<NotificationMessage>();
                 var query = BuildQuery(repository, criteria);
                 var sortInfos = BuildSortExpression(criteria);

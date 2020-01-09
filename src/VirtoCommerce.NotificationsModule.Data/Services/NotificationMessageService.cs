@@ -11,6 +11,7 @@ using VirtoCommerce.NotificationsModule.Data.Repositories;
 using VirtoCommerce.NotificationsModule.Data.Validation;
 using VirtoCommerce.Platform.Core.Common;
 using VirtoCommerce.Platform.Core.Events;
+using VirtoCommerce.Platform.Data.Infrastructure;
 
 namespace VirtoCommerce.NotificationsModule.Data.Services
 {
@@ -31,6 +32,9 @@ namespace VirtoCommerce.NotificationsModule.Data.Services
         {
             using (var repository = _repositoryFactory())
             {
+                //Optimize performance and CPU usage
+                repository.DisableChangesTracking();
+
                 var messages = await repository.GetMessagesByIdsAsync(ids);
                 return messages.Select(x => x.ToModel(AbstractTypeFactory<NotificationMessage>.TryCreateInstance($"{x.Kind}Message"))).ToArray();
             }
