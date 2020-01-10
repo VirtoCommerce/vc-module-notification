@@ -72,7 +72,7 @@ namespace VirtoCommerce.NotificationsModule.Data.Services
             }
             if (!string.IsNullOrEmpty(criteria.NotificationType))
             {
-                query = query.Where(x => x.NotificationType.EqualsInvariant(criteria.NotificationType));
+                query = query.Where(x => x.NotificationType == criteria.NotificationType);
             }
             return query;
         }
