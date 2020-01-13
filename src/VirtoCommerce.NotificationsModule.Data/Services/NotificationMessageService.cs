@@ -11,6 +11,7 @@ using VirtoCommerce.NotificationsModule.Data.Repositories;
 using VirtoCommerce.NotificationsModule.Data.Validation;
 using VirtoCommerce.Platform.Core.Common;
 using VirtoCommerce.Platform.Core.Events;
+using VirtoCommerce.Platform.Data.Infrastructure;
 
 namespace VirtoCommerce.NotificationsModule.Data.Services
 {
@@ -18,19 +19,20 @@ namespace VirtoCommerce.NotificationsModule.Data.Services
     {
         private readonly Func<INotificationRepository> _repositoryFactory;
         private readonly IEventPublisher _eventPublisher;
-        private readonly INotificationService _notificationService;
 
-        public NotificationMessageService(Func<INotificationRepository> repositoryFactory, IEventPublisher eventPublisher, INotificationService notificationService)
+        public NotificationMessageService(Func<INotificationRepository> repositoryFactory, IEventPublisher eventPublisher)
         {
             _repositoryFactory = repositoryFactory;
             _eventPublisher = eventPublisher;
-            _notificationService = notificationService;
         }
 
         public async Task<NotificationMessage[]> GetNotificationsMessageByIds(string[] ids)
         {
             using (var repository = _repositoryFactory())
             {
+                //Optimize performance and CPU usage
+                repository.DisableChangesTracking();
+
                 var messages = await repository.GetMessagesByIdsAsync(ids);
                 return messages.Select(x => x.ToModel(AbstractTypeFactory<NotificationMessage>.TryCreateInstance($"{x.Kind}Message"))).ToArray();
             }
@@ -53,6 +55,11 @@ namespace VirtoCommerce.NotificationsModule.Data.Services
 
                     if (originalEntity != null)
                     {
+                        /// This extension is allow to get around breaking changes is introduced in EF Core 3.0 that leads to throw
+                        /// Database operation expected to affect 1 row(s) but actually affected 0 row(s) exception when trying to add the new children entities with manually set keys
+                        /// https://docs.microsoft.com/en-us/ef/core/what-is-new/ef-core-3.0/breaking-changes#detectchanges-honors-store-generated-key-values
+                        repository.TrackModifiedAsAddedForNewChildEntities(originalEntity);
+
                         changedEntries.Add(new GenericChangedEntry<NotificationMessage>(message, originalEntity.ToModel(AbstractTypeFactory<NotificationMessage>.TryCreateInstance()), EntryState.Modified));
                         modifiedEntity?.Patch(originalEntity);
                     }

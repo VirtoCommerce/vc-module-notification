@@ -1,9 +1,10 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFramework>netcoreapp2.2</TargetFramework>
+        <TargetFramework>netcoreapp3.1</TargetFramework>
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
         <noWarn>1591</noWarn>
+        <IsPackable>True</IsPackable>
     </PropertyGroup>
 
     <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -11,7 +12,7 @@
     </PropertyGroup>
     
     <ItemGroup>
-      <PackageReference Include="VirtoCommerce.Platform.Core" Version="3.0.0-rc2-0109" />
+      <PackageReference Include="VirtoCommerce.Platform.Core" Version="3.0.0-rc2-0138" />
     </ItemGroup>
 
 </Project>

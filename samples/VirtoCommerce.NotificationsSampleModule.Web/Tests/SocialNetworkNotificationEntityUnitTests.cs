@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
+using MockQueryable.Moq;
 using Moq;
 using VirtoCommerce.NotificationsModule.Core.Extensions;
 using VirtoCommerce.NotificationsModule.Core.Model;
@@ -117,8 +118,8 @@ namespace VirtoCommerce.NotificationsSampleModule.Tests
             //Arrange
             var type = nameof(RegistrationSocialNetworkNotification);
 
-            var mockNotifications = new TestAsyncEnumerable<NotificationEntity>(new List<NotificationEntity>());
-            _repositoryMock.Setup(r => r.Notifications).Returns(mockNotifications.AsQueryable());
+            var mockNotifications = new List<NotificationEntity>().AsQueryable().BuildMock();
+            _repositoryMock.Setup(r => r.Notifications).Returns(mockNotifications.Object);
             _notificationRegistrar.RegisterNotification<RegistrationSocialNetworkNotification>();
 
             //Act

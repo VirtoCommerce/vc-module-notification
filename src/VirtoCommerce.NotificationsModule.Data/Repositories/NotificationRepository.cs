@@ -39,14 +39,13 @@ namespace VirtoCommerce.NotificationsModule.Data.Repositories
 
         public async Task<NotificationEntity[]> GetByNotificationsAsync(Notification[] notifications, string responseGroup)
         {
-            //https://github.com/aspnet/EntityFrameworkCore/blob/release/2.2/src/EFCore.Specification.Tests/Query/SimpleQueryTestBase.ResultOperators.cs#L1333
-            //TODO: check on ef core 3.1
-            var notificationKeys = notifications.Select(x => new { Key1 = x.Type, Key2 = x.TenantIdentity.Id, Key3 = x.TenantIdentity.Type }).ToArray();
-            var result = await Notifications.Where(x => notificationKeys.Contains(new { Key1 = x.Type, Key2 = x.TenantId, Key3 = x.TenantType })).OrderBy(x => x.Type).ToArrayAsync();
+            //TODO: https://docs.microsoft.com/en-us/ef/core/querying/client-eval
+            var notificationKeys = notifications.Select(x => new { Key1 = x.Type, Key2 = x.TenantIdentity.Id, Key3 = x.TenantIdentity.Type }).ToList();
+            var result = Notifications.AsEnumerable().Where(x => notificationKeys.Contains(new { Key1 = x.Type, Key2 = x.TenantId, Key3 = x.TenantType })).OrderBy(x => x.Type).ToList();
             var ids = result.Select(x => x.Id).ToArray();
             await LoadNotificationDependenciesAsync(ids, responseGroup);
 
-            return result;
+            return result.ToArray();
         }
 
         public async Task<NotificationMessageEntity[]> GetMessagesByIdsAsync(string[] ids)
