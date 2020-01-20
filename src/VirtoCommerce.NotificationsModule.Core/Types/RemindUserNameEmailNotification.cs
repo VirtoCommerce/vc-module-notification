@@ -9,5 +9,7 @@ namespace VirtoCommerce.NotificationsModule.Core.Types
             //for backward compatibility v.2
             Alias = "RemindUserNameNotification";
         }
+
+        public string UserName { get; set; }
     }
 }
