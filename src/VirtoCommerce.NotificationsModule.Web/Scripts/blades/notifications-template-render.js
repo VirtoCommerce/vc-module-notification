@@ -28,10 +28,12 @@
         if (itemFromLocalStorage) {
             blade.notification.context = itemFromLocalStorage;
 		} 
-        
-        notifications.renderTemplate({type: blade.notification.type, language: language},{ text: blade.currentEntity.body, data }, function (data) {
-            blade.originHtml = data.html;
-        });
+		
+		//TODO
+		blade.originHtml = "coming soon..";
+        // notifications.renderTemplate({type: blade.notification.type, language: language},{ text: blade.currentEntity.body, data }, function (data) {
+        //     blade.originHtml = data.html;
+        // });
 		blade.isLoading = false;
 	};
 
