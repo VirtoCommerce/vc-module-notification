@@ -3,7 +3,8 @@ angular.module('virtoCommerce.notificationsModule')
 	var blade = $scope.widget.blade;
 
 	blade.showAttachments = function () {
-                return; // Non implemented correctly yet. Disable to avoid user confusing.
+                // Non implemented correctly yet. Disable to avoid user confusing.
+                /*
 		var objectId = blade.currentEntity.id;
     var objectTypeId = 'Notifications';
 		var newBlade = {
@@ -18,5 +19,6 @@ angular.module('virtoCommerce.notificationsModule')
 			template: 'Modules/$(VirtoCommerce.Notifications)/Scripts/blades/notifications-attachments.tpl.html'
 		};
 		bladeNavigationService.showBlade(newBlade, blade);
+                */
 	};
 }]);
