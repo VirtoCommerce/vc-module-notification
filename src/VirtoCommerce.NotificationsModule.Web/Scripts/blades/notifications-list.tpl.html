@@ -49,8 +49,8 @@
 <script type="text/ng-template" id="notification-list-name.cell.html">
     <div class='ui-grid-cell-contents'>
         <div class='list-item'>
-          <span class="list-name ng-binding">{{ 'notificationTypes.' + row.entity.type + '.displayName' | translate}}</span>
-          <span class="list-descr ng-binding" style="color: #999;display: block;font-size: 12px;margin-top: 5px; white-space: initial;">{{'notificationTypes.' + row.entity.type + '.description' | translate}}</span>
+            <span class="list-name ng-binding">{{ (row.entity.kind == 'undef' ? 'notificationTypes.UnregisteredNotification.displayName' : 'notificationTypes.' + row.entity.type + '.displayName') | translate}}</span>
+            <span class="list-descr ng-binding" style="color: #999;display: block;font-size: 12px;margin-top: 5px; white-space: initial;">{{ (row.entity.kind == 'undef' ? 'notificationTypes.UnregisteredNotification.description' : 'notificationTypes.' + row.entity.type + '.description') | translate : { type : row.entity.type } }}</span>
         </div>
     </div>
 </script>
@@ -60,7 +60,7 @@
 <script type="text/ng-template" id="notification-list-kind.cell.html">
     <div class='ui-grid-cell-contents'>
         <div class="inner-contents">
-            <i class="table-ico" ng-class="row.entity.icon"></i>
+            <i class="table-ico" ng-class="row.entity.icon ?  row.entity.icon : 'fa fa-question-circle'"></i>
         </div>
     </div>
 </script>

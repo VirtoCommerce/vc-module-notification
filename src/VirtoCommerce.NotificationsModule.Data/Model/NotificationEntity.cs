@@ -69,7 +69,7 @@ namespace VirtoCommerce.NotificationsModule.Data.Model
             notification.IsActive = IsActive;
             notification.Type = Type;
 
-            notification.Templates = notification.Templates.Concat(Templates
+            notification.Templates = notification.Templates?.Concat(Templates
                 .Select(t => t.ToModel(AbstractTypeFactory<NotificationTemplate>.TryCreateInstance($"{Kind}Template")))).Distinct().ToList();
 
             return notification;
