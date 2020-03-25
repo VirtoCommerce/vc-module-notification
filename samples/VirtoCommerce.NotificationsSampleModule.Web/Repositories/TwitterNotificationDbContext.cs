@@ -1,7 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using VirtoCommerce.NotificationsModule.Data.Repositories;
 using VirtoCommerce.NotificationsSampleModule.Web.Models;
-using VirtoCommerce.Platform.Data.Repositories;
 
 namespace VirtoCommerce.NotificationsSampleModule.Web.Repositories
 {
@@ -15,10 +14,7 @@ namespace VirtoCommerce.NotificationsSampleModule.Web.Repositories
         {
             base.OnModelCreating(modelBuilder);
 
-            modelBuilder.Entity<TwitterNotificationEntity>(entity =>
-            {
-                entity.ToTable("Notification");
-            });
+            modelBuilder.Entity<TwitterNotificationEntity>();
         }
     }
 }
