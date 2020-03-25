@@ -49,7 +49,8 @@ namespace VirtoCommerce.NotificationsModule.Data.Services
                     var notifications = await repository.GetByIdsAsync(ids, responseGroup);
                     return notifications.Select(n =>
                     {
-                        return n.ToModel(AbstractTypeFactory<Notification>.TryCreateInstance(n.Type));
+                        //For unknown and unregistered notifications use fallback notification type
+                        return n.ToModel(CreateNotification(n.Type, new UnregisteredNotification()));
                     }).ToArray();
                 }
             });
@@ -115,6 +116,18 @@ namespace VirtoCommerce.NotificationsModule.Data.Services
             {
                 validator.ValidateAndThrow(notification);
             }
+        }
+
+        //TODO: Replace to AbstractTypeFactory<Notification>.TryCreateInstance(tyepname, defaultObj) when it will released
+        private static Notification CreateNotification(string typeName, Notification defaultObj)
+        {
+            var result = defaultObj;
+            var typeInfo = AbstractTypeFactory<Notification>.FindTypeInfoByName(typeName);
+            if (typeInfo != null)
+            {
+                result = AbstractTypeFactory<Notification>.TryCreateInstance(typeName);
+            }
+            return result;
         }
     }
 }

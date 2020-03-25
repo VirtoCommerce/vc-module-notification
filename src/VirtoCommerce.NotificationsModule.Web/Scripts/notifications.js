@@ -87,6 +87,7 @@ angular.module(moduleTemplateName, ['textAngular'])
                 knownChildrenTypes: ['Email', 'Sms']
             }); 
 
+
             // register types
             notificationTypesResolverService.registerType({
                 type: 'SmsNotification',
