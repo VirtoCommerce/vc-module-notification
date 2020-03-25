@@ -1,4 +1,3 @@
-using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace VirtoCommerce.NotificationsSampleModule.Web.Migrations

@@ -29,11 +29,16 @@
             blade.notification.context = itemFromLocalStorage;
 		} 
 		
-		//TODO
-		blade.originHtml = "coming soon..";
-        // notifications.renderTemplate({type: blade.notification.type, language: language},{ text: blade.currentEntity.body, data }, function (data) {
-        //     blade.originHtml = data.html;
-        // });
+		if (blade.currentEntity.isReadonly)
+		{
+			notifications.renderTemplate({type: blade.notification.type, language: language},{ text: blade.currentEntity.body, data }, function (data) {
+				blade.originHtml = data.html;
+			});	
+		} else {
+			//TODO
+			blade.originHtml = "coming soon..";
+		}
+        
 		blade.isLoading = false;
 	};
 

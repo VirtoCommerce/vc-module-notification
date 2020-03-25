@@ -34,10 +34,16 @@ namespace VirtoCommerce.NotificationsSampleModule.Web
             AbstractTypeFactory<NotificationEntity>.RegisterType<TwitterNotificationEntity>();
             var registrar = appBuilder.ApplicationServices.GetService<INotificationRegistrar>();
             registrar.RegisterNotification<PostTwitterNotification>();
+
             registrar.RegisterNotification<RegistrationEmailNotification>().WithTemplates(new EmailNotificationTemplate()
             {
                 Subject = "Registration test",
                 Body = "Registration body test",
+            });
+            registrar.OverrideNotificationType<RegistrationEmailNotification, NewRemindUserNameNotification>().WithTemplates(new EmailNotificationTemplate()
+            {
+                Subject = "New Registration test",
+                Body = "New Registration body test",
             });
 
             using (var serviceScope = appBuilder.ApplicationServices.CreateScope())
