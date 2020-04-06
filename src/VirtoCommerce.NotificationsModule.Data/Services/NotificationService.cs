@@ -118,7 +118,6 @@ namespace VirtoCommerce.NotificationsModule.Data.Services
             }
         }
 
-        //TODO: Replace to AbstractTypeFactory<Notification>.TryCreateInstance(tyepname, defaultObj) when it will released
         private static Notification CreateNotification(string typeName, Notification defaultObj)
         {
             var result = defaultObj;

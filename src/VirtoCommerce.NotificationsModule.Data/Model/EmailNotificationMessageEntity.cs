@@ -11,15 +11,33 @@ namespace VirtoCommerce.NotificationsModule.Data.Model
         public override string Kind => nameof(EmailNotification);
 
         /// <summary>
-        /// Subject of notification
+        /// Subject of message
         /// </summary>
         [StringLength(512)]
         public string Subject { get; set; }
 
         /// <summary>
-        /// Body of notification
+        /// Body of message
         /// </summary>
         public string Body { get; set; }
+
+        /// <summary>
+        /// Sender info (e-mail) of message
+        /// </summary>
+        [StringLength(128)]
+        public string From { get; set; }
+
+        /// <summary>
+        /// Recipient info (e-mail) of message
+        /// </summary>
+        [StringLength(128)]
+        public string To { get; set; }
+
+        [StringLength(1024)]
+        public string CC { get; set; }
+
+        [StringLength(1024)]
+        public string BCC { get; set; }
 
         public override NotificationMessage ToModel(NotificationMessage message)
         {
@@ -27,6 +45,10 @@ namespace VirtoCommerce.NotificationsModule.Data.Model
             {
                 emailNotificationMessage.Subject = Subject;
                 emailNotificationMessage.Body = Body;
+                emailNotificationMessage.From = From;
+                emailNotificationMessage.To = To;
+                emailNotificationMessage.CC = CC?.Split(";");
+                emailNotificationMessage.BCC = BCC?.Split(";");
             }
 
             return base.ToModel(message);
@@ -38,6 +60,18 @@ namespace VirtoCommerce.NotificationsModule.Data.Model
             {
                 Subject = emailNotificationMessage.Subject;
                 Body = emailNotificationMessage.Body;
+                From = emailNotificationMessage.From;
+                To = emailNotificationMessage.To;
+
+                if (!emailNotificationMessage.CC.IsNullOrEmpty())
+                {
+                    CC = string.Join(";", emailNotificationMessage.CC);
+                }
+
+                if (!emailNotificationMessage.BCC.IsNullOrEmpty())
+                {
+                    BCC = string.Join(";", emailNotificationMessage.BCC);
+                }
             }
 
             return base.FromModel(message, pkMap);
@@ -49,6 +83,10 @@ namespace VirtoCommerce.NotificationsModule.Data.Model
             {
                 emailNotificationMessageEntity.Subject = Subject;
                 emailNotificationMessageEntity.Body = Body;
+                emailNotificationMessageEntity.From = From;
+                emailNotificationMessageEntity.To = To;
+                emailNotificationMessageEntity.CC = CC;
+                emailNotificationMessageEntity.BCC = BCC;
             }
 
             base.Patch(message);

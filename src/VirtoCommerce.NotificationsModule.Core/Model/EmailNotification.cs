@@ -1,5 +1,5 @@
+using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
 using VirtoCommerce.NotificationsModule.Core.Extensions;
 using VirtoCommerce.NotificationsModule.Core.Services;
@@ -11,15 +11,20 @@ namespace VirtoCommerce.NotificationsModule.Core.Model
     /// </summary>
     public abstract class EmailNotification : Notification
     {
+        [Obsolete("need to use ctor with 'type' parameter")]
         public EmailNotification()
         {
-            Type = GetType().Name;
+            Templates = new List<NotificationTemplate>();
+            Attachments = new List<EmailAttachment>();
+        }
+
+        public EmailNotification(string type) : base(type)
+        {
             Templates = new List<NotificationTemplate>();
             Attachments = new List<EmailAttachment>();
         }
 
         public override string Kind => nameof(EmailNotification);
-
         /// <summary>
         /// Sender
         /// </summary>
