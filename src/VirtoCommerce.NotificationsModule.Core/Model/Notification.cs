@@ -11,6 +11,17 @@ namespace VirtoCommerce.NotificationsModule.Core.Model
     /// </summary>
     public abstract class Notification : AuditableEntity, ICloneable, IHasOuterId
     {
+        [Obsolete("need to use ctor with 'type' parameter")]
+        public Notification()
+        {
+            Type = GetType().Name;
+        }
+
+        protected Notification(string type)
+        {
+            Type = type;
+        }
+
         /// <summary>
         /// For detecting owner
         /// </summary>
@@ -28,12 +39,7 @@ namespace VirtoCommerce.NotificationsModule.Core.Model
         /// <summary>
         /// Type of notifications, like Identifier
         /// </summary>
-        private string _type;
-        public virtual string Type
-        {
-            get => !string.IsNullOrEmpty(_type) ? _type : GetType().Name;
-            set => _type = value;
-        }
+        public string Type { get; set; }
 
         /// <summary>
         /// For detecting kind of notifications (email, sms and etc.)

@@ -5,6 +5,11 @@ namespace VirtoCommerce.NotificationsModule.Tests.NotificationTypes
 {
     public class OrderPaidEmailNotification : EmailNotification
     {
+        public OrderPaidEmailNotification() :  base(nameof(OrderPaidEmailNotification))
+        {
+
+        }
+
         public CustomerOrder CustomerOrder { get; set; }
     }
 }

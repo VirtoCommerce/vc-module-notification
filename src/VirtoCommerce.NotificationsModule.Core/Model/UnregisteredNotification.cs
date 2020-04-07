@@ -6,7 +6,7 @@ namespace VirtoCommerce.NotificationsModule.Core.Model
     //The special type for handle cases when  the system have stored the notification objects with unregistered types. 
     public class UnregisteredNotification : Notification
     {
-        public UnregisteredNotification()
+        public UnregisteredNotification() : base(nameof(UnregisteredNotification))
         {
             Templates = new List<NotificationTemplate>();
         }

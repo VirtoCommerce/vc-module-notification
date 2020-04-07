@@ -114,14 +114,14 @@ namespace VirtoCommerce.NotificationsModule.Data.Services
 
         protected virtual string GetNotificationType(string notificationType)
         {
-            return GetTransientNotifications()
-                .FirstOrDefault(x => x.Type.EqualsInvariant(notificationType) || x.Alias.EqualsInvariant(notificationType))
-                .Type;
+            var notification = GetTransientNotifications()
+                .FirstOrDefault(x => x.Type.EqualsInvariant(notificationType) || x.Alias.EqualsInvariant(notificationType));
+            return notification?.Type;
         }
 
         private Notification[] GetTransientNotifications()
         {
-            var cacheKey = CacheKey.With(GetType(), "GetTransientNotifications");
+            var cacheKey = CacheKey.With(GetType(), nameof(GetTransientNotifications));
             return _platformMemoryCache.GetOrCreateExclusive(cacheKey, (cacheEntry) =>
             {
                 cacheEntry.AddExpirationToken(NotificationTypesCacheRegion.CreateChangeToken());

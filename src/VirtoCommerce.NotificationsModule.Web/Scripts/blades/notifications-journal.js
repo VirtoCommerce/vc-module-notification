@@ -46,7 +46,7 @@ angular.module('virtoCommerce.notificationsModule')
 
             var newBlade = {
                 id: 'notificationDetails',
-                title: data.body,
+                title: data.subject,
                 subtitle: 'notifications.blades.notification-journal-details.subtitle',
                 subtitleValues: { displayName: $translate.instant(data.displayName) },
                 currentNotificationId: data.id,

@@ -62,8 +62,12 @@ namespace VirtoCommerce.NotificationsModule.Data.Services
         private void TryToSave<T>() where T : Notification
         {
             NotificationTypesCacheRegion.ExpireRegion();
-
+            
             var notification = _notificationSearchService.GetNotificationAsync<T>().GetAwaiter().GetResult();
+
+            //need to expire the region because not yeat add predefined templates
+            NotificationCacheRegion.ExpireRegion();
+
             if (notification == null)
             {
                 _notificationService.SaveChangesAsync(new[] { AbstractTypeFactory<Notification>.TryCreateInstance(typeof(T).Name) }).GetAwaiter().GetResult();

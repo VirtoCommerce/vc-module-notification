@@ -4,7 +4,7 @@ namespace VirtoCommerce.NotificationsModule.Core.Types
 {
     public class RegistrationInvitationEmailNotification : EmailNotification
     {
-        public RegistrationInvitationEmailNotification()
+        public RegistrationInvitationEmailNotification() : base(nameof(RegistrationInvitationEmailNotification))
         {
             //for backward compatibility v.2
             Alias = "RegistrationInvitationNotification";
