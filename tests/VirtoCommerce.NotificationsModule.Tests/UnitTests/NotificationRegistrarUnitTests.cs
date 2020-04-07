@@ -5,6 +5,7 @@ using Moq;
 using VirtoCommerce.NotificationsModule.Core.Model;
 using VirtoCommerce.NotificationsModule.Core.Services;
 using VirtoCommerce.NotificationsModule.Data.Services;
+using VirtoCommerce.NotificationsModule.Tests.NotificationTypes;
 using VirtoCommerce.Platform.Core.Common;
 using Xunit;
 
@@ -77,17 +78,5 @@ namespace VirtoCommerce.NotificationsModule.Tests.UnitTests
             }
             return result;
         }
-
-        public class SampleNotification : EmailNotification
-        {
-            public SampleNotification() : base(nameof(SampleNotification))
-            {
-
-            }
-        }
-        public class ExtendedSampleNotification : SampleNotification
-        {
-        }
-
     }
 }

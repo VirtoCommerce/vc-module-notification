@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Hangfire;
 using Microsoft.Extensions.Logging;
@@ -31,6 +32,12 @@ namespace VirtoCommerce.NotificationsModule.Data.Senders
 
         public void ScheduleSendNotification(Notification notification)
         {
+            //need to except 'is-readonly' notifications because after serialization generated couple 'is-readonly' templates
+            if (notification.Templates.Any(x => x.IsReadonly))
+            {
+                notification.Templates = notification.Templates.Where(x => !x.IsReadonly).ToList();
+            }
+
             BackgroundJob.Enqueue(() => SendNotificationAsync(notification));
         }
 

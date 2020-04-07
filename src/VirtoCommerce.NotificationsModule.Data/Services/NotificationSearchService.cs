@@ -74,7 +74,8 @@ namespace VirtoCommerce.NotificationsModule.Data.Services
 
             if (!string.IsNullOrEmpty(criteria.NotificationType))
             {
-                query = query.Where(x => x.Type == GetNotificationType(criteria.NotificationType));
+                var notificationType = GetNotificationType(criteria.NotificationType);
+                query = query.Where(x => x.Type == notificationType);
             }
 
             if (!string.IsNullOrEmpty(criteria.TenantId))
@@ -114,8 +115,10 @@ namespace VirtoCommerce.NotificationsModule.Data.Services
 
         protected virtual string GetNotificationType(string notificationType)
         {
+            var typeInfo = AbstractTypeFactory<Notification>.FindTypeInfoByName(notificationType);
             var notification = GetTransientNotifications()
-                .FirstOrDefault(x => x.Type.EqualsInvariant(notificationType) || x.Alias.EqualsInvariant(notificationType));
+                               .FirstOrDefault(x => (typeInfo != null && x.GetType().Equals(typeInfo.Type))
+                                                  || x.Alias.EqualsInvariant(notificationType));
             return notification?.Type;
         }
 

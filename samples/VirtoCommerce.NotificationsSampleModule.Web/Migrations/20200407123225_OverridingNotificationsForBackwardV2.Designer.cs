@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using VirtoCommerce.NotificationsSampleModule.Web.Repositories;
 
 namespace VirtoCommerce.NotificationsSampleModule.Web.Migrations
 {
     [DbContext(typeof(TwitterNotificationDbContext))]
-    partial class TwitterNotificationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200407123225_OverridingNotificationsForBackwardV2")]
+    partial class OverridingNotificationsForBackwardV2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
