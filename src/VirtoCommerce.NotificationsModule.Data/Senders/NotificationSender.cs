@@ -18,27 +18,33 @@ namespace VirtoCommerce.NotificationsModule.Data.Senders
         private readonly INotificationMessageService _notificationMessageService;
         private readonly INotificationMessageSenderProviderFactory _notificationMessageAccessor;
         private readonly ILogger<NotificationSender> _logger;
+        private readonly IBackgroundJobClient _jobClient;
 
         public NotificationSender(INotificationTemplateRenderer notificationTemplateRender
             , INotificationMessageService notificationMessageService
             , ILogger<NotificationSender> logger
-            , INotificationMessageSenderProviderFactory notificationMessageAccessor)
+            , INotificationMessageSenderProviderFactory notificationMessageAccessor
+            , IBackgroundJobClient jobClient)
         {
             _notificationTemplateRender = notificationTemplateRender;
             _notificationMessageService = notificationMessageService;
             _notificationMessageAccessor = notificationMessageAccessor;
             _logger = logger;
+            _jobClient = jobClient;
         }
 
         public void ScheduleSendNotification(Notification notification)
         {
-            //need to except 'is-readonly' notifications because after serialization generated couple 'is-readonly' templates
-            if (notification.Templates.Any(x => x.IsReadonly))
+            //Important! need to except 'predefined/hardcoded' notifications
+            //because after deserialization in 'SendNotificationAsync' method of the job
+            //generated couple 'predefined' templates
+            //in the result the notification has couple templates with same content
+            if (notification.Templates.Any(x => x.IsPredefined))
             {
-                notification.Templates = notification.Templates.Where(x => !x.IsReadonly).ToList();
+                notification.Templates = notification.Templates.Where(x => !x.IsPredefined).ToList();
             }
 
-            BackgroundJob.Enqueue(() => SendNotificationAsync(notification));
+            _jobClient.Enqueue(() => SendNotificationAsync(notification));
         }
 
         public async Task<NotificationSendResult> SendNotificationAsync(Notification notification)

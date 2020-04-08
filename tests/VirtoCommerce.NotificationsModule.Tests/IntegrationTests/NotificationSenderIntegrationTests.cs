@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Hangfire;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Moq;
@@ -34,6 +35,7 @@ namespace VirtoCommerce.NotificationsModule.Tests.IntegrationTests
         private readonly Mock<INotificationService> _notificationServiceMock;
         private readonly SmtpSenderOptions _emailSendingOptions;
         private readonly Mock<INotificationSearchService> _notificationSearchServiceMock;
+        private readonly Mock<IBackgroundJobClient> _backgroundJobClient;
 
         public NotificationSenderIntegrationTests()
         {
@@ -51,6 +53,7 @@ namespace VirtoCommerce.NotificationsModule.Tests.IntegrationTests
             _logNotificationSenderMock = new Mock<ILogger<NotificationSender>>();
             _notificationServiceMock = new Mock<INotificationService>();
             _notificationSearchServiceMock = new Mock<INotificationSearchService>();
+            _backgroundJobClient = new Mock<IBackgroundJobClient>();
             _notificationRegistrar = new NotificationRegistrar(_notificationServiceMock.Object, _notificationSearchServiceMock.Object);
 
             if (!AbstractTypeFactory<NotificationTemplate>.AllTypeInfos.SelectMany(x => x.AllSubclasses).Contains(typeof(EmailNotificationTemplate)))
@@ -131,7 +134,7 @@ namespace VirtoCommerce.NotificationsModule.Tests.IntegrationTests
         private NotificationSender GetNotificationSender()
         {
             _notificationMessageSenderProviderFactory = new NotificationMessageSenderProviderFactory(new List<INotificationMessageSender>() { _messageSender });
-            return new NotificationSender(_templateRender, _messageServiceMock.Object, _logNotificationSenderMock.Object, _notificationMessageSenderProviderFactory);
+            return new NotificationSender(_templateRender, _messageServiceMock.Object, _logNotificationSenderMock.Object, _notificationMessageSenderProviderFactory, _backgroundJobClient.Object);
         }
 
         private Notification GetNotification()

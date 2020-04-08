@@ -1,19 +1,26 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Net.Mail;
 using System.Threading.Tasks;
+using Hangfire;
+using Hangfire.Common;
+using Hangfire.States;
 using Microsoft.Extensions.Logging;
 using Moq;
+using Newtonsoft.Json;
 using VirtoCommerce.NotificationsModule.Core.Model;
 using VirtoCommerce.NotificationsModule.Core.Services;
 using VirtoCommerce.NotificationsModule.Core.Types;
 using VirtoCommerce.NotificationsModule.Data.Model;
 using VirtoCommerce.NotificationsModule.Data.Senders;
+using VirtoCommerce.NotificationsModule.Data.Services;
 using VirtoCommerce.NotificationsModule.LiquidRenderer;
 using VirtoCommerce.NotificationsModule.Tests.Common;
 using VirtoCommerce.NotificationsModule.Tests.Model;
 using VirtoCommerce.NotificationsModule.Tests.NotificationTypes;
+using VirtoCommerce.NotificationsModule.Web.JsonConverters;
 using VirtoCommerce.Platform.Core.Common;
 using Xunit;
 
@@ -28,6 +35,11 @@ namespace VirtoCommerce.NotificationsModule.Tests.UnitTests
         private readonly Mock<INotificationMessageSender> _messageSenderMock;
         private readonly Mock<ILogger<NotificationSender>> _logNotificationSenderMock;
         private readonly Mock<INotificationMessageSenderProviderFactory> _senderFactoryMock;
+        private readonly Mock<IBackgroundJobClient> _backgroundJobClient;
+
+        private readonly Mock<INotificationService> _notificationServiceMock;
+        private readonly Mock<INotificationSearchService> _notificationSearchServiceMock;
+        private readonly NotificationRegistrar _notificationRegistrar;
 
         public NotificationSenderUnitTests()
         {
@@ -38,8 +50,9 @@ namespace VirtoCommerce.NotificationsModule.Tests.UnitTests
 
             _senderFactoryMock = new Mock<INotificationMessageSenderProviderFactory>();
             _senderFactoryMock.Setup(s => s.GetSenderForNotificationType(nameof(EmailNotification))).Returns(_messageSenderMock.Object);
+            _backgroundJobClient = new Mock<IBackgroundJobClient>();
 
-            _sender = new NotificationSender(_templateRender, _messageServiceMock.Object, _logNotificationSenderMock.Object, _senderFactoryMock.Object);
+            _sender = new NotificationSender(_templateRender, _messageServiceMock.Object, _logNotificationSenderMock.Object, _senderFactoryMock.Object, _backgroundJobClient.Object);
 
             if (!AbstractTypeFactory<NotificationTemplate>.AllTypeInfos.SelectMany(x => x.AllSubclasses).Contains(typeof(EmailNotificationTemplate)))
                 AbstractTypeFactory<NotificationTemplate>.RegisterType<EmailNotificationTemplate>().MapToType<NotificationTemplateEntity>();
@@ -50,6 +63,10 @@ namespace VirtoCommerce.NotificationsModule.Tests.UnitTests
             if (!AbstractTypeFactory<NotificationScriptObject>.AllTypeInfos.SelectMany(x => x.AllSubclasses).Contains(typeof(NotificationScriptObject)))
                 AbstractTypeFactory<NotificationScriptObject>.RegisterType<NotificationScriptObject>()
                     .WithFactory(() => new NotificationScriptObject(null, null));
+
+            _notificationServiceMock = new Mock<INotificationService>();
+            _notificationSearchServiceMock = new Mock<INotificationSearchService>();
+            _notificationRegistrar = new NotificationRegistrar(_notificationServiceMock.Object, _notificationSearchServiceMock.Object);
         }
 
         [Fact]
@@ -410,13 +427,50 @@ namespace VirtoCommerce.NotificationsModule.Tests.UnitTests
             _messageServiceMock.Setup(ms => ms.SaveNotificationMessagesAsync(new NotificationMessage[] { message }));
             _messageSenderMock.Setup(ms => ms.SendNotificationAsync(It.IsAny<NotificationMessage>())).Throws(new SmtpException());
 
-            var sender = new NotificationSender(_templateRender, _messageServiceMock.Object, _logNotificationSenderMock.Object, _senderFactoryMock.Object);
+            var sender = new NotificationSender(_templateRender, _messageServiceMock.Object, _logNotificationSenderMock.Object, _senderFactoryMock.Object, _backgroundJobClient.Object);
 
             //Act
             var result = await sender.SendNotificationAsync(notification);
 
             //Assert
             Assert.False(result.IsSuccess);
+        }
+
+        [Fact]
+        public void ScheduleSendNotification_GetNotification()
+        {
+            //Arrange
+            var type = nameof(SampleEmailNotification);
+            var criteria4 = AbstractTypeFactory<NotificationSearchCriteria>.TryCreateInstance();
+            criteria4.Take = 1;
+            criteria4.NotificationType = type;
+            _notificationSearchServiceMock.Setup(x => x.SearchNotificationsAsync(criteria4)).ReturnsAsync(new NotificationSearchResult());
+
+            _notificationRegistrar.RegisterNotification<SampleEmailNotification>().WithTemplates(new EmailNotificationTemplate()
+            {
+                Subject = "SampleEmailNotification test",
+                Body = "SampleEmailNotification body test",
+            });
+            var notification = AbstractTypeFactory<Notification>.TryCreateInstance(nameof(SampleEmailNotification));
+            var jsonSerializeSettings = new JsonSerializerSettings { Converters = new List<JsonConverter> { new NotificationPolymorphicJsonConverter() } };
+            GlobalConfiguration.Configuration.UseSerializerSettings(jsonSerializeSettings);
+
+            //Act
+            _sender.ScheduleSendNotification(notification);
+
+            //Assert
+            Func<Job, bool> condition = job =>
+            {
+                var result = job.Method.Name == nameof(NotificationSender.SendNotificationAsync);
+
+                if (job.Args[0] is EmailNotification emailNotification)
+                {
+                    result = !emailNotification.Templates.Any();
+                }
+                return result;
+            };
+            Expression<Func<Job, bool>> expression = a => condition(a);
+            _backgroundJobClient.Verify(x => x.Create(It.Is(expression), It.IsAny<EnqueuedState>()));
         }
     }
 }

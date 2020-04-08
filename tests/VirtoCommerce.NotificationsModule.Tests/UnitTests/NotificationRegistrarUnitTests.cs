@@ -30,14 +30,14 @@ namespace VirtoCommerce.NotificationsModule.Tests.UnitTests
         public void RegisterNotification_GetNotification()
         {
             //Arrange
-            var type = nameof(SampleNotification);
+            var type = nameof(SampleEmailNotification);
             var criteria4 = AbstractTypeFactory<NotificationSearchCriteria>.TryCreateInstance();
             criteria4.Take = 1;
             criteria4.NotificationType = type;
             _notificationSearchServiceMock.Setup(x => x.SearchNotificationsAsync(criteria4)).ReturnsAsync(new NotificationSearchResult());
 
             //Act
-            _notificationRegistrar.RegisterNotification<SampleNotification>();
+            _notificationRegistrar.RegisterNotification<SampleEmailNotification>();
             var notification = CreateNotification(type, new UnregisteredNotification());
 
 
@@ -49,18 +49,18 @@ namespace VirtoCommerce.NotificationsModule.Tests.UnitTests
         public void OverrideNotificationType_GetNotification()
         {
             //Arrange
-            var type = nameof(SampleNotification);
+            var type = nameof(SampleEmailNotification);
             var criteria4 = AbstractTypeFactory<NotificationSearchCriteria>.TryCreateInstance();
             criteria4.Take = 1;
             criteria4.NotificationType = type;
             _notificationSearchServiceMock.Setup(x => x.SearchNotificationsAsync(criteria4)).ReturnsAsync(new NotificationSearchResult());
-            _notificationRegistrar.RegisterNotification<SampleNotification>();
-            criteria4.NotificationType = nameof(ExtendedSampleNotification);
+            _notificationRegistrar.RegisterNotification<SampleEmailNotification>();
+            criteria4.NotificationType = nameof(ExtendedSampleEmailNotification);
             _notificationSearchServiceMock.Setup(x => x.SearchNotificationsAsync(criteria4)).ReturnsAsync(new NotificationSearchResult());
 
             //Act
 
-            _notificationRegistrar.OverrideNotificationType<SampleNotification, ExtendedSampleNotification>();
+            _notificationRegistrar.OverrideNotificationType<SampleEmailNotification, ExtendedSampleEmailNotification>();
             var notification = CreateNotification(type, new UnregisteredNotification());
 
             //Assert

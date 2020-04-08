@@ -2,9 +2,9 @@ using VirtoCommerce.NotificationsModule.Core.Model;
 
 namespace VirtoCommerce.NotificationsModule.Tests.NotificationTypes
 {
-    public class SampleNotification : EmailNotification
+    public class SampleEmailNotification : EmailNotification
     {
-        public SampleNotification() : base(nameof(SampleNotification))
+        public SampleEmailNotification() : base(nameof(SampleEmailNotification))
         {
 
         }
