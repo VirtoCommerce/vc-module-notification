@@ -66,21 +66,21 @@ namespace VirtoCommerce.NotificationsModule.Data.Model
                 From = emailNotification.From;
                 To = emailNotification.To;
 
-                if (emailNotification.CC != null && emailNotification.CC.Any())
+                if (emailNotification.CC != null)
                 {
                     if (Recipients.IsNullCollection()) Recipients = new ObservableCollection<NotificationEmailRecipientEntity>();
                     Recipients.AddRange(emailNotification.CC.Select(cc => AbstractTypeFactory<NotificationEmailRecipientEntity>.TryCreateInstance()
                         .FromModel(cc, NotificationRecipientType.Cc)));
                 }
 
-                if (emailNotification.BCC != null && emailNotification.BCC.Any())
+                if (emailNotification.BCC != null)
                 {
                     if (Recipients.IsNullCollection()) Recipients = new ObservableCollection<NotificationEmailRecipientEntity>();
                     Recipients.AddRange(emailNotification.BCC.Select(bcc => AbstractTypeFactory<NotificationEmailRecipientEntity>.TryCreateInstance()
                         .FromModel(bcc, NotificationRecipientType.Bcc)));
                 }
 
-                if (emailNotification.Attachments != null && emailNotification.Attachments.Any())
+                if (emailNotification.Attachments != null)
                 {
                     Attachments = new ObservableCollection<EmailAttachmentEntity>(emailNotification.Attachments.Select(a =>
                         AbstractTypeFactory<EmailAttachmentEntity>.TryCreateInstance().FromModel(a)));
