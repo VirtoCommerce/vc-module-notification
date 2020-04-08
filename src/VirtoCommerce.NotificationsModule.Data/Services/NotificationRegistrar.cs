@@ -27,7 +27,7 @@ namespace VirtoCommerce.NotificationsModule.Data.Services
             {
                 AbstractTypeFactory<Notification>.RegisterType<T>().WithFactory(factory).WithSetupAction((x) =>
                 {
-                    if (result.PredefinedTemplates != null)
+                    if (!result.PredefinedTemplates.IsNullOrEmpty())
                     {
                         x.Templates = result.PredefinedTemplates.ToList();
                     }
@@ -47,7 +47,7 @@ namespace VirtoCommerce.NotificationsModule.Data.Services
             {
                 AbstractTypeFactory<Notification>.OverrideType<OldType, NewType>().WithFactory(factory).WithSetupAction((x) =>
                 {
-                    if (result.PredefinedTemplates != null)
+                    if (!result.PredefinedTemplates.IsNullOrEmpty())
                     {
                         x.Templates = result.PredefinedTemplates.ToList();
                     }

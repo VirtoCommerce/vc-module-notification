@@ -8,6 +8,7 @@ using VirtoCommerce.NotificationsModule.Core.Services;
 using VirtoCommerce.NotificationsModule.Core.Types;
 using VirtoCommerce.NotificationsModule.Data.Model;
 using VirtoCommerce.NotificationsModule.Data.Repositories;
+using VirtoCommerce.NotificationsModule.Tests.NotificationTypes;
 using VirtoCommerce.NotificationsSampleModule.Web.Models;
 using VirtoCommerce.NotificationsSampleModule.Web.Repositories;
 using VirtoCommerce.NotificationsSampleModule.Web.Types;
@@ -35,10 +36,15 @@ namespace VirtoCommerce.NotificationsSampleModule.Web
             var registrar = appBuilder.ApplicationServices.GetService<INotificationRegistrar>();
             registrar.RegisterNotification<PostTwitterNotification>();
 
-            registrar.RegisterNotification<RemindUserNameNotification>().WithTemplates(new EmailNotificationTemplate()
+            registrar.RegisterNotification<SampleEmailNotification>().WithTemplates(new EmailNotificationTemplate()
             {
-                Subject = "RemindUserNameNotification test",
-                Body = "RemindUserNameNotification body test",
+                Subject = "SampleEmailNotification test",
+                Body = "SampleEmailNotification body test",
+            });
+            registrar.OverrideNotificationType<SampleEmailNotification, ExtendedSampleEmailNotification>().WithTemplates(new EmailNotificationTemplate()
+            {
+                Subject = "New SampleEmailNotification test",
+                Body = "New SampleEmailNotification body test",
             });
             registrar.OverrideNotificationType<RegistrationEmailNotification, NewRegistrationEmailNotification>().WithTemplates(new EmailNotificationTemplate()
             {

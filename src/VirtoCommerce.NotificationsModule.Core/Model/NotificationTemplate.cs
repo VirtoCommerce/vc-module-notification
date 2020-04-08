@@ -21,6 +21,8 @@ namespace VirtoCommerce.NotificationsModule.Core.Model
 
         public string OuterId { get; set; }
 
+        public bool IsPredefined { get; set; }
+
         #region ICloneable members
 
         public virtual object Clone()

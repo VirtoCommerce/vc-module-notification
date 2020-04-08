@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Hangfire;
 using Microsoft.Extensions.Logging;
@@ -17,21 +18,33 @@ namespace VirtoCommerce.NotificationsModule.Data.Senders
         private readonly INotificationMessageService _notificationMessageService;
         private readonly INotificationMessageSenderProviderFactory _notificationMessageAccessor;
         private readonly ILogger<NotificationSender> _logger;
+        private readonly IBackgroundJobClient _jobClient;
 
         public NotificationSender(INotificationTemplateRenderer notificationTemplateRender
             , INotificationMessageService notificationMessageService
             , ILogger<NotificationSender> logger
-            , INotificationMessageSenderProviderFactory notificationMessageAccessor)
+            , INotificationMessageSenderProviderFactory notificationMessageAccessor
+            , IBackgroundJobClient jobClient)
         {
             _notificationTemplateRender = notificationTemplateRender;
             _notificationMessageService = notificationMessageService;
             _notificationMessageAccessor = notificationMessageAccessor;
             _logger = logger;
+            _jobClient = jobClient;
         }
 
         public void ScheduleSendNotification(Notification notification)
         {
-            BackgroundJob.Enqueue(() => SendNotificationAsync(notification));
+            //Important! need to except 'predefined/hardcoded' notifications
+            //because after deserialization in 'SendNotificationAsync' method of the job
+            //generated couple 'predefined' templates
+            //in the result the notification has couple templates with same content
+            if (notification.Templates.Any(x => x.IsPredefined))
+            {
+                notification.Templates = notification.Templates.Where(x => !x.IsPredefined).ToList();
+            }
+
+            _jobClient.Enqueue(() => SendNotificationAsync(notification));
         }
 
         public async Task<NotificationSendResult> SendNotificationAsync(Notification notification)

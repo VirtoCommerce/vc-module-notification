@@ -16,6 +16,7 @@ namespace VirtoCommerce.NotificationsModule.Core.Model
             foreach (var template in templates)
             {
                 template.IsReadonly = true;
+                template.IsPredefined = true;
                 PredefinedTemplates.Add(template);
             }
             return this;
