@@ -96,7 +96,7 @@ namespace VirtoCommerce.NotificationsModule.Data.Model
 
             if (!notification.Templates.IsNullOrEmpty())
             {
-                Templates = new ObservableCollection<NotificationTemplateEntity>(notification.Templates.Where(t => !t.IsReadonly)
+                Templates = new ObservableCollection<NotificationTemplateEntity>(notification.Templates.Where(t => !t.IsPredefined)
                         .Select(x => AbstractTypeFactory<NotificationTemplateEntity>.TryCreateInstance($"{Kind}TemplateEntity").FromModel(x, pkMap)));
             }
 
