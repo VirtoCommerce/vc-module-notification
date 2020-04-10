@@ -32,9 +32,9 @@ namespace VirtoCommerce.NotificationsModule.Data.Services
         public async Task<NotificationSearchResult> SearchNotificationsAsync(NotificationSearchCriteria criteria)
         {
             var cacheKey = CacheKey.With(GetType(), nameof(SearchNotificationsAsync), criteria.GetCacheKey());
-            return await _platformMemoryCache.GetOrCreateExclusiveAsync(cacheKey, async (cacheEntry) =>
+            var notificationSearchResult = await _platformMemoryCache.GetOrCreateExclusiveAsync(cacheKey, async (cacheEntry) =>
             {
-                cacheEntry.AddExpirationToken(NotificationCacheRegion.CreateChangeToken());
+                cacheEntry.AddExpirationToken(NotificationSearchCacheRegion.CreateChangeToken());
 
                 var result = AbstractTypeFactory<NotificationSearchResult>.TryCreateInstance();
 
@@ -66,6 +66,8 @@ namespace VirtoCommerce.NotificationsModule.Data.Services
 
                 return result;
             });
+
+            return notificationSearchResult.Clone() as NotificationSearchResult;
         }
 
         protected virtual IQueryable<NotificationEntity> BuildQuery(INotificationRepository repository, NotificationSearchCriteria criteria, IEnumerable<SortInfo> sortInfos)

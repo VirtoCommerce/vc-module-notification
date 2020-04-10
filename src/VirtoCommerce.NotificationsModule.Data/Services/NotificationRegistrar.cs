@@ -65,12 +65,15 @@ namespace VirtoCommerce.NotificationsModule.Data.Services
             
             var notification = _notificationSearchService.GetNotificationAsync<T>().GetAwaiter().GetResult();
 
-            //need to expire the region because not yeat add predefined templates
-            NotificationCacheRegion.ExpireRegion();
-
             if (notification == null)
             {
                 _notificationService.SaveChangesAsync(new[] { AbstractTypeFactory<Notification>.TryCreateInstance(typeof(T).Name) }).GetAwaiter().GetResult();
+            }
+            else
+            {
+                //need to expire the region because not yeat add predefined templates
+                NotificationSearchCacheRegion.ExpireRegion();
+                NotificationCacheRegion.ExpireEntity(notification);
             }
         }
     }

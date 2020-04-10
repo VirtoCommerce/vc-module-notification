@@ -37,9 +37,12 @@ namespace VirtoCommerce.NotificationsModule.Data.Services
         public async Task<Notification[]> GetByIdsAsync(string[] ids, string responseGroup = null)
         {
             var cacheKey = CacheKey.With(GetType(), nameof(GetByIdsAsync), string.Join("-", ids), responseGroup);
-            return await _platformMemoryCache.GetOrCreateExclusiveAsync(cacheKey, async (cacheEntry) =>
+            var result = await _platformMemoryCache.GetOrCreateExclusiveAsync(cacheKey, async (cacheEntry) =>
             {
-                cacheEntry.AddExpirationToken(NotificationCacheRegion.CreateChangeToken());
+                //It is so important to generate change tokens for all ids even for not existing objects to prevent an issue
+                //with caching of empty results for non - existing objects that have the infinitive lifetime in the cache
+                //and future unavailability to create objects with these ids.
+                cacheEntry.AddExpirationToken(NotificationCacheRegion.CreateChangeToken(ids));
 
                 using (var repository = _repositoryFactory())
                 {
@@ -54,6 +57,8 @@ namespace VirtoCommerce.NotificationsModule.Data.Services
                     }).ToArray();
                 }
             });
+
+            return result.Select(x => x.Clone() as Notification).ToArray();
         }
 
         public async Task SaveChangesAsync(Notification[] notifications)
@@ -100,7 +105,18 @@ namespace VirtoCommerce.NotificationsModule.Data.Services
                     await _eventPublisher.Publish(new NotificationChangedEvent(changedEntries));
                 }
 
-                NotificationCacheRegion.ExpireRegion();
+                ClearCache(notifications);
+            }
+        }
+
+
+        private void ClearCache(Notification[] notifications)
+        {
+            NotificationSearchCacheRegion.ExpireRegion();
+
+            foreach (var item in notifications)
+            {
+                NotificationCacheRegion.ExpireEntity(item);
             }
         }
 
