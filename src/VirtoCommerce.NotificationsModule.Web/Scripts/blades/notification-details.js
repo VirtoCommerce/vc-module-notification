@@ -33,8 +33,8 @@ function ($rootScope, $scope, $timeout, $filter, notifications, bladeNavigationS
 			return template;
 		});
 		if (!blade.currentEntity.templates) blade.currentEntity.templates = [];
-		if (!blade.currentEntity.tenantIdentity) {
-			blade.currentEntity.tenantIdentity = { tenantId: blade.tenantId, tenantType: blade.tenantType };
+		if (blade.currentEntity.tenantIdentity.isEmpty) {
+			blade.currentEntity.tenantIdentity = { Id: blade.tenantId, Type: blade.tenantType };
 		}
 		blade.origEntity = angular.copy(blade.currentEntity);
         $scope.isValid = false;

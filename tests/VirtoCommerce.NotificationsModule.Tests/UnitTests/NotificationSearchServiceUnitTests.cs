@@ -263,19 +263,21 @@ namespace VirtoCommerce.NotificationsModule.Tests.UnitTests
         public async Task SearchNotificationsAsync_GetExtendedNotificationWithBaseType()
         {
             //Arrange
+            var baseType = nameof(SampleEmailNotification);
+            var extendedType = nameof(ExtendedSampleEmailNotification);
             var searchCriteria = AbstractTypeFactory<NotificationSearchCriteria>.TryCreateInstance();
-            searchCriteria.NotificationType = nameof(SampleEmailNotification);
+            searchCriteria.NotificationType = baseType;
             searchCriteria.Take = 1;
             _notificationSearchServiceMock.Setup(x => x.SearchNotificationsAsync(searchCriteria)).ReturnsAsync(new NotificationSearchResult());
             _notificationRegistrar.RegisterNotification<SampleEmailNotification>();
-            searchCriteria.NotificationType = nameof(ExtendedSampleEmailNotification);
+            searchCriteria.NotificationType = extendedType;
             _notificationSearchServiceMock.Setup(x => x.SearchNotificationsAsync(searchCriteria)).ReturnsAsync(new NotificationSearchResult());
             _notificationRegistrar.OverrideNotificationType<SampleEmailNotification, ExtendedSampleEmailNotification>();
 
-            var sampleNotificationEntity = new EmailNotificationEntity { Type = nameof(SampleEmailNotification), Kind = nameof(EmailNotification), Id = Guid.NewGuid().ToString() };
+            var sampleNotificationEntity = new EmailNotificationEntity { Type = baseType, Kind = nameof(EmailNotification), Id = Guid.NewGuid().ToString() };
             var notificationEntities = new List<NotificationEntity> {
                 sampleNotificationEntity,
-                new EmailNotificationEntity { Type  = nameof(ExtendedSampleEmailNotification), Kind = nameof(EmailNotification), Id = Guid.NewGuid().ToString() }
+                new EmailNotificationEntity { Type  = baseType, Kind = nameof(EmailNotification), Id = Guid.NewGuid().ToString() }
             };
             var mockNotifications = notificationEntities.AsQueryable().BuildMock();
             _repositoryMock.Setup(r => r.Notifications).Returns(mockNotifications.Object);
@@ -287,10 +289,10 @@ namespace VirtoCommerce.NotificationsModule.Tests.UnitTests
                 .Returns(_cacheEntryMock.Object);
 
             //Act
-            var result = await _notificationSearchService.SearchNotificationsAsync(searchCriteria);
+            var result = (await _notificationSearchService.SearchNotificationsAsync(searchCriteria)).Results.FirstOrDefault();
 
             //Assert
-            Assert.Contains(nameof(SampleEmailNotification), result.Results.Select(x => x.Type));
+            Assert.Equal(baseType, result.Type);
         }
 
         public class PagingTestData : IEnumerable<object[]>

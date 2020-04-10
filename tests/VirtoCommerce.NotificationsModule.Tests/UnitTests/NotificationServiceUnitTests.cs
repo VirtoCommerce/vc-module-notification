@@ -56,16 +56,18 @@ namespace VirtoCommerce.NotificationsModule.Tests.UnitTests
         {
             //Arrange
             var id = Guid.NewGuid().ToString();
-            var responseGroup = NotificationResponseGroup.Default.ToString();
-            var notifications = new List<NotificationEntity> { new EmailNotificationEntity() { Id = id, Type = nameof(EmailNotification) } };
+            var type = nameof(RegistrationEmailNotification);
+            var responseGroup = NotificationResponseGroup.Full.ToString();
+            var notifications = new List<NotificationEntity> { new EmailNotificationEntity() { Id = id, Type = type } };
             _repositoryMock.Setup(n => n.GetByIdsAsync(new[] { id }, responseGroup))
                 .ReturnsAsync(notifications.ToArray());
             var criteria = AbstractTypeFactory<NotificationSearchCriteria>.TryCreateInstance();
             criteria.Take = 1;
 
-            criteria.NotificationType = nameof(RegistrationEmailNotification);
+            criteria.NotificationType = type;
             _notificationSearchServiceMock.Setup(x => x.SearchNotificationsAsync(criteria)).ReturnsAsync(new NotificationSearchResult());
-            _notificationRegistrar.RegisterNotification<RegistrationEmailNotification>();
+            //TODO
+            //_notificationRegistrar.RegisterNotification<RegistrationEmailNotification>();
 
             var cacheKey = CacheKey.With(_notificationService.GetType(), nameof(_notificationService.GetByIdsAsync), string.Join("-", new[] { id }), responseGroup);
             _platformMemoryCacheMock.Setup(pmc => pmc.CreateEntry(cacheKey)).Returns(_cacheEntryMock.Object);
@@ -76,6 +78,7 @@ namespace VirtoCommerce.NotificationsModule.Tests.UnitTests
             //Assert
             Assert.NotNull(result);
             Assert.Contains(result, r => r.Id.Equals(id));
+            Assert.Contains(type, result.Select(x => x.Type));
         }
 
         [Fact]
