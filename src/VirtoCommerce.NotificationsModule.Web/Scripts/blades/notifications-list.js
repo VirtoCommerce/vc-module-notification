@@ -28,9 +28,7 @@ angular.module('virtoCommerce.notificationsModule')
                 sort: uiGridHelper.getSortExpression($scope),
                 skip: ($scope.pageSettings.currentPage - 1) * $scope.pageSettings.itemsPerPageCount,
                 take: $scope.pageSettings.itemsPerPageCount,
-                responseGroup: 'Default',
-                tenantId: blade.tenantId,
-                tenantType: blade.tenantType
+                responseGroup: 'Default'
             };
             return searchCriteria;
         }

@@ -13,7 +13,7 @@ function ($rootScope, $scope, $timeout, $filter, notifications, bladeNavigationS
 
 	blade.initialize = function () {
 		blade.isLoading = true;
-        notifications.getNotificationByType({ type: blade.type }, function(data) {
+        notifications.getNotificationByType({ type: blade.type, tenantId: blade.tenantId, tenantType: blade.tenantType}, function(data) {
             blade.isLoading = false;
             setNotification(data);
         })
@@ -25,6 +25,11 @@ function ($rootScope, $scope, $timeout, $filter, notifications, bladeNavigationS
     
 	function setNotification(data) {
 		blade.currentEntity = angular.copy(data);
+
+		if (isTransient(blade.currentEntity)) {
+			blade.currentEntity = makeTransient(blade.currentEntity);
+		}
+
 		blade.currentEntity.cc = modifyEmailAddress(blade.currentEntity.cc);
 		blade.currentEntity.bcc = modifyEmailAddress(blade.currentEntity.bcc);
 		_.map(blade.currentEntity.templates, function (template) {
@@ -33,12 +38,32 @@ function ($rootScope, $scope, $timeout, $filter, notifications, bladeNavigationS
 			return template;
 		});
 		if (!blade.currentEntity.templates) blade.currentEntity.templates = [];
-		if (blade.currentEntity.tenantIdentity.isEmpty) {
-			blade.currentEntity.tenantIdentity = { Id: blade.tenantId, Type: blade.tenantType };
-		}
+		
 		blade.origEntity = angular.copy(blade.currentEntity);
         $scope.isValid = false;
 	};
+
+	function isTransient(data) {
+		return data.tenantIdentity.isEmpty && blade.tenantId && blade.tenantType;
+	}
+
+	function makeTransient(notification) {
+		notification.tenantIdentity = { id: blade.tenantId, type: blade.tenantType };
+		notification.id = null;
+		notification.createdDate = null;
+		notification.createdBy = null;
+		notification.modifiedDate = null;
+		notification.modifiedBy = null;
+		_.map(notification.templates, function (template) {
+			template.id = null;
+			template.createdDate = null;
+			template.createdBy = null;
+			template.modifiedDate = null;
+			template.modifiedBy = null;
+			return template;
+		});
+		return notification;
+	}
 
 	function pluckAddress(address) {
 		if (address) {

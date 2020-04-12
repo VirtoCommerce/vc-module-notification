@@ -26,6 +26,7 @@
         }
         var ind = blade.notification.templates.findIndex(function (element) {
             return (blade.currentEntity.id && element.id === blade.currentEntity.id) 
+                || (!element.languageCode && !blade.currentEntity.languageCode)
                 || element.languageCode === blade.currentEntity.languageCode;
         });
         if (ind >= 0) {

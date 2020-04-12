@@ -9,8 +9,6 @@ angular.module('virtoCommerce.notificationsModule')
     });
 
 	blade.showTemplates = function () {
-		var objectId = blade.currentEntity.id;
-		var objectTypeId = 'Notifications';
 		var newBlade = {
 			id: 'notificationTemplatesWidgetChild',
 			title: 'notifications.widgets.notificationsTemplatesWidget.blade-title',

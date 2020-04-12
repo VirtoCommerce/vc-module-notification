@@ -21,8 +21,8 @@ angular.module('virtoCommerce.notificationsModule')
         function getSearchCriteria()
         {
             var searchCriteria = {
-                catalogId: blade.catalogId,
-                categoryId: blade.categoryId,
+                objectIds: blade.objectId ? [ blade.objectId ] : undefined,
+                objectType: blade.objectType,
                 keyword: filter.keyword ? filter.keyword : undefined,
                 sort: uiGridHelper.getSortExpression($scope),
                 skip: ($scope.pageSettings.currentPage - 1) * $scope.pageSettings.itemsPerPageCount,

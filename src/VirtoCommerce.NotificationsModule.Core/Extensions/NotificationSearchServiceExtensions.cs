@@ -27,8 +27,14 @@ namespace VirtoCommerce.NotificationsModule.Core.Extensions
             }
             var criteria = AbstractTypeFactory<NotificationSearchCriteria>.TryCreateInstance();
             criteria.NotificationType = notificationType;
-            criteria.Take = 1;
+            //Get with and without the Tenant  
+            criteria.Take = 2;
             criteria.ResponseGroup = responseGroup;
+            if (tenant != null && !tenant.IsEmpty)
+            {
+                criteria.TenantId = tenant.Id;
+                criteria.TenantType = tenant.Type;
+            }
             var searchResult = await service.SearchNotificationsAsync(criteria);
             //Find first global notification (without tenant)
             var result = searchResult.Results.FirstOrDefault(x => x.TenantIdentity.IsEmpty);
