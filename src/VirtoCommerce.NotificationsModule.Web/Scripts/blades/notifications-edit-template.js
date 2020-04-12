@@ -20,9 +20,13 @@
             blade.origEntity = angular.copy(blade.currentEntity);
         }
         else {
+            if (blade.currentEntity.languageCode) {
+                setTransient();
+            }
             blade.currentEntity.createdDate = now;
             blade.currentEntity.isReadonly = false;
             blade.origEntity = angular.copy(blade.currentEntity);
+            
         }
         var ind = blade.notification.templates.findIndex(function (element) {
             return (blade.currentEntity.id && element.id === blade.currentEntity.id) 
@@ -35,6 +39,13 @@
         else {
             blade.notification.templates.push(blade.currentEntity);
         }
+    }
+
+    function setTransient() {
+        blade.currentEntity.id = null;
+        blade.currentEntity.createdBy = null;
+        blade.currentEntity.modifiedDate = null;
+        blade.currentEntity.modifiedBy = null;
     }
 
     $scope.saveChanges = function () {
