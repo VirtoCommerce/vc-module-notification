@@ -112,5 +112,18 @@ namespace VirtoCommerce.NotificationsModule.Data.Model
                 Templates.Patch(notification.Templates, (sourceTemplate, templateEntity) => sourceTemplate.Patch(templateEntity));
             }
         }
+
+        public virtual NotificationEntity ResetEntityData()
+        {
+            Id = null;
+            CreatedBy = null;
+            CreatedDate = default(DateTime);
+            ModifiedBy = null;
+            ModifiedDate = null;
+
+            Templates = new ObservableCollection<NotificationTemplateEntity>(Templates.Select(x => x.ResetEntityData()));
+
+            return this;
+        }
     }
 }

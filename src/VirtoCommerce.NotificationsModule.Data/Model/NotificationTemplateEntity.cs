@@ -67,5 +67,16 @@ namespace VirtoCommerce.NotificationsModule.Data.Model
         {
             template.LanguageCode = LanguageCode;
         }
+
+        public virtual NotificationTemplateEntity ResetEntityData()
+        {
+            Id = null;
+            CreatedBy = null;
+            CreatedDate = default(DateTime);
+            ModifiedBy = null;
+            ModifiedDate = null;
+
+            return this;
+        }
     }
 }
