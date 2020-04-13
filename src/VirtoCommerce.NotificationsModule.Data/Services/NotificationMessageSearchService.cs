@@ -62,18 +62,17 @@ namespace VirtoCommerce.NotificationsModule.Data.Services
             {
                 query = query.Where(n => criteria.ObjectIds.Contains(n.TenantId));
             }
-            if (!string.IsNullOrEmpty(criteria.ObjectType))
-            {
-                query = query.Where(n => n.TenantType == criteria.ObjectType);
-            }
+
             if (!criteria.ObjectTypes.IsNullOrEmpty())
             {
                 query = query.Where(n => criteria.ObjectTypes.Contains(n.TenantType));
             }
+
             if (!string.IsNullOrEmpty(criteria.NotificationType))
             {
                 query = query.Where(x => x.NotificationType == criteria.NotificationType);
             }
+
             return query;
         }
 

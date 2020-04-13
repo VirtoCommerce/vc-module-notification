@@ -176,7 +176,7 @@ namespace VirtoCommerce.NotificationsModule.Tests.UnitTests
                 }
             };
 
-            searchCriteria.Take = 2;
+            searchCriteria.Take = 1;
             searchCriteria.Skip = 0;
             var mockNotifications = notifications.AsQueryable().BuildMock();
             _repositoryMock.Setup(r => r.Notifications).Returns(mockNotifications.Object);
@@ -260,37 +260,74 @@ namespace VirtoCommerce.NotificationsModule.Tests.UnitTests
         }
 
         [Fact]
-        public async Task SearchNotificationsAsync_GetExtendedNotificationWithBaseType()
+        public async Task GetNotificationAsync_GetByTenant()
         {
             //Arrange
+            var searchTenant = new TenantIdentity(Guid.NewGuid().ToString(), "Store");
+            var searchType = nameof(RegistrationEmailNotification);
             var searchCriteria = AbstractTypeFactory<NotificationSearchCriteria>.TryCreateInstance();
-            searchCriteria.NotificationType = nameof(SampleEmailNotification);
             searchCriteria.Take = 1;
-            _notificationSearchServiceMock.Setup(x => x.SearchNotificationsAsync(searchCriteria)).ReturnsAsync(new NotificationSearchResult());
-            _notificationRegistrar.RegisterNotification<SampleEmailNotification>();
-            searchCriteria.NotificationType = nameof(ExtendedSampleEmailNotification);
-            _notificationSearchServiceMock.Setup(x => x.SearchNotificationsAsync(searchCriteria)).ReturnsAsync(new NotificationSearchResult());
-            _notificationRegistrar.OverrideNotificationType<SampleEmailNotification, ExtendedSampleEmailNotification>();
-
-            var sampleNotificationEntity = new EmailNotificationEntity { Type = nameof(SampleEmailNotification), Kind = nameof(EmailNotification), Id = Guid.NewGuid().ToString() };
+            searchCriteria.Skip = 0;
+            searchCriteria.TenantId = searchTenant.Id;
+            searchCriteria.TenantType = searchTenant.Type;
+            searchCriteria.NotificationType = searchType;
             var notificationEntities = new List<NotificationEntity> {
-                sampleNotificationEntity,
-                new EmailNotificationEntity { Type  = nameof(ExtendedSampleEmailNotification), Kind = nameof(EmailNotification), Id = Guid.NewGuid().ToString() }
+                new EmailNotificationEntity { Type  = searchType, Kind = nameof(EmailNotification), Id = Guid.NewGuid().ToString(), TenantId = null, TenantType = null },
+                new EmailNotificationEntity { Type  = searchType, Kind = nameof(EmailNotification), Id = Guid.NewGuid().ToString(), TenantId = "someId", TenantType = "Store" },
+                new EmailNotificationEntity { Type  = searchType, Kind = nameof(EmailNotification), Id = Guid.NewGuid().ToString(), TenantId = searchTenant.Id, TenantType = searchTenant.Type }
             };
             var mockNotifications = notificationEntities.AsQueryable().BuildMock();
             _repositoryMock.Setup(r => r.Notifications).Returns(mockNotifications.Object);
             var notifications = notificationEntities.Select(n => n.ToModel(AbstractTypeFactory<Notification>.TryCreateInstance(n.Type))).ToArray();
-            _notificationServiceMock.Setup(ns => ns.GetByIdsAsync(new[] { sampleNotificationEntity.Id }, searchCriteria.ResponseGroup))
+            _notificationServiceMock.Setup(ns => ns.GetByIdsAsync(It.IsAny<string[]>(), null))
+                .ReturnsAsync(notifications.ToArray());
+            var cacheKey = CacheKey.With(_notificationSearchService.GetType(), nameof(_notificationSearchService.SearchNotificationsAsync), searchCriteria.GetCacheKey());
+            _platformMemoryCacheMock.Setup(pmc => pmc.CreateEntry(cacheKey)).Returns(_cacheEntryMock.Object);
+
+            //Act
+            var result = await NotificationSearchServiceExtensions.GetNotificationAsync<RegistrationEmailNotification>(_notificationSearchService, searchTenant);
+
+            //Assert
+            Assert.Equal(searchTenant.Id, result.TenantIdentity.Id);
+            Assert.Equal(searchTenant.Type, result.TenantIdentity.Type);
+            Assert.Equal(searchType, result.Type);
+        }
+
+
+        [Fact]
+        public async Task SearchNotificationsAsync_GetExtendedNotificationWithBaseType()
+        {
+            //Arrange
+            var baseType = nameof(SampleEmailNotification);
+            var extendedType = nameof(ExtendedSampleEmailNotification);
+            var searchCriteria = AbstractTypeFactory<NotificationSearchCriteria>.TryCreateInstance();
+            searchCriteria.NotificationType = baseType;
+            searchCriteria.Take = 1;
+            _notificationSearchServiceMock.Setup(x => x.SearchNotificationsAsync(searchCriteria)).ReturnsAsync(new NotificationSearchResult());
+            _notificationRegistrar.RegisterNotification<SampleEmailNotification>();
+            searchCriteria.NotificationType = extendedType;
+            _notificationSearchServiceMock.Setup(x => x.SearchNotificationsAsync(searchCriteria)).ReturnsAsync(new NotificationSearchResult());
+            _notificationRegistrar.OverrideNotificationType<SampleEmailNotification, ExtendedSampleEmailNotification>();
+
+            var sampleNotificationEntity = new EmailNotificationEntity { Type = baseType, Kind = nameof(EmailNotification), Id = Guid.NewGuid().ToString() };
+            var notificationEntities = new List<NotificationEntity> {
+                sampleNotificationEntity,
+                new EmailNotificationEntity { Type  = baseType, Kind = nameof(EmailNotification), Id = Guid.NewGuid().ToString() }
+            };
+            var mockNotifications = notificationEntities.AsQueryable().BuildMock();
+            _repositoryMock.Setup(r => r.Notifications).Returns(mockNotifications.Object);
+            var notifications = notificationEntities.Select(n => n.ToModel(AbstractTypeFactory<Notification>.TryCreateInstance(n.Type))).ToArray();
+            _notificationServiceMock.Setup(ns => ns.GetByIdsAsync(It.IsAny<string[]>(), searchCriteria.ResponseGroup))
                 .ReturnsAsync(notifications.Where(x => x.Id.EqualsInvariant(sampleNotificationEntity.Id)).ToArray());
             _platformMemoryCacheMock
                 .Setup(pmc => pmc.CreateEntry(CacheKey.With(_notificationSearchService.GetType(), nameof(_notificationSearchService.SearchNotificationsAsync), searchCriteria.GetCacheKey())))
                 .Returns(_cacheEntryMock.Object);
 
             //Act
-            var result = await _notificationSearchService.SearchNotificationsAsync(searchCriteria);
+            var result = (await _notificationSearchService.SearchNotificationsAsync(searchCriteria)).Results.FirstOrDefault();
 
             //Assert
-            Assert.Contains(nameof(SampleEmailNotification), result.Results.Select(x => x.Type));
+            Assert.Equal(baseType, result.Type);
         }
 
         public class PagingTestData : IEnumerable<object[]>

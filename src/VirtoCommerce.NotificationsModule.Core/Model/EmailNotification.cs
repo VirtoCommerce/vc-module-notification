@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using VirtoCommerce.NotificationsModule.Core.Extensions;
 using VirtoCommerce.NotificationsModule.Core.Services;
 
@@ -46,17 +47,17 @@ namespace VirtoCommerce.NotificationsModule.Core.Model
         public string[] BCC { get; set; }
         public IList<EmailAttachment> Attachments { get; set; }
 
-        public override void ToMessage(NotificationMessage message, INotificationTemplateRenderer render)
+        public override async Task ToMessageAsync(NotificationMessage message, INotificationTemplateRenderer render)
         {
-            base.ToMessage(message, render);
+            await base.ToMessageAsync(message, render);
 
             var emailMessage = (EmailNotificationMessage)message;
 
             var template = (EmailNotificationTemplate)Templates.FindWithLanguage(message.LanguageCode);
             if (template != null)
             {
-                emailMessage.Subject = render.RenderAsync(template.Subject, this, template.LanguageCode).GetAwaiter().GetResult();
-                emailMessage.Body = render.RenderAsync(template.Body, this, template.LanguageCode).GetAwaiter().GetResult();
+                emailMessage.Subject = await render.RenderAsync(template.Subject, this, template.LanguageCode);
+                emailMessage.Body = await render.RenderAsync(template.Body, this, template.LanguageCode);
             }
 
             emailMessage.From = From;

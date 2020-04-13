@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using VirtoCommerce.NotificationsModule.Core.Services;
 using VirtoCommerce.Platform.Core.Common;
 
@@ -48,12 +49,14 @@ namespace VirtoCommerce.NotificationsModule.Core.Model
         public string OuterId { get; set; }
         public IList<NotificationTemplate> Templates { get; set; }
 
-        public virtual void ToMessage(NotificationMessage message, INotificationTemplateRenderer render)
+        public virtual Task ToMessageAsync(NotificationMessage message, INotificationTemplateRenderer render)
         {
             message.TenantIdentity = new TenantIdentity(TenantIdentity?.Id, TenantIdentity?.Type);
             message.NotificationType = Type;
             message.NotificationId = Id;
             message.LanguageCode = LanguageCode;
+
+            return Task.CompletedTask;
         }
 
         public virtual void ReduceDetails(string responseGroup)

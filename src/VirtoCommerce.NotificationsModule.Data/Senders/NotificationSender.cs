@@ -58,7 +58,7 @@ namespace VirtoCommerce.NotificationsModule.Data.Senders
 
             var message = AbstractTypeFactory<NotificationMessage>.TryCreateInstance($"{notification.Kind}Message");
             message.MaxSendAttemptCount = _maxRetryAttempts + 1;
-            notification.ToMessage(message, _notificationTemplateRender);
+            await notification.ToMessageAsync(message, _notificationTemplateRender);
 
             if (notification.IsActive)
             {

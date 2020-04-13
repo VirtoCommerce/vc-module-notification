@@ -92,7 +92,8 @@ namespace VirtoCommerce.NotificationsModule.Data.Services
                         }
                         else
                         {
-                            repository.Add(modifiedEntity);
+                            //need to reset entity data for create notification with tenant based on the global notification
+                            repository.Add(modifiedEntity.ResetEntityData());
                             changedEntries.Add(new GenericChangedEntry<Notification>(notification, EntryState.Added));
                         }
                     }
@@ -119,7 +120,6 @@ namespace VirtoCommerce.NotificationsModule.Data.Services
                 NotificationCacheRegion.ExpireEntity(item);
             }
         }
-
 
         private void ValidateNotificationProperties(IEnumerable<Notification> notifications)
         {

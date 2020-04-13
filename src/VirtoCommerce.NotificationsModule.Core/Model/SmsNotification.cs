@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using VirtoCommerce.NotificationsModule.Core.Extensions;
 using VirtoCommerce.NotificationsModule.Core.Services;
 
@@ -28,15 +29,15 @@ namespace VirtoCommerce.NotificationsModule.Core.Model
         /// </summary>
         public string Number { get; set; }
 
-        public override void ToMessage(NotificationMessage message, INotificationTemplateRenderer render)
+        public override async Task ToMessageAsync(NotificationMessage message, INotificationTemplateRenderer render)
         {
-            base.ToMessage(message, render);
+            await base.ToMessageAsync(message, render);
 
             var smsNotificationMessage = (SmsNotificationMessage)message;
             var template = (SmsNotificationTemplate)Templates.FindWithLanguage(message.LanguageCode);
             if (template != null)
             {
-                smsNotificationMessage.Message = render.RenderAsync(template.Message, this, template.LanguageCode).GetAwaiter().GetResult();
+                smsNotificationMessage.Message = await render.RenderAsync(template.Message, this, template.LanguageCode);
             }
             smsNotificationMessage.Number = Number;
         }
