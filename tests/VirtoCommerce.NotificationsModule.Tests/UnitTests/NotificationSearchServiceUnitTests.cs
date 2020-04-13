@@ -53,7 +53,7 @@ namespace VirtoCommerce.NotificationsModule.Tests.UnitTests
             _platformMemoryCacheMock.Setup(pmc => pmc.CreateEntry(cacheKey)).Returns(_cacheEntryMock.Object);
 
             var criteria = AbstractTypeFactory<NotificationSearchCriteria>.TryCreateInstance();
-            criteria.Take = 2;
+            criteria.Take = 1;
             criteria.NotificationType = nameof(InvoiceEmailNotification);
             _notificationSearchServiceMock.Setup(x => x.SearchNotificationsAsync(criteria)).ReturnsAsync(new NotificationSearchResult());
             _notificationRegistrar.RegisterNotification<InvoiceEmailNotification>();
@@ -137,7 +137,7 @@ namespace VirtoCommerce.NotificationsModule.Tests.UnitTests
             };
 
             var criteria4 = AbstractTypeFactory<NotificationSearchCriteria>.TryCreateInstance();
-            criteria4.Take = 2;
+            criteria4.Take = 1;
             criteria4.NotificationType = type;
             _notificationSearchServiceMock.Setup(x => x.SearchNotificationsAsync(criteria4)).ReturnsAsync(new NotificationSearchResult());
             _platformMemoryCacheMock
@@ -176,7 +176,7 @@ namespace VirtoCommerce.NotificationsModule.Tests.UnitTests
                 }
             };
 
-            searchCriteria.Take = 2;
+            searchCriteria.Take = 1;
             searchCriteria.Skip = 0;
             var mockNotifications = notifications.AsQueryable().BuildMock();
             _repositoryMock.Setup(r => r.Notifications).Returns(mockNotifications.Object);
@@ -266,7 +266,7 @@ namespace VirtoCommerce.NotificationsModule.Tests.UnitTests
             var searchTenant = new TenantIdentity(Guid.NewGuid().ToString(), "Store");
             var searchType = nameof(RegistrationEmailNotification);
             var searchCriteria = AbstractTypeFactory<NotificationSearchCriteria>.TryCreateInstance();
-            searchCriteria.Take = 2;
+            searchCriteria.Take = 1;
             searchCriteria.Skip = 0;
             searchCriteria.TenantId = searchTenant.Id;
             searchCriteria.TenantType = searchTenant.Type;
@@ -302,7 +302,7 @@ namespace VirtoCommerce.NotificationsModule.Tests.UnitTests
             var extendedType = nameof(ExtendedSampleEmailNotification);
             var searchCriteria = AbstractTypeFactory<NotificationSearchCriteria>.TryCreateInstance();
             searchCriteria.NotificationType = baseType;
-            searchCriteria.Take = 2;
+            searchCriteria.Take = 1;
             _notificationSearchServiceMock.Setup(x => x.SearchNotificationsAsync(searchCriteria)).ReturnsAsync(new NotificationSearchResult());
             _notificationRegistrar.RegisterNotification<SampleEmailNotification>();
             searchCriteria.NotificationType = extendedType;

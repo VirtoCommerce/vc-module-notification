@@ -80,8 +80,8 @@ namespace VirtoCommerce.NotificationsModule.Data.Services
                 query = query.Where(x => x.Type == notificationType);
             }
 
-            query = query.Where(x => x.TenantId == criteria.TenantId || string.IsNullOrEmpty(x.TenantId));
-            query = query.Where(x => x.TenantType == criteria.TenantType || string.IsNullOrEmpty(x.TenantType));
+            query = query.Where(x => x.TenantId == criteria.TenantId);
+            query = query.Where(x => x.TenantType == criteria.TenantType);
 
             if (criteria.IsActive)
             {

@@ -27,7 +27,7 @@ function ($rootScope, $scope, $timeout, $filter, notifications, bladeNavigationS
 		blade.currentEntity = angular.copy(data);
 
 		if (isTransient(blade.currentEntity)) {
-			blade.currentEntity = makeTransient(blade.currentEntity);
+			blade.currentEntity.tenantIdentity = { id: blade.tenantId, type: blade.tenantType };
 		}
 
 		blade.currentEntity.cc = modifyEmailAddress(blade.currentEntity.cc);
@@ -45,24 +45,6 @@ function ($rootScope, $scope, $timeout, $filter, notifications, bladeNavigationS
 
 	function isTransient(data) {
 		return data.tenantIdentity.isEmpty && blade.tenantId && blade.tenantType;
-	}
-
-	function makeTransient(notification) {
-		notification.tenantIdentity = { id: blade.tenantId, type: blade.tenantType };
-		notification.id = null;
-		notification.createdDate = null;
-		notification.createdBy = null;
-		notification.modifiedDate = null;
-		notification.modifiedBy = null;
-		_.map(notification.templates, function (template) {
-			template.id = null;
-			template.createdDate = null;
-			template.createdBy = null;
-			template.modifiedDate = null;
-			template.modifiedBy = null;
-			return template;
-		});
-		return notification;
 	}
 
 	function pluckAddress(address) {

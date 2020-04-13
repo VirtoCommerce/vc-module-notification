@@ -442,7 +442,7 @@ namespace VirtoCommerce.NotificationsModule.Tests.UnitTests
             //Arrange
             var type = nameof(SampleEmailNotification);
             var criteria4 = AbstractTypeFactory<NotificationSearchCriteria>.TryCreateInstance();
-            criteria4.Take = 2;
+            criteria4.Take = 1;
             criteria4.NotificationType = type;
             _notificationSearchServiceMock.Setup(x => x.SearchNotificationsAsync(criteria4)).ReturnsAsync(new NotificationSearchResult());
 

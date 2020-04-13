@@ -16,21 +16,16 @@
         var date = new Date();
         var now = date.getFullYear() + '-' + ('0' + (date.getMonth() + 1)).slice(-2) + '-' + ('0' + date.getDate()).slice(-2);
         if (!blade.isNew) {
-            blade.currentEntity.modifiedDate = now;
+            blade.currentEntity.modifiedDateAsString = now;
             blade.origEntity = angular.copy(blade.currentEntity);
         }
         else {
-            if (blade.currentEntity.languageCode) {
-                setTransient();
-            }
-            blade.currentEntity.createdDate = now;
+            blade.currentEntity.createdDateAsString = now;
             blade.currentEntity.isReadonly = false;
             blade.origEntity = angular.copy(blade.currentEntity);
-            
         }
         var ind = blade.notification.templates.findIndex(function (element) {
-            return (blade.currentEntity.id && element.id === blade.currentEntity.id) 
-                || (!element.languageCode && !blade.currentEntity.languageCode)
+            return (!element.languageCode && !blade.currentEntity.languageCode)
                 || element.languageCode === blade.currentEntity.languageCode;
         });
         if (ind >= 0) {
@@ -39,13 +34,6 @@
         else {
             blade.notification.templates.push(blade.currentEntity);
         }
-    }
-
-    function setTransient() {
-        blade.currentEntity.id = null;
-        blade.currentEntity.createdBy = null;
-        blade.currentEntity.modifiedDate = null;
-        blade.currentEntity.modifiedBy = null;
     }
 
     $scope.saveChanges = function () {

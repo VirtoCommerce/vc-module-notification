@@ -92,6 +92,8 @@ namespace VirtoCommerce.NotificationsModule.Data.Services
                         }
                         else
                         {
+                            //need for saving notification with tenant
+                            SetTransient(modifiedEntity);
                             repository.Add(modifiedEntity);
                             changedEntries.Add(new GenericChangedEntry<Notification>(notification, EntryState.Added));
                         }
@@ -120,6 +122,23 @@ namespace VirtoCommerce.NotificationsModule.Data.Services
             }
         }
 
+        private void SetTransient(NotificationEntity entity)
+        {
+            entity.Id = null;
+            entity.CreatedBy = null;
+            entity.CreatedDate = default(DateTime);
+            entity.ModifiedBy = null;
+            entity.ModifiedDate = null;
+
+            foreach (var templateEntity in entity.Templates)
+            {
+                templateEntity.Id = null;
+                templateEntity.CreatedBy = null;
+                templateEntity.CreatedDate = default(DateTime);
+                templateEntity.ModifiedBy = null;
+                templateEntity.ModifiedDate = null;
+            }
+        }
 
         private void ValidateNotificationProperties(IEnumerable<Notification> notifications)
         {

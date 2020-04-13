@@ -27,8 +27,9 @@ namespace VirtoCommerce.NotificationsModule.Core.Extensions
             }
             var criteria = AbstractTypeFactory<NotificationSearchCriteria>.TryCreateInstance();
             criteria.NotificationType = notificationType;
-            //Get with and without the Tenant  
-            criteria.Take = 2;
+
+            //try to get with the Tenant  
+            criteria.Take = 1;
             criteria.ResponseGroup = responseGroup;
             if (tenant != null && !tenant.IsEmpty)
             {
@@ -36,13 +37,17 @@ namespace VirtoCommerce.NotificationsModule.Core.Extensions
                 criteria.TenantType = tenant.Type;
             }
             var searchResult = await service.SearchNotificationsAsync(criteria);
-            //Find first global notification (without tenant)
-            var result = searchResult.Results.FirstOrDefault(x => x.TenantIdentity.IsEmpty);
-            if (tenant != null)
+
+            var result = searchResult.Results.FirstOrDefault(x => x.TenantIdentity == tenant);
+            if (result == null)
             {
-                //If tenant is specified try to find a notification belongs to concrete tenant or use default as fallback
-                result = searchResult.Results.FirstOrDefault(x => x.TenantIdentity == tenant) ?? result;
+                //Find first global notification (without tenant)
+                criteria.TenantId = null;
+                criteria.TenantType = null;
+                searchResult = await service.SearchNotificationsAsync(criteria);
+                result = searchResult.Results.FirstOrDefault(x => x.TenantIdentity.IsEmpty);
             }
+
             return result;
         }
     }
