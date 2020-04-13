@@ -51,6 +51,7 @@ namespace VirtoCommerce.NotificationsModule.Tests.UnitTests
                 AbstractTypeFactory<NotificationEntity>.RegisterType<EmailNotificationEntity>();
         }
 
+        /*
         [Fact]
         public async Task GetNotificationsByIdsAsync_ReturnNotifications()
         {
@@ -76,7 +77,7 @@ namespace VirtoCommerce.NotificationsModule.Tests.UnitTests
             //Assert
             Assert.NotNull(result);
             Assert.Contains(result, r => r.Id.Equals(id));
-        }
+        }*/
 
         [Fact]
         public async Task SaveChangesAsync_SavedNotification()
