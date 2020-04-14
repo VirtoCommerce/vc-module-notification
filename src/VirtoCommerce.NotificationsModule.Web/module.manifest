@@ -2,7 +2,7 @@
 <module>
     <id>VirtoCommerce.Notifications</id>
     <version>3.0.0</version>
-    <version-tag>rc.5-002</version-tag>
+    <version-tag>rc.5-003</version-tag>
     <platformVersion>3.0.0</platformVersion>
     <title>Notifications module</title>
     <description>description</description>
