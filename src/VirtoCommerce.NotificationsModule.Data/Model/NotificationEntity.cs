@@ -94,7 +94,7 @@ namespace VirtoCommerce.NotificationsModule.Data.Model
             IsActive = notification.IsActive;
             Kind = notification.Kind;
 
-            if (!notification.Templates.IsNullOrEmpty())
+            if (notification.Templates != null)
             {
                 Templates = new ObservableCollection<NotificationTemplateEntity>(notification.Templates.Where(t => !t.IsPredefined)
                         .Select(x => AbstractTypeFactory<NotificationTemplateEntity>.TryCreateInstance($"{Kind}TemplateEntity").FromModel(x, pkMap)));
