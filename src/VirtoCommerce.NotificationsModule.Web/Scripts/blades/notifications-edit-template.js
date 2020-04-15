@@ -22,6 +22,7 @@
         else {
             blade.currentEntity.createdDateAsString = now;
             blade.currentEntity.isReadonly = false;
+            blade.currentEntity.id = blade.currentEntity.languageCode ? null : blade.currentEntity.id;
             blade.origEntity = angular.copy(blade.currentEntity);
         }
         var ind = blade.notification.templates.findIndex(function (element) {

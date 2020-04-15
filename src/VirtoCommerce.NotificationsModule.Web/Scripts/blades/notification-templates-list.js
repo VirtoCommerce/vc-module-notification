@@ -80,7 +80,7 @@ angular.module('virtoCommerce.notificationsModule')
             blade.openTemplate(type);
         };
                 
-	    function createTemplate(template) {
+	    function createTemplate() {
             var foundTemplate = resolveType(blade.currentEntity.kind);
             if (foundTemplate) {
                 var newBlade = {
@@ -99,7 +99,45 @@ angular.module('virtoCommerce.notificationsModule')
 
                 bladeNavigationService.showBlade(newBlade, blade);
             }
-	    }
+        }
+        
+        function deleteList(selections) {
+            var containsDefaultNotifications = _.any(selections, function(item) {
+                return !item.languageCode || item.isPredefined;
+            });
+
+            if (containsDefaultNotifications) {
+                dialogService.showNotificationDialog({
+                    id: "error",
+                    title: "notifications.dialogs.notification-template-delete-notification.title",
+                    message: "notifications.dialogs.notification-template-delete-notification.message"
+                });
+            }
+            else {
+                var dialog = {
+                    id: "confirmDeleteItem",
+                    title: "notifications.dialogs.notification-template-delete.title",
+                    message: "notifications.dialogs.notification-template-delete.message",
+                    callback: function (remove) {
+                        if (remove) {
+                            bladeNavigationService.closeChildrenBlades(blade, function () {
+                                _.each(selections,function(selection) {
+                                    var index = blade.currentEntity.templates.findIndex(function (element) {
+                                        return (element.languageCode === selection.languageCode);
+                                    });
+        
+                                    if (index > -1) {
+                                        blade.currentEntity.templates.splice(index, 1);
+                                    }
+                                });
+                            });
+                        }
+                    }
+                };
+                dialogService.showConfirmationDialog(dialog);
+            }
+            
+        }
 
 	    blade.toolbarCommands = [
 			    {
@@ -107,7 +145,15 @@ angular.module('virtoCommerce.notificationsModule')
 				    executeMethod: createTemplate,
 				    canExecuteMethod: function () { return true; },
 				    permission: 'notifications:template:create'
-			    }
+                },
+                {
+                    name: "platform.commands.delete", icon: 'fa fa-trash-o',
+                    executeMethod: function () { deleteList($scope.gridApi.selection.getSelectedRows()); },
+                    canExecuteMethod: function () {
+                        return $scope.gridApi && _.any($scope.gridApi.selection.getSelectedRows());
+                    },
+                    permission: 'notifications:template:delete'
+                }
 	    ];
 
         // ui-grid
