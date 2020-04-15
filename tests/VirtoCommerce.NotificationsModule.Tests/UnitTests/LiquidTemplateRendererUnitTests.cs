@@ -4,17 +4,11 @@ using System.Linq;
 using System.Threading.Tasks;
 using Moq;
 using Newtonsoft.Json.Linq;
-using Scriban;
-using Scriban.Runtime;
-using VirtoCommerce.NotificationsModule.Core.Extensions;
-using VirtoCommerce.NotificationsModule.Core.Model;
-using VirtoCommerce.NotificationsModule.Core.Types;
 using VirtoCommerce.NotificationsModule.LiquidRenderer;
 using VirtoCommerce.Platform.Core.Assets;
 using VirtoCommerce.Platform.Core.Common;
 using VirtoCommerce.Platform.Core.Localizations;
 using Xunit;
-using Xunit.Extensions;
 
 namespace VirtoCommerce.NotificationsModule.Tests.UnitTests
 {
@@ -91,13 +85,5 @@ namespace VirtoCommerce.NotificationsModule.Tests.UnitTests
             }
         }
 
-    }
-
-    public class MyFunctions
-    {
-        public static string T(TemplateContext context, object input, params object[] variables)
-        {
-            return input.ToString();
-        }
     }
 }
