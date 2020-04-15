@@ -1,8 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Moq;
 using Newtonsoft.Json.Linq;
+using Scriban;
+using Scriban.Runtime;
 using VirtoCommerce.NotificationsModule.Core.Extensions;
 using VirtoCommerce.NotificationsModule.Core.Model;
 using VirtoCommerce.NotificationsModule.Core.Types;
@@ -35,28 +38,41 @@ namespace VirtoCommerce.NotificationsModule.Tests.UnitTests
         }
 
         [Theory, MemberData(nameof(TranslateData))]
-        public void Render_TranslateEnglish(string language, JObject jObject)
+        public async Task Render_TranslateEnglish(string language, JObject jObject)
         {
             //Arrange
             _translationServiceMock.Setup(x => x.GetTranslationDataForLanguage(language)).Returns(jObject);
             string input = "{{ 'order.subject1' | translate: \"" + language + "\" }} test";
 
             //Act
-            var result = _liquidTemplateRenderer.RenderAsync(input, null).GetAwaiter().GetResult();
+            var result = await _liquidTemplateRenderer.RenderAsync(input, null);
 
             //Assert
             Assert.Equal("subj test", result);
         }
 
         [Fact]
-        public void Render_GetAssetUrl()
+        public async Task Render_GetCurrentYear()
+        {
+            //Arrange
+            string input = "{{created_date | date.to_string '%Y' }}";
+
+            //Act
+            var result = await _liquidTemplateRenderer.RenderAsync(input, new { CreatedDate = DateTime.Now });
+
+            //Assert
+            Assert.Equal(DateTime.Now.Year.ToString(), result);
+        }
+
+        [Fact]
+        public async Task Render_GetAssetUrl()
         {
             //Arrange
             _blobUrlResolverMock.Setup(x => x.GetAbsoluteUrl(It.IsAny<string>())).Returns("http://localhost:10645/assets/1.svg");
             string input = "test {{ '1.svg' | asset_url }}";
 
             //Act
-            var result = _liquidTemplateRenderer.RenderAsync(input, null).GetAwaiter().GetResult();
+            var result = await _liquidTemplateRenderer.RenderAsync(input, null);
 
             //Assert
             Assert.Equal("test http://localhost:10645/assets/1.svg", result);
@@ -77,5 +93,11 @@ namespace VirtoCommerce.NotificationsModule.Tests.UnitTests
 
     }
 
-    
+    public class MyFunctions
+    {
+        public static string T(TemplateContext context, object input, params object[] variables)
+        {
+            return input.ToString();
+        }
+    }
 }

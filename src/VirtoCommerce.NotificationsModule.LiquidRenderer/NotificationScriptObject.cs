@@ -10,7 +10,6 @@ namespace VirtoCommerce.NotificationsModule.LiquidRenderer
         public NotificationScriptObject(ITranslationService translationService, IBlobUrlResolver blobUrlResolver)
         {
             this.Import(typeof(TranslationFilter));
-            this.Import(typeof(StandardFilters));
             this.Import(typeof(UrlFilters));
 
             TranslationService = translationService;
