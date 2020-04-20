@@ -1,28 +1,27 @@
-<?xml version="1.0" encoding="utf-8" ?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <module>
-    <id>VirtoCommerce.Notifications</id>
-    <version>3.0.0</version>
-    <version-tag>rc.5-003</version-tag>
-    <platformVersion>3.0.0</platformVersion>
-    <title>Notifications module</title>
-    <description>description</description>
-    <authors>
-        <author>Eugeny Tatarincev</author>
-        <author>Andrei Kostyrin</author>
-    </authors>
-    <owners>
-        <owner>Virto Commerce</owner>
-    </owners>
-	<groups>
-        <group>commerce</group>
-    </groups>
-    <projectUrl>https://virtocommerce.com/apps/extensions/virto-module-notification</projectUrl>
-    <iconUrl>https://raw.githubusercontent.com/VirtoCommerce/vc-module-notification/release/3.0.0/src/VirtoCommerce.NotificationsModule.Web/Content/logoVC.png</iconUrl>
-    <releaseNotes></releaseNotes>
-    <copyright>Copyright © 2011-2020 Virto Commerce. All rights reserved</copyright>
-    <tags>notifications</tags>
-
-    <assemblyFile>VirtoCommerce.NotificationsModule.Web.dll</assemblyFile>
-    <moduleType>VirtoCommerce.NotificationsModule.Web.Module, VirtoCommerce.NotificationsModule.Web</moduleType>
-    
+  <id>VirtoCommerce.Notifications</id>
+  <version>3.0.0</version>
+  <version-tag>rc.5$</version-tag>
+  <platformVersion>3.0.0</platformVersion>
+  <title>Notifications module</title>
+  <description>description</description>
+  <authors>
+    <author>Eugeny Tatarincev</author>
+    <author>Andrei Kostyrin</author>
+  </authors>
+  <owners>
+    <owner>Virto Commerce</owner>
+  </owners>
+  <groups>
+    <group>commerce</group>
+  </groups>
+  <projectUrl>https://virtocommerce.com/apps/extensions/virto-module-notification</projectUrl>
+  <iconUrl>https://raw.githubusercontent.com/VirtoCommerce/vc-module-notification/release/3.0.0/src/VirtoCommerce.NotificationsModule.Web/Content/logoVC.png</iconUrl>
+  <releaseNotes>
+  </releaseNotes>
+  <copyright>Copyright В© 2011-2020 Virto Commerce. All rights reserved</copyright>
+  <tags>notifications</tags>
+  <assemblyFile>VirtoCommerce.NotificationsModule.Web.dll</assemblyFile>
+  <moduleType>VirtoCommerce.NotificationsModule.Web.Module, VirtoCommerce.NotificationsModule.Web</moduleType>
 </module>
