@@ -125,5 +125,10 @@ namespace VirtoCommerce.NotificationsModule.Data.Model
 
             return this;
         }
+
+        public override string ToString()
+        {
+            return $"{Type}, Id: {Id}";
+        }
     }
 }
