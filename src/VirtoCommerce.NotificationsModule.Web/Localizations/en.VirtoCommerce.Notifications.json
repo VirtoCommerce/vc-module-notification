@@ -128,7 +128,14 @@
         "title": "{{displayName}} - detail",
         "labels": {
           "is-active": "Is active",
-          "name": "Notification name"
+          "name": "Notification name",
+          "number": "Number"
+        },
+        "placeholders": {
+          "number": "Number of Recipient SMS"
+        },
+        "descriptions": {
+          "number": "Number recipient SMS"
         }
       },
       "filter-detail": {

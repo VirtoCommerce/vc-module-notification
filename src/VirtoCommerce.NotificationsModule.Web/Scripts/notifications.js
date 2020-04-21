@@ -87,13 +87,12 @@ angular.module(moduleTemplateName, ['textAngular'])
                 knownChildrenTypes: ['Email', 'Sms']
             }); 
 
-
             // register types
             notificationTypesResolverService.registerType({
                 type: 'SmsNotification',
                 icon: 'fa fa-comment',
                 detailBlade: {
-                  template: 'Modules/$(VirtoCommerce.Notifications)/Scripts/blades/notification-details.tpl.html',
+                  template: 'Modules/$(VirtoCommerce.Notifications)/Scripts/blades/notification-sms-details.tpl.html',
                   controller: 'virtoCommerce.notificationsModule.notificationsEditController'
                 },
                 knownChildrenTypes: ['Email', 'Sms']
