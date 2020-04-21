@@ -55,9 +55,6 @@ The system will display the existing logs on the 'Notification sending logs' bla
 
 ![Notification logs](docs/media/screen-sending-logs.png)
 
-### Attachments
-
-
  **Important** 
 
  1. Notification templates are customizable;
@@ -67,6 +64,6 @@ The system will display the existing logs on the 'Notification sending logs' bla
 
 ## Notification activity feed
 
-In this block of the Notification module keeps the list of all notification recorders in the system
+In this block of the Notification module displays the list of all notification recorders that were created in the system by the business modules.
 
 ![Activity feed](docs/media/screen-notification-activity-feed.png)
