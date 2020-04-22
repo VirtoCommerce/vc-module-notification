@@ -56,7 +56,7 @@ The system will display the existing logs on the 'Notification sending logs' bla
 ![Notification logs](docs/media/screen-sending-logs.png)
 
  **Important** 
-
+ 
  1. Notification templates are customizable;
  There is no possibility to create new notifications in Notifications module;
  1. All notifications are predefined and registered by VC business modules. Only registered notifications appear in Notifications module;
@@ -64,6 +64,31 @@ The system will display the existing logs on the 'Notification sending logs' bla
 
 ## Notification activity feed
 
-In this block of the Notification module displays the list of all notification recorders that were created in the system by the business modules.
+This block of the Notification module displays the list of all notification recorders that were created in the system by the business modules. 
+
+In order to view the notification details, simply select the Notification you need and the system will display the Notification Info on a separate blade.
 
 ![Activity feed](docs/media/screen-notification-activity-feed.png)
+
+![Notification Info](docs/media/screen-notification-info.png)
+
+## Documentation
+
+https://community.virtocommerce.com/t/whats-customer-order-object-in-the-notifications-templates/97
+
+https://community.virtocommerce.com/t/liquid-as-primary-template-language/78
+
+## License
+
+Copyright (c) Virto Solutions LTD.  All rights reserved.
+
+Licensed under the Virto Commerce Open Software License (the "License"); you
+may not use this file except in compliance with the License. You may
+obtain a copy of the License at
+
+http://virtocommerce.com/opensourcelicense
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or
+implied.
