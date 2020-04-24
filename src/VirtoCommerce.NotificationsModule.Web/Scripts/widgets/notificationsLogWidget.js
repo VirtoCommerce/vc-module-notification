@@ -3,14 +3,10 @@ angular.module('virtoCommerce.notificationsModule')
 	var blade = $scope.widget.blade;
 
 	blade.showLog = function () {
-		var objectId = blade.currentEntity.id;
-        var objectTypeId = 'Notifications';
 		var newBlade = {
             id: 'notificationAttachmentsWidgetChild',
             title: 'notifications.widgets.notificationsLogWidget.blade-title',
 			titleValues: { id: blade.currentEntity.id },
-			objectId: objectId,
-			objectTypeId: objectTypeId,
 			notificationType: blade.currentEntity.type,
 			languages: blade.currentEntity.languages,
             subtitle: 'notifications.widgets.notificationsLogWidget.blade-subtitle',
