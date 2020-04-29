@@ -46,7 +46,8 @@
                             <div class="form-group" style="margin-top:0">
                                 <tags-input ng-model="blade.currentEntity.cc"
                                             display-property="value"
-                                            placeholder="{{ 'notifications.blades.notifications-edit-template.placeholders.email-addresses-note' | translate }}">
+                                            placeholder="{{ 'notifications.blades.notifications-edit-template.placeholders.email-addresses-note' | translate }}"
+                                            type="email">
                                 </tags-input>
                                 <div class="table-descr">
                                     {{ 'notifications.blades.notifications-edit-template.labels.blank-note' | translate }}
@@ -58,7 +59,8 @@
                             <div class="form-group" style="margin-top:0">
                                 <tags-input ng-model="blade.currentEntity.bcc"
                                             display-property="value"
-                                            placeholder="{{ 'notifications.blades.notifications-edit-template.placeholders.email-addresses-note' | translate }}">
+                                            placeholder="{{ 'notifications.blades.notifications-edit-template.placeholders.email-addresses-note' | translate }}"
+                                            type="email">
                                 </tags-input>
                                 <div class="table-descr">
                                     {{ 'notifications.blades.notifications-edit-template.descriptions.to' | translate }}
