@@ -50,11 +50,7 @@ namespace VirtoCommerce.NotificationsModule.Data.Services
                     repository.DisableChangesTracking();
 
                     var notifications = await repository.GetByIdsAsync(ids, responseGroup);
-                    return notifications.Select(n =>
-                    {
-                        //For unknown and unregistered notifications use fallback notification type
-                        return n.ToModel(CreateNotification(n.Type, new UnregisteredNotification()));
-                    }).ToArray();
+                    return notifications.Select(n => n.ToModel(CreateNotification(n.Type, new UnregisteredNotification()))).ToArray();
                 }
             });
 
