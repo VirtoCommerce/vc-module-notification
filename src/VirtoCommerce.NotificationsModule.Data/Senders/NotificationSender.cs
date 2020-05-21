@@ -87,14 +87,9 @@ namespace VirtoCommerce.NotificationsModule.Data.Senders
                     result.ErrorMessage = policyResult.FinalException?.Message;
                     message.LastSendError = policyResult.FinalException?.ToString();
                 }
-            }
-            else
-            {
-                result.IsSuccess = false;
-                result.ErrorMessage = message.LastSendError = $"{notification.Type} is not active.";
-            }
 
-            await _notificationMessageService.SaveNotificationMessagesAsync(new[] { message });
+                await _notificationMessageService.SaveNotificationMessagesAsync(new[] { message });
+            }
 
             return result;
         }
