@@ -19,6 +19,8 @@
           "sent-date": "Sent date",
           "sender": "From:",
           "recipient": "To:",
+          "bcc": "BCC",
+          "cc": "CC recipients",
           "sending-attempts-count": "Sending attempts count",
           "last-fail-attempt-date": "Last fail attempt date",
           "last-fail-attempt-message": "Errors:",
