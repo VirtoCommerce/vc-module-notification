@@ -74,12 +74,9 @@ In order to view the notification details, simply select the Notification you ne
 
 ## Documentation
 
-1. What’s customer_order object in the notifications templates
+[What’s customer_order object in the notifications templates](https://community.virtocommerce.com/t/whats-customer-order-object-in-the-notifications-templates/97)
 
-https://community.virtocommerce.com/t/whats-customer-order-object-in-the-notifications-templates/97
-
-1. Liquid as Primary Template Language
-https://community.virtocommerce.com/t/liquid-as-primary-template-language/78
+[Liquid as Primary Template Language](https://community.virtocommerce.com/t/liquid-as-primary-template-language/78)
 
 ## License
 
