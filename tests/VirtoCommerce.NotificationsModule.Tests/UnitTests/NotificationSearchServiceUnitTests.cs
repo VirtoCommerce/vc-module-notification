@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Microsoft.Extensions.Primitives;
 using MockQueryable.Moq;
 using Moq;
@@ -15,6 +17,7 @@ using VirtoCommerce.NotificationsModule.Data.Model;
 using VirtoCommerce.NotificationsModule.Data.Repositories;
 using VirtoCommerce.NotificationsModule.Data.Services;
 using VirtoCommerce.NotificationsModule.Tests.NotificationTypes;
+using VirtoCommerce.Platform.Caching;
 using VirtoCommerce.Platform.Core.Caching;
 using VirtoCommerce.Platform.Core.Common;
 using VirtoCommerce.Platform.Core.Events;
@@ -31,7 +34,7 @@ namespace VirtoCommerce.NotificationsModule.Tests.UnitTests
         private readonly Mock<IEventPublisher> _eventPublisherMock;
         private readonly Mock<INotificationService> _notificationServiceMock;
         private readonly Mock<INotificationSearchService> _notificationSearchServiceMock;
-        private readonly Mock<IPlatformMemoryCache> _platformMemoryCacheMock;
+        private readonly IPlatformMemoryCache _memCache;
         private readonly Mock<ICacheEntry> _cacheEntryMock;
         private readonly NotificationSearchService _notificationSearchService;
 
@@ -43,51 +46,34 @@ namespace VirtoCommerce.NotificationsModule.Tests.UnitTests
             _repositoryFactory = () => _repositoryMock.Object;
             _notificationServiceMock = new Mock<INotificationService>();
             _notificationSearchServiceMock = new Mock<INotificationSearchService>();
-            _platformMemoryCacheMock = new Mock<IPlatformMemoryCache>();
+            _memCache = GetCache();
             _cacheEntryMock = new Mock<ICacheEntry>();
             _notificationRegistrar = new NotificationRegistrar(_notificationServiceMock.Object, _notificationSearchServiceMock.Object);
-            _notificationSearchService = new NotificationSearchService(_repositoryFactory, _notificationServiceMock.Object, _platformMemoryCacheMock.Object);
+            _notificationSearchService = new NotificationSearchService(_repositoryFactory, _notificationServiceMock.Object, _memCache);
 
-            _cacheEntryMock.SetupGet(c => c.ExpirationTokens).Returns(new List<IChangeToken>());
-            var cacheKey = CacheKey.With(_notificationSearchService.GetType(), "GetTransientNotifications");
-            _platformMemoryCacheMock.Setup(pmc => pmc.CreateEntry(cacheKey)).Returns(_cacheEntryMock.Object);
-
+         
             var criteria = AbstractTypeFactory<NotificationSearchCriteria>.TryCreateInstance();
             criteria.Take = 1;
             criteria.NotificationType = nameof(InvoiceEmailNotification);
             _notificationSearchServiceMock.Setup(x => x.SearchNotificationsAsync(criteria)).ReturnsAsync(new NotificationSearchResult());
             _notificationRegistrar.RegisterNotification<InvoiceEmailNotification>();
-            _platformMemoryCacheMock
-                .Setup(pmc => pmc.CreateEntry(CacheKey.With(_notificationSearchService.GetType(), nameof(_notificationSearchService.SearchNotificationsAsync), criteria.GetCacheKey())))
-                .Returns(_cacheEntryMock.Object);
-
+          
             criteria.NotificationType = nameof(OrderSentEmailNotification);
             _notificationSearchServiceMock.Setup(x => x.SearchNotificationsAsync(criteria)).ReturnsAsync(new NotificationSearchResult());
             _notificationRegistrar.RegisterNotification<OrderSentEmailNotification>();
-            _platformMemoryCacheMock
-                .Setup(pmc => pmc.CreateEntry(CacheKey.With(_notificationSearchService.GetType(), nameof(_notificationSearchService.SearchNotificationsAsync), criteria.GetCacheKey())))
-                .Returns(_cacheEntryMock.Object);
-
+        
             criteria.NotificationType = nameof(OrderPaidEmailNotification);
             _notificationSearchServiceMock.Setup(x => x.SearchNotificationsAsync(criteria)).ReturnsAsync(new NotificationSearchResult());
             _notificationRegistrar.RegisterNotification<OrderPaidEmailNotification>();
-            _platformMemoryCacheMock
-                .Setup(pmc => pmc.CreateEntry(CacheKey.With(_notificationSearchService.GetType(), nameof(_notificationSearchService.SearchNotificationsAsync), criteria.GetCacheKey())))
-                .Returns(_cacheEntryMock.Object);
-
+          
             criteria.NotificationType = nameof(RemindUserNameEmailNotification);
             _notificationSearchServiceMock.Setup(x => x.SearchNotificationsAsync(criteria)).ReturnsAsync(new NotificationSearchResult());
             _notificationRegistrar.RegisterNotification<RemindUserNameEmailNotification>();
-            _platformMemoryCacheMock
-                .Setup(pmc => pmc.CreateEntry(CacheKey.With(_notificationSearchService.GetType(), nameof(_notificationSearchService.SearchNotificationsAsync), criteria.GetCacheKey())))
-                .Returns(_cacheEntryMock.Object);
-
+         
             criteria.NotificationType = nameof(RegistrationEmailNotification);
             _notificationSearchServiceMock.Setup(x => x.SearchNotificationsAsync(criteria)).ReturnsAsync(new NotificationSearchResult());
             _notificationRegistrar.RegisterNotification<RegistrationEmailNotification>();
-            _platformMemoryCacheMock
-                .Setup(pmc => pmc.CreateEntry(CacheKey.With(_notificationSearchService.GetType(), nameof(_notificationSearchService.SearchNotificationsAsync), criteria.GetCacheKey())))
-                .Returns(_cacheEntryMock.Object);
+           
 
         }
 
@@ -140,10 +126,7 @@ namespace VirtoCommerce.NotificationsModule.Tests.UnitTests
             criteria4.Take = 1;
             criteria4.NotificationType = type;
             _notificationSearchServiceMock.Setup(x => x.SearchNotificationsAsync(criteria4)).ReturnsAsync(new NotificationSearchResult());
-            _platformMemoryCacheMock
-                .Setup(pmc => pmc.CreateEntry(CacheKey.With(_notificationSearchService.GetType(), nameof(_notificationSearchService.SearchNotificationsAsync), criteria4.GetCacheKey())))
-                .Returns(_cacheEntryMock.Object);
-
+           
             var mockNotifications = notifications.AsQueryable().BuildMock();
             _repositoryMock.Setup(r => r.Notifications).Returns(mockNotifications.Object);
             var ids = notifications.Select(n => n.Id).ToArray();
@@ -183,9 +166,7 @@ namespace VirtoCommerce.NotificationsModule.Tests.UnitTests
             var ids = notifications.Select(n => n.Id).ToArray();
             _notificationServiceMock.Setup(ns => ns.GetByIdsAsync(ids, null))
                 .ReturnsAsync(notifications.Select(n => n.ToModel(AbstractTypeFactory<Notification>.TryCreateInstance(n.Type))).ToArray());
-            _platformMemoryCacheMock
-                .Setup(pmc => pmc.CreateEntry(CacheKey.With(_notificationSearchService.GetType(), nameof(_notificationSearchService.SearchNotificationsAsync), searchCriteria.GetCacheKey())))
-                .Returns(_cacheEntryMock.Object);
+            
 
             //Act
             var result = await _notificationSearchService.SearchNotificationsAsync(searchCriteria);
@@ -216,9 +197,7 @@ namespace VirtoCommerce.NotificationsModule.Tests.UnitTests
             var ids = notificationEntities.Select(n => n.Id).ToArray();
             _notificationServiceMock.Setup(ns => ns.GetByIdsAsync(ids, responseGroup))
                 .ReturnsAsync(notifications);
-            _platformMemoryCacheMock
-                .Setup(pmc => pmc.CreateEntry(CacheKey.With(_notificationSearchService.GetType(), nameof(_notificationSearchService.SearchNotificationsAsync), searchCriteria.GetCacheKey())))
-                .Returns(_cacheEntryMock.Object);
+           
 
             //Act
             var result = await _notificationSearchService.SearchNotificationsAsync(searchCriteria);
@@ -247,10 +226,7 @@ namespace VirtoCommerce.NotificationsModule.Tests.UnitTests
             var notifications = notificationEntities.Select(n => n.ToModel(AbstractTypeFactory<Notification>.TryCreateInstance(n.Type))).ToArray();
             _notificationServiceMock.Setup(ns => ns.GetByIdsAsync(It.IsAny<string[]>(), responseGroup))
                 .ReturnsAsync(notifications.Where(n => expectedTypes.Contains(n.Type)).ToArray());
-            _platformMemoryCacheMock
-                .Setup(pmc => pmc.CreateEntry(CacheKey.With(_notificationSearchService.GetType(), nameof(_notificationSearchService.SearchNotificationsAsync), searchCriteria.GetCacheKey())))
-                .Returns(_cacheEntryMock.Object);
-
+          
             //Act
             var result = await _notificationSearchService.SearchNotificationsAsync(searchCriteria);
 
@@ -281,8 +257,7 @@ namespace VirtoCommerce.NotificationsModule.Tests.UnitTests
             var notifications = notificationEntities.Select(n => n.ToModel(AbstractTypeFactory<Notification>.TryCreateInstance(n.Type))).ToArray();
             _notificationServiceMock.Setup(ns => ns.GetByIdsAsync(It.IsAny<string[]>(), null))
                 .ReturnsAsync(notifications.ToArray());
-            var cacheKey = CacheKey.With(_notificationSearchService.GetType(), nameof(_notificationSearchService.SearchNotificationsAsync), searchCriteria.GetCacheKey());
-            _platformMemoryCacheMock.Setup(pmc => pmc.CreateEntry(cacheKey)).Returns(_cacheEntryMock.Object);
+          
 
             //Act
             var result = await NotificationSearchServiceExtensions.GetNotificationAsync<RegistrationEmailNotification>(_notificationSearchService, searchTenant);
@@ -319,9 +294,7 @@ namespace VirtoCommerce.NotificationsModule.Tests.UnitTests
             var notifications = notificationEntities.Select(n => n.ToModel(AbstractTypeFactory<Notification>.TryCreateInstance(n.Type))).ToArray();
             _notificationServiceMock.Setup(ns => ns.GetByIdsAsync(It.IsAny<string[]>(), searchCriteria.ResponseGroup))
                 .ReturnsAsync(notifications.Where(x => x.Id.EqualsInvariant(sampleNotificationEntity.Id)).ToArray());
-            _platformMemoryCacheMock
-                .Setup(pmc => pmc.CreateEntry(CacheKey.With(_notificationSearchService.GetType(), nameof(_notificationSearchService.SearchNotificationsAsync), searchCriteria.GetCacheKey())))
-                .Returns(_cacheEntryMock.Object);
+           
 
             //Act
             var result = (await _notificationSearchService.SearchNotificationsAsync(searchCriteria)).Results.FirstOrDefault();
@@ -341,6 +314,13 @@ namespace VirtoCommerce.NotificationsModule.Tests.UnitTests
             {
                 return GetEnumerator();
             }
+        }
+
+        private static IPlatformMemoryCache GetCache()
+        {
+            var defaultOptions = Options.Create(new CachingOptions() { CacheSlidingExpiration = TimeSpan.FromMilliseconds(10) });
+            var logger = new Moq.Mock<ILogger<PlatformMemoryCache>>();
+            return new PlatformMemoryCache(new MemoryCache(new MemoryCacheOptions()), defaultOptions, logger.Object);
         }
     }
 }
