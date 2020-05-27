@@ -13,7 +13,7 @@ namespace VirtoCommerce.NotificationsModule.Data.Senders
 {
     public class NotificationSender : INotificationSender
     {
-        private readonly int _maxRetryAttempts = 3;
+        private readonly int _maxRetryAttempts = 1;
         private readonly INotificationTemplateRenderer _notificationTemplateRender;
         private readonly INotificationMessageService _notificationMessageService;
         private readonly INotificationMessageSenderProviderFactory _notificationMessageAccessor;
@@ -33,19 +33,32 @@ namespace VirtoCommerce.NotificationsModule.Data.Senders
             _jobClient = jobClient;
         }
 
+        public async Task ScheduleSendNotificationAsync(Notification notification)
+        {
+            if (notification.IsActive)
+            {
+                //Important! need to except 'predefined/hardcoded' notifications
+                //because after deserialization in 'SendNotificationAsync' method of the job
+                //generated couple 'predefined' templates
+                //in the result the notification has couple templates with same content
+                if (notification.Templates.Any(x => x.IsPredefined))
+                {
+                    notification.Templates = notification.Templates.Where(x => !x.IsPredefined).ToList();
+                }
+
+                var message = await CreateMessageAsync(notification);
+
+                _jobClient.Enqueue(() => TrySendNotificationMessageAsync(message.Id));
+            }
+        }
+
+        [Obsolete("need to use ScheduleSendNotificationAsync")]
         public void ScheduleSendNotification(Notification notification)
         {
-            //Important! need to except 'predefined/hardcoded' notifications
-            //because after deserialization in 'SendNotificationAsync' method of the job
-            //generated couple 'predefined' templates
-            //in the result the notification has couple templates with same content
-            if (notification.Templates.Any(x => x.IsPredefined))
-            {
-                notification.Templates = notification.Templates.Where(x => !x.IsPredefined).ToList();
-            }
-
-            _jobClient.Enqueue(() => SendNotificationAsync(notification));
+            ScheduleSendNotificationAsync(notification).GetAwaiter().GetResult();
         }
+
+        
 
         public async Task<NotificationSendResult> SendNotificationAsync(Notification notification)
         {
@@ -54,49 +67,66 @@ namespace VirtoCommerce.NotificationsModule.Data.Senders
                 throw new ArgumentNullException(nameof(notification));
             }
 
-            var result = new NotificationSendResult();
-
-            var message = AbstractTypeFactory<NotificationMessage>.TryCreateInstance($"{notification.Kind}Message");
-            message.MaxSendAttemptCount = _maxRetryAttempts + 1;
-            await notification.ToMessageAsync(message, _notificationTemplateRender);
-
             if (notification.IsActive)
             {
-                await _notificationMessageService.SaveNotificationMessagesAsync(new[] { message });
+                var message = await CreateMessageAsync(notification);
 
-                var policy = Policy.Handle<SentNotificationException>().WaitAndRetryAsync(_maxRetryAttempts, retryAttempt => TimeSpan.FromSeconds(Math.Pow(3, retryAttempt))
+                return await TrySendNotificationMessageAsync(message.Id);
+            }
+
+            return new NotificationSendResult();
+        }
+
+
+        public async Task<NotificationSendResult> TrySendNotificationMessageAsync(string messageId)
+        {
+            var result = new NotificationSendResult();
+
+            var message = (await _notificationMessageService.GetNotificationsMessageByIds(new[] {messageId})).FirstOrDefault();
+
+            if (message == null)
+            {
+                result.ErrorMessage = $"can't find notification message by {messageId}";
+                return result;
+            }
+
+            var policy = Policy.Handle<SentNotificationException>().WaitAndRetryAsync(_maxRetryAttempts, retryAttempt => TimeSpan.FromSeconds(Math.Pow(3, retryAttempt))
                 , (exception, timeSpan, retryCount, context) =>
                 {
                     _logger.LogError(exception, $"Retry {retryCount} of {context.PolicyKey}, due to: {exception}.");
                 });
 
-                var policyResult = await policy.ExecuteAndCaptureAsync(() =>
-                {
-                    message.LastSendAttemptDate = DateTime.Now;
-                    message.SendAttemptCount++;
-                    return _notificationMessageAccessor.GetSenderForNotificationType(notification.Kind).SendNotificationAsync(message);
-                });
+            var policyResult = await policy.ExecuteAndCaptureAsync(() =>
+            {
+                message.LastSendAttemptDate = DateTime.Now;
+                message.SendAttemptCount++;
+                return _notificationMessageAccessor.GetSenderForNotificationType(message.Kind).SendNotificationAsync(message);
+            });
 
-                if (policyResult.Outcome == OutcomeType.Successful)
-                {
-                    result.IsSuccess = true;
-                    message.SendDate = DateTime.Now;
-                }
-                else
-                {
-                    result.ErrorMessage = policyResult.FinalException?.Message;
-                    message.LastSendError = policyResult.FinalException?.ToString();
-                }
+            if (policyResult.Outcome == OutcomeType.Successful)
+            {
+                result.IsSuccess = true;
+                message.SendDate = DateTime.Now;
             }
             else
             {
-                result.IsSuccess = false;
-                result.ErrorMessage = message.LastSendError = $"{notification.Type} is not active.";
+                result.ErrorMessage = policyResult.FinalException?.Message;
+                message.LastSendError = policyResult.FinalException?.ToString();
             }
 
             await _notificationMessageService.SaveNotificationMessagesAsync(new[] { message });
 
             return result;
+        }
+
+        private async Task<NotificationMessage> CreateMessageAsync(Notification notification)
+        {
+            var message = AbstractTypeFactory<NotificationMessage>.TryCreateInstance($"{notification.Kind}Message");
+            message.MaxSendAttemptCount = _maxRetryAttempts + 1;
+            await notification.ToMessageAsync(message, _notificationTemplateRender);
+            await _notificationMessageService.SaveNotificationMessagesAsync(new[] { message });
+
+            return message;
         }
     }
 }
