@@ -114,8 +114,9 @@ namespace VirtoCommerce.NotificationsModule.Data.Senders
                 message.LastSendError = policyResult.FinalException?.ToString();
             }
 
-            await _notificationMessageService.SaveNotificationMessagesAsync(new[] { message });
 
+            await _notificationMessageService.SaveNotificationMessagesAsync(new[] { message });
+            
             return result;
         }
 

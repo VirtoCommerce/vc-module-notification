@@ -24,8 +24,8 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Polly" Version="7.2.0" />
-    <PackageReference Include="VirtoCommerce.Platform.Core" Version="3.0.0-rc5" />
-    <PackageReference Include="VirtoCommerce.Platform.Data" Version="3.0.0-rc5" />
+    <PackageReference Include="VirtoCommerce.Platform.Core" Version="3.0.0" />
+    <PackageReference Include="VirtoCommerce.Platform.Data" Version="3.0.0" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\VirtoCommerce.NotificationsModule.Core\VirtoCommerce.NotificationsModule.Core.csproj" />
