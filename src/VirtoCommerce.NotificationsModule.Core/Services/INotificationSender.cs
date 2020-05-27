@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using VirtoCommerce.NotificationsModule.Core.Model;
 
@@ -10,6 +11,9 @@ namespace VirtoCommerce.NotificationsModule.Core.Services
     {
         Task<NotificationSendResult> SendNotificationAsync(Notification notification);
 
+        Task ScheduleSendNotificationAsync(Notification notification);
+
+        [Obsolete("need to use ScheduleSendNotificationAsync")]
         void ScheduleSendNotification(Notification notification);
     }
 }
