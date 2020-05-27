@@ -143,13 +143,9 @@ namespace VirtoCommerce.NotificationsModule.Web.Controllers
             }
 
             PopulateNotification(request, notification);
-            //var result = await _notificationSender.SendNotificationAsync(notification);
-            //return Ok(result);
+            var result = await _notificationSender.SendNotificationAsync(notification);
 
-
-            await _notificationSender.ScheduleSendNotificationAsync(notification);
-            return Ok(new NotificationSendResult());
-
+            return Ok(result);
         }
 
         /// <summary>
