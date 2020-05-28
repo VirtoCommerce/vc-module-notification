@@ -37,15 +37,6 @@ namespace VirtoCommerce.NotificationsModule.Data.Senders
         {
             if (notification.IsActive)
             {
-                //Important! need to except 'predefined/hardcoded' notifications
-                //because after deserialization in 'SendNotificationAsync' method of the job
-                //generated couple 'predefined' templates
-                //in the result the notification has couple templates with same content
-                if (notification.Templates.Any(x => x.IsPredefined))
-                {
-                    notification.Templates = notification.Templates.Where(x => !x.IsPredefined).ToList();
-                }
-
                 var message = await CreateMessageAsync(notification);
 
                 _jobClient.Enqueue(() => TrySendNotificationMessageAsync(message.Id));
