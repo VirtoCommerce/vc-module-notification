@@ -117,9 +117,22 @@ namespace VirtoCommerce.NotificationsModule.Web.Controllers
         public async Task<ActionResult<NotificationSendResult>> SendNotification([FromBody]Notification notificationRequest)
         {
             var notification = await _notificationSearchService.GetNotificationAsync(notificationRequest.Type, notificationRequest.TenantIdentity);
-            var result = await _notificationSender.SendNotificationAsync(notification);
+            var result = await _notificationSender.SendNotificationAsync(notification.PopulateFromRequest(notificationRequest));
 
             return Ok(result);
+        }
+
+        /// <summary>
+        /// Schedule sending notification
+        /// </summary>
+        [HttpPost]
+        [Route("api/notifications/schedule")]
+        public async Task<ActionResult> ScheduleSendNotification([FromBody]Notification notificationRequest)
+        {
+            var notification = await _notificationSearchService.GetNotificationAsync(notificationRequest.Type, notificationRequest.TenantIdentity);
+            await _notificationSender.ScheduleSendNotificationAsync(notification.PopulateFromRequest(notificationRequest));
+
+            return Ok();
         }
 
         /// <summary>

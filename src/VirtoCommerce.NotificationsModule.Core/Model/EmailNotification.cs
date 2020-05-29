@@ -73,6 +73,20 @@ namespace VirtoCommerce.NotificationsModule.Core.Model
             To = to;
         }
 
+        public override Notification PopulateFromRequest(Notification request)
+        {
+            if (request is EmailNotification emailRequest)
+            {
+                From = emailRequest.From;
+                To = emailRequest.To;
+                CC = emailRequest.CC;
+                BCC = emailRequest.BCC;
+                Attachments = emailRequest.Attachments;
+            }
+            
+            return base.PopulateFromRequest(request);
+        }
+
         #region ICloneable members
 
         public override object Clone()

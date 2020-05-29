@@ -80,12 +80,8 @@ namespace VirtoCommerce.NotificationsModule.Data.Senders
                 result.ErrorMessage = $"can't find notification message by {messageId}";
                 return result;
             }
-
-            var policy = Policy.Handle<SentNotificationException>().WaitAndRetryAsync(_maxRetryAttempts, retryAttempt => TimeSpan.FromSeconds(Math.Pow(3, retryAttempt))
-                , (exception, timeSpan, retryCount, context) =>
-                {
-                    _logger.LogError(exception, $"Retry {retryCount} of {context.PolicyKey}, due to: {exception}.");
-                });
+            
+            var policy = Policy.Handle<SentNotificationException>().WaitAndRetryAsync(_maxRetryAttempts, retryAttempt => TimeSpan.FromSeconds(Math.Pow(3, retryAttempt)));
 
             var policyResult = await policy.ExecuteAndCaptureAsync(() =>
             {

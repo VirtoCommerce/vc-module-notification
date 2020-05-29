@@ -47,6 +47,16 @@ namespace VirtoCommerce.NotificationsModule.Core.Model
             Number = to;
         }
 
+        public override Notification PopulateFromRequest(Notification request)
+        {
+            if (request is SmsNotification smsRequest)
+            {
+                Number = smsRequest.Number;
+            }
+
+            return base.PopulateFromRequest(request);
+        }
+
         #region ICloneable members
 
         public override object Clone()
