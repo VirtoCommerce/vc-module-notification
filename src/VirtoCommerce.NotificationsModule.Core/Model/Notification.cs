@@ -72,6 +72,13 @@ namespace VirtoCommerce.NotificationsModule.Core.Model
 
         public abstract void SetFromToMembers(string from, string to);
 
+        public virtual Notification PopulateFromRequest(Notification request)
+        {
+            LanguageCode = request.LanguageCode;
+
+            return this;
+        }
+
         #region ICloneable members
 
         public virtual object Clone()

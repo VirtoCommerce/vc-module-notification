@@ -441,7 +441,7 @@ namespace VirtoCommerce.NotificationsModule.Tests.UnitTests
             Assert.False(result.IsSuccess);
         }
 
-        [Fact(Skip = "fail. Temporary disabled. TODO")]
+        [Fact]
         public async Task ScheduleSendNotification_GetNotification()
         {
             //Arrange
@@ -460,21 +460,12 @@ namespace VirtoCommerce.NotificationsModule.Tests.UnitTests
             notification.IsActive = true;
             var jsonSerializeSettings = new JsonSerializerSettings { Converters = new List<JsonConverter> { new NotificationPolymorphicJsonConverter() } };
             GlobalConfiguration.Configuration.UseSerializerSettings(jsonSerializeSettings);
-
+            
             //Act
             await _sender.ScheduleSendNotificationAsync(notification);
 
             //Assert
-            Func<Job, bool> condition = job =>
-            {
-                var result = job.Method.Name == nameof(NotificationSender.SendNotificationAsync);
-
-                if (job.Args[0] is EmailNotification emailNotification)
-                {
-                    result = !emailNotification.Templates.Any();
-                }
-                return result;
-            };
+            Func<Job, bool> condition = job => job.Method.Name == nameof(NotificationSender.TrySendNotificationMessageAsync) && job.Args[0] is null;
             Expression<Func<Job, bool>> expression = a => condition(a);
             _backgroundJobClient.Verify(x => x.Create(It.Is(expression), It.IsAny<EnqueuedState>()));
         }

@@ -37,15 +37,6 @@ namespace VirtoCommerce.NotificationsModule.Data.Senders
         {
             if (notification.IsActive)
             {
-                //Important! need to except 'predefined/hardcoded' notifications
-                //because after deserialization in 'SendNotificationAsync' method of the job
-                //generated couple 'predefined' templates
-                //in the result the notification has couple templates with same content
-                if (notification.Templates.Any(x => x.IsPredefined))
-                {
-                    notification.Templates = notification.Templates.Where(x => !x.IsPredefined).ToList();
-                }
-
                 var message = await CreateMessageAsync(notification);
 
                 _jobClient.Enqueue(() => TrySendNotificationMessageAsync(message.Id));
@@ -89,12 +80,8 @@ namespace VirtoCommerce.NotificationsModule.Data.Senders
                 result.ErrorMessage = $"can't find notification message by {messageId}";
                 return result;
             }
-
-            var policy = Policy.Handle<SentNotificationException>().WaitAndRetryAsync(_maxRetryAttempts, retryAttempt => TimeSpan.FromSeconds(Math.Pow(3, retryAttempt))
-                , (exception, timeSpan, retryCount, context) =>
-                {
-                    _logger.LogError(exception, $"Retry {retryCount} of {context.PolicyKey}, due to: {exception}.");
-                });
+            
+            var policy = Policy.Handle<SentNotificationException>().WaitAndRetryAsync(_maxRetryAttempts, retryAttempt => TimeSpan.FromSeconds(Math.Pow(3, retryAttempt)));
 
             var policyResult = await policy.ExecuteAndCaptureAsync(() =>
             {
