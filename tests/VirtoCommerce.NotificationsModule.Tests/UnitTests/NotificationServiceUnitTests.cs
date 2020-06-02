@@ -13,7 +13,6 @@ using VirtoCommerce.NotificationsModule.Core.Types;
 using VirtoCommerce.NotificationsModule.Data.Model;
 using VirtoCommerce.NotificationsModule.Data.Repositories;
 using VirtoCommerce.NotificationsModule.Data.Services;
-using VirtoCommerce.NotificationsModule.Tests.Model;
 using VirtoCommerce.Platform.Caching;
 using VirtoCommerce.Platform.Core.Caching;
 using VirtoCommerce.Platform.Core.Common;
@@ -46,7 +45,7 @@ namespace VirtoCommerce.NotificationsModule.Tests.UnitTests
             _cacheEntryMock.SetupGet(c => c.ExpirationTokens).Returns(new List<IChangeToken>());
 
             _notificationSearchServiceMock = new Mock<INotificationSearchService>();
-           
+
             if (!AbstractTypeFactory<NotificationEntity>.AllTypeInfos.SelectMany(x => x.AllSubclasses).Contains(typeof(EmailNotificationEntity)))
                 AbstractTypeFactory<NotificationEntity>.RegisterType<EmailNotificationEntity>();
         }
@@ -70,8 +69,7 @@ namespace VirtoCommerce.NotificationsModule.Tests.UnitTests
             //_notificationRegistrar.RegisterNotification<RegistrationEmailNotification>();
             var service = GetNotificationService();
             var cacheKey = CacheKey.With(service.GetType(), nameof(service.GetByIdsAsync), string.Join("-", new[] { id }), responseGroup);
-            _platformMemoryCacheMock.Setup(pmc => pmc.CreateEntry(cacheKey)).Returns(_cacheEntryMock.Object);
-            
+
             //Act
             var result = await service.GetByIdsAsync(new[] { id }, responseGroup);
 
@@ -138,7 +136,7 @@ namespace VirtoCommerce.NotificationsModule.Tests.UnitTests
 
         private NotificationService GetNotificationService()
         {
-            return GetNotificationService(_platformMemoryCacheMock.Object);
+            return GetNotificationService(_memCache);
         }
 
         private NotificationService GetNotificationServiceWithPlatformMemoryCache()
