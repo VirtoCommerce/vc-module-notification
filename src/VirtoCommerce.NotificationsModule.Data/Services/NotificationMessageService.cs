@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using FluentValidation;
 using VirtoCommerce.NotificationsModule.Core.Events;
@@ -42,6 +43,11 @@ namespace VirtoCommerce.NotificationsModule.Data.Services
         {
             ValidateMessageProperties(messages);
 
+            await InnerSaveNotificationMessagesAsync(messages);
+        }
+
+        private async Task InnerSaveNotificationMessagesAsync(NotificationMessage[] messages)
+        {
             var changedEntries = new List<GenericChangedEntry<NotificationMessage>>();
             var pkMap = new PrimaryKeyResolvingMap();
 
@@ -85,9 +91,18 @@ namespace VirtoCommerce.NotificationsModule.Data.Services
             }
 
             var validator = AbstractTypeFactory<NotificationMessageValidator>.TryCreateInstance();
-            foreach (var notification in messages)
+            foreach (var message in messages)
             {
-                validator.ValidateAndThrow(notification);
+                try
+                {
+                    validator.ValidateAndThrow(message);
+                }
+                catch (ValidationException ex)
+                {
+                    message.LastSendError = ex.Message;
+                    InnerSaveNotificationMessagesAsync(messages.ToArray()).GetAwaiter().GetResult();
+                    throw;
+                }
             }
         }
     }
