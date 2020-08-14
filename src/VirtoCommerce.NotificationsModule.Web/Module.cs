@@ -18,6 +18,7 @@ using VirtoCommerce.NotificationsModule.Data.Model;
 using VirtoCommerce.NotificationsModule.Data.Repositories;
 using VirtoCommerce.NotificationsModule.Data.Senders;
 using VirtoCommerce.NotificationsModule.Data.Services;
+using VirtoCommerce.NotificationsModule.Data.TemplateLoaders;
 using VirtoCommerce.NotificationsModule.LiquidRenderer;
 using VirtoCommerce.NotificationsModule.SendGrid;
 using VirtoCommerce.NotificationsModule.Smtp;
@@ -53,6 +54,9 @@ namespace VirtoCommerce.NotificationsModule.Web
             serviceCollection.AddTransient<IEmailSender, EmailNotificationMessageSender>();
             serviceCollection.AddTransient<NotificationsExportImport>();
             serviceCollection.AddTransient<NotificationScriptObject>();
+
+            serviceCollection.AddTransient<INotificationTemplateLoader, FileSystemNotificationTemplateLoader>();
+            serviceCollection.AddOptions<FileSystemTemplateLoaderOptions>();
 
             serviceCollection.AddSingleton<INotificationMessageSenderProviderFactory, NotificationMessageSenderProviderFactory>();
 

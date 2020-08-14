@@ -48,7 +48,7 @@ namespace VirtoCommerce.NotificationsModule.Tests.UnitTests
             _notificationSearchServiceMock = new Mock<INotificationSearchService>();
             _memCache = GetCache();
             _cacheEntryMock = new Mock<ICacheEntry>();
-            _notificationRegistrar = new NotificationRegistrar(_notificationServiceMock.Object, _notificationSearchServiceMock.Object);
+            _notificationRegistrar = new NotificationRegistrar(_notificationServiceMock.Object, _notificationSearchServiceMock.Object, null);
             _notificationSearchService = new NotificationSearchService(_repositoryFactory, _notificationServiceMock.Object, _memCache);
 
          

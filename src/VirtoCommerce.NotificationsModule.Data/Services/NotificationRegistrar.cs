@@ -12,11 +12,16 @@ namespace VirtoCommerce.NotificationsModule.Data.Services
     {
         private readonly INotificationService _notificationService;
         private readonly INotificationSearchService _notificationSearchService;
+        private readonly INotificationTemplateLoader _templateLoader;
 
-        public NotificationRegistrar(INotificationService notificationService, INotificationSearchService notificationSearchService)
+        public NotificationRegistrar(
+            INotificationService notificationService
+            , INotificationSearchService notificationSearchService
+            , INotificationTemplateLoader templateLoader)
         {
             _notificationService = notificationService;
             _notificationSearchService = notificationSearchService;
+            _templateLoader = templateLoader;
         }
         
         public NotificationBuilder RegisterNotification<T>(Func<Notification> factory = null) where T : Notification
@@ -30,6 +35,10 @@ namespace VirtoCommerce.NotificationsModule.Data.Services
                     if (!result.PredefinedTemplates.IsNullOrEmpty())
                     {
                         x.Templates = result.PredefinedTemplates.ToList();
+                    }
+                    if (!string.IsNullOrEmpty(result.DiscoveryPath))
+                    {
+                        x.Templates.AddRange(_templateLoader.LoadTemplates(x, result.DiscoveryPath, result.FallbackDiscoveryPath));
                     }
                 });
 
@@ -50,6 +59,10 @@ namespace VirtoCommerce.NotificationsModule.Data.Services
                     if (!result.PredefinedTemplates.IsNullOrEmpty())
                     {
                         x.Templates = result.PredefinedTemplates.ToList();
+                    }
+                    if (!string.IsNullOrEmpty(result.DiscoveryPath))
+                    {
+                        x.Templates.AddRange(_templateLoader.LoadTemplates(x, result.DiscoveryPath, result.FallbackDiscoveryPath));
                     }
                 });
 
