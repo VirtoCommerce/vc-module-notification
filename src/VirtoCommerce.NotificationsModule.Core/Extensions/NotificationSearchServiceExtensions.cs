@@ -38,14 +38,14 @@ namespace VirtoCommerce.NotificationsModule.Core.Extensions
             }
             var searchResult = await service.SearchNotificationsAsync(criteria);
 
-            var result = searchResult.Results.FirstOrDefault(x => x.TenantIdentity == tenant);
+            var result = searchResult?.Results.FirstOrDefault(x => x.TenantIdentity == tenant);
             if (result == null)
             {
                 //Find first global notification (without tenant)
                 criteria.TenantId = null;
                 criteria.TenantType = null;
                 searchResult = await service.SearchNotificationsAsync(criteria);
-                result = searchResult.Results.FirstOrDefault(x => x.TenantIdentity.IsEmpty);
+                result = searchResult?.Results.FirstOrDefault(x => x.TenantIdentity.IsEmpty);
             }
 
             return result;

@@ -15,7 +15,7 @@ namespace VirtoCommerce.NotificationsModule.Data.Senders
         private readonly INotificationMessageSenderProviderFactory _notificationMessageSenderProviderFactory;
         private readonly EmailSendingOptions _emailSendingOptions;
 
-        public EmailNotificationMessageSender(INotificationMessageSenderProviderFactory notificationMessageSenderProviderFactory, IOptions<EmailSendingOptions> emailSendingOptions/*, IConfiguration configuration*/)
+        public EmailNotificationMessageSender(INotificationMessageSenderProviderFactory notificationMessageSenderProviderFactory, IOptions<EmailSendingOptions> emailSendingOptions)
         {
             _notificationMessageSenderProviderFactory = notificationMessageSenderProviderFactory;
             _emailSendingOptions = emailSendingOptions.Value;

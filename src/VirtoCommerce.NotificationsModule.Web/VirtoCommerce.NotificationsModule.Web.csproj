@@ -21,6 +21,7 @@
     <PackageReference Include="VirtoCommerce.Platform.Core" Version="3.5.0" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\VirtoCommerce.NotificationModule.Twilio\VirtoCommerce.NotificationModule.Twilio.csproj" />
     <ProjectReference Include="..\VirtoCommerce.NotificationsModule.Core\VirtoCommerce.NotificationsModule.Core.csproj" />
     <ProjectReference Include="..\VirtoCommerce.NotificationsModule.Data\VirtoCommerce.NotificationsModule.Data.csproj" />
     <ProjectReference Include="..\VirtoCommerce.NotificationsModule.LiquidRenderer\VirtoCommerce.NotificationsModule.LiquidRenderer.csproj" />
