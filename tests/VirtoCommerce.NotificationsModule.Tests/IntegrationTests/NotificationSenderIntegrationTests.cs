@@ -14,6 +14,7 @@ using VirtoCommerce.NotificationsModule.Data.Senders;
 using VirtoCommerce.NotificationsModule.Data.Services;
 using VirtoCommerce.NotificationsModule.Data.TemplateLoaders;
 using VirtoCommerce.NotificationsModule.LiquidRenderer;
+using VirtoCommerce.NotificationsModule.LiquidRenderer.Filters;
 using VirtoCommerce.NotificationsModule.SendGrid;
 using VirtoCommerce.NotificationsModule.Smtp;
 using VirtoCommerce.NotificationsModule.Tests.Model;
@@ -48,7 +49,7 @@ namespace VirtoCommerce.NotificationsModule.Tests.IntegrationTests
                 Password = "",
                 EnableSsl = true
             };
-            _templateRender = new LiquidTemplateRenderer();
+            _templateRender = new LiquidTemplateRenderer(Options.Create(new LiquidRenderOptions() { CustomFilterTypes = new HashSet<Type> { typeof(UrlFilters), typeof(TranslationFilter) } }));
             _messageServiceMock = new Mock<INotificationMessageService>();
             _emailSendingOptionsMock = new Mock<IOptions<SmtpSenderOptions>>();
             _logNotificationSenderMock = new Mock<ILogger<NotificationSender>>();

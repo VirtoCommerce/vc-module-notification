@@ -10,7 +10,9 @@ using VirtoCommerce.NotificationsModule.Core.Types;
 using VirtoCommerce.NotificationsModule.Data.Model;
 using VirtoCommerce.NotificationsModule.Data.Repositories;
 using VirtoCommerce.NotificationsModule.Data.TemplateLoaders;
+using VirtoCommerce.NotificationsModule.LiquidRenderer;
 using VirtoCommerce.NotificationsModule.Tests.NotificationTypes;
+using VirtoCommerce.NotificationsSampleModule.Web.Filters;
 using VirtoCommerce.NotificationsSampleModule.Web.Models;
 using VirtoCommerce.NotificationsSampleModule.Web.Repositories;
 using VirtoCommerce.NotificationsSampleModule.Web.Types;
@@ -38,6 +40,10 @@ namespace VirtoCommerce.NotificationsSampleModule.Web
                 opt.DiscoveryPath = moduleTemplatesPath;
                 opt.FallbackDiscoveryPath = Path.Combine(moduleTemplatesPath, "Default");
             });
+            //To register a new custom liquid  filter  use the flowing syntax
+            serviceCollection.Configure<LiquidRenderOptions>(opt => opt.CustomFilterTypes.Add(typeof(CustomLiquidFilters)));
+            //or this alternative syntax
+            serviceCollection.AddLiquidRenderer().AddCustomLiquidFilterType(typeof(CustomLiquidFilters));
         }
 
         public void PostInitialize(IApplicationBuilder appBuilder)

@@ -251,7 +251,7 @@ namespace VirtoCommerce.NotificationsModule.LiquidRenderer.Filters
         {
             if (input == null)
             {
-                return null;
+                return Enumerable.Empty<object>();
             }
 
             var ary = input.Cast<object>().ToList();
