@@ -56,7 +56,7 @@ namespace VirtoCommerce.NotificationsModule.Data.TemplateLoaders
             var result = new HashSet<LocalizedTemplateContent>();
             if (Directory.Exists(path))
             {
-                var files = Directory.EnumerateFiles(path, $"{notification.Type}*.*", SearchOption.AllDirectories);
+                var files = Directory.EnumerateFiles(path, $"{notification.Type}*.*", SearchOption.TopDirectoryOnly);
 
                 foreach (var file in files)
                 {

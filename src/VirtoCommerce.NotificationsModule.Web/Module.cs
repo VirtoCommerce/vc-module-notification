@@ -56,7 +56,7 @@ namespace VirtoCommerce.NotificationsModule.Web
             serviceCollection.AddTransient<NotificationScriptObject>();
 
             serviceCollection.AddTransient<INotificationTemplateLoader, FileSystemNotificationTemplateLoader>();
-            serviceCollection.AddOptions<FileSystemTemplateLoaderOptions>();
+            serviceCollection.AddOptions<FileSystemTemplateLoaderOptions>().Bind(configuration.GetSection("Notifications:Templates")).ValidateDataAnnotations();
 
             serviceCollection.AddSingleton<INotificationMessageSenderProviderFactory, NotificationMessageSenderProviderFactory>();
 
