@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Hangfire;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Moq;
-using VirtoCommerce.NotificationModule.Twilio;
+using VirtoCommerce.NotificationsModule.Twilio;
 using VirtoCommerce.NotificationsModule.Core.Model;
 using VirtoCommerce.NotificationsModule.Core.Services;
 using VirtoCommerce.NotificationsModule.Core.Types;
@@ -37,9 +38,15 @@ namespace VirtoCommerce.NotificationsModule.Tests.IntegrationTests
         private readonly SmtpSenderOptions _emailSendingOptions;
         private readonly Mock<INotificationSearchService> _notificationSearchServiceMock;
         private readonly Mock<IBackgroundJobClient> _backgroundJobClient;
+        
 
         public NotificationSenderIntegrationTests()
         {
+            var builder = new ConfigurationBuilder()
+                .AddUserSecrets<NotificationSenderIntegrationTests>();
+
+            Configuration = builder.Build();
+
             _emailSendingOptions = new SmtpSenderOptions()
             {
                 SmtpServer = "smtp.gmail.com", // If use smtp.gmail.com then SSL is enabled and check https://www.google.com/settings/security/lesssecureapps
@@ -79,6 +86,8 @@ namespace VirtoCommerce.NotificationsModule.Tests.IntegrationTests
 
             _emailSendingOptionsMock.Setup(opt => opt.Value).Returns(_emailSendingOptions);
         }
+
+        public IConfiguration Configuration { get; set; }
 
         [Fact]
         public async Task SmtpEmailNotificationMessageSender_SuccessSentMessage()
@@ -146,11 +155,14 @@ namespace VirtoCommerce.NotificationsModule.Tests.IntegrationTests
             var notification = GetSmsNotification();
             var message = AbstractTypeFactory<NotificationMessage>.TryCreateInstance($"{notification.Kind}Message");
             await notification.ToMessageAsync(message, _templateRender);
+            var accountId = Configuration["TwilioAccountSID"];
+            var accountPassword = Configuration["TwilioAuthToken"];
+            var defaultSender = Configuration["TwilioDefaultSender"];
 
             var twilioSendingOptionsMock = new Mock<IOptions<TwilioSenderOptions>>();
-            twilioSendingOptionsMock.Setup(opt => opt.Value).Returns(new TwilioSenderOptions { AccountId = "", AccountPassword = "" });
+            twilioSendingOptionsMock.Setup(opt => opt.Value).Returns(new TwilioSenderOptions { AccountId = accountId, AccountPassword = accountPassword });
             var smsSendingOptions = new Mock<IOptions<SmsSendingOptions>>();
-            smsSendingOptions.Setup(opt => opt.Value).Returns(new SmsSendingOptions { SmsDefaultSender = "+7" });
+            smsSendingOptions.Setup(opt => opt.Value).Returns(new SmsSendingOptions { SmsDefaultSender = defaultSender });
             _messageSender = new TwilioSmsNotificationMessageSender(twilioSendingOptionsMock.Object, smsSendingOptions.Object);
             _messageServiceMock.Setup(x => x.GetNotificationsMessageByIds(It.IsAny<string[]>()))
                 .ReturnsAsync(new[] { message });
@@ -196,10 +208,11 @@ namespace VirtoCommerce.NotificationsModule.Tests.IntegrationTests
 
         private Notification GetSmsNotification()
         {
+            var recipient = Configuration["TwilioRecipient"];
             var message = "test sms";
             return new TwoFactorSmsNotification()
             {
-                Number = "+79123456789",
+                Number = recipient,
                 Templates = new List<NotificationTemplate>()
                 {
                     new SmsNotificationTemplate()

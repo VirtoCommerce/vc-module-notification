@@ -7,6 +7,7 @@
     <NoWarn>1701;1702;1705</NoWarn>
   </PropertyGroup>
   <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="3.1.7" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.5.0" />
     <PackageReference Include="MockQueryable.Moq" Version="3.1.1" />
     <PackageReference Include="Moq" Version="4.13.1" />
@@ -18,7 +19,7 @@
     <DotNetCliToolReference Include="dotnet-xunit" Version="2.3.1" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\src\VirtoCommerce.NotificationModule.Twilio\VirtoCommerce.NotificationModule.Twilio.csproj" />
+    <ProjectReference Include="..\..\src\VirtoCommerce.NotificationsModule.Twilio\VirtoCommerce.NotificationsModule.Twilio.csproj" />
     <ProjectReference Include="..\..\src\VirtoCommerce.NotificationsModule.Core\VirtoCommerce.NotificationsModule.Core.csproj" />
     <ProjectReference Include="..\..\src\VirtoCommerce.NotificationsModule.Data\VirtoCommerce.NotificationsModule.Data.csproj" />
     <ProjectReference Include="..\..\src\VirtoCommerce.NotificationsModule.LiquidRenderer\VirtoCommerce.NotificationsModule.LiquidRenderer.csproj" />
@@ -26,4 +27,11 @@
     <ProjectReference Include="..\..\src\VirtoCommerce.NotificationsModule.Smtp\VirtoCommerce.NotificationsModule.Smtp.csproj" />
     <ProjectReference Include="..\..\src\VirtoCommerce.NotificationsModule.Web\VirtoCommerce.NotificationsModule.Web.csproj" />
   </ItemGroup>
+
+    <PropertyGroup>
+        <UserSecretsId>VirtoCommerce.NotificationsModule.Tests-45791f6c-66dd-4623-8d97-1513b5965229</UserSecretsId>
+    </PropertyGroup>
+    <ItemGroup>
+        <DotNetCliToolReference Include="Microsoft.Extensions.SecretManager.Tools" Version="1.0.1" />
+    </ItemGroup>
 </Project>

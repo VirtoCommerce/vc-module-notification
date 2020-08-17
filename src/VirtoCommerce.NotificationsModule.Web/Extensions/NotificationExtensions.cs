@@ -11,7 +11,7 @@ namespace VirtoCommerce.NotificationsModule.Web.Extensions
     {
         public static void SetValue(this Notification notification, NotificationParameter param)
         {
-            var property = notification.GetType().GetProperty(ConvertPropertyName(param.ParameterName));
+            var property = notification.GetType().GetProperty(ConvertPropertyName(param.ParameterName, notification.Kind));
             if (property == null) return;
 
             var jObject = param.Value as JObject;
@@ -69,11 +69,11 @@ namespace VirtoCommerce.NotificationsModule.Web.Extensions
             }
         }
 
-        private static string ConvertPropertyName(string propertyName)
+        private static string ConvertPropertyName(string propertyName, string kind)
         {
             return propertyName
                 .Replace("Sender", "From")
-                .Replace("Recipient", "To");
+                .Replace("Recipient", kind.Equals(nameof(EmailNotification)) ? "To" : "Number");
         }
     }
 }

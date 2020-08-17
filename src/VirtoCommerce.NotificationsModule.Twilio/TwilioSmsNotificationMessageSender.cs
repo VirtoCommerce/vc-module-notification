@@ -9,7 +9,7 @@ using VirtoCommerce.NotificationsModule.Core.Exceptions;
 using VirtoCommerce.NotificationsModule.Core.Model;
 using VirtoCommerce.NotificationsModule.Core.Services;
 
-namespace VirtoCommerce.NotificationModule.Twilio
+namespace VirtoCommerce.NotificationsModule.Twilio
 {
     public class TwilioSmsNotificationMessageSender : INotificationMessageSender
     {

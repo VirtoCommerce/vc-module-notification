@@ -1,6 +1,6 @@
 using VirtoCommerce.NotificationsModule.Core.Model;
 
-namespace VirtoCommerce.NotificationModule.Twilio
+namespace VirtoCommerce.NotificationsModule.Twilio
 {
     public class TwilioSenderOptions : SmsGatewayOptions
     {       

@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
-using VirtoCommerce.NotificationModule.Twilio;
+using VirtoCommerce.NotificationsModule.Twilio;
 using VirtoCommerce.Notifications.Core.Types;
 using VirtoCommerce.NotificationsModule.Core;
 using VirtoCommerce.NotificationsModule.Core.Model;
@@ -70,11 +70,11 @@ namespace VirtoCommerce.NotificationsModule.Web
                 serviceCollection.AddTransient<INotificationMessageSender, SendGridEmailNotificationMessageSender>();
             }
 
-            serviceCollection.AddOptions<EmailSendingOptions>().Bind(configuration.GetSection("Notifications")).ValidateDataAnnotations();
+            serviceCollection.AddOptions<SmsSendingOptions>().Bind(configuration.GetSection("Notifications")).ValidateDataAnnotations();
             var smsSendingOptions = serviceCollection.BuildServiceProvider().GetService<IOptions<SmsSendingOptions>>().Value;
             if (smsSendingOptions.SmsGateway.Equals("Twilio"))
             {
-                serviceCollection.AddOptions<SmtpSenderOptions>().Bind(configuration.GetSection("Notifications:Twilio")).ValidateDataAnnotations();
+                serviceCollection.AddOptions<TwilioSenderOptions>().Bind(configuration.GetSection("Notifications:Twilio")).ValidateDataAnnotations();
                 serviceCollection.AddTransient<INotificationMessageSender, TwilioSmsNotificationMessageSender>();
             }
 
@@ -143,7 +143,7 @@ namespace VirtoCommerce.NotificationsModule.Web
             var smsNotificationGateway = configuration.GetSection("Notifications:SmsGateway").Value;
             switch (smsNotificationGateway)
             {
-                default:
+                case "Twilio":
                     notificationMessageSenderProviderFactory.RegisterSenderForType<SmsNotification, TwilioSmsNotificationMessageSender>();
                     break;
             }
