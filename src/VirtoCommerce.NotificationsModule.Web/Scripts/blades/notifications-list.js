@@ -97,10 +97,7 @@ angular.module('virtoCommerce.notificationsModule')
             gridOptionExtension.tryExtendGridOptions(gridId, gridOptions);
 
             gridOptions.onRegisterApi = function (gridApi) {
-                $scope.gridApi = gridApi;
-                gridApi.core.on.sortChanged($scope, function () {
-                    if (!blade.isLoading) blade.refresh();
-                });
+                $scope.gridApi = gridApi;                
             };
 
             bladeUtils.initializePagination($scope);
