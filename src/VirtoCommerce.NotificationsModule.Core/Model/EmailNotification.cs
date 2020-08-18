@@ -29,11 +29,13 @@ namespace VirtoCommerce.NotificationsModule.Core.Model
         /// <summary>
         /// Sender
         /// </summary>
+        [NotificationParameter("Sender")]
         public string From { get; set; }
 
         /// <summary>
         /// Recipient
         /// </summary>
+        [NotificationParameter("Recipient")]
         public string To { get; set; }
 
         /// <summary>

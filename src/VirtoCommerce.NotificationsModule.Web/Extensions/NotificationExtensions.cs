@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Newtonsoft.Json.Linq;
 using VirtoCommerce.NotificationsModule.Core.Model;
 using VirtoCommerce.NotificationsModule.Web.Model;
@@ -11,7 +12,9 @@ namespace VirtoCommerce.NotificationsModule.Web.Extensions
     {
         public static void SetValue(this Notification notification, NotificationParameter param)
         {
-            var property = notification.GetType().GetProperty(ConvertPropertyName(param.ParameterName));
+            var property = notification.GetType().GetProperty(param.ParameterName) ??
+                notification.GetType().GetProperties().FirstOrDefault(p => p.GetCustomAttributes(typeof(NotificationParameterAttribute), true).Any(
+                    x => ((NotificationParameterAttribute)x).Alias.Equals(param.ParameterName)));
             if (property == null) return;
 
             var jObject = param.Value as JObject;
@@ -67,13 +70,6 @@ namespace VirtoCommerce.NotificationsModule.Web.Extensions
                         break;
                 }
             }
-        }
-
-        private static string ConvertPropertyName(string propertyName)
-        {
-            return propertyName
-                .Replace("Sender", "From")
-                .Replace("Recipient", "To");
         }
     }
 }
