@@ -76,10 +76,14 @@ namespace VirtoCommerce.NotificationsModule.Web
 
             serviceCollection.AddOptions<SmsSendingOptions>().Bind(configuration.GetSection("Notifications")).ValidateDataAnnotations();
             var smsGateway = configuration.GetValue<string>("Notifications:SmsGateway");
-            if (smsGateway.Equals("Twilio"))
+            switch (smsGateway)
             {
-                serviceCollection.AddOptions<TwilioSenderOptions>().Bind(configuration.GetSection("Notifications:Twilio")).ValidateDataAnnotations();
-                serviceCollection.AddTransient<INotificationMessageSender, TwilioSmsNotificationMessageSender>();
+                case "Twilio":
+                    {
+                        serviceCollection.AddOptions<TwilioSenderOptions>().Bind(configuration.GetSection("Notifications:Twilio")).ValidateDataAnnotations();
+                        serviceCollection.AddTransient<INotificationMessageSender, TwilioSmsNotificationMessageSender>();
+                        break;
+                    }
             }
 
             serviceCollection.AddLiquidRenderer(builder =>
