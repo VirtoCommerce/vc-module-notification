@@ -18,7 +18,9 @@ using VirtoCommerce.NotificationsModule.Data.Model;
 using VirtoCommerce.NotificationsModule.Data.Repositories;
 using VirtoCommerce.NotificationsModule.Data.Senders;
 using VirtoCommerce.NotificationsModule.Data.Services;
+using VirtoCommerce.NotificationsModule.Data.TemplateLoaders;
 using VirtoCommerce.NotificationsModule.LiquidRenderer;
+using VirtoCommerce.NotificationsModule.LiquidRenderer.Filters;
 using VirtoCommerce.NotificationsModule.SendGrid;
 using VirtoCommerce.NotificationsModule.Smtp;
 using VirtoCommerce.NotificationsModule.Web.JsonConverters;
@@ -49,10 +51,12 @@ namespace VirtoCommerce.NotificationsModule.Web
             serviceCollection.AddTransient<INotificationMessageService, NotificationMessageService>();
             serviceCollection.AddTransient<INotificationMessageSearchService, NotificationMessageSearchService>();
             serviceCollection.AddTransient<INotificationSender, NotificationSender>();
-            serviceCollection.AddTransient<INotificationTemplateRenderer, LiquidTemplateRenderer>();
             serviceCollection.AddTransient<IEmailSender, EmailNotificationMessageSender>();
             serviceCollection.AddTransient<NotificationsExportImport>();
             serviceCollection.AddTransient<NotificationScriptObject>();
+
+            serviceCollection.AddTransient<INotificationTemplateLoader, FileSystemNotificationTemplateLoader>();
+            serviceCollection.AddOptions<FileSystemTemplateLoaderOptions>().Bind(configuration.GetSection("Notifications:Templates")).ValidateDataAnnotations();
 
             serviceCollection.AddSingleton<INotificationMessageSenderProviderFactory, NotificationMessageSenderProviderFactory>();
 
@@ -68,6 +72,12 @@ namespace VirtoCommerce.NotificationsModule.Web
                 serviceCollection.AddOptions<SendGridSenderOptions>().Bind(configuration.GetSection("Notifications:SendGrid")).ValidateDataAnnotations();
                 serviceCollection.AddTransient<INotificationMessageSender, SendGridEmailNotificationMessageSender>();
             }
+
+            serviceCollection.AddLiquidRenderer(builder =>
+            {
+                builder.AddCustomLiquidFilterType(typeof(TranslationFilter));
+                builder.AddCustomLiquidFilterType(typeof(UrlFilters));
+            });
 
         }
 

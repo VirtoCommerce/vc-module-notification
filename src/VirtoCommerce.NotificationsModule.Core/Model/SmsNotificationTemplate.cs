@@ -10,5 +10,11 @@ namespace VirtoCommerce.NotificationsModule.Core.Model
         /// Message of Sms Template Notification
         /// </summary>
         public string Message { get; set; }
+
+        public override void PopulateFromLocalizedContent(LocalizedTemplateContent content)
+        {
+            base.PopulateFromLocalizedContent(content);
+            Message = content.Content;
+        }
     }
 }

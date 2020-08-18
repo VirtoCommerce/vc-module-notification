@@ -1,4 +1,4 @@
-﻿angular.module('virtoCommerce.notificationsModule')
+angular.module('virtoCommerce.notificationsModule')
 .controller('virtoCommerce.notificationsModule.editTemplateController', ['$rootScope', '$scope', '$timeout', '$localStorage', 'virtoCommerce.notificationsModule.notificationsModuleApi', 'FileUploader', 'platformWebApp.bladeNavigationService', 'platformWebApp.dialogService', 
  function ($rootScope, $scope, $timeout, $localStorage, notifications, FileUploader, bladeNavigationService, dialogService) {
     var blade = $scope.blade;    
@@ -88,7 +88,7 @@
 
 	blade.initialize = function () {
 		blade.isLoading = true;
-        var found = _.find(blade.notification.templates, function(templ){ return !templ.isReadonly && templ.languageCode === blade.languageCode });
+        var found = _.find(blade.notification.templates, function(templ){ return templ.languageCode === blade.languageCode });
         if (found){
             blade.currentEntity = angular.copy(found);        
             blade.origEntity = angular.copy(blade.currentEntity);
@@ -138,7 +138,7 @@
  
      
     $scope.$watch("blade.currentEntity", function () {
-		$scope.isValid = isDirty() && formScope && formScope.$valid;
+        $scope.isValid = isDirty() && formScope && formScope.$valid && !blade.origEntity.isReadonly;
 	}, true); 
 
 	blade.headIcon = 'fa-envelope';

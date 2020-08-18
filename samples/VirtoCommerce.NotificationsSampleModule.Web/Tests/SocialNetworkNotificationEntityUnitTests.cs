@@ -14,6 +14,7 @@ using VirtoCommerce.NotificationsModule.Core.Services;
 using VirtoCommerce.NotificationsModule.Data.Model;
 using VirtoCommerce.NotificationsModule.Data.Repositories;
 using VirtoCommerce.NotificationsModule.Data.Services;
+using VirtoCommerce.NotificationsModule.Data.TemplateLoaders;
 using VirtoCommerce.NotificationsModule.Tests.Common;
 using VirtoCommerce.Platform.Caching;
 using VirtoCommerce.Platform.Core.Caching;
@@ -108,7 +109,7 @@ namespace VirtoCommerce.NotificationsSampleModule.Tests
             _notificationService = new NotificationService(_repositoryFactory, _eventPublisherMock.Object, _memCache);
             _notificationServiceMock = new Mock<INotificationService>();
             _notificationSearchService = new NotificationSearchService(_repositoryFactory, _notificationServiceMock.Object, _memCache);
-            _notificationRegistrar = new NotificationRegistrar(_notificationServiceMock.Object, _notificationSearchService);
+            _notificationRegistrar = new NotificationRegistrar(_notificationServiceMock.Object, _notificationSearchService, null, Options.Create(new FileSystemTemplateLoaderOptions()));
 
             if (!AbstractTypeFactory<NotificationEntity>.AllTypeInfos.SelectMany(x => x.AllSubclasses).Contains(typeof(SocialNetworkNotificationEntity)))
                 AbstractTypeFactory<NotificationEntity>.RegisterType<SocialNetworkNotificationEntity>();

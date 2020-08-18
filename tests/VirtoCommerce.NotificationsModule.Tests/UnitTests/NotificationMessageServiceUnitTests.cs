@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Options;
 using Moq;
 using VirtoCommerce.NotificationsModule.Core.Model;
 using VirtoCommerce.NotificationsModule.Core.Services;
@@ -9,6 +10,7 @@ using VirtoCommerce.NotificationsModule.Core.Types;
 using VirtoCommerce.NotificationsModule.Data.Model;
 using VirtoCommerce.NotificationsModule.Data.Repositories;
 using VirtoCommerce.NotificationsModule.Data.Services;
+using VirtoCommerce.NotificationsModule.Data.TemplateLoaders;
 using VirtoCommerce.Platform.Core.Common;
 using VirtoCommerce.Platform.Core.Domain;
 using VirtoCommerce.Platform.Core.Events;
@@ -49,7 +51,7 @@ namespace VirtoCommerce.NotificationsModule.Tests.UnitTests
             criteria.NotificationType = nameof(RegistrationEmailNotification);
             criteria.Take = 1;
             _notificationSearchServiceMock.Setup(x => x.SearchNotificationsAsync(criteria)).ReturnsAsync(new NotificationSearchResult());
-            var notificationService = new NotificationRegistrar(_notificationServiceMock.Object, _notificationSearchServiceMock.Object);
+            var notificationService = new NotificationRegistrar(_notificationServiceMock.Object, _notificationSearchServiceMock.Object, null, Options.Create(new FileSystemTemplateLoaderOptions()));
             notificationService.RegisterNotification<RegistrationEmailNotification>();
         }
 

@@ -8,6 +8,7 @@ using Hangfire;
 using Hangfire.Common;
 using Hangfire.States;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Moq;
 using Newtonsoft.Json;
 using VirtoCommerce.NotificationsModule.Core.Model;
@@ -16,7 +17,9 @@ using VirtoCommerce.NotificationsModule.Core.Types;
 using VirtoCommerce.NotificationsModule.Data.Model;
 using VirtoCommerce.NotificationsModule.Data.Senders;
 using VirtoCommerce.NotificationsModule.Data.Services;
+using VirtoCommerce.NotificationsModule.Data.TemplateLoaders;
 using VirtoCommerce.NotificationsModule.LiquidRenderer;
+using VirtoCommerce.NotificationsModule.LiquidRenderer.Filters;
 using VirtoCommerce.NotificationsModule.Tests.Common;
 using VirtoCommerce.NotificationsModule.Tests.Model;
 using VirtoCommerce.NotificationsModule.Tests.NotificationTypes;
@@ -43,7 +46,7 @@ namespace VirtoCommerce.NotificationsModule.Tests.UnitTests
 
         public NotificationSenderUnitTests()
         {
-            _templateRender = new LiquidTemplateRenderer();
+            _templateRender = new LiquidTemplateRenderer(Options.Create(new LiquidRenderOptions() { CustomFilterTypes = new HashSet<Type> { typeof(UrlFilters), typeof(TranslationFilter) } }));
             _messageServiceMock = new Mock<INotificationMessageService>();
             _messageSenderMock = new Mock<INotificationMessageSender>();
             _logNotificationSenderMock = new Mock<ILogger<NotificationSender>>();
@@ -66,7 +69,8 @@ namespace VirtoCommerce.NotificationsModule.Tests.UnitTests
 
             _notificationServiceMock = new Mock<INotificationService>();
             _notificationSearchServiceMock = new Mock<INotificationSearchService>();
-            _notificationRegistrar = new NotificationRegistrar(_notificationServiceMock.Object, _notificationSearchServiceMock.Object);
+
+            _notificationRegistrar = new NotificationRegistrar(_notificationServiceMock.Object, _notificationSearchServiceMock.Object, null, Options.Create(new FileSystemTemplateLoaderOptions()));
         }
 
         [Fact]
