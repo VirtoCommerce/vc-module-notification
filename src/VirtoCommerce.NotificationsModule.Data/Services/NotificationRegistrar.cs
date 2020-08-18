@@ -1,9 +1,11 @@
 using System;
 using System.Linq;
+using Microsoft.Extensions.Options;
 using VirtoCommerce.NotificationsModule.Core.Extensions;
 using VirtoCommerce.NotificationsModule.Core.Model;
 using VirtoCommerce.NotificationsModule.Core.Services;
 using VirtoCommerce.NotificationsModule.Data.Caching;
+using VirtoCommerce.NotificationsModule.Data.TemplateLoaders;
 using VirtoCommerce.Platform.Core.Common;
 
 namespace VirtoCommerce.NotificationsModule.Data.Services
@@ -12,11 +14,19 @@ namespace VirtoCommerce.NotificationsModule.Data.Services
     {
         private readonly INotificationService _notificationService;
         private readonly INotificationSearchService _notificationSearchService;
+        private readonly INotificationTemplateLoader _templateLoader;
+        private readonly FileSystemTemplateLoaderOptions _options;
 
-        public NotificationRegistrar(INotificationService notificationService, INotificationSearchService notificationSearchService)
+        public NotificationRegistrar(
+            INotificationService notificationService
+            , INotificationSearchService notificationSearchService
+            , INotificationTemplateLoader templateLoader
+            , IOptions<FileSystemTemplateLoaderOptions> options)
         {
             _notificationService = notificationService;
             _notificationSearchService = notificationSearchService;
+            _templateLoader = templateLoader;
+            _options = options.Value;
         }
         
         public NotificationBuilder RegisterNotification<T>(Func<Notification> factory = null) where T : Notification
@@ -30,6 +40,13 @@ namespace VirtoCommerce.NotificationsModule.Data.Services
                     if (!result.PredefinedTemplates.IsNullOrEmpty())
                     {
                         x.Templates = result.PredefinedTemplates.ToList();
+                    }
+                    var templatesDiscoveryPath = string.IsNullOrEmpty(result.DiscoveryPath) ? _options.DiscoveryPath : result.DiscoveryPath;
+                    var fallbackDiscoveryPath = string.IsNullOrEmpty(result.FallbackDiscoveryPath) ? _options.FallbackDiscoveryPath : result.FallbackDiscoveryPath;
+
+                    if (!string.IsNullOrEmpty(templatesDiscoveryPath))
+                    {
+                        x.Templates.AddRange(_templateLoader.LoadTemplates(x, templatesDiscoveryPath, fallbackDiscoveryPath));
                     }
                 });
 
@@ -50,6 +67,10 @@ namespace VirtoCommerce.NotificationsModule.Data.Services
                     if (!result.PredefinedTemplates.IsNullOrEmpty())
                     {
                         x.Templates = result.PredefinedTemplates.ToList();
+                    }
+                    if (!string.IsNullOrEmpty(result.DiscoveryPath))
+                    {
+                        x.Templates.AddRange(_templateLoader.LoadTemplates(x, result.DiscoveryPath, result.FallbackDiscoveryPath));
                     }
                 });
 
