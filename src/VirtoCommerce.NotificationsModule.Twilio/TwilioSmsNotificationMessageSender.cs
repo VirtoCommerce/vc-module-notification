@@ -15,6 +15,7 @@ namespace VirtoCommerce.NotificationsModule.Twilio
     {
         private readonly TwilioSenderOptions _options;
         private readonly SmsSendingOptions _smsSendingOptions;
+
         public TwilioSmsNotificationMessageSender(IOptions<TwilioSenderOptions> twilioOptions, IOptions<SmsSendingOptions> smsSendingOptions)
         {
             _options = twilioOptions.Value;
