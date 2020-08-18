@@ -18,5 +18,5 @@ namespace VirtoCommerce.NotificationsModule.Core.Model
         /// </summary>
         [Required]
         public string SmsGateway { get; set; }
-    }    
+    }
 }
