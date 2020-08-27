@@ -26,7 +26,8 @@ namespace VirtoCommerce.NotificationsModule.Core.Model
 
         public virtual void PopulateFromLocalizedContent(LocalizedTemplateContent content)
         {
-            LanguageCode = content?.LanguageCode;
+            //Need to left language as null for empty string
+            LanguageCode = !string.IsNullOrEmpty(content?.LanguageCode) ? content.LanguageCode : null;
         }
 
         #region ICloneable members

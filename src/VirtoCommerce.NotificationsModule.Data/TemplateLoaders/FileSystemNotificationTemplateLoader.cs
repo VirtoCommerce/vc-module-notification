@@ -65,7 +65,7 @@ namespace VirtoCommerce.NotificationsModule.Data.TemplateLoaders
                     {
                         result.Add(new LocalizedTemplateContent
                         {
-                            LanguageCode = match.Groups["lang"]?.Value.TrimStart('.'),
+                            LanguageCode = match.Groups["lang"]?.Value.Trim().TrimStart('.'),
                             PartName = match.Groups["part"]?.Value,
                             Content = File.ReadAllText(file)
                         });

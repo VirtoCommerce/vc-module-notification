@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Extensions.Options;
 using VirtoCommerce.NotificationsModule.Core.Extensions;
@@ -46,6 +47,10 @@ namespace VirtoCommerce.NotificationsModule.Data.Services
 
                     if (!string.IsNullOrEmpty(templatesDiscoveryPath))
                     {
+                        if (x.Templates == null)
+                        {
+                            x.Templates = new List<NotificationTemplate>();
+                        }
                         x.Templates.AddRange(_templateLoader.LoadTemplates(x, templatesDiscoveryPath, fallbackDiscoveryPath));
                     }
                 });
