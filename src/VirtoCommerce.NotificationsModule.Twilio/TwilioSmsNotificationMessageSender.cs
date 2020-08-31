@@ -13,6 +13,7 @@ namespace VirtoCommerce.NotificationsModule.Twilio
 {
     public class TwilioSmsNotificationMessageSender : INotificationMessageSender
     {
+        public const string Name = "Twilio";
         private readonly TwilioSenderOptions _options;
         private readonly SmsSendingOptions _smsSendingOptions;
 

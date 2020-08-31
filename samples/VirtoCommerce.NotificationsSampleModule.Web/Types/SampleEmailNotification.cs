@@ -1,6 +1,6 @@
 using VirtoCommerce.NotificationsModule.Core.Model;
 
-namespace VirtoCommerce.NotificationsModule.Tests.NotificationTypes
+namespace VirtoCommerce.NotificationsSampleModule.Web.Types
 {
     public class SampleEmailNotification : EmailNotification
     {

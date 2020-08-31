@@ -64,6 +64,24 @@ namespace VirtoCommerce.NotificationsModule.Tests.UnitTests
         }
 
         [Fact]
+        public void FindWithLanguage_WhenIsEnUSThereIsNoEn_ReturnDefaultLanguage()
+        {
+            //Arrange
+            string languageCode = "en-US";
+            var templates = new List<IHasLanguageCode>()
+            {
+                new SomeTemplate { LanguageCode = null }
+            };
+
+            //Act
+            var result = templates.FindWithLanguage(languageCode);
+
+            //Assert
+            Assert.NotNull(result);
+            Assert.Null(result.LanguageCode);
+        }
+
+        [Fact]
         public void FindWithLanguage_WhenWrongCode_ReturnDefaultLanguage()
         {
             //Arrange

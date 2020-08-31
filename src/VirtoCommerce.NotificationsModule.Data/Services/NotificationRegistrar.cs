@@ -75,6 +75,10 @@ namespace VirtoCommerce.NotificationsModule.Data.Services
                     }
                     if (!string.IsNullOrEmpty(result.DiscoveryPath))
                     {
+                        if (x.Templates == null)
+                        {
+                            x.Templates = new List<NotificationTemplate>();
+                        }
                         x.Templates.AddRange(_templateLoader.LoadTemplates(x, result.DiscoveryPath, result.FallbackDiscoveryPath));
                     }
                 });
@@ -89,17 +93,19 @@ namespace VirtoCommerce.NotificationsModule.Data.Services
         {
             NotificationTypesCacheRegion.ExpireRegion();
             
-            var notification = _notificationSearchService.GetNotificationAsync<T>().GetAwaiter().GetResult();
+            var notificationResult = _notificationSearchService.GetNotificationAsync<T>().GetAwaiter().GetResult();
 
-            if (notification == null)
+            if (notificationResult == null)
             {
-                _notificationService.SaveChangesAsync(new[] { AbstractTypeFactory<Notification>.TryCreateInstance(typeof(T).Name) }).GetAwaiter().GetResult();
+                var notification = AbstractTypeFactory<Notification>.TryCreateInstance(typeof(T).Name);
+                notification.IsActive = true;
+                _notificationService.SaveChangesAsync(new[] { notification }).GetAwaiter().GetResult();
             }
             else
             {
                 //need to expire the region because not yeat add predefined templates
                 NotificationSearchCacheRegion.ExpireRegion();
-                NotificationCacheRegion.ExpireEntity(notification);
+                NotificationCacheRegion.ExpireEntity(notificationResult);
             }
         }
     }

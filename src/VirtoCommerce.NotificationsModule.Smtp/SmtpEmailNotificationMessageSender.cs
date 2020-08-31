@@ -12,6 +12,7 @@ namespace VirtoCommerce.NotificationsModule.Smtp
 {
     public class SmtpEmailNotificationMessageSender : INotificationMessageSender
     {
+        public const string Name = "Smtp";
         private readonly SmtpSenderOptions _emailSendingOptions;
 
         public SmtpEmailNotificationMessageSender(IOptions<SmtpSenderOptions> emailSendingOptions)
