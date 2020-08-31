@@ -93,19 +93,17 @@ namespace VirtoCommerce.NotificationsModule.Data.Services
         {
             NotificationTypesCacheRegion.ExpireRegion();
             
-            var notificationResult = _notificationSearchService.GetNotificationAsync<T>().GetAwaiter().GetResult();
+            var notification = _notificationSearchService.GetNotificationAsync<T>().GetAwaiter().GetResult();
 
-            if (notificationResult == null)
+            if (notification == null)
             {
-                var notification = AbstractTypeFactory<Notification>.TryCreateInstance(typeof(T).Name);
-                notification.IsActive = true;
-                _notificationService.SaveChangesAsync(new[] { notification }).GetAwaiter().GetResult();
+                _notificationService.SaveChangesAsync(new[] { AbstractTypeFactory<Notification>.TryCreateInstance(typeof(T).Name) }).GetAwaiter().GetResult();
             }
             else
             {
                 //need to expire the region because not yeat add predefined templates
                 NotificationSearchCacheRegion.ExpireRegion();
-                NotificationCacheRegion.ExpireEntity(notificationResult);
+                NotificationCacheRegion.ExpireEntity(notification);
             }
         }
     }
