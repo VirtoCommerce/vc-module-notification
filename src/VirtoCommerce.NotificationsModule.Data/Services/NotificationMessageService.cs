@@ -12,6 +12,7 @@ using VirtoCommerce.NotificationsModule.Data.Repositories;
 using VirtoCommerce.NotificationsModule.Data.Validation;
 using VirtoCommerce.Platform.Core.Common;
 using VirtoCommerce.Platform.Core.Events;
+using VirtoCommerce.Platform.Core.Exceptions;
 using VirtoCommerce.Platform.Data.Infrastructure;
 
 namespace VirtoCommerce.NotificationsModule.Data.Services
@@ -41,9 +42,13 @@ namespace VirtoCommerce.NotificationsModule.Data.Services
 
         public async Task SaveNotificationMessagesAsync(NotificationMessage[] messages)
         {
-            ValidateMessageProperties(messages);
-
+            var validationResult = ValidateMessageProperties(messages);
             await InnerSaveNotificationMessagesAsync(messages);
+
+            if (!validationResult)
+            {
+                throw new PlatformException("There are validation errors. Look at notification feeds.");
+            }
         }
 
         private async Task InnerSaveNotificationMessagesAsync(NotificationMessage[] messages)
@@ -83,7 +88,7 @@ namespace VirtoCommerce.NotificationsModule.Data.Services
             }
         }
 
-        private void ValidateMessageProperties(IEnumerable<NotificationMessage> messages)
+        private bool ValidateMessageProperties(IEnumerable<NotificationMessage> messages)
         {
             if (messages == null)
             {
@@ -91,19 +96,17 @@ namespace VirtoCommerce.NotificationsModule.Data.Services
             }
 
             var validator = AbstractTypeFactory<NotificationMessageValidator>.TryCreateInstance();
-            foreach (var message in messages)
+            var validationResult = messages.Select(m =>
             {
-                try
+                var result = validator.Validate(m);
+                if (!result.IsValid)
                 {
-                    validator.ValidateAndThrow(message);
+                    m.LastSendError = string.Join(Environment.NewLine, result.Errors.Select(e => e.ErrorMessage));
                 }
-                catch (ValidationException ex)
-                {
-                    message.LastSendError = ex.Message;
-                    InnerSaveNotificationMessagesAsync(messages.ToArray()).GetAwaiter().GetResult();
-                    throw;
-                }
-            }
+                return result;
+            }).ToArray();
+
+            return validationResult.Any(x => x.IsValid);
         }
     }
 }

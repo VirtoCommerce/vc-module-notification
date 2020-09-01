@@ -14,6 +14,7 @@ using VirtoCommerce.NotificationsModule.Data.TemplateLoaders;
 using VirtoCommerce.Platform.Core.Common;
 using VirtoCommerce.Platform.Core.Domain;
 using VirtoCommerce.Platform.Core.Events;
+using VirtoCommerce.Platform.Core.Exceptions;
 using Xunit;
 
 namespace VirtoCommerce.NotificationsModule.Tests.UnitTests
@@ -101,6 +102,32 @@ namespace VirtoCommerce.NotificationsModule.Tests.UnitTests
 
             //Act
             await _notificationMessageService.SaveNotificationMessagesAsync(messages.ToArray());
+        }
+
+        [Fact]
+        public void SaveNotificationMessages_SaveMessageWithValidationError()
+        {
+            //Arrange
+            var id = Guid.NewGuid().ToString();
+            var messages = new List<EmailNotificationMessage>
+            {
+                new EmailNotificationMessage()
+                {
+                    Id = id,
+                    NotificationId = Guid.NewGuid().ToString(),
+                    NotificationType = nameof(RegistrationEmailNotification),
+                    From = "test@test.com",
+                    //To = "test@test.com",
+                    Subject = "subj",
+                    Body = "body"
+                }
+            };
+            var messageEntity = new EmailNotificationMessageEntity() { Id = id, NotificationType = nameof(EmailNotificationMessage) };
+            var messageEntities = new List<NotificationMessageEntity> { messageEntity };
+            _repositoryMock.Setup(n => n.GetMessagesByIdsAsync(new[] { id })).ReturnsAsync(messageEntities.ToArray());
+
+            //Act
+            Assert.ThrowsAsync<PlatformException>(async () => await _notificationMessageService.SaveNotificationMessagesAsync(messages.ToArray()));
         }
     }
 }
