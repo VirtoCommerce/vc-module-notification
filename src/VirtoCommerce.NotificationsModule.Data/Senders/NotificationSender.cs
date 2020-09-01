@@ -39,7 +39,10 @@ namespace VirtoCommerce.NotificationsModule.Data.Senders
             {
                 var message = await CreateMessageAsync(notification);
 
-                _jobClient.Enqueue(() => TrySendNotificationMessageAsync(message.Id));
+                if (notification.IsSending)
+                {
+                    _jobClient.Enqueue(() => TrySendNotificationMessageAsync(message.Id));
+                }
             }
         }
 
@@ -62,7 +65,10 @@ namespace VirtoCommerce.NotificationsModule.Data.Senders
             {
                 var message = await CreateMessageAsync(notification);
 
-                return await TrySendNotificationMessageAsync(message.Id);
+                if (notification.IsSending)
+                {
+                    return await TrySendNotificationMessageAsync(message.Id);
+                }
             }
 
             return new NotificationSendResult();

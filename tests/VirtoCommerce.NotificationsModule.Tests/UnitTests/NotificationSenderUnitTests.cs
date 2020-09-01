@@ -473,5 +473,57 @@ namespace VirtoCommerce.NotificationsModule.Tests.UnitTests
             Expression<Func<Job, bool>> expression = a => condition(a);
             _backgroundJobClient.Verify(x => x.Create(It.Is(expression), It.IsAny<EnqueuedState>()));
         }
+
+        [Fact]
+        public async Task SendNotification_SetCustomValidationError_NotSend()
+        {
+            //Arrange
+            var language = "default";
+            var subject = "some subject";
+            var body = "some body";
+            var notification = new RegistrationEmailNotification()
+            {
+                Templates = new List<NotificationTemplate>()
+                {
+                    new EmailNotificationTemplate()
+                    {
+                        Subject = subject,
+                        Body = body,
+                    }
+                },
+                LanguageCode = language
+            };
+            notification.SetCustomValidationError("some error");
+
+            var message = new EmailNotificationMessage()
+            {
+                Id = "1",
+                From = "from@from.com",
+                To = "to@to.com",
+                Subject = subject,
+                Body = body,
+                SendDate = DateTime.Now
+            };
+
+            _messageServiceMock.Setup(ms => ms.SaveNotificationMessagesAsync(new NotificationMessage[] { message }));
+            _messageSenderMock.Setup(ms => ms.SendNotificationAsync(It.IsAny<NotificationMessage>())).Throws(new SmtpException());
+
+            var sender = GetNotificationSender();
+
+            //Act
+            var sendResult = await sender.SendNotificationAsync(notification);
+
+            //Assert
+            Assert.False(sendResult.IsSuccess);
+        }
+
+        private NotificationSender GetNotificationSender()
+        {
+            return new NotificationSender(_templateRender,
+                _messageServiceMock.Object,
+                _logNotificationSenderMock.Object,
+                _senderFactoryMock.Object,
+                _backgroundJobClient.Object);
+        }
     }
 }
