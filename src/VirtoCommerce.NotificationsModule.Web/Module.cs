@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
+using VirtoCommerce.NotificationsModule.Twilio;
 using VirtoCommerce.Notifications.Core.Types;
 using VirtoCommerce.NotificationsModule.Core;
 using VirtoCommerce.NotificationsModule.Core.Model;
@@ -18,7 +19,9 @@ using VirtoCommerce.NotificationsModule.Data.Model;
 using VirtoCommerce.NotificationsModule.Data.Repositories;
 using VirtoCommerce.NotificationsModule.Data.Senders;
 using VirtoCommerce.NotificationsModule.Data.Services;
+using VirtoCommerce.NotificationsModule.Data.TemplateLoaders;
 using VirtoCommerce.NotificationsModule.LiquidRenderer;
+using VirtoCommerce.NotificationsModule.LiquidRenderer.Filters;
 using VirtoCommerce.NotificationsModule.SendGrid;
 using VirtoCommerce.NotificationsModule.Smtp;
 using VirtoCommerce.NotificationsModule.Web.JsonConverters;
@@ -49,25 +52,50 @@ namespace VirtoCommerce.NotificationsModule.Web
             serviceCollection.AddTransient<INotificationMessageService, NotificationMessageService>();
             serviceCollection.AddTransient<INotificationMessageSearchService, NotificationMessageSearchService>();
             serviceCollection.AddTransient<INotificationSender, NotificationSender>();
-            serviceCollection.AddTransient<INotificationTemplateRenderer, LiquidTemplateRenderer>();
             serviceCollection.AddTransient<IEmailSender, EmailNotificationMessageSender>();
             serviceCollection.AddTransient<NotificationsExportImport>();
             serviceCollection.AddTransient<NotificationScriptObject>();
 
+            serviceCollection.AddTransient<INotificationTemplateLoader, FileSystemNotificationTemplateLoader>();
+            serviceCollection.AddOptions<FileSystemTemplateLoaderOptions>().Bind(configuration.GetSection("Notifications:Templates")).ValidateDataAnnotations();
+
             serviceCollection.AddSingleton<INotificationMessageSenderProviderFactory, NotificationMessageSenderProviderFactory>();
 
             serviceCollection.AddOptions<EmailSendingOptions>().Bind(configuration.GetSection("Notifications")).ValidateDataAnnotations();
-            var emailSendingOptions = serviceCollection.BuildServiceProvider().GetService<IOptions<EmailSendingOptions>>().Value;
-            if (emailSendingOptions.Gateway.Equals("Smtp"))
+            var emailGateway = configuration.GetValue<string>("Notifications:Gateway");
+            switch (emailGateway)
             {
-                serviceCollection.AddOptions<SmtpSenderOptions>().Bind(configuration.GetSection("Notifications:Smtp")).ValidateDataAnnotations();
-                serviceCollection.AddTransient<INotificationMessageSender, SmtpEmailNotificationMessageSender>();
+                case SmtpEmailNotificationMessageSender.Name:
+                    {
+                        serviceCollection.AddOptions<SmtpSenderOptions>().Bind(configuration.GetSection($"Notifications:{SmtpEmailNotificationMessageSender.Name}")).ValidateDataAnnotations();
+                        serviceCollection.AddTransient<INotificationMessageSender, SmtpEmailNotificationMessageSender>();
+                        break;
+                    }
+                case SendGridEmailNotificationMessageSender.Name:
+                    {
+                        serviceCollection.AddOptions<SendGridSenderOptions>().Bind(configuration.GetSection($"Notifications:{SendGridEmailNotificationMessageSender.Name}")).ValidateDataAnnotations();
+                        serviceCollection.AddTransient<INotificationMessageSender, SendGridEmailNotificationMessageSender>();
+                        break;
+                    }
             }
-            else if (emailSendingOptions.Gateway.Equals("SendGrid"))
+
+            serviceCollection.AddOptions<SmsSendingOptions>().Bind(configuration.GetSection("Notifications")).ValidateDataAnnotations();
+            var smsGateway = configuration.GetValue<string>("Notifications:SmsGateway");
+            switch (smsGateway)
             {
-                serviceCollection.AddOptions<SendGridSenderOptions>().Bind(configuration.GetSection("Notifications:SendGrid")).ValidateDataAnnotations();
-                serviceCollection.AddTransient<INotificationMessageSender, SendGridEmailNotificationMessageSender>();
+                case TwilioSmsNotificationMessageSender.Name:
+                    {
+                        serviceCollection.AddOptions<TwilioSenderOptions>().Bind(configuration.GetSection($"Notifications:{TwilioSmsNotificationMessageSender.Name}")).ValidateDataAnnotations();
+                        serviceCollection.AddTransient<INotificationMessageSender, TwilioSmsNotificationMessageSender>();
+                        break;
+                    }
             }
+
+            serviceCollection.AddLiquidRenderer(builder =>
+            {
+                builder.AddCustomLiquidFilterType(typeof(TranslationFilter));
+                builder.AddCustomLiquidFilterType(typeof(UrlFilters));
+            });
 
         }
 
@@ -119,15 +147,23 @@ namespace VirtoCommerce.NotificationsModule.Web
 
             //TODO move out from here to projects
             var configuration = appBuilder.ApplicationServices.GetService<IConfiguration>();
-            var notificationGateway = configuration.GetSection("Notifications:Gateway").Value;
+            var emailGateway = configuration.GetValue<string>("Notifications:Gateway");
             var notificationMessageSenderProviderFactory = appBuilder.ApplicationServices.GetService<INotificationMessageSenderProviderFactory>();
-            switch (notificationGateway)
+            switch (emailGateway)
             {
                 case "SendGrid":
                     notificationMessageSenderProviderFactory.RegisterSenderForType<EmailNotification, SendGridEmailNotificationMessageSender>();
                     break;
                 default:
                     notificationMessageSenderProviderFactory.RegisterSenderForType<EmailNotification, SmtpEmailNotificationMessageSender>();
+                    break;
+            }
+
+            var smsGateway = configuration.GetValue<string>("Notifications:SmsGateway");
+            switch (smsGateway)
+            {
+                case "Twilio":
+                    notificationMessageSenderProviderFactory.RegisterSenderForType<SmsNotification, TwilioSmsNotificationMessageSender>();
                     break;
             }
 

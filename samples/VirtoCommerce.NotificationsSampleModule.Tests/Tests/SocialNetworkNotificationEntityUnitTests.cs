@@ -14,7 +14,7 @@ using VirtoCommerce.NotificationsModule.Core.Services;
 using VirtoCommerce.NotificationsModule.Data.Model;
 using VirtoCommerce.NotificationsModule.Data.Repositories;
 using VirtoCommerce.NotificationsModule.Data.Services;
-using VirtoCommerce.NotificationsModule.Tests.Common;
+using VirtoCommerce.NotificationsModule.Data.TemplateLoaders;
 using VirtoCommerce.Platform.Caching;
 using VirtoCommerce.Platform.Core.Caching;
 using VirtoCommerce.Platform.Core.Common;
@@ -108,7 +108,7 @@ namespace VirtoCommerce.NotificationsSampleModule.Tests
             _notificationService = new NotificationService(_repositoryFactory, _eventPublisherMock.Object, _memCache);
             _notificationServiceMock = new Mock<INotificationService>();
             _notificationSearchService = new NotificationSearchService(_repositoryFactory, _notificationServiceMock.Object, _memCache);
-            _notificationRegistrar = new NotificationRegistrar(_notificationServiceMock.Object, _notificationSearchService);
+            _notificationRegistrar = new NotificationRegistrar(_notificationServiceMock.Object, _notificationSearchService, null, Options.Create(new FileSystemTemplateLoaderOptions()));
 
             if (!AbstractTypeFactory<NotificationEntity>.AllTypeInfos.SelectMany(x => x.AllSubclasses).Contains(typeof(SocialNetworkNotificationEntity)))
                 AbstractTypeFactory<NotificationEntity>.RegisterType<SocialNetworkNotificationEntity>();
@@ -142,6 +142,8 @@ namespace VirtoCommerce.NotificationsSampleModule.Tests
             var notifications = new List<NotificationEntity> { new SocialNetworkNotificationEntity() { Id = id, Type = nameof(SocialNetworkNotification) } };
             var responseGroup = NotificationResponseGroup.Default.ToString();
             _repositoryMock.Setup(n => n.GetByIdsAsync(new[] { id }, responseGroup)).ReturnsAsync(notifications.ToArray());
+            var notificationsMock = notifications.AsQueryable().BuildMock();
+            _repositoryMock.Setup(x => x.Notifications).Returns(notificationsMock.Object);
             _notificationRegistrar.RegisterNotification<RegistrationSocialNetworkNotification>();
 
             //Act
@@ -170,6 +172,8 @@ namespace VirtoCommerce.NotificationsSampleModule.Tests
             };
             _repositoryMock.Setup(n => n.GetByIdsAsync(new[] { id }, NotificationResponseGroup.Full.ToString()))
                 .ReturnsAsync(notificationEntities.ToArray());
+            var notificationsMock = notificationEntities.AsQueryable().BuildMock();
+            _repositoryMock.Setup(x => x.Notifications).Returns(notificationsMock.Object);
             var notifications = notificationEntities.Select(n => n.ToModel(AbstractTypeFactory<Notification>.TryCreateInstance(n.Type)));
 
             //Act

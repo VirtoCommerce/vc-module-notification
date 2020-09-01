@@ -6,7 +6,10 @@ namespace VirtoCommerce.NotificationsModule.Tests.NotificationTypes
     {
         public SampleEmailNotification() : base(nameof(SampleEmailNotification))
         {
+        }
 
+        public SampleEmailNotification(string type) : base(type)
+        {
         }
     }
 }

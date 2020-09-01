@@ -27,6 +27,7 @@ namespace VirtoCommerce.NotificationsModule.Core.Model
         /// <summary>
         /// Number for sms notification
         /// </summary>
+        [NotificationParameter("Recipient")]
         public string Number { get; set; }
 
         public override async Task ToMessageAsync(NotificationMessage message, INotificationTemplateRenderer render)

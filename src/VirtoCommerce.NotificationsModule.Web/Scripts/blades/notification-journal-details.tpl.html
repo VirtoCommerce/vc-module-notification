@@ -30,7 +30,7 @@
                     </div>
                 </div>
             </div>
-            <div class="columns clearfix">
+            <div class="columns clearfix" ng-if="blade.currentEntity.kind ==='EmailNotification'">
                 <div class="column" style="width:20%">
                     <div class="list __info">
                         <div class="list-t">
@@ -52,13 +52,18 @@
                         </div>
                     </div>
                 </div>
-                <div class="column" style="width:80%">
+                <div class="column" style="width:80%" ng-if="blade.currentEntity.kind ==='EmailNotification'">
                     <div class="list __info">
                         <div class="list-descr">{{blade.currentEntity.to}}</div>
                     </div>
                 </div>
+                <div class="column" style="width:80%" ng-if="blade.currentEntity.kind ==='SmsNotification'">
+                    <div class="list __info">
+                        <div class="list-descr">{{blade.currentEntity.number}}</div>
+                    </div>
+                </div>
             </div>
-            <div class="columns clearfix">
+            <div class="columns clearfix" ng-if="blade.currentEntity.kind ==='EmailNotification'">
                 <div class="column" style="width:20%">
                     <div class="list __info">
                         <div class="list-t">
@@ -68,11 +73,11 @@
                 </div>
                 <div class="column" style="width:80%">
                     <div class="list __info">
-                        <div class="list-descr">{{blade.currentEntity.cc}}</div>
+                        <div class="list-descr">{{blade.currentEntity.cc.toString()}}</div>
                     </div>
                 </div>
             </div>
-            <div class="columns clearfix">
+            <div class="columns clearfix" ng-if="blade.currentEntity.kind ==='EmailNotification'">
                 <div class="column" style="width:20%">
                     <div class="list __info">
                         <div class="list-t">
@@ -82,7 +87,7 @@
                 </div>
                 <div class="column" style="width:80%">
                     <div class="list __info">
-                        <div class="list-descr">{{blade.currentEntity.bcc}}</div>
+                        <div class="list-descr">{{blade.currentEntity.bcc.toString()}}</div>
                     </div>
                 </div>
             </div>
@@ -114,7 +119,7 @@
                     </div>
                 </div>
             </div>
-            <div class="columns clearfix">
+            <div class="columns clearfix" ng-if="blade.currentEntity.kind ==='EmailNotification'">
                 <div class="column" style="width:20%">
                     <div class="list __info">
                         <div class="list-t">
@@ -128,11 +133,19 @@
                     </div>
                 </div>
             </div>
-            <ul class="list __info">
+            <ul class="list __info" ng-if="blade.currentEntity.kind ==='EmailNotification'">
                 <li class="list-item">
                     <div class="list-t">{{ 'notifications.blades.notification-journal-details.labels.body' | translate }}</div>
                     <div class="list-descr">
                         {{blade.currentEntity.body}}
+                    </div>
+                </li>
+            </ul>
+            <ul class="list __info" ng-if="blade.currentEntity.kind ==='SmsNotification'">
+                <li class="list-item">
+                    <div class="list-t">{{ 'notifications.blades.notification-journal-details.labels.body' | translate }}</div>
+                    <div class="list-descr">
+                        {{blade.currentEntity.message}}
                     </div>
                 </li>
             </ul>

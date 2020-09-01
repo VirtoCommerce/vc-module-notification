@@ -1,3 +1,5 @@
+using VirtoCommerce.Platform.Core.Common;
+
 namespace VirtoCommerce.NotificationsModule.Core.Model
 {
     /// <summary>
@@ -16,5 +18,19 @@ namespace VirtoCommerce.NotificationsModule.Core.Model
         /// Body of Notification
         /// </summary>
         public string Body { get; set; }
+
+        public override void PopulateFromLocalizedContent(LocalizedTemplateContent content)
+        {
+            base.PopulateFromLocalizedContent(content);
+
+            if(content.PartName.EqualsInvariant(nameof(Subject)))
+            {
+                Subject = content.Content;
+            }
+            else
+            {
+                Body = content.Content;
+            }
+        }
     }
 }

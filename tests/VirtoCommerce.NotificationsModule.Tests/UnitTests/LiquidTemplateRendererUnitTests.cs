@@ -2,9 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Options;
 using Moq;
 using Newtonsoft.Json.Linq;
 using VirtoCommerce.NotificationsModule.LiquidRenderer;
+using VirtoCommerce.NotificationsModule.LiquidRenderer.Filters;
+using VirtoCommerce.NotificationsModule.Tests.Model;
 using VirtoCommerce.Platform.Core.Assets;
 using VirtoCommerce.Platform.Core.Common;
 using VirtoCommerce.Platform.Core.Localizations;
@@ -21,7 +24,7 @@ namespace VirtoCommerce.NotificationsModule.Tests.UnitTests
         {
             _translationServiceMock = new Mock<ITranslationService>();
             _blobUrlResolverMock = new Mock<IBlobUrlResolver>();
-            _liquidTemplateRenderer = new LiquidTemplateRenderer();
+            _liquidTemplateRenderer = new LiquidTemplateRenderer(Options.Create(new LiquidRenderOptions() { CustomFilterTypes = new HashSet<Type> { typeof(UrlFilters), typeof(TranslationFilter) } }));
             
             //TODO
             if (!AbstractTypeFactory<NotificationScriptObject>.AllTypeInfos.SelectMany(x => x.AllSubclasses).Contains(typeof(NotificationScriptObject)))
@@ -43,6 +46,24 @@ namespace VirtoCommerce.NotificationsModule.Tests.UnitTests
 
             //Assert
             Assert.Equal("subj test", result);
+        }
+
+        [Fact]
+        public async Task Render_LanguageIsEmptyString()
+        {
+            //Arrange
+            var obj = new LiquidTestNotification() { Order = new CustomerOrder { Number = "123", Status = "New" } };
+            string body = "Your order 123 changed status to New.";
+            var jObject = JObject.FromObject(new { body });
+            _translationServiceMock.Setup(x => x.GetTranslationDataForLanguage(string.Empty)).Returns(jObject);
+            
+            string input = "{{ 'body' | translate }}";
+
+            //Act
+            var result = await _liquidTemplateRenderer.RenderAsync(input, obj, string.Empty);
+
+            //Assert
+            Assert.Equal("Your order 123 changed status to New.", result);
         }
 
         [Fact]
@@ -85,5 +106,17 @@ namespace VirtoCommerce.NotificationsModule.Tests.UnitTests
             }
         }
 
+
     }
+
+    public class LiquidTestNotification
+    {
+        public string RecipientOutletId { get; set; }
+        public string RecipientUserId { get; set; }
+        public string RecipientUserName { get; set; }
+        public string RecipientLanguage { get; set; }
+        public CustomerOrder Order { get; set; }
+    }
+
+
 }

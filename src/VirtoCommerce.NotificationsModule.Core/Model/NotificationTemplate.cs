@@ -23,6 +23,13 @@ namespace VirtoCommerce.NotificationsModule.Core.Model
 
         public bool IsPredefined { get; set; }
 
+
+        public virtual void PopulateFromLocalizedContent(LocalizedTemplateContent content)
+        {
+            //Need to left language as null for empty string
+            LanguageCode = !string.IsNullOrEmpty(content?.LanguageCode) ? content.LanguageCode : null;
+        }
+
         #region ICloneable members
 
         public virtual object Clone()
