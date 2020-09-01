@@ -11,7 +11,6 @@ using VirtoCommerce.NotificationsModule.Data.Model;
 using VirtoCommerce.NotificationsModule.Data.Repositories;
 using VirtoCommerce.NotificationsModule.Data.TemplateLoaders;
 using VirtoCommerce.NotificationsModule.LiquidRenderer;
-using VirtoCommerce.NotificationsModule.Tests.NotificationTypes;
 using VirtoCommerce.NotificationsSampleModule.Web.Filters;
 using VirtoCommerce.NotificationsSampleModule.Web.Models;
 using VirtoCommerce.NotificationsSampleModule.Web.Repositories;
@@ -51,6 +50,7 @@ namespace VirtoCommerce.NotificationsSampleModule.Web
             AbstractTypeFactory<NotificationEntity>.RegisterType<TwitterNotificationEntity>();
             var registrar = appBuilder.ApplicationServices.GetService<INotificationRegistrar>();
             registrar.RegisterNotification<PostTwitterNotification>();
+            registrar.RegisterNotification<CustomerInvitationNotification>();
 
             registrar.RegisterNotification<SampleEmailNotification>().WithTemplates(new EmailNotificationTemplate()
             {

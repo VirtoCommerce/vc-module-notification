@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+<Project Sdk="Microsoft.NET.Sdk.Web">
     <PropertyGroup>
         <TargetFramework>netcoreapp3.1</TargetFramework>
         <noWarn>1591</noWarn>
@@ -10,17 +10,12 @@
     </PropertyGroup>
     <ItemGroup>
         <PackageReference Include="Scriban" Version="2.1.1" />
-        <PackageReference Include="Moq" Version="4.13.1" />
-        <PackageReference Include="xunit" Version="2.4.1" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="3.1.2">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
         <ProjectReference Include="..\..\src\VirtoCommerce.NotificationsModule.Core\VirtoCommerce.NotificationsModule.Core.csproj" />
         <ProjectReference Include="..\..\src\VirtoCommerce.NotificationsModule.Data\VirtoCommerce.NotificationsModule.Data.csproj" />
-        <ProjectReference Include="..\..\tests\VirtoCommerce.NotificationsModule.Tests\VirtoCommerce.NotificationsModule.Tests.csproj" />
-    </ItemGroup>
-    <ItemGroup>
-        <Folder Include="Tests\" />
+        <ProjectReference Include="..\..\src\VirtoCommerce.NotificationsModule.LiquidRenderer\VirtoCommerce.NotificationsModule.LiquidRenderer.csproj" />
     </ItemGroup>
 </Project>

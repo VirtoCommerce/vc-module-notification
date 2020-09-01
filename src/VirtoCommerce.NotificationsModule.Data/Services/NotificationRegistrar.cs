@@ -75,6 +75,10 @@ namespace VirtoCommerce.NotificationsModule.Data.Services
                     }
                     if (!string.IsNullOrEmpty(result.DiscoveryPath))
                     {
+                        if (x.Templates == null)
+                        {
+                            x.Templates = new List<NotificationTemplate>();
+                        }
                         x.Templates.AddRange(_templateLoader.LoadTemplates(x, result.DiscoveryPath, result.FallbackDiscoveryPath));
                     }
                 });

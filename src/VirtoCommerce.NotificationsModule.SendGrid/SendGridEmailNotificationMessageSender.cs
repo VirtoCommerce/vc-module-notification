@@ -14,6 +14,7 @@ namespace VirtoCommerce.NotificationsModule.SendGrid
 {
     public class SendGridEmailNotificationMessageSender : INotificationMessageSender
     {
+        public const string Name = "SendGrid";
         private readonly SendGridSenderOptions _emailSendingOptions;
 
         public SendGridEmailNotificationMessageSender(IOptions<SendGridSenderOptions> emailSendingOptions)
