@@ -103,7 +103,7 @@ namespace VirtoCommerce.NotificationsModule.Data.Senders
             }
             else
             {
-                result.ErrorMessage = policyResult.FinalException?.Message;
+                result.ErrorMessage = "Sending is failed.";
                 message.LastSendError = policyResult.FinalException?.ToString();
             }
 
