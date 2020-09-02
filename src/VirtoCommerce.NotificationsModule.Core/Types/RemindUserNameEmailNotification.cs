@@ -10,6 +10,10 @@ namespace VirtoCommerce.NotificationsModule.Core.Types
             Alias = "RemindUserNameNotification";
         }
 
+        public RemindUserNameEmailNotification(string type) : base(type)
+        {
+        }
+
         public string UserName { get; set; }
     }
 }

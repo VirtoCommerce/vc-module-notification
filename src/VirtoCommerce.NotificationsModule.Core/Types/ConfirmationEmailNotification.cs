@@ -10,6 +10,11 @@ namespace VirtoCommerce.NotificationsModule.Core.Types
             Alias = "EmailConfirmationNotification";
         }
 
+        public ConfirmationEmailNotification(string type) : base(type)
+        {
+
+        }
+
         public string Url { get; set; }
     }
 }

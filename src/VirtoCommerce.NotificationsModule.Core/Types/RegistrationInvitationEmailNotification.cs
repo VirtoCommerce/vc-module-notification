@@ -10,6 +10,11 @@ namespace VirtoCommerce.NotificationsModule.Core.Types
             Alias = "RegistrationInvitationNotification";
         }
 
+        public RegistrationInvitationEmailNotification(string type) : base(type)
+        {
+
+        }
+
         public string InviteUrl { get; set; }
         public string Message { get; set; }
     }

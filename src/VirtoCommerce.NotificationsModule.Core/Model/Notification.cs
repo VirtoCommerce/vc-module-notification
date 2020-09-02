@@ -48,6 +48,12 @@ namespace VirtoCommerce.NotificationsModule.Core.Model
         public abstract string Kind { get; }
         public string OuterId { get; set; }
         public IList<NotificationTemplate> Templates { get; set; }
+        /// <summary>
+        /// need for saving validation errors
+        /// if the property is not empty then the notification is not sent
+        /// for seting use SetCustomValidationError
+        /// </summary>
+        public string CustomValidationError { get; private set; }
 
         public virtual Task ToMessageAsync(NotificationMessage message, INotificationTemplateRenderer render)
         {
@@ -55,6 +61,12 @@ namespace VirtoCommerce.NotificationsModule.Core.Model
             message.NotificationType = Type;
             message.NotificationId = Id;
             message.LanguageCode = LanguageCode;
+            message.LastSendError = CustomValidationError ?? message.LastSendError;
+
+            if (!string.IsNullOrEmpty(CustomValidationError))
+            {
+                message.Status = NotificationMessageStatus.Error;
+            }
 
             return Task.CompletedTask;
         }
@@ -77,6 +89,11 @@ namespace VirtoCommerce.NotificationsModule.Core.Model
             LanguageCode = request.LanguageCode;
 
             return this;
+        }
+
+        public virtual void SetCustomValidationError(string customValidationError)
+        {
+            CustomValidationError = customValidationError;
         }
 
         #region ICloneable members

@@ -53,9 +53,9 @@
 <script type="text/ng-template" id="status.cell.html">
     <div class="ui-grid-cell-contents">
         <div class="inner-contents">
-            <span class="table-status" ng-if="!row.entity.sendDate && row.entity.sendAttemptCount === row.entity.maxSendAttemptCount" style="background:red">{{ 'notifications.blades.notifications-journal.labels.error' | translate }}</span>
-            <span class="table-status" ng-if="!row.entity.sendDate && row.entity.sendAttemptCount < row.entity.maxSendAttemptCount" style="max-width:60px;">{{ 'notifications.blades.notifications-journal.labels.processing' | translate }}</span>
-            <span class="table-status __active" ng-if="row.entity.sendDate">{{ 'notifications.blades.notifications-journal.labels.success' | translate }}</span>
+            <span class="table-status" ng-if="(row.entity.status === 'Error')" style="background:red">{{ 'notifications.blades.notifications-journal.labels.error' | translate }}</span>
+            <span class="table-status" ng-if="(row.entity.status === 'Pending')" style="max-width:60px;">{{ 'notifications.blades.notifications-journal.labels.processing' | translate }}</span>
+            <span class="table-status __active" ng-if="(row.entity.status === 'Sent')">{{ 'notifications.blades.notifications-journal.labels.success' | translate }}</span>
         </div>
     </div>
 </script>

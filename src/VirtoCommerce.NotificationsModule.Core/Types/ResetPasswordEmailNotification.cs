@@ -9,6 +9,10 @@ namespace VirtoCommerce.NotificationsModule.Core.Types
 
         }
 
+        public ResetPasswordEmailNotification(string type) : base(type)
+        {
+        }
+
         public string Url { get; set; }
     }
 }

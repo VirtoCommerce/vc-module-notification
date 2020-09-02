@@ -182,7 +182,7 @@ namespace VirtoCommerce.NotificationsModule.Tests.IntegrationTests
         private NotificationSender GetNotificationSender()
         {
             _notificationMessageSenderProviderFactory = new NotificationMessageSenderProviderFactory(new List<INotificationMessageSender>() { _messageSender });
-            return new NotificationSender(_templateRender, _messageServiceMock.Object, _logNotificationSenderMock.Object, _notificationMessageSenderProviderFactory, _backgroundJobClient.Object);
+            return new NotificationSender(_templateRender, _messageServiceMock.Object, _notificationMessageSenderProviderFactory, _backgroundJobClient.Object);
         }
 
         private Notification GetNotification()

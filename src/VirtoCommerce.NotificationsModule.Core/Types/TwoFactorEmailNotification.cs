@@ -8,5 +8,9 @@ namespace VirtoCommerce.Notifications.Core.Types
         {
 
         }
+
+        public TwoFactorEmailNotification(string type) : base(type)
+        {
+        }
     }
 }

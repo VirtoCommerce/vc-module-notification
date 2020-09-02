@@ -17,19 +17,16 @@ namespace VirtoCommerce.NotificationsModule.Data.Senders
         private readonly INotificationTemplateRenderer _notificationTemplateRender;
         private readonly INotificationMessageService _notificationMessageService;
         private readonly INotificationMessageSenderProviderFactory _notificationMessageAccessor;
-        private readonly ILogger<NotificationSender> _logger;
         private readonly IBackgroundJobClient _jobClient;
 
         public NotificationSender(INotificationTemplateRenderer notificationTemplateRender
             , INotificationMessageService notificationMessageService
-            , ILogger<NotificationSender> logger
             , INotificationMessageSenderProviderFactory notificationMessageAccessor
             , IBackgroundJobClient jobClient)
         {
             _notificationTemplateRender = notificationTemplateRender;
             _notificationMessageService = notificationMessageService;
             _notificationMessageAccessor = notificationMessageAccessor;
-            _logger = logger;
             _jobClient = jobClient;
         }
 
@@ -77,10 +74,16 @@ namespace VirtoCommerce.NotificationsModule.Data.Senders
 
             if (message == null)
             {
-                result.ErrorMessage = $"can't find notification message by {messageId}";
+                result.ErrorMessage = $"Can't find notification message by {messageId}";
                 return result;
             }
-            
+
+            if (message.Status == NotificationMessageStatus.Error)
+            {
+                result.ErrorMessage = $"Can't send notification message by {messageId}. There are errors.";
+                return result;
+            }
+
             var policy = Policy.Handle<SentNotificationException>().WaitAndRetryAsync(_maxRetryAttempts, retryAttempt => TimeSpan.FromSeconds(Math.Pow(3, retryAttempt)));
 
             var policyResult = await policy.ExecuteAndCaptureAsync(() =>
@@ -94,13 +97,14 @@ namespace VirtoCommerce.NotificationsModule.Data.Senders
             {
                 result.IsSuccess = true;
                 message.SendDate = DateTime.Now;
+                message.Status = NotificationMessageStatus.Sent;
             }
             else
             {
-                result.ErrorMessage = policyResult.FinalException?.Message;
+                result.ErrorMessage = "Failed to send message.";
                 message.LastSendError = policyResult.FinalException?.ToString();
+                message.Status = NotificationMessageStatus.Error;
             }
-
 
             await _notificationMessageService.SaveNotificationMessagesAsync(new[] { message });
             

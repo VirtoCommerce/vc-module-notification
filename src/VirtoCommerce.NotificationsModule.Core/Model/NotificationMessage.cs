@@ -55,6 +55,11 @@ namespace VirtoCommerce.NotificationsModule.Core.Model
         /// </summary>
         public string LanguageCode { get; set; }
 
+        /// <summary>
+        /// Status of message
+        /// </summary>
+        public NotificationMessageStatus Status { get; set; }
+
         #region ICloneable members
 
         public virtual object Clone()

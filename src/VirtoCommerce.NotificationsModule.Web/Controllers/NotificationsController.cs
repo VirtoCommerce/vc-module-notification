@@ -192,7 +192,7 @@ namespace VirtoCommerce.NotificationsModule.Web.Controllers
         {
             notification.TenantIdentity = new TenantIdentity(request.ObjectId, request.ObjectTypeId);
             notification.LanguageCode = request.Language;
-
+            
             foreach (var parameter in request.NotificationParameters)
             {
                 notification.SetValue(parameter);
