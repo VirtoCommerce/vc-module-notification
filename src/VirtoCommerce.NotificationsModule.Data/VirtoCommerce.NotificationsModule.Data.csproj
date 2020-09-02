@@ -8,6 +8,10 @@
     <NoWarn>1701;1702;1705</NoWarn>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Remove="Migrations\20200902124626_AddNotificationMessageStatus.cs" />
+    <Compile Remove="Migrations\20200902124626_AddNotificationMessageStatus.Designer.cs" />
+  </ItemGroup>
+  <ItemGroup>
     <PackageReference Include="FluentValidation" Version="8.6.2" />
     <PackageReference Include="Hangfire" Version="1.7.9" />
     <PackageReference Include="EntityFrameworkCore.Triggers" Version="1.2.2" />

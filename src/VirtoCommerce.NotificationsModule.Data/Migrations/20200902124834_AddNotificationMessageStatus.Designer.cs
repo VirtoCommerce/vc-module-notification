@@ -10,7 +10,7 @@ using VirtoCommerce.NotificationsModule.Data.Repositories;
 namespace VirtoCommerce.NotificationsModule.Data.Migrations
 {
     [DbContext(typeof(NotificationDbContext))]
-    [Migration("20200902094346_AddNotificationMessageStatus")]
+    [Migration("20200902124834_AddNotificationMessageStatus")]
     partial class AddNotificationMessageStatus
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -206,8 +206,9 @@ namespace VirtoCommerce.NotificationsModule.Data.Migrations
                     b.Property<DateTime?>("SendDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("Status")
-                        .HasColumnType("int");
+                    b.Property<string>("Status")
+                        .HasColumnType("nvarchar(20)")
+                        .HasMaxLength(20);
 
                     b.Property<string>("TenantId")
                         .HasColumnType("nvarchar(128)")

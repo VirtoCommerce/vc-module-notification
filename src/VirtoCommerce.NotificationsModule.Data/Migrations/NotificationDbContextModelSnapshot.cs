@@ -204,8 +204,9 @@ namespace VirtoCommerce.NotificationsModule.Data.Migrations
                     b.Property<DateTime?>("SendDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("Status")
-                        .HasColumnType("int");
+                    b.Property<string>("Status")
+                        .HasColumnType("nvarchar(20)")
+                        .HasMaxLength(20);
 
                     b.Property<string>("TenantId")
                         .HasColumnType("nvarchar(128)")

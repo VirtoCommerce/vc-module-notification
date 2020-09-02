@@ -66,7 +66,8 @@ namespace VirtoCommerce.NotificationsModule.Data.Model
         /// <summary>
         /// Status
         /// </summary>
-        public int Status { get; set; }
+        [StringLength(20)]
+        public string Status { get; set; }
 
 
         #region Navigation Properties
@@ -101,7 +102,7 @@ namespace VirtoCommerce.NotificationsModule.Data.Model
             message.LastSendAttemptDate = LastSendAttemptDate;
             message.SendDate = SendDate;
             message.LanguageCode = LanguageCode;
-            message.Status = (NotificationMessageStatus)Status;
+            message.Status = EnumUtility.SafeParse(Status, NotificationMessageStatus.Pending);
 
             return message;
         }
@@ -128,7 +129,7 @@ namespace VirtoCommerce.NotificationsModule.Data.Model
             LastSendAttemptDate = message.LastSendAttemptDate;
             SendDate = message.SendDate;
             LanguageCode = message.LanguageCode;
-            Status = (int)message.Status;
+            Status = message.Status.ToString();
 
             return this;
         }

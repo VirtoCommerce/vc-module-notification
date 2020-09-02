@@ -6,18 +6,18 @@ namespace VirtoCommerce.NotificationsModule.Data.Migrations
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AddColumn<int>(
+            migrationBuilder.AddColumn<string>(
                 name: "Status",
                 table: "NotificationMessage",
-                nullable: false,
-                defaultValue: 0);
+                maxLength: 20,
+                nullable: true);
 
             migrationBuilder.Sql(@"UPDATE [NotificationMessage] SET 
                     [NotificationMessage].[Status] = CASE
-						WHEN ([SendDate] is not null) THEN 1 
-						WHEN ([SendDate] is null AND [LastSendError] is null) THEN 0
-						WHEN ([SendDate] is null AND [LastSendError] is not null) THEN 2 
-						ELSE 0
+						WHEN ([SendDate] is not null) THEN 'Sent' 
+						WHEN ([SendDate] is null AND [LastSendError] is null) THEN 'Pending'
+						WHEN ([SendDate] is null AND [LastSendError] is not null) THEN 'Error' 
+						ELSE 'Pending'
 					END");
         }
 
