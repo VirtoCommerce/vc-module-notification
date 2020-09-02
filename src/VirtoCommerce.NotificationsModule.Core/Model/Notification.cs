@@ -54,7 +54,6 @@ namespace VirtoCommerce.NotificationsModule.Core.Model
         /// for seting use SetCustomValidationError
         /// </summary>
         public string CustomValidationError { get; private set; }
-        public bool IsSending { get; set; } = true;
 
         public virtual Task ToMessageAsync(NotificationMessage message, INotificationTemplateRenderer render)
         {
@@ -63,6 +62,11 @@ namespace VirtoCommerce.NotificationsModule.Core.Model
             message.NotificationId = Id;
             message.LanguageCode = LanguageCode;
             message.LastSendError = CustomValidationError ?? message.LastSendError;
+
+            if (!string.IsNullOrEmpty(CustomValidationError))
+            {
+                message.Status = NotificationMessageStatus.Error;
+            }
 
             return Task.CompletedTask;
         }
@@ -90,7 +94,6 @@ namespace VirtoCommerce.NotificationsModule.Core.Model
         public virtual void SetCustomValidationError(string customValidationError)
         {
             CustomValidationError = customValidationError;
-            IsSending = false;
         }
 
         #region ICloneable members

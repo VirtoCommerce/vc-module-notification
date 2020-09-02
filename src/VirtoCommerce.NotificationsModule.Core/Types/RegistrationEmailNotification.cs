@@ -9,6 +9,11 @@ namespace VirtoCommerce.NotificationsModule.Core.Types
 
         }
 
+        public RegistrationEmailNotification(string type) : base(type)
+        {
+
+        }
+
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Login { get; set; }

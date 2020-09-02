@@ -55,7 +55,7 @@ namespace VirtoCommerce.NotificationsModule.Tests.UnitTests
             _senderFactoryMock.Setup(s => s.GetSenderForNotificationType(nameof(EmailNotification))).Returns(_messageSenderMock.Object);
             _backgroundJobClient = new Mock<IBackgroundJobClient>();
 
-            _sender = new NotificationSender(_templateRender, _messageServiceMock.Object, _logNotificationSenderMock.Object, _senderFactoryMock.Object, _backgroundJobClient.Object);
+            _sender = new NotificationSender(_templateRender, _messageServiceMock.Object, _senderFactoryMock.Object, _backgroundJobClient.Object);
 
             if (!AbstractTypeFactory<NotificationTemplate>.AllTypeInfos.SelectMany(x => x.AllSubclasses).Contains(typeof(EmailNotificationTemplate)))
                 AbstractTypeFactory<NotificationTemplate>.RegisterType<EmailNotificationTemplate>().MapToType<NotificationTemplateEntity>();
@@ -436,7 +436,7 @@ namespace VirtoCommerce.NotificationsModule.Tests.UnitTests
             _messageServiceMock.Setup(ms => ms.SaveNotificationMessagesAsync(new NotificationMessage[] { message }));
             _messageSenderMock.Setup(ms => ms.SendNotificationAsync(It.IsAny<NotificationMessage>())).Throws(new SmtpException());
 
-            var sender = new NotificationSender(_templateRender, _messageServiceMock.Object, _logNotificationSenderMock.Object, _senderFactoryMock.Object, _backgroundJobClient.Object);
+            var sender = new NotificationSender(_templateRender, _messageServiceMock.Object, _senderFactoryMock.Object, _backgroundJobClient.Object);
 
             //Act
             var result = await sender.SendNotificationAsync(notification);
@@ -507,6 +507,10 @@ namespace VirtoCommerce.NotificationsModule.Tests.UnitTests
 
             _messageServiceMock.Setup(ms => ms.SaveNotificationMessagesAsync(new NotificationMessage[] { message }));
             _messageSenderMock.Setup(ms => ms.SendNotificationAsync(It.IsAny<NotificationMessage>())).Throws(new SmtpException());
+            _messageServiceMock.Setup(ms => ms.GetNotificationsMessageByIds(It.IsAny<string[]>())).ReturnsAsync(new[] { message })
+                .Callback(() => {
+                    message.Status = NotificationMessageStatus.Error;
+                });
 
             var sender = GetNotificationSender();
 
@@ -515,13 +519,13 @@ namespace VirtoCommerce.NotificationsModule.Tests.UnitTests
 
             //Assert
             Assert.False(sendResult.IsSuccess);
+            Assert.Equal("Can't send notification message by . There are errors.", sendResult.ErrorMessage);
         }
 
         private NotificationSender GetNotificationSender()
         {
             return new NotificationSender(_templateRender,
                 _messageServiceMock.Object,
-                _logNotificationSenderMock.Object,
                 _senderFactoryMock.Object,
                 _backgroundJobClient.Object);
         }

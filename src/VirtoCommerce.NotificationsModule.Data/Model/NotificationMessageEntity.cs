@@ -63,6 +63,12 @@ namespace VirtoCommerce.NotificationsModule.Data.Model
         [StringLength(10)]
         public string LanguageCode { get; set; }
 
+        /// <summary>
+        /// Status
+        /// </summary>
+        public int Status { get; set; }
+
+
         #region Navigation Properties
 
         /// <summary>
@@ -95,6 +101,7 @@ namespace VirtoCommerce.NotificationsModule.Data.Model
             message.LastSendAttemptDate = LastSendAttemptDate;
             message.SendDate = SendDate;
             message.LanguageCode = LanguageCode;
+            message.Status = (NotificationMessageStatus)Status;
 
             return message;
         }
@@ -121,6 +128,7 @@ namespace VirtoCommerce.NotificationsModule.Data.Model
             LastSendAttemptDate = message.LastSendAttemptDate;
             SendDate = message.SendDate;
             LanguageCode = message.LanguageCode;
+            Status = (int)message.Status;
 
             return this;
         }
@@ -135,6 +143,7 @@ namespace VirtoCommerce.NotificationsModule.Data.Model
             message.LastSendError = LastSendError;
             message.LastSendAttemptDate = LastSendAttemptDate;
             message.SendDate = SendDate;
+            message.Status = Status;
         }
     }
 }
