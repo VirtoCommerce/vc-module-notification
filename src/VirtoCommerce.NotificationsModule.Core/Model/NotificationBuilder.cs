@@ -17,9 +17,9 @@ namespace VirtoCommerce.NotificationsModule.Core.Model
 
         public IServiceProvider ServiceProvider { get; private set; }
 
-        public NotificationBuilder SetIsActive(bool isAactive)
+        public NotificationBuilder SetIsActive(bool isActive)
         {
-            Notification.IsActive = isAactive;
+            Notification.IsActive = isActive;
             return this;
         }
 
