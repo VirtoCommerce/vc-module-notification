@@ -25,6 +25,7 @@ namespace VirtoCommerce.NotificationsModule.Data.Repositories
             modelBuilder.Entity<NotificationEntity>().Property(x => x.Id).HasMaxLength(128).ValueGeneratedOnAdd();
             modelBuilder.Entity<NotificationEntity>().Property(x => x.CreatedBy).HasMaxLength(64);
             modelBuilder.Entity<NotificationEntity>().Property(x => x.ModifiedBy).HasMaxLength(64);
+            modelBuilder.Entity<NotificationEntity>().Property(x => x.IsActive).HasDefaultValue(true);
             modelBuilder.Entity<NotificationEntity>().HasDiscriminator<string>("Discriminator");
             modelBuilder.Entity<NotificationEntity>().Property("Discriminator").HasMaxLength(128);
             modelBuilder.Entity<NotificationEntity>().HasIndex(x => new { x.Type, x.TenantId, x.TenantType });

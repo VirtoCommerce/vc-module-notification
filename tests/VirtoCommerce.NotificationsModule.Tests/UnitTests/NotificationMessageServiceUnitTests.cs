@@ -52,7 +52,7 @@ namespace VirtoCommerce.NotificationsModule.Tests.UnitTests
             criteria.NotificationType = nameof(RegistrationEmailNotification);
             criteria.Take = 1;
             _notificationSearchServiceMock.Setup(x => x.SearchNotificationsAsync(criteria)).ReturnsAsync(new NotificationSearchResult());
-            var notificationService = new NotificationRegistrar(_notificationServiceMock.Object, _notificationSearchServiceMock.Object, null, Options.Create(new FileSystemTemplateLoaderOptions()));
+            var notificationService = new NotificationRegistrar(null);
             notificationService.RegisterNotification<RegistrationEmailNotification>();
         }
 

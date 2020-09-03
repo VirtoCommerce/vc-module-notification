@@ -90,7 +90,7 @@ namespace VirtoCommerce.NotificationsModule.Data.Services
 
             if (criteria.IsActive)
             {
-                query = query.Where(x => x.IsActive);
+                query = query.Where(x => x.IsActive == null || x.IsActive.Value);
             }
 
             query = query.OrderBySortInfos(sortInfos);

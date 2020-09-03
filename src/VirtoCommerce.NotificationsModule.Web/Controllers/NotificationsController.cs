@@ -117,7 +117,7 @@ namespace VirtoCommerce.NotificationsModule.Web.Controllers
         public async Task<ActionResult<NotificationSendResult>> SendNotification([FromBody]Notification notificationRequest)
         {
             var notification = await _notificationSearchService.GetNotificationAsync(notificationRequest.Type, notificationRequest.TenantIdentity);
-            var result = await _notificationSender.SendNotificationAsync(notification.PopulateFromRequest(notificationRequest));
+            var result = await _notificationSender.SendNotificationAsync(notification.PopulateFromOther(notificationRequest));
 
             return Ok(result);
         }
@@ -130,7 +130,7 @@ namespace VirtoCommerce.NotificationsModule.Web.Controllers
         public async Task<ActionResult> ScheduleSendNotification([FromBody]Notification notificationRequest)
         {
             var notification = await _notificationSearchService.GetNotificationAsync(notificationRequest.Type, notificationRequest.TenantIdentity);
-            await _notificationSender.ScheduleSendNotificationAsync(notification.PopulateFromRequest(notificationRequest));
+            await _notificationSender.ScheduleSendNotificationAsync(notification.PopulateFromOther(notificationRequest));
 
             return Ok();
         }

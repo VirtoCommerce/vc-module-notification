@@ -21,13 +21,14 @@ namespace VirtoCommerce.NotificationsModule.Core.Model
         protected Notification(string type)
         {
             Type = type;
+            Templates = new List<NotificationTemplate>();
         }
 
         /// <summary>
         /// For detecting owner
         /// </summary>
         public TenantIdentity TenantIdentity { get; set; } = TenantIdentity.Empty;
-        public bool IsActive { get; set; } = true;
+        public bool? IsActive { get; set; } = true;
         public string LanguageCode { get; set; }
 
         /// <summary>
@@ -84,9 +85,9 @@ namespace VirtoCommerce.NotificationsModule.Core.Model
 
         public abstract void SetFromToMembers(string from, string to);
 
-        public virtual Notification PopulateFromRequest(Notification request)
+        public virtual Notification PopulateFromOther(Notification other)
         {
-            LanguageCode = request.LanguageCode;
+            LanguageCode = other.LanguageCode;
 
             return this;
         }

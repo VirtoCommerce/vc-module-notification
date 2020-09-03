@@ -84,7 +84,7 @@ namespace VirtoCommerce.NotificationsSapmleModule.IntegrationTests
             var result = await _notificationSearchService.SearchNotificationsAsync(criteria);
 
             //Assert
-            Assert.Contains(result.Results, n => n.Type == nameof(PostTwitterNotification) && n.IsActive);
+            Assert.Contains(result.Results, n => n.Type == nameof(PostTwitterNotification) && n.IsActive.Value);
         }
 
         [Fact]

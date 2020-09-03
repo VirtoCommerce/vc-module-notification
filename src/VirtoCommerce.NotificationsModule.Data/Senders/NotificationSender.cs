@@ -32,7 +32,7 @@ namespace VirtoCommerce.NotificationsModule.Data.Senders
 
         public async Task ScheduleSendNotificationAsync(Notification notification)
         {
-            if (notification.IsActive)
+            if (notification.IsActive.Value)
             {
                 var message = await CreateMessageAsync(notification);
 
@@ -55,7 +55,7 @@ namespace VirtoCommerce.NotificationsModule.Data.Senders
                 throw new ArgumentNullException(nameof(notification));
             }
 
-            if (notification.IsActive)
+            if (notification.IsActive.GetValueOrDefault())
             {
                 var message = await CreateMessageAsync(notification);
 
