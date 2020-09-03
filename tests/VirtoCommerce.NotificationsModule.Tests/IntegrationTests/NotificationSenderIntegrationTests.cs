@@ -64,7 +64,7 @@ namespace VirtoCommerce.NotificationsModule.Tests.IntegrationTests
             _notificationServiceMock = new Mock<INotificationService>();
             _notificationSearchServiceMock = new Mock<INotificationSearchService>();
             _backgroundJobClient = new Mock<IBackgroundJobClient>();
-            _notificationRegistrar = new NotificationRegistrar(_notificationServiceMock.Object, _notificationSearchServiceMock.Object, null, Options.Create(new FileSystemTemplateLoaderOptions()));
+            _notificationRegistrar = new NotificationRegistrar(null);
 
             if (!AbstractTypeFactory<NotificationTemplate>.AllTypeInfos.SelectMany(x => x.AllSubclasses).Contains(typeof(EmailNotificationTemplate)))
                 AbstractTypeFactory<NotificationTemplate>.RegisterType<EmailNotificationTemplate>().MapToType<NotificationTemplateEntity>();

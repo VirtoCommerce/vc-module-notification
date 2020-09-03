@@ -14,12 +14,10 @@ namespace VirtoCommerce.NotificationsModule.Core.Model
         [Obsolete("need to use ctor with 'type' parameter")]
         public SmsNotification()
         {
-            Templates = new List<NotificationTemplate>();
         }
 
-        public SmsNotification(string type) : base(type)
+        protected SmsNotification(string type) : base(type)
         {
-            Templates = new List<NotificationTemplate>();
         }
 
         public override string Kind => nameof(SmsNotification);
@@ -48,14 +46,14 @@ namespace VirtoCommerce.NotificationsModule.Core.Model
             Number = to;
         }
 
-        public override Notification PopulateFromRequest(Notification request)
+        public override Notification PopulateFromOther(Notification other)
         {
-            if (request is SmsNotification smsRequest)
+            if (other is SmsNotification smsRequest)
             {
                 Number = smsRequest.Number;
             }
 
-            return base.PopulateFromRequest(request);
+            return base.PopulateFromOther(other);
         }
 
         #region ICloneable members

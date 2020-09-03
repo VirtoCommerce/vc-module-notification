@@ -7,8 +7,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
-using VirtoCommerce.NotificationsModule.Twilio;
 using VirtoCommerce.Notifications.Core.Types;
 using VirtoCommerce.NotificationsModule.Core;
 using VirtoCommerce.NotificationsModule.Core.Model;
@@ -24,6 +24,7 @@ using VirtoCommerce.NotificationsModule.LiquidRenderer;
 using VirtoCommerce.NotificationsModule.LiquidRenderer.Filters;
 using VirtoCommerce.NotificationsModule.SendGrid;
 using VirtoCommerce.NotificationsModule.Smtp;
+using VirtoCommerce.NotificationsModule.Twilio;
 using VirtoCommerce.NotificationsModule.Web.JsonConverters;
 using VirtoCommerce.Platform.Core.Common;
 using VirtoCommerce.Platform.Core.ExportImport;
@@ -177,6 +178,20 @@ namespace VirtoCommerce.NotificationsModule.Web
             registrar.RegisterNotification<TwoFactorEmailNotification>();
             registrar.RegisterNotification<TwoFactorSmsNotification>();
             registrar.RegisterNotification<ChangePhoneNumberSmsNotification>();
+           
+            //Save all registered notifications in the database after application start
+            var hostLifeTime = appBuilder.ApplicationServices.GetService<IHostApplicationLifetime>();
+            hostLifeTime.ApplicationStarted.Register(() =>
+            {
+                var notificationService = appBuilder.ApplicationServices.GetService<INotificationService>();
+                var allRegisteredNotifications = registrar.AllRegisteredNotifications.Select(x =>
+                {
+                    //Do not save predefined templates in the database to prevent exists data rewrite  
+                    x.ReduceDetails(NotificationResponseGroup.Default.ToString());
+                    return x;
+                }).ToArray();
+                notificationService.SaveChangesAsync(allRegisteredNotifications).GetAwaiter().GetResult();
+            });
         }
 
         public void Uninstall()

@@ -27,7 +27,7 @@ namespace VirtoCommerce.NotificationsModule.Data.Model
         /// <summary>
         /// Must be made sending
         /// </summary>
-        public bool IsActive { get; set; }
+        public bool? IsActive { get; set; }
 
         /// <summary>
         /// Type of notification
@@ -105,8 +105,10 @@ namespace VirtoCommerce.NotificationsModule.Data.Model
 
         public virtual void Patch(NotificationEntity notification)
         {
-            notification.IsActive = IsActive;
-
+            if (IsActive.HasValue)
+            {
+                notification.IsActive = IsActive;
+            }
             if (!Templates.IsNullCollection())
             {
                 Templates.Patch(notification.Templates, (sourceTemplate, templateEntity) => sourceTemplate.Patch(templateEntity));

@@ -49,7 +49,7 @@ namespace VirtoCommerce.NotificationsModule.Tests.UnitTests
             _notificationSearchServiceMock = new Mock<INotificationSearchService>();
             _memCache = GetCache();
             _cacheEntryMock = new Mock<ICacheEntry>();
-            _notificationRegistrar = new NotificationRegistrar(_notificationServiceMock.Object, _notificationSearchServiceMock.Object, null, Options.Create(new FileSystemTemplateLoaderOptions()));
+            _notificationRegistrar = new NotificationRegistrar(null);
             _notificationSearchService = new NotificationSearchService(_repositoryFactory, _notificationServiceMock.Object, _memCache);
 
          
@@ -175,7 +175,7 @@ namespace VirtoCommerce.NotificationsModule.Tests.UnitTests
             //Assert
             Assert.NotEmpty(result.Results);
             Assert.Single(result.Results);
-            Assert.Equal(1, result.Results.Count(r => r.IsActive));
+            Assert.Equal(1, result.Results.Count(r => r.IsActive.GetValueOrDefault()));
         }
 
         [Fact]
@@ -204,7 +204,7 @@ namespace VirtoCommerce.NotificationsModule.Tests.UnitTests
             var result = await _notificationSearchService.SearchNotificationsAsync(searchCriteria);
 
             //Assert
-            Assert.True(result.Results.Where(n => ids.Contains(n.Id)).All(r => r.IsActive));
+            Assert.True(result.Results.Where(n => ids.Contains(n.Id)).All(r => r.IsActive.GetValueOrDefault()));
         }
 
         [Theory]
@@ -232,8 +232,8 @@ namespace VirtoCommerce.NotificationsModule.Tests.UnitTests
             var result = await _notificationSearchService.SearchNotificationsAsync(searchCriteria);
 
             //Assert
-            Assert.Equal(expectedTypes, result.Results.Where(x => x.IsActive).Select(y => y.Type));
-            Assert.Equal(expectedCount, result.Results.Count(x => x.IsActive));
+            Assert.Equal(expectedTypes, result.Results.Where(x => x.IsActive.GetValueOrDefault()).Select(y => y.Type));
+            Assert.Equal(expectedCount, result.Results.Count(x => x.IsActive.GetValueOrDefault()));
         }
 
         [Fact]

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using VirtoCommerce.NotificationsModule.Core.Extensions;
 using VirtoCommerce.NotificationsModule.Core.Services;
+using VirtoCommerce.Platform.Core.Common;
 
 namespace VirtoCommerce.NotificationsModule.Core.Model
 {
@@ -15,13 +16,11 @@ namespace VirtoCommerce.NotificationsModule.Core.Model
         [Obsolete("need to use ctor with 'type' parameter")]
         public EmailNotification()
         {
-            Templates = new List<NotificationTemplate>();
             Attachments = new List<EmailAttachment>();
         }
 
-        public EmailNotification(string type) : base(type)
+        protected EmailNotification(string type) : base(type)
         {
-            Templates = new List<NotificationTemplate>();
             Attachments = new List<EmailAttachment>();
         }
 
@@ -69,15 +68,27 @@ namespace VirtoCommerce.NotificationsModule.Core.Model
             emailMessage.Attachments = Attachments;
         }
 
+        public override void ReduceDetails(string responseGroup)
+        {
+            //Reduce details according to response group
+            var notificationResponseGroup = EnumUtility.SafeParseFlags(responseGroup, NotificationResponseGroup.Full);
+
+            if (!notificationResponseGroup.HasFlag(NotificationResponseGroup.WithAttachments))
+            {
+                Attachments = null;
+            }
+            base.ReduceDetails(responseGroup);
+        }
+
         public override void SetFromToMembers(string from, string to)
         {
             From = from;
             To = to;
         }
 
-        public override Notification PopulateFromRequest(Notification request)
+        public override Notification PopulateFromOther(Notification other)
         {
-            if (request is EmailNotification emailRequest)
+            if (other is EmailNotification emailRequest)
             {
                 From = emailRequest.From;
                 To = emailRequest.To;
@@ -86,7 +97,7 @@ namespace VirtoCommerce.NotificationsModule.Core.Model
                 Attachments = emailRequest.Attachments;
             }
             
-            return base.PopulateFromRequest(request);
+            return base.PopulateFromOther(other);
         }
 
         #region ICloneable members
