@@ -102,6 +102,7 @@ namespace VirtoCommerce.NotificationsModule.Data.Services
                 if (!result.IsValid)
                 {
                     m.LastSendError = string.Join(Environment.NewLine, result.Errors.Select(e => e.ErrorMessage));
+                    m.Status = NotificationMessageStatus.Error;
                 }
                 return result;
             }).ToArray();
