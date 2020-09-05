@@ -19,7 +19,6 @@ using VirtoCommerce.NotificationsModule.Data.Model;
 using VirtoCommerce.NotificationsModule.Data.Repositories;
 using VirtoCommerce.NotificationsModule.Data.Senders;
 using VirtoCommerce.NotificationsModule.Data.Services;
-using VirtoCommerce.NotificationsModule.Data.TemplateLoaders;
 using VirtoCommerce.NotificationsModule.LiquidRenderer;
 using VirtoCommerce.NotificationsModule.LiquidRenderer.Filters;
 using VirtoCommerce.NotificationsModule.SendGrid;
@@ -32,6 +31,7 @@ using VirtoCommerce.Platform.Core.Modularity;
 using VirtoCommerce.Platform.Core.Notifications;
 using VirtoCommerce.Platform.Core.Security;
 using VirtoCommerce.Platform.Core.Settings;
+using VirtoCommerce.NotificationsModule.TemplateLoader.FileSystem;
 
 namespace VirtoCommerce.NotificationsModule.Web
 {
@@ -57,17 +57,16 @@ namespace VirtoCommerce.NotificationsModule.Web
             serviceCollection.AddTransient<NotificationsExportImport>();
             serviceCollection.AddTransient<NotificationScriptObject>();
 
-            serviceCollection.AddTransient<INotificationTemplateLoader, FileSystemNotificationTemplateLoader>();
-            serviceCollection.AddOptions<FileSystemTemplateLoaderOptions>().Bind(configuration.GetSection("Notifications:Templates")).ValidateDataAnnotations();
+            serviceCollection.AddFileSystemTemplateLoader(opt => configuration.GetSection("Notifications:Templates").Bind(opt));
 
-            serviceCollection.AddSingleton<INotificationMessageSenderProviderFactory, NotificationMessageSenderProviderFactory>();
+            serviceCollection.AddSingleton<INotificationMessageSenderFactory, NotificationMessageSenderFactory>();
 
             serviceCollection.AddOptions<EmailSendingOptions>().Bind(configuration.GetSection("Notifications")).ValidateDataAnnotations();
             var emailGateway = configuration.GetValue<string>("Notifications:Gateway");
             switch (emailGateway)
             {
                 case SmtpEmailNotificationMessageSender.Name:
-                    {
+                    {                       
                         serviceCollection.AddOptions<SmtpSenderOptions>().Bind(configuration.GetSection($"Notifications:{SmtpEmailNotificationMessageSender.Name}")).ValidateDataAnnotations();
                         serviceCollection.AddTransient<INotificationMessageSender, SmtpEmailNotificationMessageSender>();
                         break;
@@ -144,29 +143,7 @@ namespace VirtoCommerce.NotificationsModule.Web
                     notificationDbContext.Database.EnsureCreated();
                     notificationDbContext.Database.Migrate();
                 }
-            }
-
-            //TODO move out from here to projects
-            var configuration = appBuilder.ApplicationServices.GetService<IConfiguration>();
-            var emailGateway = configuration.GetValue<string>("Notifications:Gateway");
-            var notificationMessageSenderProviderFactory = appBuilder.ApplicationServices.GetService<INotificationMessageSenderProviderFactory>();
-            switch (emailGateway)
-            {
-                case "SendGrid":
-                    notificationMessageSenderProviderFactory.RegisterSenderForType<EmailNotification, SendGridEmailNotificationMessageSender>();
-                    break;
-                default:
-                    notificationMessageSenderProviderFactory.RegisterSenderForType<EmailNotification, SmtpEmailNotificationMessageSender>();
-                    break;
-            }
-
-            var smsGateway = configuration.GetValue<string>("Notifications:SmsGateway");
-            switch (smsGateway)
-            {
-                case "Twilio":
-                    notificationMessageSenderProviderFactory.RegisterSenderForType<SmsNotification, TwilioSmsNotificationMessageSender>();
-                    break;
-            }
+            }   
 
             var registrar = appBuilder.ApplicationServices.GetService<INotificationRegistrar>();
             registrar.RegisterNotification<ResetPasswordEmailNotification>();
@@ -186,7 +163,7 @@ namespace VirtoCommerce.NotificationsModule.Web
                 var notificationService = appBuilder.ApplicationServices.GetService<INotificationService>();
                 var allRegisteredNotifications = registrar.AllRegisteredNotifications.Select(x =>
                 {
-                    //Do not save predefined templates in the database to prevent exists data rewrite  
+                    //Do not save predefined templates in the database to prevent rewrite of exists data  
                     x.ReduceDetails(NotificationResponseGroup.Default.ToString());
                     return x;
                 }).ToArray();

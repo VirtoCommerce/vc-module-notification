@@ -2,7 +2,6 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Hangfire;
-using Microsoft.Extensions.Logging;
 using Polly;
 using VirtoCommerce.NotificationsModule.Core.Exceptions;
 using VirtoCommerce.NotificationsModule.Core.Model;
@@ -16,17 +15,17 @@ namespace VirtoCommerce.NotificationsModule.Data.Senders
         private readonly int _maxRetryAttempts = 1;
         private readonly INotificationTemplateRenderer _notificationTemplateRender;
         private readonly INotificationMessageService _notificationMessageService;
-        private readonly INotificationMessageSenderProviderFactory _notificationMessageAccessor;
+        private readonly INotificationMessageSenderFactory _notificationMessageSenderFactory;
         private readonly IBackgroundJobClient _jobClient;
 
         public NotificationSender(INotificationTemplateRenderer notificationTemplateRender
             , INotificationMessageService notificationMessageService
-            , INotificationMessageSenderProviderFactory notificationMessageAccessor
+            , INotificationMessageSenderFactory notificationMessageAccessor
             , IBackgroundJobClient jobClient)
         {
             _notificationTemplateRender = notificationTemplateRender;
             _notificationMessageService = notificationMessageService;
-            _notificationMessageAccessor = notificationMessageAccessor;
+            _notificationMessageSenderFactory = notificationMessageAccessor;
             _jobClient = jobClient;
         }
 
@@ -90,7 +89,7 @@ namespace VirtoCommerce.NotificationsModule.Data.Senders
             {
                 message.LastSendAttemptDate = DateTime.Now;
                 message.SendAttemptCount++;
-                return _notificationMessageAccessor.GetSenderForNotificationType(message.Kind).SendNotificationAsync(message);
+                return _notificationMessageSenderFactory.GetSender(message).SendNotificationAsync(message);
             });
 
             if (policyResult.Outcome == OutcomeType.Successful)

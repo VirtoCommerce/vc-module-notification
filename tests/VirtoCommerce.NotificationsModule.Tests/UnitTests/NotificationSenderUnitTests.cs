@@ -17,7 +17,6 @@ using VirtoCommerce.NotificationsModule.Core.Types;
 using VirtoCommerce.NotificationsModule.Data.Model;
 using VirtoCommerce.NotificationsModule.Data.Senders;
 using VirtoCommerce.NotificationsModule.Data.Services;
-using VirtoCommerce.NotificationsModule.Data.TemplateLoaders;
 using VirtoCommerce.NotificationsModule.LiquidRenderer;
 using VirtoCommerce.NotificationsModule.LiquidRenderer.Filters;
 using VirtoCommerce.NotificationsModule.Tests.Common;
@@ -37,7 +36,7 @@ namespace VirtoCommerce.NotificationsModule.Tests.UnitTests
         private readonly Mock<INotificationMessageService> _messageServiceMock;
         private readonly Mock<INotificationMessageSender> _messageSenderMock;
         private readonly Mock<ILogger<NotificationSender>> _logNotificationSenderMock;
-        private readonly Mock<INotificationMessageSenderProviderFactory> _senderFactoryMock;
+        private readonly Mock<INotificationMessageSenderFactory> _senderFactoryMock;
         private readonly Mock<IBackgroundJobClient> _backgroundJobClient;
 
         private readonly Mock<INotificationService> _notificationServiceMock;
@@ -51,8 +50,8 @@ namespace VirtoCommerce.NotificationsModule.Tests.UnitTests
             _messageSenderMock = new Mock<INotificationMessageSender>();
             _logNotificationSenderMock = new Mock<ILogger<NotificationSender>>();
 
-            _senderFactoryMock = new Mock<INotificationMessageSenderProviderFactory>();
-            _senderFactoryMock.Setup(s => s.GetSenderForNotificationType(nameof(EmailNotification))).Returns(_messageSenderMock.Object);
+            _senderFactoryMock = new Mock<INotificationMessageSenderFactory>();
+            _senderFactoryMock.Setup(s => s.GetSender(It.IsAny<NotificationMessage>())).Returns(_messageSenderMock.Object);
             _backgroundJobClient = new Mock<IBackgroundJobClient>();
 
             _sender = new NotificationSender(_templateRender, _messageServiceMock.Object, _senderFactoryMock.Object, _backgroundJobClient.Object);

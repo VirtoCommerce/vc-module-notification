@@ -7,7 +7,7 @@ using VirtoCommerce.NotificationsModule.Core.Model;
 using VirtoCommerce.NotificationsModule.Core.Services;
 using VirtoCommerce.Platform.Core.Common;
 
-namespace VirtoCommerce.NotificationsModule.Data.TemplateLoaders
+namespace VirtoCommerce.NotificationsModule.TemplateLoader.FileSystem
 {
     public class FileSystemNotificationTemplateLoader : INotificationTemplateLoader
     {
@@ -15,6 +15,11 @@ namespace VirtoCommerce.NotificationsModule.Data.TemplateLoaders
         public FileSystemNotificationTemplateLoader(IOptions<FileSystemTemplateLoaderOptions> options)
         {
             _options = options.Value;
+        }
+
+        public virtual IEnumerable<NotificationTemplate> LoadTemplates(Notification notification)
+        {
+            return LoadTemplates(notification, _options.DiscoveryPath, _options.FallbackDiscoveryPath);
         }
 
         public virtual IEnumerable<NotificationTemplate> LoadTemplates(Notification notification, string path, string fallbackPath = null)

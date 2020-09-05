@@ -14,7 +14,6 @@ using VirtoCommerce.NotificationsModule.Core.Services;
 using VirtoCommerce.NotificationsModule.Data.Model;
 using VirtoCommerce.NotificationsModule.Data.Repositories;
 using VirtoCommerce.NotificationsModule.Data.Services;
-using VirtoCommerce.NotificationsModule.Data.TemplateLoaders;
 using VirtoCommerce.Platform.Caching;
 using VirtoCommerce.Platform.Core.Caching;
 using VirtoCommerce.Platform.Core.Common;
@@ -67,6 +66,10 @@ namespace VirtoCommerce.NotificationsSampleModule.Tests
 
     public abstract class SocialNetworkNotification : Notification
     {
+        protected SocialNetworkNotification() : base(nameof(SocialNetworkNotification))
+        {
+        }
+
         public string Token { get; set; }
         public override string Kind => nameof(SocialNetworkNotification);
         public override void SetFromToMembers(string from, string to)
@@ -104,8 +107,9 @@ namespace VirtoCommerce.NotificationsSampleModule.Tests
             _mockUnitOfWork = new Mock<IUnitOfWork>();
             _repositoryMock.Setup(ss => ss.UnitOfWork).Returns(_mockUnitOfWork.Object);
             _eventPublisherMock = new Mock<IEventPublisher>();
+             var templateLoader = new Mock<INotificationTemplateLoader>();
             _memCache = GetCache();
-            _notificationService = new NotificationService(_repositoryFactory, _eventPublisherMock.Object, _memCache);
+            _notificationService = new NotificationService(_repositoryFactory, _eventPublisherMock.Object, templateLoader.Object, _memCache);
             _notificationServiceMock = new Mock<INotificationService>();
             _notificationSearchService = new NotificationSearchService(_repositoryFactory, _notificationServiceMock.Object, _memCache);
             _notificationRegistrar = new NotificationRegistrar(null);

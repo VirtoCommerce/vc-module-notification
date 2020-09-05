@@ -22,7 +22,12 @@ namespace VirtoCommerce.NotificationsModule.SendGrid
             _emailSendingOptions = emailSendingOptions.Value;
         }
 
-        public async Task SendNotificationAsync(NotificationMessage message)
+        public virtual bool CanSend(NotificationMessage message)
+        {
+            return message is EmailNotificationMessage;
+        }
+
+        public virtual async Task SendNotificationAsync(NotificationMessage message)
         {
             try
             {

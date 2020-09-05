@@ -24,13 +24,18 @@ namespace VirtoCommerce.NotificationsModule.Data.Services
         private readonly IEventPublisher _eventPublisher;
         private readonly Func<INotificationRepository> _repositoryFactory;
         private readonly IPlatformMemoryCache _platformMemoryCache;
+        private readonly INotificationTemplateLoader _templateLoader;
 
-        public NotificationService(Func<INotificationRepository> repositoryFactory, IEventPublisher eventPublisher,
-            IPlatformMemoryCache platformMemoryCache)
+        public NotificationService(
+            Func<INotificationRepository> repositoryFactory
+            , IEventPublisher eventPublisher
+            , INotificationTemplateLoader templateLoader
+            , IPlatformMemoryCache platformMemoryCache)
         {
             _repositoryFactory = repositoryFactory;
             _eventPublisher = eventPublisher;
             _platformMemoryCache = platformMemoryCache;
+            _templateLoader = templateLoader;
         }
 
 
@@ -49,8 +54,25 @@ namespace VirtoCommerce.NotificationsModule.Data.Services
                     //Optimize performance and CPU usage
                     repository.DisableChangesTracking();
 
-                    var notifications = await repository.GetByIdsAsync(ids, responseGroup);
-                    return notifications.Select(n => n.ToModel(CreateNotification(n.Type, new UnregisteredNotification()))).ToArray();
+                    var entities = await repository.GetByIdsAsync(ids, responseGroup);
+                    var notifications = entities.Select(n => n.ToModel(CreateNotification(n.Type, new UnregisteredNotification()))).ToArray();
+                    //Load predefined notifications templates
+                    if (EnumUtility.SafeParseFlags(responseGroup, NotificationResponseGroup.Full).HasFlag(NotificationResponseGroup.WithTemplates))
+                    {
+                        foreach (var notification in notifications)
+                        {
+                            var predefinedTemplates = _templateLoader.LoadTemplates(notification).ToList();
+                            if (notification.Templates != null)
+                            {
+                                notification.Templates.AddRange(predefinedTemplates);
+                            }
+                            else
+                            {
+                                notification.Templates = predefinedTemplates;
+                            }
+                        }
+                    }
+                    return notifications;
                 }
             });
 

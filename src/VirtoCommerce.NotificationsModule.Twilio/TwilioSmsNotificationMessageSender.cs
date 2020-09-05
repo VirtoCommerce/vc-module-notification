@@ -23,6 +23,11 @@ namespace VirtoCommerce.NotificationsModule.Twilio
             _smsSendingOptions = smsSendingOptions.Value;
         }
 
+        public virtual bool CanSend(NotificationMessage message)
+        {
+            return message is SmsNotificationMessage;
+        }
+
         public async Task SendNotificationAsync(NotificationMessage message)
         {
             TwilioClient.Init(_options.AccountId, _options.AccountPassword);

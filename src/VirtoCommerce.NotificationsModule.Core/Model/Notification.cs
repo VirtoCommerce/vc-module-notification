@@ -16,6 +16,7 @@ namespace VirtoCommerce.NotificationsModule.Core.Model
         public Notification()
         {
             Type = GetType().Name;
+            Templates = new List<NotificationTemplate>();
         }
 
         protected Notification(string type)

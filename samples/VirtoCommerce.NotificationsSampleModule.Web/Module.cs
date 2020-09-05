@@ -9,8 +9,8 @@ using VirtoCommerce.NotificationsModule.Core.Services;
 using VirtoCommerce.NotificationsModule.Core.Types;
 using VirtoCommerce.NotificationsModule.Data.Model;
 using VirtoCommerce.NotificationsModule.Data.Repositories;
-using VirtoCommerce.NotificationsModule.Data.TemplateLoaders;
 using VirtoCommerce.NotificationsModule.LiquidRenderer;
+using VirtoCommerce.NotificationsModule.TemplateLoader.FileSystem;
 using VirtoCommerce.NotificationsSampleModule.Web.Filters;
 using VirtoCommerce.NotificationsSampleModule.Web.Models;
 using VirtoCommerce.NotificationsSampleModule.Web.Repositories;
@@ -34,7 +34,7 @@ namespace VirtoCommerce.NotificationsSampleModule.Web
 
             //Register global folders for search templates
             var moduleTemplatesPath = Path.Combine(ModuleInfo.FullPhysicalPath, "Templates");
-            serviceCollection.Configure<FileSystemTemplateLoaderOptions>(opt =>
+            serviceCollection.AddFileSystemTemplateLoader(opt =>
             {
                 opt.DiscoveryPath = moduleTemplatesPath;
                 opt.FallbackDiscoveryPath = Path.Combine(moduleTemplatesPath, "Default");

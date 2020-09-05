@@ -149,7 +149,9 @@ namespace VirtoCommerce.NotificationsModule.Tests.UnitTests
 
         private NotificationService GetNotificationService(IPlatformMemoryCache platformMemoryCache)
         {
-            return new NotificationService(() => _repositoryMock.Object, _eventPublisherMock.Object, platformMemoryCache);
+            var templateLoader = new Mock<INotificationTemplateLoader>();
+
+            return new NotificationService(() => _repositoryMock.Object, _eventPublisherMock.Object, templateLoader.Object, platformMemoryCache);
         }
     }
 }

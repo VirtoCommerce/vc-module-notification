@@ -20,13 +20,18 @@ namespace VirtoCommerce.NotificationsModule.Smtp
             _emailSendingOptions = emailSendingOptions.Value;
         }
 
+        public virtual bool CanSend(NotificationMessage message)
+        {
+            return message is EmailNotificationMessage;
+        }
+
         public async Task SendNotificationAsync(NotificationMessage message)
         {
             var emailNotificationMessage = message as EmailNotificationMessage;
 
             if (emailNotificationMessage == null)
             {
-                throw new ArgumentNullException(nameof(emailNotificationMessage));
+                throw new ArgumentException("the message is not EmailNotificationMessage type");
             }
 
             try

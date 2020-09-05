@@ -1,6 +1,6 @@
 using System.Text.RegularExpressions;
 
-namespace VirtoCommerce.NotificationsModule.Data.TemplateLoaders
+namespace VirtoCommerce.NotificationsModule.TemplateLoader.FileSystem
 {
     public class FileSystemTemplateLoaderOptions
     {

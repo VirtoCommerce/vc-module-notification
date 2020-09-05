@@ -7,20 +7,19 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Moq;
-using VirtoCommerce.NotificationsModule.Twilio;
 using VirtoCommerce.NotificationsModule.Core.Model;
 using VirtoCommerce.NotificationsModule.Core.Services;
 using VirtoCommerce.NotificationsModule.Core.Types;
 using VirtoCommerce.NotificationsModule.Data.Model;
 using VirtoCommerce.NotificationsModule.Data.Senders;
 using VirtoCommerce.NotificationsModule.Data.Services;
-using VirtoCommerce.NotificationsModule.Data.TemplateLoaders;
 using VirtoCommerce.NotificationsModule.LiquidRenderer;
 using VirtoCommerce.NotificationsModule.LiquidRenderer.Filters;
 using VirtoCommerce.NotificationsModule.SendGrid;
 using VirtoCommerce.NotificationsModule.Smtp;
 using VirtoCommerce.NotificationsModule.Tests.Model;
 using VirtoCommerce.NotificationsModule.Tests.NotificationTypes;
+using VirtoCommerce.NotificationsModule.Twilio;
 using VirtoCommerce.Platform.Core.Common;
 using Xunit;
 
@@ -35,7 +34,7 @@ namespace VirtoCommerce.NotificationsModule.Tests.IntegrationTests
         private readonly Mock<IOptions<SmtpSenderOptions>> _emailSendingOptionsMock;
         private readonly INotificationRegistrar _notificationRegistrar;
         private readonly Mock<ILogger<NotificationSender>> _logNotificationSenderMock;
-        private INotificationMessageSenderProviderFactory _notificationMessageSenderProviderFactory;
+        private INotificationMessageSenderFactory _notificationMessageSenderFactory;
         private readonly Mock<INotificationService> _notificationServiceMock;
         private readonly SmtpSenderOptions _emailSendingOptions;
         private readonly Mock<INotificationSearchService> _notificationSearchServiceMock;
@@ -100,7 +99,6 @@ namespace VirtoCommerce.NotificationsModule.Tests.IntegrationTests
             _messageSender = new SmtpEmailNotificationMessageSender(_emailSendingOptionsMock.Object);
 
             var notificationSender = GetNotificationSender();
-            _notificationMessageSenderProviderFactory.RegisterSenderForType<EmailNotification, SmtpEmailNotificationMessageSender>();
 
             //Act
             var result = await notificationSender.SendNotificationAsync(notification);
@@ -120,8 +118,6 @@ namespace VirtoCommerce.NotificationsModule.Tests.IntegrationTests
             _messageSender = new SmtpEmailNotificationMessageSender(_emailSendingOptionsMock.Object);
 
             var notificationSender = GetNotificationSender();
-            _notificationMessageSenderProviderFactory.RegisterSenderForType<EmailNotification, SmtpEmailNotificationMessageSender>();
-
 
             //Act
             var result = await notificationSender.SendNotificationAsync(notification);
@@ -141,7 +137,6 @@ namespace VirtoCommerce.NotificationsModule.Tests.IntegrationTests
             _messageSender = new SendGridEmailNotificationMessageSender(sendGridSendingOptionsMock.Object);
 
             var notificationSender = GetNotificationSender();
-            _notificationMessageSenderProviderFactory.RegisterSenderForType<EmailNotification, SendGridEmailNotificationMessageSender>();
 
             //Act
             var result = await notificationSender.SendNotificationAsync(notification);
@@ -170,7 +165,6 @@ namespace VirtoCommerce.NotificationsModule.Tests.IntegrationTests
                 .ReturnsAsync(new[] { message });
 
             var notificationSender = GetNotificationSender();
-            _notificationMessageSenderProviderFactory.RegisterSenderForType<SmsNotification, TwilioSmsNotificationMessageSender>();
 
             //Act
             var result = await notificationSender.SendNotificationAsync(notification);
@@ -181,8 +175,8 @@ namespace VirtoCommerce.NotificationsModule.Tests.IntegrationTests
 
         private NotificationSender GetNotificationSender()
         {
-            _notificationMessageSenderProviderFactory = new NotificationMessageSenderProviderFactory(new List<INotificationMessageSender>() { _messageSender });
-            return new NotificationSender(_templateRender, _messageServiceMock.Object, _notificationMessageSenderProviderFactory, _backgroundJobClient.Object);
+            _notificationMessageSenderFactory = new NotificationMessageSenderFactory(new List<INotificationMessageSender>() { _messageSender });
+            return new NotificationSender(_templateRender, _messageServiceMock.Object, _notificationMessageSenderFactory, _backgroundJobClient.Object);
         }
 
         private Notification GetNotification()

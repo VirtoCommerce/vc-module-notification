@@ -17,5 +17,6 @@
         <ProjectReference Include="..\..\src\VirtoCommerce.NotificationsModule.Core\VirtoCommerce.NotificationsModule.Core.csproj" />
         <ProjectReference Include="..\..\src\VirtoCommerce.NotificationsModule.Data\VirtoCommerce.NotificationsModule.Data.csproj" />
         <ProjectReference Include="..\..\src\VirtoCommerce.NotificationsModule.LiquidRenderer\VirtoCommerce.NotificationsModule.LiquidRenderer.csproj" />
+        <ProjectReference Include="..\..\src\VirtoCommerce.NotificationsModule.TemplateLoader.FileSystem\VirtoCommerce.NotificationsModule.TemplateLoader.FileSystem.csproj" />
     </ItemGroup>
 </Project>

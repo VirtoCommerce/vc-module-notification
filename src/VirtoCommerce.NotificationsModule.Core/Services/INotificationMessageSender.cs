@@ -8,6 +8,7 @@ namespace VirtoCommerce.NotificationsModule.Core.Services
     /// </summary>
     public interface INotificationMessageSender
     {
+        bool CanSend(NotificationMessage message);
         Task SendNotificationAsync(NotificationMessage message);
     }
 }
