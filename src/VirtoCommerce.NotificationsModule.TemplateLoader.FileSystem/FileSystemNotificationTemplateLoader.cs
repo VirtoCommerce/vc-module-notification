@@ -19,7 +19,12 @@ namespace VirtoCommerce.NotificationsModule.TemplateLoader.FileSystem
 
         public virtual IEnumerable<NotificationTemplate> LoadTemplates(Notification notification)
         {
-            return LoadTemplates(notification, _options.DiscoveryPath, _options.FallbackDiscoveryPath);
+            var result = Enumerable.Empty<NotificationTemplate>();
+            if (!string.IsNullOrEmpty(_options.DiscoveryPath))
+            {
+                result = LoadTemplates(notification, _options.DiscoveryPath, _options.FallbackDiscoveryPath);
+            }
+            return result;
         }
 
         public virtual IEnumerable<NotificationTemplate> LoadTemplates(Notification notification, string path, string fallbackPath = null)
