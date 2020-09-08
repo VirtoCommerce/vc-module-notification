@@ -7,21 +7,22 @@ namespace VirtoCommerce.NotificationsSampleModule.Web.Models
     public class TwitterNotificationEntity : NotificationEntity
     {
         public string Post { get; set; }
-        public override Notification ToModel(Notification twitterNotification)
+
+        public override Notification ToModel(Notification notification)
         {
-            var result = base.ToModel(twitterNotification);
-            if (result is TwitterNotification settingEntry2)
+            var result = base.ToModel(notification);
+            if (result is TwitterNotification twitterNotification)
             {
-                settingEntry2.Post = Post;
+                twitterNotification.Post = Post;
             }
             return result;
         }
 
         public override NotificationEntity FromModel(Notification notification, PrimaryKeyResolvingMap pkMap)
         {
-            if (notification is TwitterNotification entity)
+            if (notification is TwitterNotification twitterNotification)
             {
-                Post = entity.Post;
+                Post = twitterNotification.Post;
             }
             return base.FromModel(notification, pkMap);
         }

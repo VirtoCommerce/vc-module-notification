@@ -23,21 +23,15 @@ namespace VirtoCommerce.NotificationsModule.Twilio
             _smsSendingOptions = smsSendingOptions.Value;
         }
 
-        public virtual bool CanSend(NotificationMessage message)
-        {
-            return message is SmsNotificationMessage;
-        }
+        public virtual bool CanSend(NotificationMessage message) => message is SmsNotificationMessage;
 
         public async Task SendNotificationAsync(NotificationMessage message)
         {
+            ThrowIfSendingNotPossible(message);
+
             TwilioClient.Init(_options.AccountId, _options.AccountPassword);
 
             var smsNotificationMessage = message as SmsNotificationMessage;
-
-            if (smsNotificationMessage == null)
-            {
-                throw new ArgumentNullException(nameof(message));
-            }
 
             try
             {
@@ -46,11 +40,18 @@ namespace VirtoCommerce.NotificationsModule.Twilio
                     from: new PhoneNumber(_smsSendingOptions.SmsDefaultSender),
                     to: smsNotificationMessage.Number
                 );
-
             }
             catch (ApiException ex)
             {
                 throw new SentNotificationException(ex);
+            }
+        }
+
+        protected virtual void ThrowIfSendingNotPossible(NotificationMessage message)
+        {
+            if (!CanSend(message))
+            {
+                throw new ArgumentNullException(nameof(message));
             }
         }
     }
