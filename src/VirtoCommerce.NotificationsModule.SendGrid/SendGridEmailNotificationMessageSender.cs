@@ -26,7 +26,10 @@ namespace VirtoCommerce.NotificationsModule.SendGrid
 
         public virtual async Task SendNotificationAsync(NotificationMessage message)
         {
-            ThrowIfSendingNotPossible(message);
+            if (!CanSend(message))
+            {
+                throw new ArgumentNullException(nameof(message));
+            }
 
             var emailNotificationMessage = message as EmailNotificationMessage;
 
@@ -71,14 +74,6 @@ namespace VirtoCommerce.NotificationsModule.SendGrid
             catch (SmtpException ex)
             {
                 throw new SentNotificationException(ex);
-            }
-        }
-
-        protected virtual void ThrowIfSendingNotPossible(NotificationMessage message)
-        {
-            if (!CanSend(message))
-            {
-                throw new ArgumentNullException(nameof(message));
             }
         }
     }

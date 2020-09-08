@@ -27,7 +27,10 @@ namespace VirtoCommerce.NotificationsModule.Twilio
 
         public async Task SendNotificationAsync(NotificationMessage message)
         {
-            ThrowIfSendingNotPossible(message);
+            if (!CanSend(message))
+            {
+                throw new ArgumentNullException(nameof(message));
+            }
 
             TwilioClient.Init(_options.AccountId, _options.AccountPassword);
 
@@ -44,14 +47,6 @@ namespace VirtoCommerce.NotificationsModule.Twilio
             catch (ApiException ex)
             {
                 throw new SentNotificationException(ex);
-            }
-        }
-
-        protected virtual void ThrowIfSendingNotPossible(NotificationMessage message)
-        {
-            if (!CanSend(message))
-            {
-                throw new ArgumentNullException(nameof(message));
             }
         }
     }
