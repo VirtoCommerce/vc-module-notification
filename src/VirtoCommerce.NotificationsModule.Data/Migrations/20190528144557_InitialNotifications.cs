@@ -167,7 +167,7 @@ namespace VirtoCommerce.NotificationsModule.Data.Migrations
                  WHERE TABLE_NAME = '__MigrationHistory'))
                     BEGIN
                         BEGIN
-	                        INSERT INTO [dbo].[Notification]
+	                        INSERT INTO [Notification]
                                        ([Id]
                                        ,[CreatedDate]
                                        ,[ModifiedDate]
@@ -227,7 +227,7 @@ namespace VirtoCommerce.NotificationsModule.Data.Migrations
                         END
 
                         BEGIN
-                            INSERT INTO [dbo].[NotificationTemplate]
+                            INSERT INTO [NotificationTemplate]
                                        ([Id]
                                        ,[CreatedDate]
                                        ,[ModifiedDate]
@@ -248,7 +248,7 @@ namespace VirtoCommerce.NotificationsModule.Data.Migrations
 	                              , [Subject]
                                   , CASE WHEN [NotificationTypeId] LIKE '%EmailNotification%' THEN [Body] ELSE '' END
 	                              , CASE WHEN [NotificationTypeId] LIKE '%SmsNotification%' THEN [Body] ELSE '' END
-                                  , (SELECT TOP 1 n.Id FROM [dbo].[Notification] n WHERE n.[Type] = pnt.[NotificationTypeId])
+                                  , (SELECT TOP 1 n.Id FROM [Notification] n WHERE n.[Type] = pnt.[NotificationTypeId])
                                   , CASE 
 										WHEN [NotificationTypeId] LIKE '%EmailNotification%' 
 										THEN 'EmailNotificationTemplateEntity' 
@@ -263,7 +263,7 @@ namespace VirtoCommerce.NotificationsModule.Data.Migrations
                         END
 
                         BEGIN
-                            INSERT INTO [dbo].[NotificationMessage]
+                            INSERT INTO [NotificationMessage]
                                        ([Id]
                                        ,[CreatedDate]
                                        ,[ModifiedDate]
@@ -290,7 +290,7 @@ namespace VirtoCommerce.NotificationsModule.Data.Migrations
                                   ,[ModifiedBy]	
 	                              ,[ObjectId]
                                   ,[ObjectTypeId]
-                                  , (SELECT TOP 1 n.Id FROM [dbo].[Notification] n WHERE n.[Type] = pn.[Type])
+                                  , (SELECT TOP 1 n.Id FROM [Notification] n WHERE n.[Type] = pn.[Type])
 	                              , [Type]
                                   ,[AttemptCount]
 	                              ,[MaxAttemptCount]
