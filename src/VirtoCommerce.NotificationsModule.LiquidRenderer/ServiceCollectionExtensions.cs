@@ -1,6 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.Text;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using VirtoCommerce.NotificationsModule.Core.Services;
@@ -15,11 +13,11 @@ namespace VirtoCommerce.NotificationsModule.LiquidRenderer
             {
                 throw new ArgumentNullException(nameof(services));
             }
+
             services.TryAddTransient<INotificationTemplateRenderer, LiquidTemplateRenderer>();
 
             return new LiquidRendererBuilder(services);
         }
-
 
         public static IServiceCollection AddLiquidRenderer(this IServiceCollection services, Action<LiquidRendererBuilder> configuration)
         {

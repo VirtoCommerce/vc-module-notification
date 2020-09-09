@@ -22,25 +22,22 @@ namespace VirtoCommerce.NotificationsModule.SendGrid
             _emailSendingOptions = emailSendingOptions.Value;
         }
 
-        public virtual bool CanSend(NotificationMessage message)
-        {
-            return message is EmailNotificationMessage;
-        }
+        public virtual bool CanSend(NotificationMessage message) => message is EmailNotificationMessage;
 
         public virtual async Task SendNotificationAsync(NotificationMessage message)
         {
+            if (!CanSend(message))
+            {
+                throw new ArgumentNullException(nameof(message));
+            }
+
+            var emailNotificationMessage = message as EmailNotificationMessage;
+
+            var fromAddress = new EmailAddress(emailNotificationMessage.From);
+            var toAddress = new EmailAddress(emailNotificationMessage.To);
+
             try
             {
-                var emailNotificationMessage = message as EmailNotificationMessage;
-
-                if (emailNotificationMessage == null)
-                {
-                    throw new ArgumentNullException(nameof(emailNotificationMessage));
-                }
-
-                var fromAddress = new EmailAddress(emailNotificationMessage.From);
-                var toAddress = new EmailAddress(emailNotificationMessage.To);
-
                 var client = new SendGridClient(_emailSendingOptions.ApiKey);
                 var mailMsg = new SendGridMessage
                 {
@@ -78,7 +75,6 @@ namespace VirtoCommerce.NotificationsModule.SendGrid
             {
                 throw new SentNotificationException(ex);
             }
-
         }
     }
 }

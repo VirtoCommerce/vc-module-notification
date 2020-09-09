@@ -8,10 +8,10 @@ namespace VirtoCommerce.NotificationsSampleModule.Web.Migrations
         {
             //need to define derived notifications where has own types and convert the types to based type (like as SampleEmailNotification)
             migrationBuilder.Sql(@"
-                 DECLARE @base varchar(128) = 'SampleEmailNotification';   
-                 DECLARE @extend varchar(128) = 'ExtendedSampleEmailNotification';        
-                 IF (EXISTS (SELECT * 
-                 FROM INFORMATION_SCHEMA.TABLES 
+                 DECLARE @base varchar(128) = 'SampleEmailNotification';
+                 DECLARE @extend varchar(128) = 'ExtendedSampleEmailNotification';
+                 IF (EXISTS (SELECT *
+                 FROM INFORMATION_SCHEMA.TABLES
                  WHERE TABLE_NAME = '__MigrationHistory'))
                     BEGIN
                         BEGIN
@@ -37,7 +37,7 @@ namespace VirtoCommerce.NotificationsSampleModule.Web.Migrations
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            
+            // Not needed
         }
     }
 }

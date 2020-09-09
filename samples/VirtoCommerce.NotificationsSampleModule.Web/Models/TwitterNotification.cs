@@ -5,7 +5,7 @@ namespace VirtoCommerce.NotificationsSampleModule.Web.Models
 {
     public abstract class TwitterNotification : Notification
     {
-        public TwitterNotification(string type) : base(type)
+        protected TwitterNotification(string type) : base(type)
         {
             Templates = new List<NotificationTemplate>();
         }
@@ -15,7 +15,6 @@ namespace VirtoCommerce.NotificationsSampleModule.Web.Models
 
         public override void SetFromToMembers(string from, string to)
         {
-
         }
     }
 }
