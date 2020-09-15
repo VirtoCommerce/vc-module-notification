@@ -182,12 +182,12 @@ namespace VirtoCommerce.NotificationsModule.Data.Migrations
                                        ,[From]
                                        ,[To])
                             SELECT NEWID(), 
-	                            (SELECT TOP 1 pnt2.CreatedDate FROM [PlatformNotificationTemplate] pnt2 WHERE pnt2.NotificationTypeId = pnt.NotificationTypeId), 
-	                            (SELECT TOP 1 pnt2.ModifiedDate FROM [PlatformNotificationTemplate] pnt2 WHERE pnt2.NotificationTypeId = pnt.NotificationTypeId), 
-	                            (SELECT TOP 1 pnt2.CreatedBy FROM [PlatformNotificationTemplate] pnt2 WHERE pnt2.NotificationTypeId = pnt.NotificationTypeId), 
-	                            (SELECT TOP 1 pnt2.ModifiedBy FROM [PlatformNotificationTemplate] pnt2 WHERE pnt2.NotificationTypeId = pnt.NotificationTypeId), 
-	                            (SELECT TOP 1 pnt2.ObjectId FROM [PlatformNotificationTemplate] pnt2 WHERE pnt2.NotificationTypeId = pnt.NotificationTypeId), 
-	                            (SELECT TOP 1 pnt2.ObjectTypeId FROM [PlatformNotificationTemplate] pnt2 WHERE pnt2.NotificationTypeId = pnt.NotificationTypeId), 
+	                            pnt.CreatedDate , 
+	                            pnt.ModifiedDate, 
+	                            pnt.CreatedBy, 
+	                            pnt.ModifiedBy, 
+	                            pnt.ObjectId, 
+	                            pnt.ObjectTypeId, 
 	                            1, 
 								CASE
 									WHEN (pnt.[NotificationTypeId] = 'EmailConfirmationNotification') THEN 'ConfirmationEmailNotification' 
@@ -223,7 +223,6 @@ namespace VirtoCommerce.NotificationsModule.Data.Migrations
 								END,
 	                            null, null
                             FROM [PlatformNotificationTemplate] pnt
-                            GROUP BY [NotificationTypeId]
                         END
 
                         BEGIN
@@ -239,16 +238,16 @@ namespace VirtoCommerce.NotificationsModule.Data.Migrations
                                        ,[Message]
                                        ,[NotificationId]
                                        ,[Discriminator])
-                            SELECT [Id]
-                                  ,[CreatedDate]
-                                  ,[ModifiedDate]
-                                  ,[CreatedBy]
-                                  ,[ModifiedBy]
-	                              ,[Language]
-	                              , [Subject]
+                            SELECT pnt.[Id]
+                                  , pnt.[CreatedDate]
+                                  , pnt.[ModifiedDate]
+                                  , pnt.[CreatedBy]
+                                  , pnt.[ModifiedBy]
+	                              , pnt.[Language]
+	                              , pnt.[Subject]
                                   , CASE WHEN [NotificationTypeId] LIKE '%EmailNotification%' THEN [Body] ELSE '' END
 	                              , CASE WHEN [NotificationTypeId] LIKE '%SmsNotification%' THEN [Body] ELSE '' END
-                                  , (SELECT TOP 1 n.Id FROM [Notification] n WHERE n.[Type] = pnt.[NotificationTypeId])
+                                  , n.Id [NotificationId]
                                   , CASE 
 										WHEN [NotificationTypeId] LIKE '%EmailNotification%' 
 										THEN 'EmailNotificationTemplateEntity' 
@@ -260,6 +259,8 @@ namespace VirtoCommerce.NotificationsModule.Data.Migrations
 											END
 									END
                               FROM [PlatformNotificationTemplate] pnt
+							  left outer join [Notification] n
+							  on pnt.[NotificationTypeId] = n.[Type]
                         END
 
                         BEGIN
@@ -283,35 +284,37 @@ namespace VirtoCommerce.NotificationsModule.Data.Migrations
                                        ,[Body]
                                        ,[Message],
                                         [Discriminator])
-                            SELECT [Id]
-	                              ,[CreatedDate]
-                                  ,[ModifiedDate]
-                                  ,[CreatedBy]
-                                  ,[ModifiedBy]	
-	                              ,[ObjectId]
-                                  ,[ObjectTypeId]
-                                  , (SELECT TOP 1 n.Id FROM [Notification] n WHERE n.[Type] = pn.[Type])
-	                              , [Type]
-                                  ,[AttemptCount]
-	                              ,[MaxAttemptCount]
-	                              ,[LastFailAttemptMessage]
-                                  ,[LastFailAttemptDate]
-	                              ,[SentDate]
-	                              ,[Language]
-	                              ,[Subject]
-                                  , CASE WHEN pn.[Type] LIKE '%EmailNotification%' THEN [Body] ELSE '' END
-	                              , CASE WHEN pn.[Type] LIKE '%SmsNotification%' THEN [Body] ELSE '' END
-                                  , CASE 
-										WHEN [Type] LIKE '%EmailNotification%' 
-										THEN 'EmailNotificationMessageEntity' 
-										ELSE 
-											CASE 
-												WHEN [Type] LIKE '%SmsNotification%'
-												THEN 'SmsNotificationMessageEntity'
-												ELSE 'EmailNotificationMessageEntity'
-											END
-									END
-                              FROM [PlatformNotification] pn
+                                SELECT pn.[Id]
+    	                              ,pn.[CreatedDate]
+                                      ,pn.[ModifiedDate]
+                                      ,pn.[CreatedBy]
+                                      ,pn.[ModifiedBy]	
+    	                              ,pn.[ObjectId]
+                                      ,pn.[ObjectTypeId]
+                                      , n.Id [NotificationId]
+    	                              , pn.[Type]
+                                      ,pn.[AttemptCount]
+    	                              ,pn.[MaxAttemptCount]
+    	                              ,pn.[LastFailAttemptMessage]
+                                      ,pn.[LastFailAttemptDate]
+    	                              ,pn.[SentDate]
+    	                              ,pn.[Language]
+    	                              ,pn.[Subject]
+                                      , CASE WHEN pn.[Type] LIKE '%EmailNotification%' THEN [Body] ELSE '' END
+    	                              , CASE WHEN pn.[Type] LIKE '%SmsNotification%' THEN [Body] ELSE '' END
+                                      , CASE 
+    										WHEN pn.[Type] LIKE '%EmailNotification%' 
+    										THEN 'EmailNotificationMessageEntity' 
+    										ELSE 
+    											CASE 
+    												WHEN pn.[Type] LIKE '%SmsNotification%'
+    												THEN 'SmsNotificationMessageEntity'
+    												ELSE 'EmailNotificationMessageEntity'
+    											END
+    									END
+                                  FROM [PlatformNotification] pn
+								  left outer join [Notification] n
+								  on pn.[Type] = n.[Type]
                         END
                         
                     END");
