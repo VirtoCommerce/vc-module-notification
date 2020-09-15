@@ -88,7 +88,7 @@ namespace VirtoCommerce.NotificationsModule.Data.Services
             {
                 var words = Regex
                     .Split(criteria.Keyword, @"\W")
-                    .Where(x=>!string.IsNullOrWhiteSpace(x));
+                    .Where(x => !string.IsNullOrWhiteSpace(x));
 
                 foreach (var word in words)
                 {
