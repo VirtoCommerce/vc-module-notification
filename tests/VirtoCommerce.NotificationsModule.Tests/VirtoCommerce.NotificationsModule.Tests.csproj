@@ -36,7 +36,7 @@
     </ItemGroup>
     <ItemGroup>
       <None Update="Content\InvoiceEmailNotification.html">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       </None>
     </ItemGroup>
 </Project>
