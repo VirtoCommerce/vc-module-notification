@@ -20,6 +20,7 @@ using VirtoCommerce.NotificationsModule.Data.Senders;
 using VirtoCommerce.NotificationsModule.Data.Services;
 using VirtoCommerce.NotificationsModule.LiquidRenderer;
 using VirtoCommerce.NotificationsModule.LiquidRenderer.Filters;
+using VirtoCommerce.NotificationsModule.Tests.Common;
 using VirtoCommerce.NotificationsModule.Tests.Model;
 using VirtoCommerce.NotificationsModule.Tests.NotificationTypes;
 using VirtoCommerce.NotificationsModule.Web.JsonConverters;
@@ -130,7 +131,7 @@ namespace VirtoCommerce.NotificationsModule.Tests.UnitTests
             //Arrange
             var language = "default";
             var subject = "Invoice for order - <strong>{{ customer_order.number }}</strong>";
-            var body = Path.Combine("Content", $"{nameof(InvoiceEmailNotification)}.html");
+            var body = TestUtility.GetStringByPath($"Content{Path.DirectorySeparatorChar}{nameof(InvoiceEmailNotification)}.html");
             var notification = new InvoiceEmailNotification()
             {
                 CustomerOrder = new CustomerOrder()
