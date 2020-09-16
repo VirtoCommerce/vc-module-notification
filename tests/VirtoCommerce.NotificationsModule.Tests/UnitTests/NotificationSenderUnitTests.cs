@@ -131,7 +131,7 @@ namespace VirtoCommerce.NotificationsModule.Tests.UnitTests
             //Arrange
             var language = "default";
             var subject = "Invoice for order - <strong>{{ customer_order.number }}</strong>";
-            var body = TestUtility.GetStringByPath(Path.Combine("Content", $"{nameof(InvoiceEmailNotification)}.html")); 
+            var body = Path.Combine("Content", $"{nameof(InvoiceEmailNotification)}.html");
             var notification = new InvoiceEmailNotification()
             {
                 CustomerOrder = new CustomerOrder()
