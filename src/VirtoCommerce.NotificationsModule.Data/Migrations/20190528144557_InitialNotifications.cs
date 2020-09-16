@@ -223,6 +223,7 @@ namespace VirtoCommerce.NotificationsModule.Data.Migrations
 								END,
 	                            null, null
                             FROM [PlatformNotificationTemplate] pnt
+                            WHERE Language='en-US'
                         END
 
                         BEGIN
