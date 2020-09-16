@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Memory;
@@ -85,7 +86,14 @@ namespace VirtoCommerce.NotificationsModule.Data.Services
 
             if (!string.IsNullOrEmpty(criteria.Keyword))
             {
-                query = query.Where(x => x.Type.Contains(criteria.Keyword));
+                var words = Regex
+                    .Split(criteria.Keyword, @"\W")
+                    .Where(x => !string.IsNullOrWhiteSpace(x));
+
+                foreach (var word in words)
+                {
+                    query = query.Where(x => x.Type.Contains(word));
+                }
             }
 
             if (criteria.IsActive)
