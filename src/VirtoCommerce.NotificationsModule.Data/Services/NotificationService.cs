@@ -6,6 +6,7 @@ using FluentValidation;
 using Microsoft.Extensions.Caching.Memory;
 using VirtoCommerce.NotificationsModule.Core.Events;
 using VirtoCommerce.NotificationsModule.Core.Model;
+using VirtoCommerce.NotificationsModule.Core.Model.Result;
 using VirtoCommerce.NotificationsModule.Core.Services;
 using VirtoCommerce.NotificationsModule.Data.Caching;
 using VirtoCommerce.NotificationsModule.Data.Model;
@@ -18,7 +19,6 @@ using VirtoCommerce.Platform.Data.Infrastructure;
 
 namespace VirtoCommerce.NotificationsModule.Data.Services
 {
-
     public class NotificationService : INotificationService
     {
         private readonly IEventPublisher _eventPublisher;
@@ -38,10 +38,10 @@ namespace VirtoCommerce.NotificationsModule.Data.Services
             _templateLoader = templateLoader;
         }
 
-
         public async Task<Notification[]> GetByIdsAsync(string[] ids, string responseGroup = null)
         {
             var cacheKey = CacheKey.With(GetType(), nameof(GetByIdsAsync), string.Join("-", ids), responseGroup);
+
             var result = await _platformMemoryCache.GetOrCreateExclusiveAsync(cacheKey, async (cacheEntry) =>
             {
                 //It is so important to generate change tokens for all ids even for not existing objects to prevent an issue
@@ -49,31 +49,36 @@ namespace VirtoCommerce.NotificationsModule.Data.Services
                 //and future unavailability to create objects with these ids.
                 cacheEntry.AddExpirationToken(NotificationCacheRegion.CreateChangeToken(ids));
 
-                using (var repository = _repositoryFactory())
-                {
-                    //Optimize performance and CPU usage
-                    repository.DisableChangesTracking();
+                using var repository = _repositoryFactory();
 
-                    var entities = await repository.GetByIdsAsync(ids, responseGroup);
-                    var notifications = entities.Select(n => n.ToModel(CreateNotification(n.Type, new UnregisteredNotification()))).ToArray();
-                    //Load predefined notifications templates
-                    if (EnumUtility.SafeParseFlags(responseGroup, NotificationResponseGroup.Full).HasFlag(NotificationResponseGroup.WithTemplates))
+                //Optimize performance and CPU usage
+                repository.DisableChangesTracking();
+
+                var entities = await repository.GetByIdsAsync(ids, responseGroup);
+
+                var notifications = entities
+                    .Select(n => n.ToModel(CreateNotification(n.Type, new UnregisteredNotification())))
+                    .ToArray();
+
+                var flags = EnumUtility.SafeParseFlags(responseGroup, NotificationResponseGroup.Full);
+                if (flags.HasFlag(NotificationResponseGroup.WithTemplates))
+                {
+                    foreach (var notification in notifications)
                     {
-                        foreach (var notification in notifications)
+                        var predefinedTemplates = _templateLoader.LoadTemplates(notification);
+
+                        if (notification.Templates != null)
                         {
-                            var predefinedTemplates = _templateLoader.LoadTemplates(notification).ToList();
-                            if (notification.Templates != null)
-                            {
-                                notification.Templates.AddRange(predefinedTemplates);
-                            }
-                            else
-                            {
-                                notification.Templates = predefinedTemplates;
-                            }
+                            notification.Templates.AddRange(predefinedTemplates);
+                        }
+                        else
+                        {
+                            notification.Templates = predefinedTemplates.ToList();
                         }
                     }
-                    return notifications;
                 }
+
+                return notifications;
             });
 
             return result.Select(x => x.Clone() as Notification).ToArray();
@@ -95,7 +100,7 @@ namespace VirtoCommerce.NotificationsModule.Data.Services
                     foreach (var notification in notifications)
                     {
                         var existingNotification = existingNotifications.FirstOrDefault(x => comparer.Equals(x, notification));
-                        var originalEntity = existingNotificationEntities.FirstOrDefault(n => n.Id.EqualsInvariant(existingNotification.Id));
+                        var originalEntity = existingNotificationEntities.FirstOrDefault(n => n.Id.EqualsInvariant(existingNotification?.Id));
                         var modifiedEntity = AbstractTypeFactory<NotificationEntity>.TryCreateInstance($"{notification.Kind}Entity").FromModel(notification, pkMap);
 
                         if (originalEntity != null)
@@ -128,7 +133,6 @@ namespace VirtoCommerce.NotificationsModule.Data.Services
             }
         }
 
-
         private void ClearCache(Notification[] notifications)
         {
             NotificationSearchCacheRegion.ExpireRegion();
@@ -145,6 +149,7 @@ namespace VirtoCommerce.NotificationsModule.Data.Services
             {
                 throw new ArgumentNullException(nameof(notifications));
             }
+
             var validator = new NotificationValidator();
             foreach (var notification in notifications)
             {
@@ -153,14 +158,35 @@ namespace VirtoCommerce.NotificationsModule.Data.Services
         }
 
         private static Notification CreateNotification(string typeName, Notification defaultObj)
+            => AbstractTypeFactory<Notification>.FindTypeInfoByName(typeName) != null
+                ? AbstractTypeFactory<Notification>.TryCreateInstance(typeName)
+                : defaultObj;
+
+        public async Task<OperationResult> ResetTemplate(string notificationId, string templateId)
         {
-            var result = defaultObj;
-            var typeInfo = AbstractTypeFactory<Notification>.FindTypeInfoByName(typeName);
-            if (typeInfo != null)
+            var notifications = await GetByIdsAsync(new[] { notificationId }, NotificationResponseGroup.WithTemplates.ToString());
+
+            var notification = notifications.FirstOrDefault(x => x.Id == notificationId);
+            if (notification == null)
             {
-                result = AbstractTypeFactory<Notification>.TryCreateInstance(typeName);
+                return new ErrorResult($"Notification with id: {notificationId} not exist!");
             }
-            return result;
+
+            var template = notification.Templates.FirstOrDefault(x => x.Id == templateId);
+            if (template == null)
+            {
+                return new ErrorResult($"Template with id: {templateId} not exist!");
+            }
+            else if (!template.IsPredefined)
+            {
+                return new ErrorResult($"Impossible to reset not predefined template!");
+            }
+
+            notification.Templates.Remove(template);
+
+            await SaveChangesAsync(new[] { notification });
+
+            return new SuccessResult();
         }
     }
 }

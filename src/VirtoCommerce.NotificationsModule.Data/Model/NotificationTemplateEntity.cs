@@ -11,6 +11,7 @@ namespace VirtoCommerce.NotificationsModule.Data.Model
     public abstract class NotificationTemplateEntity : AuditableEntity, IHasOuterId
     {
         public abstract string Kind { get; }
+
         /// <summary>
         /// Language of template
         /// </summary>
@@ -27,9 +28,10 @@ namespace VirtoCommerce.NotificationsModule.Data.Model
         /// </summary>
         [StringLength(128)]
         public string NotificationId { get; set; }
+
         public NotificationEntity Notification { get; set; }
 
-        #endregion
+        #endregion Navigation Properties
 
         public virtual NotificationTemplate ToModel(NotificationTemplate template)
         {
@@ -66,6 +68,7 @@ namespace VirtoCommerce.NotificationsModule.Data.Model
         public virtual void Patch(NotificationTemplateEntity template)
         {
             template.LanguageCode = LanguageCode;
+            template.ModifiedDate = DateTime.Now;
         }
 
         public virtual NotificationTemplateEntity ResetEntityData()

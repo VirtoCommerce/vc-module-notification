@@ -12,6 +12,7 @@ namespace VirtoCommerce.NotificationsModule.Core.Model
         /// Code of Language
         /// </summary>
         public string LanguageCode { get; set; }
+
         /// <summary>
         /// For detecting kind of notifications (email, sms and etc.)
         /// </summary>
@@ -23,6 +24,7 @@ namespace VirtoCommerce.NotificationsModule.Core.Model
 
         public bool IsPredefined { get; set; }
 
+        public bool IsEdited => ModifiedDate.HasValue && ModifiedDate.Value > CreatedDate;
 
         public virtual void PopulateFromLocalizedContent(LocalizedTemplateContent content)
         {
@@ -37,6 +39,6 @@ namespace VirtoCommerce.NotificationsModule.Core.Model
             return MemberwiseClone() as NotificationTemplate;
         }
 
-        #endregion
+        #endregion ICloneable members
     }
 }

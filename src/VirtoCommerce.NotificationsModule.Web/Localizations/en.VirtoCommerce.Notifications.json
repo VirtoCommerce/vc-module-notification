@@ -191,6 +191,10 @@
       "notification-template-delete-notification": {
         "title": "Can't delete template",
         "message": "Can't delete 'default' and 'predefined' templates. Please deselect that templates."
+      },
+      "notification-template-reset": {
+        "title": "Reset template confrimation",
+        "message": "Are you sure you want to reset template to default?"
       }
     }
   },

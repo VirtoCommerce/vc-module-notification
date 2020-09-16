@@ -28,7 +28,7 @@ namespace VirtoCommerce.NotificationsModule.Core.Extensions
             var criteria = AbstractTypeFactory<NotificationSearchCriteria>.TryCreateInstance();
             criteria.NotificationType = notificationType;
 
-            //try to get with the Tenant  
+            //try to get with the Tenant
             criteria.Take = 1;
             criteria.ResponseGroup = responseGroup;
             if (tenant != null && !tenant.IsEmpty)
