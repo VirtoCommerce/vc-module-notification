@@ -15,7 +15,7 @@ namespace VirtoCommerce.NotificationsModule.Tests.Common
             }
 
             path = path.Replace("~/", "").TrimStart(separatorChar).Replace('/', '\\');
-            return Path.Combine(baseDirectory, path);
+            return $"{baseDirectory}{separatorChar}{path}";
         }
 
         public static string GetStringByPath(string path)
