@@ -7,21 +7,21 @@ namespace VirtoCommerce.NotificationsModule.Tests.Common
     {
         public static string MapPath(string path)
         {
-            string baseDirectory = Directory.GetCurrentDirectory();
-            if (baseDirectory.IndexOf(@"\bin\", StringComparison.Ordinal) != -1)
+            var separatorChar = Path.DirectorySeparatorChar;
+            var baseDirectory = Directory.GetCurrentDirectory();
+            if (baseDirectory.IndexOf($"{separatorChar}bin{separatorChar}", StringComparison.Ordinal) != -1)
             {
-                baseDirectory = baseDirectory.Remove(baseDirectory.IndexOf(@"\bin\", StringComparison.Ordinal));
+                baseDirectory = baseDirectory.Remove(baseDirectory.IndexOf($"{separatorChar}bin{separatorChar}", StringComparison.Ordinal));
             }
 
-            path = path.Replace("~/", "").TrimStart('/').Replace('/', Path.DirectorySeparatorChar);
+            path = path.Replace("~/", "").TrimStart('/').Replace('/', '\\');
             return Path.Combine(baseDirectory, path);
         }
 
         public static string GetStringByPath(string path)
         {
-            string fullPath = MapPath(path);
-
-            string content = File.ReadAllText(fullPath);
+            var fullPath = MapPath(path);
+            var content = File.ReadAllText(fullPath);
 
             return content;
         }
