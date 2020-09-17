@@ -29,7 +29,6 @@ namespace VirtoCommerce.NotificationsModule.Core.Model
         /// For detecting owner
         /// </summary>
         public TenantIdentity TenantIdentity { get; set; } = TenantIdentity.Empty;
-
         public bool? IsActive { get; set; } = true;
         public string LanguageCode { get; set; }
 
@@ -49,10 +48,8 @@ namespace VirtoCommerce.NotificationsModule.Core.Model
         /// For detecting kind of notifications (email, sms and etc.)
         /// </summary>
         public abstract string Kind { get; }
-
         public string OuterId { get; set; }
         public IList<NotificationTemplate> Templates { get; set; }
-
         /// <summary>
         /// need for saving validation errors
         /// if the property is not empty then the notification is not sent
@@ -113,6 +110,6 @@ namespace VirtoCommerce.NotificationsModule.Core.Model
             return result;
         }
 
-        #endregion ICloneable members
+        #endregion
     }
 }
