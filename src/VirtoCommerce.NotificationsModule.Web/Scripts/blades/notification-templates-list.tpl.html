@@ -1,6 +1,30 @@
 <div class="blade-content ">
     <div class="blade-inner">
-        <div class="inner-block" ng-init="setGridOptions()">
+        <div class="inner-block" ng-init="setGridOptions({
+                    rowTemplate: 'list.row.html',
+                    rowHeight: 61,
+                    columnDefs: [{
+                        name: 'languageCode',
+                        displayName: 'Language',
+                        cellTemplate: 'template-list-language.cell.html'
+                    }, {
+                        name: 'createdDateAsString',
+                        displayName: 'Created'
+                    }, {
+                        name: 'modifiedDateAsString',
+                        displayName: 'Modified'
+                    }, {
+                        name: 'isEdited',
+                        displayName: 'Edited',
+                        cellTemplate: 'template-list-edited.cell.html',
+                        width: 75
+                    }, {
+                        name: 'isPredefined',
+                        displayName: 'Predefined',
+                        cellTemplate: 'template-list-predefined.cell.html',
+                        width: 100
+                    }]
+                })">
             <div class="table-wrapper" ng-if="blade.currentEntity.templates.length">
                 <div ui-grid="gridOptions"
                      ui-grid-auto-resize

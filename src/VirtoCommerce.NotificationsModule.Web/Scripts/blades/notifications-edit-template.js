@@ -115,34 +115,6 @@ angular.module('virtoCommerce.notificationsModule')
                 bladeNavigationService.showBlade(newBlade, blade);
             }
 
-            function refreshNotifications() {
-                var notificationBlade = blade.parentBlade.parentBlade.parentBlade;
-                bladeNavigationService.closeChildrenBlades(notificationBlade, function () {
-                    notificationBlade.refresh();
-                });
-            }
-
-            blade.resetTemplate = function () {
-                var dialog = {
-                    id: "confirmResetTemplate",
-                    title: "notifications.dialogs.notification-template-reset.title",
-                    message: "notifications.dialogs.notification-template-reset.message",
-                    callback: function (reset) {
-                        if (reset) {
-                            notifications.resetTemplate({
-                                notificationId: blade.notification.id,
-                                templateId: blade.currentEntity.id
-                            }, {}, function () {
-                                refreshNotifications();
-                            }, function (error) {
-                                bladeNavigationService.setError('Error ' + error.status, blade);
-                            })
-                        }
-                    }
-                };
-                dialogService.showConfirmationDialog(dialog);
-            }
-
             $scope.blade.toolbarCommands = [{
                 name: "platform.commands.preview",
                 icon: 'fa fa-eye',
@@ -151,14 +123,6 @@ angular.module('virtoCommerce.notificationsModule')
                 },
                 canExecuteMethod: canRender,
                 permission: 'notifications:templates:read'
-            }, {
-                name: "platform.commands.reset",
-                icon: "fa fa-undo",
-                executeMethod: blade.resetTemplate,
-                canExecuteMethod: function () {
-                    return blade.currentEntity.isPredefined && blade.currentEntity.isEdited;
-                },
-                permission: 'notifications:update'
             }];
 
             function isDirty() {

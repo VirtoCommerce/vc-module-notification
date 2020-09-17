@@ -195,6 +195,10 @@
       "notification-template-reset": {
         "title": "Reset template confrimation",
         "message": "Are you sure you want to reset template to default?"
+      },
+      "notification-template-reset-notification": {
+        "title": "Can't reset template",
+        "message": "Can't reset not 'changed predefined' templates. Please deselect that templates."
       }
     }
   },

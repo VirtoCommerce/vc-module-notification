@@ -6,7 +6,6 @@ using FluentValidation;
 using Microsoft.Extensions.Caching.Memory;
 using VirtoCommerce.NotificationsModule.Core.Events;
 using VirtoCommerce.NotificationsModule.Core.Model;
-using VirtoCommerce.NotificationsModule.Core.Model.Result;
 using VirtoCommerce.NotificationsModule.Core.Services;
 using VirtoCommerce.NotificationsModule.Data.Caching;
 using VirtoCommerce.NotificationsModule.Data.Model;
@@ -161,32 +160,5 @@ namespace VirtoCommerce.NotificationsModule.Data.Services
             => AbstractTypeFactory<Notification>.FindTypeInfoByName(typeName) != null
                 ? AbstractTypeFactory<Notification>.TryCreateInstance(typeName)
                 : defaultObj;
-
-        public async Task<OperationResult> ResetTemplate(string notificationId, string templateId)
-        {
-            var notifications = await GetByIdsAsync(new[] { notificationId }, NotificationResponseGroup.WithTemplates.ToString());
-
-            var notification = notifications.FirstOrDefault(x => x.Id == notificationId);
-            if (notification == null)
-            {
-                return new ErrorResult($"Notification with id: {notificationId} not exist!");
-            }
-
-            var template = notification.Templates.FirstOrDefault(x => x.Id == templateId);
-            if (template == null)
-            {
-                return new ErrorResult($"Template with id: {templateId} not exist!");
-            }
-            else if (!template.IsPredefined)
-            {
-                return new ErrorResult($"Impossible to reset not predefined template!");
-            }
-
-            notification.Templates.Remove(template);
-
-            await SaveChangesAsync(new[] { notification });
-
-            return new SuccessResult();
-        }
     }
 }

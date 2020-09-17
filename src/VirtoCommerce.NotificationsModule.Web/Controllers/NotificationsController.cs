@@ -1,4 +1,3 @@
-using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
@@ -7,7 +6,6 @@ using Microsoft.AspNetCore.Mvc;
 using VirtoCommerce.NotificationsModule.Core;
 using VirtoCommerce.NotificationsModule.Core.Extensions;
 using VirtoCommerce.NotificationsModule.Core.Model;
-using VirtoCommerce.NotificationsModule.Core.Model.Result;
 using VirtoCommerce.NotificationsModule.Core.Model.Search;
 using VirtoCommerce.NotificationsModule.Core.Services;
 using VirtoCommerce.NotificationsModule.Web.Extensions;
@@ -91,25 +89,6 @@ namespace VirtoCommerce.NotificationsModule.Web.Controllers
             await _notificationService.SaveChangesAsync(new[] { notification });
 
             return NoContent();
-        }
-
-        [HttpPatch]
-        [Route("api/notifications/{notificationId}/templates/{templateId}/reset")]
-        [Authorize(ModuleConstants.Security.Permissions.Update)]
-        [ProducesResponseType(typeof(void), StatusCodes.Status205ResetContent)]
-        [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult> ResetTemplate(string notificationId, string templateId)
-        {
-            var result = await _notificationService.ResetTemplate(notificationId, templateId);
-            if (result is ErrorResult error)
-            {
-                return BadRequest(new
-                {
-                    error.Message
-                });
-            }
-
-            return new StatusCodeResult(205);
         }
 
         /// <summary>

@@ -137,11 +137,9 @@ namespace VirtoCommerce.NotificationsModule.Web
 
             using (var serviceScope = appBuilder.ApplicationServices.CreateScope())
             {
-                using (var notificationDbContext = serviceScope.ServiceProvider.GetRequiredService<NotificationDbContext>())
-                {
-                    notificationDbContext.Database.EnsureCreated();
-                    notificationDbContext.Database.Migrate();
-                }
+                using var notificationDbContext = serviceScope.ServiceProvider.GetRequiredService<NotificationDbContext>();
+                notificationDbContext.Database.EnsureCreated();
+                notificationDbContext.Database.Migrate();
             }
 
             var registrar = appBuilder.ApplicationServices.GetService<INotificationRegistrar>();
@@ -172,7 +170,7 @@ namespace VirtoCommerce.NotificationsModule.Web
 
         public void Uninstall()
         {
-            //Nothing todo
+            //Nothing to do
         }
 
         public async Task ExportAsync(Stream outStream, ExportImportOptions options, Action<ExportImportProgressInfo> progressCallback, ICancellationToken cancellationToken)

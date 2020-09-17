@@ -85,6 +85,20 @@ angular.module('virtoCommerce.notificationsModule')
                 }
             }
 
+            function deleteFromGrid(selections) {
+                bladeNavigationService.closeChildrenBlades(blade, function () {
+                    _.each(selections, function (selection) {
+                        var index = blade.currentEntity.templates.findIndex(function (element) {
+                            return (element.languageCode === selection.languageCode);
+                        });
+
+                        if (index > -1) {
+                            blade.currentEntity.templates.splice(index, 1);
+                        }
+                    });
+                });
+            }
+
             function deleteList(selections) {
                 var containsDefaultNotifications = _.any(selections, function (item) {
                     return !item.languageCode || item.isPredefined;
@@ -103,19 +117,32 @@ angular.module('virtoCommerce.notificationsModule')
                         title: "notifications.dialogs.notification-template-delete.title",
                         message: "notifications.dialogs.notification-template-delete.message",
                         callback: function (remove) {
-                            if (remove) {
-                                bladeNavigationService.closeChildrenBlades(blade, function () {
-                                    _.each(selections, function (selection) {
-                                        var index = blade.currentEntity.templates.findIndex(function (element) {
-                                            return (element.languageCode === selection.languageCode);
-                                        });
+                            if (remove) { deleteFromGrid(); }
+                        }
+                    };
+                    dialogService.showConfirmationDialog(dialog);
+                }
+            }
 
-                                        if (index > -1) {
-                                            blade.currentEntity.templates.splice(index, 1);
-                                        }
-                                    });
-                                });
-                            }
+            function resetList(selections) {
+                var containsPostDefneidNotifications = _.any(selections, function (item) {
+                    return !item.isEdited || !item.isPredefined;
+                });
+
+                if (containsPostDefneidNotifications) {
+                    dialogService.showNotificationDialog({
+                        id: "error",
+                        title: "notifications.dialogs.notification-template-reset-notification.title",
+                        message: "notifications.dialogs.notification-template-reset-notification.message"
+                    });
+                }
+                else {
+                    var dialog = {
+                        id: "confirmResetTemplate",
+                        title: "notifications.dialogs.notification-template-reset.title",
+                        message: "notifications.dialogs.notification-template-reset.message",
+                        callback: function (reset) {
+                            if (reset) { deleteFromGrid(); }
                         }
                     };
                     dialogService.showConfirmationDialog(dialog);
@@ -136,36 +163,18 @@ angular.module('virtoCommerce.notificationsModule')
                     return $scope.gridApi && _.any($scope.gridApi.selection.getSelectedRows());
                 },
                 permission: 'notifications:template:delete'
+            }, {
+                name: "platform.commands.reset",
+                icon: "fa fa-undo",
+                executeMethod: function () { resetList($scope.gridApi.selection.getSelectedRows()); },
+                canExecuteMethod: function () {
+                    return $scope.gridApi && _.any($scope.gridApi.selection.getSelectedRows());
+                },
+                permission: 'notifications:template:delete'
             }];
 
             // ui-grid
-            $scope.setGridOptions = function () {
-                var gridOptions = {
-                    rowTemplate: 'list.row.html',
-                    rowHeight: 61,
-                    columnDefs: [{
-                        name: 'languageCode',
-                        displayName: 'Language',
-                        cellTemplate: 'template-list-language.cell.html'
-                    }, {
-                        name: 'createdDateAsString',
-                        displayName: 'Created'
-                    }, {
-                        name: 'modifiedDateAsString',
-                        displayName: 'Modified'
-                    }, {
-                        name: 'isEdited',
-                        displayName: 'Edited',
-                        cellTemplate: 'template-list-edited.cell.html',
-                        width: 75
-                    }, {
-                        name: 'isPredefined',
-                        displayName: 'Predefined',
-                        cellTemplate: 'template-list-predefined.cell.html',
-                        width: 100
-                    }]
-                };
-
+            $scope.setGridOptions = function (gridOptions) {
                 uiGridHelper.initialize($scope, gridOptions, function (gridApi) {
                     //update gridApi for current grid
                     $scope.gridApi = gridApi;
