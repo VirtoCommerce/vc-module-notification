@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -68,8 +69,7 @@ namespace VirtoCommerce.NotificationsModule.Data.Model
             notification.IsActive = IsActive;
             notification.Type = Type;
 
-            notification.Templates = notification.Templates?.Concat(Templates
-                .Select(t => t.ToModel(AbstractTypeFactory<NotificationTemplate>.TryCreateInstance($"{Kind}Template")))).Distinct().ToList();
+            notification.Templates = MergeTemplates(notification);
 
             return notification;
         }
@@ -95,8 +95,9 @@ namespace VirtoCommerce.NotificationsModule.Data.Model
 
             if (notification.Templates != null)
             {
-                Templates = new ObservableCollection<NotificationTemplateEntity>(notification.Templates.Where(t => !t.IsPredefined)
-                        .Select(x => AbstractTypeFactory<NotificationTemplateEntity>.TryCreateInstance($"{Kind}TemplateEntity").FromModel(x, pkMap)));
+                Templates = new ObservableCollection<NotificationTemplateEntity>(notification.Templates
+                    .Where(t => !t.IsPredefined || t.IsPredefinedEdited)
+                    .Select(x => AbstractTypeFactory<NotificationTemplateEntity>.TryCreateInstance($"{Kind}TemplateEntity").FromModel(x, pkMap)));
             }
 
             return this;
@@ -122,7 +123,7 @@ namespace VirtoCommerce.NotificationsModule.Data.Model
         {
             Id = null;
             CreatedBy = null;
-            CreatedDate = default(DateTime);
+            CreatedDate = default;
             ModifiedBy = null;
             ModifiedDate = null;
 
@@ -134,6 +135,20 @@ namespace VirtoCommerce.NotificationsModule.Data.Model
         public override string ToString()
         {
             return $"{Type}, Id: {Id}";
+        }
+
+        /// <summary>
+        /// Merges predefined templates with the ones that exist in the database for each locale. Database stored edited templates has the priority.
+        /// </summary>
+        /// <param name="notification"></param>
+        /// <returns></returns>
+        private List<NotificationTemplate> MergeTemplates(Notification notification)
+        {
+            return notification.Templates?.Concat(
+                            Templates.Select(t => t.ToModel(AbstractTypeFactory<NotificationTemplate>.TryCreateInstance($"{Kind}Template")))).Distinct().ToList()
+                            .GroupBy(x => x.LanguageCode)
+                            .Select(x => x.FirstOrDefault(x => x.IsPredefinedEdited) ?? x.First())
+                            .ToList();
         }
     }
 }

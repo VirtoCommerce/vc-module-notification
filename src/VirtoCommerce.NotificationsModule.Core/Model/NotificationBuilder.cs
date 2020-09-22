@@ -23,7 +23,7 @@ namespace VirtoCommerce.NotificationsModule.Core.Model
             return this;
         }
 
-     
+
         public NotificationBuilder WithTemplates(params NotificationTemplate[] templates)
         {
             if (templates == null)
@@ -36,7 +36,6 @@ namespace VirtoCommerce.NotificationsModule.Core.Model
             }
             foreach (var template in templates)
             {
-                template.IsReadonly = true;
                 template.IsPredefined = true;
                 Notification.Templates.Add(template);
             }

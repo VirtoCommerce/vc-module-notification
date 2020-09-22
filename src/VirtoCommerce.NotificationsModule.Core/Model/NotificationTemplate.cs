@@ -24,7 +24,7 @@ namespace VirtoCommerce.NotificationsModule.Core.Model
 
         public bool IsPredefined { get; set; }
 
-        public bool IsEdited => ModifiedDate.HasValue && ModifiedDate.Value > CreatedDate;
+        public bool IsPredefinedEdited { get; set; }
 
         public virtual void PopulateFromLocalizedContent(LocalizedTemplateContent content)
         {

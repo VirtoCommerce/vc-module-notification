@@ -25,6 +25,12 @@ angular.module('virtoCommerce.notificationsModule')
                     blade.currentEntity.id = blade.currentEntity.languageCode ? null : blade.currentEntity.id;
                     blade.origEntity = angular.copy(blade.currentEntity);
                 }
+
+                // Set this flag to Predefined entities that were edited
+                if (blade.currentEntity.isPredefined) {
+                    blade.currentEntity.isPredefinedEdited = true;
+                }
+
                 var ind = blade.notification.templates.findIndex(function (element) {
                     return (!element.languageCode && !blade.currentEntity.languageCode)
                         || element.languageCode === blade.currentEntity.languageCode;

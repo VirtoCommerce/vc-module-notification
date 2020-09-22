@@ -68,6 +68,9 @@ namespace VirtoCommerce.NotificationsModule.Data.Services
 
                         if (notification.Templates != null)
                         {
+                            // Remove loaded templates that were edited and saved to the database from the resulting collection to avoid duplication.
+                            predefinedTemplates = predefinedTemplates.Where(predefined => notification.Templates.Any(existing => existing.IsPredefinedEdited && !existing.LanguageCode.EqualsInvariant(predefined.LanguageCode)));
+
                             notification.Templates.AddRange(predefinedTemplates);
                         }
                         else

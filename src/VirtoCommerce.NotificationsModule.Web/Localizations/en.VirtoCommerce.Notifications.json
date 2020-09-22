@@ -70,7 +70,8 @@
           "body": "Body",
           "language": "Language",
           "created": "Created",
-          "modified": "Modified"
+          "modified": "Modified",
+          "predefined-edited-tooltip": "That template has predefined source, was edited and saved to database. You can return it to the predefined state using \"Reset\" button."
         }
       },
       "notifications-test-resolve": {

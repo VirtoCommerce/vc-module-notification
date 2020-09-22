@@ -117,7 +117,7 @@ angular.module('virtoCommerce.notificationsModule')
                         title: "notifications.dialogs.notification-template-delete.title",
                         message: "notifications.dialogs.notification-template-delete.message",
                         callback: function (remove) {
-                            if (remove) { deleteFromGrid(); }
+                            if (remove) { deleteFromGrid(selections); }
                         }
                     };
                     dialogService.showConfirmationDialog(dialog);
@@ -125,27 +125,27 @@ angular.module('virtoCommerce.notificationsModule')
             }
 
             function resetList(selections) {
-                var containsPostDefneidNotifications = _.any(selections, function (item) {
-                    return !item.isEdited || !item.isPredefined;
+                var allTemplatesAreResettable = _.all(selections, function (item) {
+                    return item.isPredefinedEdited;
                 });
 
-                if (containsPostDefneidNotifications) {
-                    dialogService.showNotificationDialog({
-                        id: "error",
-                        title: "notifications.dialogs.notification-template-reset-notification.title",
-                        message: "notifications.dialogs.notification-template-reset-notification.message"
-                    });
-                }
-                else {
+                if (allTemplatesAreResettable) {
                     var dialog = {
                         id: "confirmResetTemplate",
                         title: "notifications.dialogs.notification-template-reset.title",
                         message: "notifications.dialogs.notification-template-reset.message",
                         callback: function (reset) {
-                            if (reset) { deleteFromGrid(); }
+                            if (reset) { deleteFromGrid(selections); }
                         }
                     };
                     dialogService.showConfirmationDialog(dialog);
+                }
+                else {
+                    dialogService.showNotificationDialog({
+                        id: "error",
+                        title: "notifications.dialogs.notification-template-reset-notification.title",
+                        message: "notifications.dialogs.notification-template-reset-notification.message"
+                    });
                 }
             }
 
