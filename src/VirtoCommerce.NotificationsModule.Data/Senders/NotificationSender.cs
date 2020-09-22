@@ -7,6 +7,7 @@ using VirtoCommerce.NotificationsModule.Core.Exceptions;
 using VirtoCommerce.NotificationsModule.Core.Model;
 using VirtoCommerce.NotificationsModule.Core.Services;
 using VirtoCommerce.Platform.Core.Common;
+using VirtoCommerce.Platform.Core.Exceptions;
 
 namespace VirtoCommerce.NotificationsModule.Data.Senders
 {
@@ -114,7 +115,15 @@ namespace VirtoCommerce.NotificationsModule.Data.Senders
         {
             var message = AbstractTypeFactory<NotificationMessage>.TryCreateInstance($"{notification.Kind}Message");
             message.MaxSendAttemptCount = _maxRetryAttempts + 1;
-            await notification.ToMessageAsync(message, _notificationTemplateRender);
+            try
+            {
+                await notification.ToMessageAsync(message, _notificationTemplateRender);
+            }
+            catch (Exception ex)
+            {
+                message.LastSendError = ex.ExpandExceptionMessage();
+                message.Status = NotificationMessageStatus.Error;
+            }
             await _notificationMessageService.SaveNotificationMessagesAsync(new[] { message });
 
             return message;
