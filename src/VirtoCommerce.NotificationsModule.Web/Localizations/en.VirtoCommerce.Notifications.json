@@ -193,13 +193,11 @@
         "title": "Can't delete template",
         "message": "Can't delete 'default' and 'predefined' templates. Please deselect that templates."
       },
-      "notification-template-reset": {
+      "notification-template-reset-confirmation": {
         "title": "Reset template confrimation",
-        "message": "Are you sure you want to reset template to default?"
-      },
-      "notification-template-reset-notification": {
-        "title": "Can't reset template",
-        "message": "Can't reset not 'changed predefined' templates. Please deselect that templates."
+        "warning": "WARNING: this change is permanent and can't be undone afterwards. It can lead to data loss.",
+        "message": "{{count}} template(s) for the following languages will be deleted:",
+        "instruction": "Enter 'yes' to enable deletion:"
       }
     }
   },

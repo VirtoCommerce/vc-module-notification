@@ -47,7 +47,8 @@ angular.module('virtoCommerce.notificationsModule')
                         tenantType: blade.tenantType,
                         controller: foundTemplate.detailBlade.controller,
                         template: foundTemplate.detailBlade.template,
-                        kind: blade.currentEntity.kind
+                        kind: blade.currentEntity.kind,
+                        resetCallback: resetList
                     };
 
                     bladeNavigationService.showBlade(newBlade, blade);
@@ -78,7 +79,8 @@ angular.module('virtoCommerce.notificationsModule')
                         isFirst: false,
                         languages: blade.languages,
                         controller: foundTemplate.detailBlade.controller,
-                        template: foundTemplate.detailBlade.template
+                        template: foundTemplate.detailBlade.template,
+                        resetCallback: resetList
                     };
 
                     bladeNavigationService.showBlade(newBlade, blade);
@@ -89,7 +91,8 @@ angular.module('virtoCommerce.notificationsModule')
                 bladeNavigationService.closeChildrenBlades(blade, function () {
                     _.each(selections, function (selection) {
                         var index = blade.currentEntity.templates.findIndex(function (element) {
-                            return (element.languageCode === selection.languageCode);
+                            // VP-4076: It is important to have not strict == here, as we could compare null and undefined here, and expect them to be equal
+                            return (element.languageCode == selection.languageCode);
                         });
 
                         if (index > -1) {
@@ -125,27 +128,21 @@ angular.module('virtoCommerce.notificationsModule')
             }
 
             function resetList(selections) {
-                var allTemplatesAreResettable = _.all(selections, function (item) {
+                var resettableTemplates = _.filter(selections, function (item) {
                     return item.isPredefinedEdited;
                 });
 
-                if (allTemplatesAreResettable) {
+                if (resettableTemplates.length) {
                     var dialog = {
-                        id: "confirmResetTemplate",
-                        title: "notifications.dialogs.notification-template-reset.title",
-                        message: "notifications.dialogs.notification-template-reset.message",
-                        callback: function (reset) {
-                            if (reset) { deleteFromGrid(selections); }
+                        id: "confirmResetTemplates",
+                        templates: resettableTemplates,
+                        callback: function (confirmed) {
+                            if (confirmed) {
+                                deleteFromGrid(resettableTemplates);
+                            }
                         }
-                    };
-                    dialogService.showConfirmationDialog(dialog);
-                }
-                else {
-                    dialogService.showNotificationDialog({
-                        id: "error",
-                        title: "notifications.dialogs.notification-template-reset-notification.title",
-                        message: "notifications.dialogs.notification-template-reset-notification.message"
-                    });
+                    }
+                    dialogService.showDialog(dialog, 'Modules/$(VirtoCommerce.Notifications)/Scripts/blades/notification-templates-list-reset-dialog.tpl.html', 'platformWebApp.confirmDialogController');
                 }
             }
 
@@ -168,7 +165,9 @@ angular.module('virtoCommerce.notificationsModule')
                 icon: "fa fa-undo",
                 executeMethod: function () { resetList($scope.gridApi.selection.getSelectedRows()); },
                 canExecuteMethod: function () {
-                    return $scope.gridApi && _.any($scope.gridApi.selection.getSelectedRows());
+                    return $scope.gridApi && _.any($scope.gridApi.selection.getSelectedRows(), function (item) {
+                        return item.isPredefinedEdited;
+                    });
                 },
                 permission: 'notifications:template:delete'
             }];

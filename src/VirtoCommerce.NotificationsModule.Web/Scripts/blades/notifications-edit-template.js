@@ -17,6 +17,12 @@ angular.module('virtoCommerce.notificationsModule')
                 var now = date.getFullYear() + '-' + ('0' + (date.getMonth() + 1)).slice(-2) + '-' + ('0' + date.getDate()).slice(-2);
                 if (!blade.isNew) {
                     blade.currentEntity.modifiedDateAsString = now;
+
+                    // Set this flag to Predefined entities that were edited
+                    if (blade.currentEntity.isPredefined) {
+                        blade.currentEntity.isPredefinedEdited = true;
+                    }
+
                     blade.origEntity = angular.copy(blade.currentEntity);
                 }
                 else {
@@ -24,11 +30,6 @@ angular.module('virtoCommerce.notificationsModule')
                     blade.currentEntity.isReadonly = false;
                     blade.currentEntity.id = blade.currentEntity.languageCode ? null : blade.currentEntity.id;
                     blade.origEntity = angular.copy(blade.currentEntity);
-                }
-
-                // Set this flag to Predefined entities that were edited
-                if (blade.currentEntity.isPredefined) {
-                    blade.currentEntity.isPredefinedEdited = true;
                 }
 
                 var ind = blade.notification.templates.findIndex(function (element) {
@@ -72,7 +73,7 @@ angular.module('virtoCommerce.notificationsModule')
 
             function setTemplate() {
                 if (!blade.currentEntity) {
-                    blade.currentEntity = { kind: blade.notification.kind }
+                    blade.currentEntity = { kind: blade.notification.kind };
                 }
 
                 blade.isLoading = false;
@@ -129,6 +130,18 @@ angular.module('virtoCommerce.notificationsModule')
                 },
                 canExecuteMethod: canRender,
                 permission: 'notifications:templates:read'
+            }, {
+                name: "platform.commands.reset",
+                icon: "fa fa-undo",
+                executeMethod: function () {
+                    if (blade.resetCallback) {
+                        blade.resetCallback([blade.currentEntity]);
+                    };
+                },
+                canExecuteMethod: function () {
+                    return blade.currentEntity.isPredefinedEdited;
+                },
+                permission: 'notifications:template:delete'
             }];
 
             function isDirty() {
