@@ -47,7 +47,9 @@
           "body": "Body",
           "template": "Template",
           "preview-data": "Preview Data",
-          "preview-data-comment": "Template context data(JSON)"
+          "preview-data-comment": "Template context data(JSON)",
+          "note-caption": "Important!",
+          "note-text": "This template has predefined source, was edited and saved to database. Now its database version is used. You can restore it to the predefined state using the corresponding button."
         },
         "descriptions": {
           "to": "Email recipient address",
@@ -71,7 +73,8 @@
           "language": "Language",
           "created": "Created",
           "modified": "Modified",
-          "predefined-edited-tooltip": "That template has predefined source, was edited and saved to database. You can return it to the predefined state using \"Reset\" button."
+          "predefined": "predefined",
+          "edited": "edited"
         }
       },
       "notifications-test-resolve": {
@@ -199,6 +202,9 @@
         "message": "{{count}} template(s) for the following languages will be deleted:",
         "instruction": "Enter 'yes' to enable deletion:"
       }
+    },
+    "commands": {
+      "restore": "Restore"
     }
   },
   "notificationTypes": {

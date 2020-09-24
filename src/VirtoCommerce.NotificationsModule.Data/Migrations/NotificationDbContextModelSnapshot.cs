@@ -246,9 +246,6 @@ namespace VirtoCommerce.NotificationsModule.Data.Migrations
                         .HasColumnType("nvarchar(128)")
                         .HasMaxLength(128);
 
-                    b.Property<bool>("IsPredefinedEdited")
-                        .HasColumnType("bit");
-
                     b.Property<string>("LanguageCode")
                         .HasColumnType("nvarchar(10)")
                         .HasMaxLength(10);

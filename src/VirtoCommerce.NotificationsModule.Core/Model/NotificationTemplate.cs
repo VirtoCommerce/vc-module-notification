@@ -24,8 +24,6 @@ namespace VirtoCommerce.NotificationsModule.Core.Model
 
         public bool IsPredefined { get; set; }
 
-        public bool IsPredefinedEdited { get; set; }
-
         public virtual void PopulateFromLocalizedContent(LocalizedTemplateContent content)
         {
             //Need to left language as null for empty string

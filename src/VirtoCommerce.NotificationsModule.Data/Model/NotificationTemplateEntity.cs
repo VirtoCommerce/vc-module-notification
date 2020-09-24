@@ -21,8 +21,6 @@ namespace VirtoCommerce.NotificationsModule.Data.Model
         [StringLength(128)]
         public string OuterId { get; set; }
 
-        public bool IsPredefinedEdited { get; set; }
-
         #region Navigation Properties
 
         /// <summary>
@@ -46,7 +44,6 @@ namespace VirtoCommerce.NotificationsModule.Data.Model
             template.ModifiedBy = ModifiedBy;
             template.ModifiedDate = ModifiedDate;
             template.OuterId = OuterId;
-            template.IsPredefinedEdited = IsPredefinedEdited;
 
             return template;
         }
@@ -64,7 +61,6 @@ namespace VirtoCommerce.NotificationsModule.Data.Model
             ModifiedBy = template.ModifiedBy;
             ModifiedDate = template.ModifiedDate;
             OuterId = template.OuterId;
-            IsPredefinedEdited = template.IsPredefinedEdited;
 
             return this;
         }
@@ -72,13 +68,14 @@ namespace VirtoCommerce.NotificationsModule.Data.Model
         public virtual void Patch(NotificationTemplateEntity template)
         {
             template.LanguageCode = LanguageCode;
+            template.ModifiedDate = DateTime.Now;
         }
 
         public virtual NotificationTemplateEntity ResetEntityData()
         {
             Id = null;
             CreatedBy = null;
-            CreatedDate = default;
+            CreatedDate = default(DateTime);
             ModifiedBy = null;
             ModifiedDate = null;
 

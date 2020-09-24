@@ -4,6 +4,7 @@
     <div class="blade-inner">
         <div class="inner-block">
             <form class="form" name="formScope">
+                <p ng-if="blade.currentEntity.isPredefinedEdited" class="text __note"><span>{{notifications.blades.notifications-edit-template.labels.note-caption | translate }}</span> {{notifications.blades.notifications-edit-template.labels.note-text | translate }}</p>
                 <div class="columns clearfix">
                     <div class="column" ng-init="setForm(formScope)">
                         <div class="form-group" style="margin:0 200px 0 0">
@@ -28,7 +29,7 @@
                             <label class="form-label" style="margin:0">{{'notifications.blades.notifications-edit-template.labels.subject' | translate}}</label>
                             <div class="form-group" style="margin:0">
                                 <div class="form-input">
-                                    <input ng-disabled="blade.currentEntity.isReadonly" focus-on="" required class="form-control" ng-model="blade.currentEntity.subject" placeholder="{{ 'notifications.blades.notifications-edit-template.placeholders.subject' | translate }}"/>
+                                    <input ng-disabled="blade.currentEntity.isReadonly" focus-on="" required class="form-control" ng-model="blade.currentEntity.subject" placeholder="{{ 'notifications.blades.notifications-edit-template.placeholders.subject' | translate }}" />
                                 </div>
                                 <div class="table-descr">
                                     {{ 'notifications.blades.notifications-edit-template.descriptions.subject' | translate }}
@@ -47,7 +48,7 @@
                             </div>
 
                         </div>
-                    </div>        
+                    </div>
                 </div>
                 <div class="inner-block" ng-if="blade.notification.kind ==='SmsNotification'">
                     <div class="column">
@@ -59,7 +60,7 @@
                             </div>
 
                         </div>
-                    </div>        
+                    </div>
                 </div>
             </form>
         </div>

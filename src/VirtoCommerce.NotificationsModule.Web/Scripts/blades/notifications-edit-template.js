@@ -131,8 +131,8 @@ angular.module('virtoCommerce.notificationsModule')
                 canExecuteMethod: canRender,
                 permission: 'notifications:templates:read'
             }, {
-                name: "platform.commands.reset",
-                icon: "fa fa-undo",
+                name: "notifications.commands.restore",
+                icon: "fa fa-history",
                 executeMethod: function () {
                     if (blade.resetCallback) {
                         blade.resetCallback([blade.currentEntity]);

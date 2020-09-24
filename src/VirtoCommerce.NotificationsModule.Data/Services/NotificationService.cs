@@ -18,6 +18,7 @@ using VirtoCommerce.Platform.Data.Infrastructure;
 
 namespace VirtoCommerce.NotificationsModule.Data.Services
 {
+
     public class NotificationService : INotificationService
     {
         private readonly IEventPublisher _eventPublisher;
@@ -37,10 +38,10 @@ namespace VirtoCommerce.NotificationsModule.Data.Services
             _templateLoader = templateLoader;
         }
 
+
         public async Task<Notification[]> GetByIdsAsync(string[] ids, string responseGroup = null)
         {
             var cacheKey = CacheKey.With(GetType(), nameof(GetByIdsAsync), string.Join("-", ids), responseGroup);
-
             var result = await _platformMemoryCache.GetOrCreateExclusiveAsync(cacheKey, async (cacheEntry) =>
             {
                 //It is so important to generate change tokens for all ids even for not existing objects to prevent an issue
@@ -48,39 +49,31 @@ namespace VirtoCommerce.NotificationsModule.Data.Services
                 //and future unavailability to create objects with these ids.
                 cacheEntry.AddExpirationToken(NotificationCacheRegion.CreateChangeToken(ids));
 
-                using var repository = _repositoryFactory();
-
-                //Optimize performance and CPU usage
-                repository.DisableChangesTracking();
-
-                var entities = await repository.GetByIdsAsync(ids, responseGroup);
-
-                var notifications = entities
-                    .Select(n => n.ToModel(CreateNotification(n.Type, new UnregisteredNotification())))
-                    .ToArray();
-
-                var flags = EnumUtility.SafeParseFlags(responseGroup, NotificationResponseGroup.Full);
-                if (flags.HasFlag(NotificationResponseGroup.WithTemplates))
+                using (var repository = _repositoryFactory())
                 {
-                    foreach (var notification in notifications)
+                    //Optimize performance and CPU usage
+                    repository.DisableChangesTracking();
+
+                    var entities = await repository.GetByIdsAsync(ids, responseGroup);
+                    var notifications = entities.Select(n => n.ToModel(CreateNotification(n.Type, new UnregisteredNotification()))).ToArray();
+                    //Load predefined notifications templates
+                    if (EnumUtility.SafeParseFlags(responseGroup, NotificationResponseGroup.Full).HasFlag(NotificationResponseGroup.WithTemplates))
                     {
-                        var predefinedTemplates = _templateLoader.LoadTemplates(notification);
-
-                        if (notification.Templates != null)
+                        foreach (var notification in notifications)
                         {
-                            // Remove loaded templates that were edited and saved to the database from the resulting collection to avoid duplication.
-                            predefinedTemplates = predefinedTemplates.Where(predefined => notification.Templates.Any(existing => existing.IsPredefinedEdited && !existing.LanguageCode.EqualsInvariant(predefined.LanguageCode)));
-
-                            notification.Templates.AddRange(predefinedTemplates);
-                        }
-                        else
-                        {
-                            notification.Templates = predefinedTemplates.ToList();
+                            var predefinedTemplates = _templateLoader.LoadTemplates(notification).ToList();
+                            if (notification.Templates != null)
+                            {
+                                notification.Templates.AddRange(predefinedTemplates);
+                            }
+                            else
+                            {
+                                notification.Templates = predefinedTemplates;
+                            }
                         }
                     }
+                    return notifications;
                 }
-
-                return notifications;
             });
 
             return result.Select(x => x.Clone() as Notification).ToArray();
@@ -102,7 +95,7 @@ namespace VirtoCommerce.NotificationsModule.Data.Services
                     foreach (var notification in notifications)
                     {
                         var existingNotification = existingNotifications.FirstOrDefault(x => comparer.Equals(x, notification));
-                        var originalEntity = existingNotificationEntities.FirstOrDefault(n => n.Id.EqualsInvariant(existingNotification?.Id));
+                        var originalEntity = existingNotificationEntities.FirstOrDefault(n => n.Id.EqualsInvariant(existingNotification.Id));
                         var modifiedEntity = AbstractTypeFactory<NotificationEntity>.TryCreateInstance($"{notification.Kind}Entity").FromModel(notification, pkMap);
 
                         if (originalEntity != null)
@@ -135,6 +128,7 @@ namespace VirtoCommerce.NotificationsModule.Data.Services
             }
         }
 
+
         private void ClearCache(Notification[] notifications)
         {
             NotificationSearchCacheRegion.ExpireRegion();
@@ -151,7 +145,6 @@ namespace VirtoCommerce.NotificationsModule.Data.Services
             {
                 throw new ArgumentNullException(nameof(notifications));
             }
-
             var validator = new NotificationValidator();
             foreach (var notification in notifications)
             {
@@ -160,8 +153,14 @@ namespace VirtoCommerce.NotificationsModule.Data.Services
         }
 
         private static Notification CreateNotification(string typeName, Notification defaultObj)
-            => AbstractTypeFactory<Notification>.FindTypeInfoByName(typeName) != null
-                ? AbstractTypeFactory<Notification>.TryCreateInstance(typeName)
-                : defaultObj;
+        {
+            var result = defaultObj;
+            var typeInfo = AbstractTypeFactory<Notification>.FindTypeInfoByName(typeName);
+            if (typeInfo != null)
+            {
+                result = AbstractTypeFactory<Notification>.TryCreateInstance(typeName);
+            }
+            return result;
+        }
     }
 }
