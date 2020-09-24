@@ -15,7 +15,7 @@
                         displayName: 'Modified'
                     }]
                 })">
-            <div class="table-wrapper" ng-if="blade.currentEntity.templates.length">
+            <div class="table-wrapper notification-templates-table" ng-if="blade.currentEntity.templates.length">
                 <div ui-grid="gridOptions"
                      ui-grid-auto-resize
                      ui-grid-save-state
@@ -29,9 +29,9 @@
 </div>
 
 <script type="text/ng-template" id="template-list-language.cell.html">
-    <div class='ui-grid-cell-contents'>
+    <div class='ui-grid-cell-contents' style="pad">
         <span class="list-name ng-binding">{{COL_FIELD || "default"}}</span>
-        <span class="list-descr ng-binding" ng-if="row.entity.isPredefined || row.entity.isEdited" style="display: block;font-size: 12px;margin-top: 5px; white-space: initial;">
+        <span class="list-descr ng-binding" ng-if="row.entity.isPredefined || row.entity.isEdited" style="">
             <span ng-if="row.entity.isPredefined" style="color:green">{{ 'notifications.blades.notification-templates-list.labels.predefined' | translate }}</span>
             <span ng-if="row.entity.isEdited" style="color:red">{{ 'notifications.blades.notification-templates-list.labels.edited' | translate }}</span>
         </span>
