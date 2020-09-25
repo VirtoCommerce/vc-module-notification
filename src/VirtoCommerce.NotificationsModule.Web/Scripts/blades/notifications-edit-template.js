@@ -44,6 +44,32 @@ angular.module('virtoCommerce.notificationsModule')
                 }
             }
 
+            function restoreTemplate(template) {
+                var dialog = {
+                    id: "confirmResetTemplates",
+                    template: template,
+                    callback: function (confirmed) {
+                        if (confirmed) {
+                            deleteFromGrid(template);
+                        }
+                    }
+                }
+                dialogService.showDialog(dialog, 'Modules/$(VirtoCommerce.Notifications)/Scripts/blades/notification-templates-list-reset-dialog.tpl.html', 'platformWebApp.confirmDialogController');
+            }
+
+            function deleteFromGrid(template) {
+                var index = blade.notification.templates.findIndex(function (element) {
+                    return (element.languageCode == template.languageCode && element.isPredefined == template.isPredefined && element.isEdited == template.isEdited);
+                });
+
+                if (index > -1) {
+                    blade.notification.templates.splice(index, 1);
+                }
+
+                blade.parentBlade.initialize();
+                $scope.bladeClose();
+            }
+
             $scope.saveChanges = function () {
                 saveTemplate();
                 blade.parentBlade.initialize();
@@ -134,12 +160,10 @@ angular.module('virtoCommerce.notificationsModule')
                 name: "notifications.commands.restore",
                 icon: "fa fa-history",
                 executeMethod: function () {
-                    if (blade.resetCallback) {
-                        blade.resetCallback([blade.currentEntity]);
-                    };
+                    restoreTemplate(blade.currentEntity);
                 },
                 canExecuteMethod: function () {
-                    return blade.currentEntity.isPredefinedEdited;
+                    return blade.currentEntity.isPredefined && blade.currentEntity.isEdited;
                 },
                 permission: 'notifications:template:delete'
             }];
