@@ -139,6 +139,9 @@ angular.module('virtoCommerce.notificationsModule')
                                             blade.currentEntity.templates.splice(index, 1);
                                         }
                                     });
+                                    bladeNavigationService.closeBlade(blade, function () {
+                                        blade.parentBlade.initialize();
+                                    });
                                 });
                             }
                         }
