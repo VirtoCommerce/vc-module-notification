@@ -4,7 +4,7 @@
     <div class="blade-inner">
         <div class="inner-block">
             <form class="form" name="formScope">
-                <p ng-if="blade.currentEntity.isPredefinedEdited" class="text __note"><span>{{ 'notifications.blades.notifications-edit-template.labels.note-caption' | translate }}</span> {{ 'notifications.blades.notifications-edit-template.labels.note-text' | translate }}</p>
+                <p ng-if="blade.currentEntity.isPredefined && blade.currentEntity.isEdited" class="text __note"><span>{{ 'notifications.blades.notifications-edit-template.labels.note-caption' | translate }}</span> {{ 'notifications.blades.notifications-edit-template.labels.note-text' | translate }}</p>
                 <div class="columns clearfix">
                     <div class="column" ng-init="setForm(formScope)">
                         <div class="form-group" style="margin:0 200px 0 0">

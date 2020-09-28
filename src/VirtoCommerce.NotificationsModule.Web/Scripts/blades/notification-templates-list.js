@@ -19,18 +19,24 @@ angular.module('virtoCommerce.notificationsModule')
 
             function getEffectiveTemplateListByLanguage(templates) {
                 var groups = _.groupBy(templates, function (template) { return template.languageCode || null; })
-                var templatesToDisplay = _.each(groups, function (languageCodeTemplates, languageCode, object) {
-                    // OrderBy("isPredefined:desc;modifiedDate:desc") - we want to use database template first, if not - then last edited predefined
-                    var effectiveTemplate = _.chain(languageCodeTemplates)
-                        .sortBy(function (template) { return template.isPredefined; })
-                        .sortBy(function (template) { return template.modifiedDate; })
-                        .value()[0];
+                var templatesToDisplay = _.each(groups, function (languageCodeTemplates, languageCode, originalObject) {
+                    var hasPredefinedTemplates = _.any(languageCodeTemplates, function (template) { return template.isPredefined });
 
-                    if (!effectiveTemplate.isPredefined && _.any(languageCodeTemplates, function (template) { return template.isPredefined })) {
-                        effectiveTemplate.isPredefined = true;
-                        effectiveTemplate.isEdited = true;
+                    // If we have at least one predefined template in group - marking all non predefined as edited predefined
+                    if (hasPredefinedTemplates) {
+                        _.each(languageCodeTemplates, function (element) {
+                            if (!element.isPredefined) {
+                                element.isPredefined = true;
+                                element.isEdited = true;
+                            }
+                        });
                     }
-                    object[languageCode] = effectiveTemplate;
+                    // We want to use edited templates first
+                    var effectiveTemplate = _.sortBy(languageCodeTemplates, function (element) {
+                        return !element.isEdited;
+                    })[0];
+
+                    originalObject[languageCode] = effectiveTemplate;
                 });
                 return _.toArray(templatesToDisplay);
             }
@@ -52,13 +58,13 @@ angular.module('virtoCommerce.notificationsModule')
             blade.openTemplate = function (template) {
                 var foundTemplate = resolveType(blade.currentEntity.kind);
                 if (foundTemplate) {
-
                     var newBlade = {
                         id: foundTemplate.detailBlade.id,
                         title: 'notifications.blades.notifications-edit-template.title',
                         titleValues: { displayName: $translate.instant('notificationTypes.' + blade.currentEntity.type + '.displayName') },
                         notification: blade.currentEntity,
                         languageCode: template.languageCode,
+                        editedTemplate: template,
                         isNew: false,
                         isFirst: false,
                         languages: blade.languages,

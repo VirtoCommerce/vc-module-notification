@@ -15,27 +15,33 @@ angular.module('virtoCommerce.notificationsModule')
             function saveTemplate() {
                 var date = new Date();
                 var now = date.getFullYear() + '-' + ('0' + (date.getMonth() + 1)).slice(-2) + '-' + ('0' + date.getDate()).slice(-2);
-                if (!blade.isNew) {
-                    blade.currentEntity.modifiedDateAsString = now;
 
-                    // Set this flag to Predefined entities that were edited
-                    if (blade.currentEntity.isPredefined) {
-                        blade.currentEntity.isPredefinedEdited = true;
-                    }
-
-                    blade.origEntity = angular.copy(blade.currentEntity);
-                }
-                else {
+                if (blade.isNew) {
                     blade.currentEntity.createdDateAsString = now;
                     blade.currentEntity.isReadonly = false;
                     blade.currentEntity.id = blade.currentEntity.languageCode ? null : blade.currentEntity.id;
                     blade.origEntity = angular.copy(blade.currentEntity);
                 }
+                else {
+                    blade.currentEntity.modifiedDateAsString = now;
+                    blade.origEntity = angular.copy(blade.currentEntity);
+                }
+
+                var sameLanguageTemplate = _.filter(blade.notification.templates, function (template) { return template.languageCode == blade.currentEntity.languageCode; })
+                var hasPredefinedTemplates = _.any(sameLanguageTemplate, function (template) { return template.isPredefined });
+
+                if (hasPredefinedTemplates) {
+                    blade.currentEntity.isPredefined = true;
+                    blade.currentEntity.isEdited = true;
+                } else {
+                    blade.currentEntity.isPredefined = false;
+                }
 
                 var ind = blade.notification.templates.findIndex(function (element) {
-                    return (!element.languageCode && !blade.currentEntity.languageCode)
-                        || element.languageCode === blade.currentEntity.languageCode;
+                    return (element.languageCode == blade.currentEntity.languageCode)
+                        && (element.isPredefined == blade.currentEntity.isPredefined && element.isEdited == blade.currentEntity.isEdited);
                 });
+
                 if (ind >= 0) {
                     blade.notification.templates[ind] = blade.currentEntity;
                 }
@@ -50,14 +56,14 @@ angular.module('virtoCommerce.notificationsModule')
                     template: template,
                     callback: function (confirmed) {
                         if (confirmed) {
-                            deleteFromGrid(template);
+                            deleteTemplate(template);
                         }
                     }
                 }
                 dialogService.showDialog(dialog, 'Modules/$(VirtoCommerce.Notifications)/Scripts/blades/notification-templates-list-reset-dialog.tpl.html', 'platformWebApp.confirmDialogController');
             }
 
-            function deleteFromGrid(template) {
+            function deleteTemplate(template) {
                 var index = blade.notification.templates.findIndex(function (element) {
                     return (element.languageCode == template.languageCode && element.isPredefined == template.isPredefined && element.isEdited == template.isEdited);
                 });
@@ -120,7 +126,7 @@ angular.module('virtoCommerce.notificationsModule')
 
             blade.initialize = function () {
                 blade.isLoading = true;
-                var found = _.find(blade.notification.templates, function (templ) { return templ.languageCode === blade.languageCode });
+                var found = blade.editedTemplate || _.find(blade.notification.templates, function (templ) { return templ.languageCode === blade.languageCode });
                 if (found) {
                     blade.currentEntity = angular.copy(found);
                     blade.origEntity = angular.copy(blade.currentEntity);

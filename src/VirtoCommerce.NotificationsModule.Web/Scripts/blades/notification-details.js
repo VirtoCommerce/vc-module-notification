@@ -1,4 +1,4 @@
-﻿angular.module('virtoCommerce.notificationsModule')
+angular.module('virtoCommerce.notificationsModule')
 .controller('virtoCommerce.notificationsModule.notificationsEditController', ['$rootScope', '$scope', '$timeout', '$filter', 'virtoCommerce.notificationsModule.notificationsModuleApi', 'platformWebApp.bladeNavigationService', 'platformWebApp.dialogService',
 function ($rootScope, $scope, $timeout, $filter, notifications, bladeNavigationService, dialogService) {
 	$scope.setForm = function (form) { 
@@ -57,11 +57,19 @@ function ($rootScope, $scope, $timeout, $filter, notifications, bladeNavigationS
 	blade.updateNotification = function () {
 		blade.isLoading = true;
         blade.currentEntity.cc = pluckAddress(blade.currentEntity.cc);
-		blade.currentEntity.bcc = pluckAddress(blade.currentEntity.bcc);
-		blade.currentEntity.templates = _.where(blade.currentEntity.templates, {isReadonly: false}); 
+        blade.currentEntity.bcc = pluckAddress(blade.currentEntity.bcc);
 
-		notifications.updateNotification({ type: blade.type }, blade.currentEntity, function () {
-			blade.isLoading = false;
+        var entityToSave = angular.copy(blade.currentEntity);
+        entityToSave.templates = _.filter(blade.currentEntity.templates, { isReadonly: false });
+        entityToSave.templates.forEach(element => {
+            // Need to set IsPredefined to false in order to save the template to the database
+            if (!!element.isEdited && !!element.isPredefined) {
+                element.isPredefined = false;
+            }
+        });
+
+        notifications.updateNotification({ type: blade.type }, entityToSave, function () {
+            blade.isLoading = false;
 			blade.origEntity = angular.copy(blade.currentEntity);
 			blade.parentBlade.refresh();
 			bladeNavigationService.closeBlade(blade);

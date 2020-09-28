@@ -49,7 +49,7 @@
           "preview-data": "Preview Data",
           "preview-data-comment": "Template context data(JSON)",
           "note-caption": "Important!",
-          "note-text": "This template has predefined source, was edited and saved to database. Now its database version is used. You can restore it to the predefined state using the corresponding button."
+          "note-text": "This template has predefined source. After notification saving, this version will be used instead of the prefedined one. You can restore the template to the predefined state using the corresponding button."
         },
         "descriptions": {
           "to": "Email recipient address",
