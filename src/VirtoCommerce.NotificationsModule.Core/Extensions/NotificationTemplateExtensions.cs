@@ -14,7 +14,7 @@ namespace VirtoCommerce.NotificationsModule.Core.Extensions
         /// <param name="items"></param>
         /// <param name="language"></param>
         /// <returns>The template for the language.</returns>
-        public static T FindTemplateForTheLanguage<T>(this IEnumerable<T> items, string language) where T : NotificationTemplate
+        public static T FindTemplateForLanguage<T>(this IEnumerable<T> items, string language) where T : NotificationTemplate
         {
             return items.Where(x => string.IsNullOrEmpty(x.LanguageCode) || x.LanguageCode.EqualsInvariant(language))
                 .OrderByDescending(x => x.LanguageCode)

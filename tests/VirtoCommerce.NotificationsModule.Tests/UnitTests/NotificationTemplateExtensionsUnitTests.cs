@@ -26,7 +26,7 @@ namespace VirtoCommerce.NotificationsModule.Tests.UnitTests
             string languageCode = null;
 
             //Act
-            var result = _templates.FindTemplateForTheLanguage(languageCode);
+            var result = _templates.FindTemplateForLanguage(languageCode);
 
             //Assert
             Assert.NotNull(result);
@@ -40,7 +40,7 @@ namespace VirtoCommerce.NotificationsModule.Tests.UnitTests
             string languageCode = string.Empty;
 
             //Act
-            var result = _templates.FindTemplateForTheLanguage(languageCode);
+            var result = _templates.FindTemplateForLanguage(languageCode);
 
             //Assert
             Assert.NotNull(result);
@@ -54,7 +54,7 @@ namespace VirtoCommerce.NotificationsModule.Tests.UnitTests
             string languageCode = "en-US";
 
             //Act
-            var result = _templates.FindTemplateForTheLanguage(languageCode);
+            var result = _templates.FindTemplateForLanguage(languageCode);
 
             //Assert
             Assert.NotNull(result);
@@ -72,7 +72,7 @@ namespace VirtoCommerce.NotificationsModule.Tests.UnitTests
             };
 
             //Act
-            var result = templates.FindTemplateForTheLanguage(languageCode);
+            var result = templates.FindTemplateForLanguage(languageCode);
 
             //Assert
             Assert.NotNull(result);
@@ -86,7 +86,7 @@ namespace VirtoCommerce.NotificationsModule.Tests.UnitTests
             string languageCode = "fr-FR";
 
             //Act
-            var result = _templates.FindTemplateForTheLanguage(languageCode);
+            var result = _templates.FindTemplateForLanguage(languageCode);
 
             //Assert
             Assert.NotNull(result);
@@ -104,7 +104,7 @@ namespace VirtoCommerce.NotificationsModule.Tests.UnitTests
             };
 
             //Act
-            var result = templates.FindTemplateForTheLanguage(languageCode);
+            var result = templates.FindTemplateForLanguage(languageCode);
 
             //Assert
             Assert.NotNull(result);
@@ -123,7 +123,7 @@ namespace VirtoCommerce.NotificationsModule.Tests.UnitTests
             };
 
             //Act
-            var result = templates.FindTemplateForTheLanguage(languageCode);
+            var result = templates.FindTemplateForLanguage(languageCode);
 
             //Assert
             Assert.NotNull(result);
@@ -144,7 +144,7 @@ namespace VirtoCommerce.NotificationsModule.Tests.UnitTests
             };
 
             //Act
-            var result = templates.FindTemplateForTheLanguage(languageCode);
+            var result = templates.FindTemplateForLanguage(languageCode);
 
             //Assert
             Assert.NotNull(result);

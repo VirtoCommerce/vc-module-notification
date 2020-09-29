@@ -33,7 +33,7 @@ namespace VirtoCommerce.NotificationsModule.Core.Model
             await base.ToMessageAsync(message, render);
 
             var smsNotificationMessage = (SmsNotificationMessage)message;
-            var template = (SmsNotificationTemplate)Templates.FindTemplateForTheLanguage(message.LanguageCode);
+            var template = (SmsNotificationTemplate)Templates.FindTemplateForLanguage(message.LanguageCode);
             if (template != null)
             {
                 smsNotificationMessage.Message = await render.RenderAsync(template.Message, this, template.LanguageCode);
