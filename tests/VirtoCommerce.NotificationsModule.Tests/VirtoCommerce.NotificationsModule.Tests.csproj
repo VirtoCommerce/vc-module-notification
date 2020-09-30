@@ -34,9 +34,4 @@
     <ItemGroup>
         <DotNetCliToolReference Include="Microsoft.Extensions.SecretManager.Tools" Version="1.0.1" />
     </ItemGroup>
-    <ItemGroup>
-      <None Update="Content\InvoiceEmailNotification.html">
-        <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-      </None>
-    </ItemGroup>
 </Project>
