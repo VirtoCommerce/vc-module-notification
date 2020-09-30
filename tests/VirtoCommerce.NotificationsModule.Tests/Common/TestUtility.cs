@@ -14,7 +14,7 @@ namespace VirtoCommerce.NotificationsModule.Tests.Common
                 baseDirectory = baseDirectory.Remove(baseDirectory.IndexOf($"{separatorChar}bin{separatorChar}", StringComparison.Ordinal));
             }
 
-            path = path.Replace("~/", "").TrimStart(separatorChar).Replace('/', '\\');
+            path = path.Replace("~/", "").TrimStart(separatorChar);
             return $"{baseDirectory}{separatorChar}{path}";
         }
 
