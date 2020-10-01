@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Net.Mail;
@@ -130,7 +131,7 @@ namespace VirtoCommerce.NotificationsModule.Tests.UnitTests
             //Arrange
             var language = "default";
             var subject = "Invoice for order - <strong>{{ customer_order.number }}</strong>";
-            var body = TestUtility.GetStringByPath($"Content\\{nameof(InvoiceEmailNotification)}.html");
+            var body = TestUtility.GetStringByPath($"Content{Path.DirectorySeparatorChar}{nameof(InvoiceEmailNotification)}.html");
             var notification = new InvoiceEmailNotification()
             {
                 CustomerOrder = new CustomerOrder()
