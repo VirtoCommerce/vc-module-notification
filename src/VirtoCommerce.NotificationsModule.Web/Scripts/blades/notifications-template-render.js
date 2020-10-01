@@ -36,8 +36,8 @@ angular.module('virtoCommerce.notificationsModule')
             }, {
                 text: blade.currentEntity.body,
                 data
-            }, function (data) {
-                blade.originHtml = data.html;
+            }, function (response) {
+                blade.originHtml = response.html;
             });
 
             blade.isLoading = false;
