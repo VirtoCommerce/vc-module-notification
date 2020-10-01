@@ -5,7 +5,7 @@ angular.module('virtoCommerce.notificationsModule')
     
     $scope.$watch('blade.currentEntity', function (notification) {
         if (notification && notification.templates)
-            $scope.templatesCount = notification.templates.length;
+            $scope.templatesCount = _.uniq(notification.templates, function (template) { return template.languageCode || null; }).length;
     });
 
 	blade.showTemplates = function () {

@@ -49,7 +49,6 @@ namespace VirtoCommerce.NotificationsModule.TemplateLoader.FileSystem
             foreach (var groupMatch in contents.GroupBy(x => x.LanguageCode))
             {
                 var template = AbstractTypeFactory<NotificationTemplate>.TryCreateInstance($"{notification.Kind}Template");
-                template.IsReadonly = true;
                 template.IsPredefined = true;
                 template.LanguageCode = groupMatch.Key;
 
