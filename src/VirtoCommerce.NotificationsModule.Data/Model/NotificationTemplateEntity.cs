@@ -68,7 +68,7 @@ namespace VirtoCommerce.NotificationsModule.Data.Model
         public virtual void Patch(NotificationTemplateEntity template)
         {
             template.LanguageCode = LanguageCode;
-            template.ModifiedDate = DateTime.Now;
+            template.ModifiedDate = DateTime.UtcNow;
         }
 
         public virtual NotificationTemplateEntity ResetEntityData()
