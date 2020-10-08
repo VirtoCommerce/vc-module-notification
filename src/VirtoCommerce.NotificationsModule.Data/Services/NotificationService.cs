@@ -90,16 +90,18 @@ namespace VirtoCommerce.NotificationsModule.Data.Services
                 using (var repository = _repositoryFactory())
                 {
                     var existingNotificationEntities = await repository.GetByNotificationsAsync(notifications, NotificationResponseGroup.Full.ToString());
+                    //Convert db entities to domain notification to be able compare them with passed as parameter
                     var existingNotifications = existingNotificationEntities.Select(e => e.ToModel(AbstractTypeFactory<Notification>.TryCreateInstance(e.Type))).ToArray();
                     var comparer = AnonymousComparer.Create((Notification x) => string.Join("-", x.Type, x.TenantIdentity.Id, x.TenantIdentity.Type));
                     foreach (var notification in notifications)
                     {
-                        var existingNotification = existingNotifications.FirstOrDefault(x => comparer.Equals(x, notification));
-                        var originalEntity = existingNotificationEntities.FirstOrDefault(n => n.Id.EqualsInvariant(existingNotification.Id));
                         var modifiedEntity = AbstractTypeFactory<NotificationEntity>.TryCreateInstance($"{notification.Kind}Entity").FromModel(notification, pkMap);
 
-                        if (originalEntity != null)
+                        var existingNotification = existingNotifications.FirstOrDefault(x => comparer.Equals(x, notification));
+                        if (existingNotification != null)
                         {
+                            var originalEntity = existingNotificationEntities.First(n => n.Id.EqualsInvariant(existingNotification.Id));
+
                             /// This extension is allow to get around breaking changes is introduced in EF Core 3.0 that leads to throw
                             /// Database operation expected to affect 1 row(s) but actually affected 0 row(s) exception when trying to add the new children entities with manually set keys
                             /// https://docs.microsoft.com/en-us/ef/core/what-is-new/ef-core-3.0/breaking-changes#detectchanges-honors-store-generated-key-values
@@ -107,6 +109,7 @@ namespace VirtoCommerce.NotificationsModule.Data.Services
 
                             changedEntries.Add(new GenericChangedEntry<Notification>(notification, originalEntity.ToModel(AbstractTypeFactory<Notification>.TryCreateInstance()), EntryState.Modified));
                             modifiedEntity?.Patch(originalEntity);
+
                         }
                         else
                         {
