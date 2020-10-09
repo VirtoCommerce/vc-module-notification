@@ -124,10 +124,10 @@ namespace VirtoCommerce.NotificationsModule.Data.Services
                     //Save changes in database
                     await repository.UnitOfWork.CommitAsync();
                     pkMap.ResolvePrimaryKeys();
+                    ClearCache(notifications);
+
                     await _eventPublisher.Publish(new NotificationChangedEvent(changedEntries));
                 }
-
-                ClearCache(notifications);
             }
         }
 
