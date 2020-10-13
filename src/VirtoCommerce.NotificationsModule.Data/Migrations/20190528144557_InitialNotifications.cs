@@ -181,49 +181,55 @@ namespace VirtoCommerce.NotificationsModule.Data.Migrations
                                        ,[Discriminator]
                                        ,[From]
                                        ,[To])
-                            SELECT NEWID(), 
-	                            pnt.CreatedDate , 
-	                            pnt.ModifiedDate, 
-	                            pnt.CreatedBy, 
-	                            pnt.ModifiedBy, 
-	                            pnt.ObjectId, 
-	                            pnt.ObjectTypeId, 
+                            SELECT pnt.Id, 
+	                            pnt.[CreatedDate], 
+	                            pnt.[ModifiedDate], 
+	                            pnt.[CreatedBy], 
+	                            pnt.[ModifiedBy], 
+	                            pnt.[ObjectId], 
+	                            pnt.[ObjectTypeId], 
 	                            1, 
-								CASE
-									WHEN (pnt.[NotificationTypeId] = 'EmailConfirmationNotification') THEN 'ConfirmationEmailNotification' 
-									WHEN (pnt.[NotificationTypeId] = 'RemindUserNameNotification') THEN 'RemindUserNameEmailNotification' 
-									WHEN (pnt.[NotificationTypeId] = 'RegistrationInvitationNotification') THEN 'RegistrationInvitationEmailNotification' 
-									ELSE [NotificationTypeId]         
-								END,
+	                            CASE
+		                            WHEN (pnt.[NotificationTypeId] = 'EmailConfirmationNotification') THEN 'ConfirmationEmailNotification' 
+		                            WHEN (pnt.[NotificationTypeId] = 'RemindUserNameNotification') THEN 'RemindUserNameEmailNotification' 
+		                            WHEN (pnt.[NotificationTypeId] = 'RegistrationInvitationNotification') THEN 'RegistrationInvitationEmailNotification' 
+		                            ELSE pnt.[NotificationTypeId]         
+	                            END,
 	                            CASE 
-									WHEN ([NotificationTypeId] LIKE '%EmailNotification%' 
-										OR [NotificationTypeId] = 'RemindUserNameNotification'
-										OR [NotificationTypeId] = 'RegistrationInvitationNotification'
-										OR [NotificationTypeId] = 'EmailConfirmationNotification') 
-									THEN 'EmailNotification' 
-									ELSE 
-										CASE 
-											WHEN [NotificationTypeId] LIKE '%SmsNotification%'
-											THEN 'SmsNotification'
-											ELSE 'EmailNotification'
-										END
-								END,
+		                            WHEN (pnt.[NotificationTypeId] LIKE '%EmailNotification%' 
+			                            OR pnt.[NotificationTypeId] = 'RemindUserNameNotification'
+			                            OR pnt.[NotificationTypeId] = 'RegistrationInvitationNotification'
+			                            OR pnt.[NotificationTypeId] = 'EmailConfirmationNotification') 
+		                            THEN 'EmailNotification' 
+		                            ELSE 
+			                            CASE 
+				                            WHEN pnt.[NotificationTypeId] LIKE '%SmsNotification%'
+				                            THEN 'SmsNotification'
+				                            ELSE 'EmailNotification'
+			                            END
+	                            END,
 	                            CASE 
-									WHEN ([NotificationTypeId] LIKE '%EmailNotification%' 
-										OR [NotificationTypeId] = 'RemindUserNameNotification'
-										OR [NotificationTypeId] = 'RegistrationInvitationNotification'
-										OR [NotificationTypeId] = 'EmailConfirmationNotification')
-									THEN 'EmailNotificationEntity' 
-									ELSE 
-										CASE 
-											WHEN [NotificationTypeId] LIKE '%SmsNotification%'
-											THEN 'SmsNotificationEntity'
-											ELSE 'EmailNotificationEntity'
-										END
-								END,
+		                            WHEN (pnt.[NotificationTypeId] LIKE '%EmailNotification%' 
+			                            OR pnt.[NotificationTypeId] = 'RemindUserNameNotification'
+			                            OR pnt.[NotificationTypeId] = 'RegistrationInvitationNotification'
+			                            OR pnt.[NotificationTypeId] = 'EmailConfirmationNotification')
+		                            THEN 'EmailNotificationEntity' 
+		                            ELSE 
+			                            CASE 
+				                            WHEN pnt.[NotificationTypeId] LIKE '%SmsNotification%'
+				                            THEN 'SmsNotificationEntity'
+				                            ELSE 'EmailNotificationEntity'
+			                            END
+	                            END,
 	                            null, null
-                            FROM [PlatformNotificationTemplate] pnt
-                            WHERE Language='en-US'
+                            FROM 
+                            [PlatformNotificationTemplate] pnt
+                            INNER JOIN 
+                            (
+	                            SELECT [NotificationTypeId], MAX([Id]) [Id] FROM [PlatformNotificationTemplate]
+	                            GROUP BY [NotificationTypeId]
+                            ) pnt2
+                            ON pnt.[Id] = pnt2.[Id]
                         END
 
                         BEGIN
@@ -239,29 +245,33 @@ namespace VirtoCommerce.NotificationsModule.Data.Migrations
                                        ,[Message]
                                        ,[NotificationId]
                                        ,[Discriminator])
-                            SELECT pnt.[Id]
-                                  , pnt.[CreatedDate]
-                                  , pnt.[ModifiedDate]
-                                  , pnt.[CreatedBy]
-                                  , pnt.[ModifiedBy]
-	                              , pnt.[Language]
-	                              , pnt.[Subject]
-                                  , CASE WHEN [NotificationTypeId] LIKE '%EmailNotification%' THEN [Body] ELSE '' END
-	                              , CASE WHEN [NotificationTypeId] LIKE '%SmsNotification%' THEN [Body] ELSE '' END
-                                  , n.Id [NotificationId]
-                                  , CASE 
-										WHEN [NotificationTypeId] LIKE '%EmailNotification%' 
-										THEN 'EmailNotificationTemplateEntity' 
-										ELSE 
-											CASE 
-												WHEN [NotificationTypeId] LIKE '%SmsNotification%'
-												THEN 'SmsNotificationTemplateEntity'
-												ELSE 'EmailNotificationTemplateEntity'
-											END
-									END
-                              FROM [PlatformNotificationTemplate] pnt
-							  left outer join [Notification] n
-							  on pnt.[NotificationTypeId] = n.[Type]
+                            SELECT pnt.[Id],
+                                pnt.[CreatedDate],
+                                pnt.[ModifiedDate],
+                                pnt.[CreatedBy],
+                                pnt.[ModifiedBy],
+	                            pnt.[Language],
+	                            pnt.[Subject],
+                                CASE WHEN pnt.[NotificationTypeId] LIKE '%EmailNotification%' THEN [Body] ELSE '' END,
+	                            CASE WHEN pnt.[NotificationTypeId] LIKE '%SmsNotification%' THEN [Body] ELSE '' END,
+                                pnt2.Id [NotificationId],
+                                CASE 
+		                            WHEN pnt.[NotificationTypeId] LIKE '%EmailNotification%' 
+		                            THEN 'EmailNotificationTemplateEntity' 
+		                            ELSE 
+			                            CASE 
+				                            WHEN pnt.[NotificationTypeId] LIKE '%SmsNotification%'
+				                            THEN 'SmsNotificationTemplateEntity'
+				                            ELSE 'EmailNotificationTemplateEntity'
+			                            END
+	                            END
+                            FROM [PlatformNotificationTemplate] pnt
+                            INNER JOIN 
+                            (
+	                            SELECT [NotificationTypeId], MAX([Id]) [Id] FROM [PlatformNotificationTemplate]
+	                            GROUP BY [NotificationTypeId]
+                            ) pnt2
+                            ON pnt.[NotificationTypeId] = pnt2.[NotificationTypeId]
                         END
 
                         BEGIN
@@ -285,37 +295,41 @@ namespace VirtoCommerce.NotificationsModule.Data.Migrations
                                        ,[Body]
                                        ,[Message],
                                         [Discriminator])
-                                SELECT pn.[Id]
-    	                              ,pn.[CreatedDate]
-                                      ,pn.[ModifiedDate]
-                                      ,pn.[CreatedBy]
-                                      ,pn.[ModifiedBy]	
-    	                              ,pn.[ObjectId]
-                                      ,pn.[ObjectTypeId]
-                                      , n.Id [NotificationId]
-    	                              , pn.[Type]
-                                      ,pn.[AttemptCount]
-    	                              ,pn.[MaxAttemptCount]
-    	                              ,pn.[LastFailAttemptMessage]
-                                      ,pn.[LastFailAttemptDate]
-    	                              ,pn.[SentDate]
-    	                              ,pn.[Language]
-    	                              ,pn.[Subject]
-                                      , CASE WHEN pn.[Type] LIKE '%EmailNotification%' THEN [Body] ELSE '' END
-    	                              , CASE WHEN pn.[Type] LIKE '%SmsNotification%' THEN [Body] ELSE '' END
-                                      , CASE 
-    										WHEN pn.[Type] LIKE '%EmailNotification%' 
-    										THEN 'EmailNotificationMessageEntity' 
-    										ELSE 
-    											CASE 
-    												WHEN pn.[Type] LIKE '%SmsNotification%'
-    												THEN 'SmsNotificationMessageEntity'
-    												ELSE 'EmailNotificationMessageEntity'
-    											END
-    									END
-                                  FROM [PlatformNotification] pn
-								  left outer join [Notification] n
-								  on pn.[Type] = n.[Type]
+                            SELECT pn.[Id],
+	                            pn.[CreatedDate],
+	                            pn.[ModifiedDate],
+	                            pn.[CreatedBy],
+	                            pn.[ModifiedBy],
+	                            pn.[ObjectId],
+	                            pn.[ObjectTypeId],
+	                            pnt2.Id [NotificationId],
+	                            pn.[Type],
+	                            pn.[AttemptCount],
+	                            pn.[MaxAttemptCount],
+	                            pn.[LastFailAttemptMessage],
+	                            pn.[LastFailAttemptDate],
+	                            pn.[SentDate],
+	                            pn.[Language],
+	                            pn.[Subject],
+	                            CASE WHEN pn.[Type] LIKE '%EmailNotification%' THEN [Body] ELSE '' END,
+	                            CASE WHEN pn.[Type] LIKE '%SmsNotification%' THEN [Body] ELSE '' END,
+	                            CASE 
+		                            WHEN pn.[Type] LIKE '%EmailNotification%' 
+		                            THEN 'EmailNotificationMessageEntity' 
+		                            ELSE 
+    		                            CASE 
+    			                            WHEN pn.[Type] LIKE '%SmsNotification%'
+    			                            THEN 'SmsNotificationMessageEntity'
+    			                            ELSE 'EmailNotificationMessageEntity'
+    		                            END
+	                            END
+	                            FROM [PlatformNotification] pn
+	                            INNER JOIN 
+	                            (
+		                            SELECT [NotificationTypeId], MAX([Id]) [Id] FROM [PlatformNotificationTemplate]
+		                            GROUP BY [NotificationTypeId]
+	                            ) pnt2
+	                            on pn.[Type] = pnt2.[NotificationTypeId]
                         END
                         
                     END");
