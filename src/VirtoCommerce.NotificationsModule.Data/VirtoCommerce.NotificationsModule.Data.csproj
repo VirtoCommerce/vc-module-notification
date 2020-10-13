@@ -10,6 +10,8 @@
   <ItemGroup>
     <Compile Remove="Migrations\20200902124626_AddNotificationMessageStatus.cs" />
     <Compile Remove="Migrations\20200902124626_AddNotificationMessageStatus.Designer.cs" />
+    <Compile Remove="Migrations\20200922134746_AddPredefinedEditedToTemplate.cs" />
+    <Compile Remove="Migrations\20200922134746_AddPredefinedEditedToTemplate.Designer.cs" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="FluentValidation" Version="8.6.2" />

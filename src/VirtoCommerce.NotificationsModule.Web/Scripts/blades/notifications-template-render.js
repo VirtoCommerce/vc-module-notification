@@ -1,48 +1,49 @@
-﻿angular.module('virtoCommerce.notificationsModule')
-.controller('virtoCommerce.notificationsModule.templateRenderController', ['$rootScope', '$scope', '$localStorage', 'platformWebApp.bladeNavigationService', 'platformWebApp.dialogService', 'virtoCommerce.notificationsModule.notificationsModuleApi', function ($rootScope, $scope, $localStorage, bladeNavigationService, dialogService, notifications) {
-	var blade = $scope.blade;
-    var keyTemplateLocalStorage;
-    blade.dynamicProperties = '';
-    blade.originHtml = '';
+angular.module('virtoCommerce.notificationsModule')
+    .controller('virtoCommerce.notificationsModule.templateRenderController', ['$rootScope', '$scope', '$localStorage', 'platformWebApp.bladeNavigationService', 'platformWebApp.dialogService', 'virtoCommerce.notificationsModule.notificationsModuleApi', function ($rootScope, $scope, $localStorage, bladeNavigationService, dialogService, notifications) {
+        var blade = $scope.blade;
+        var keyTemplateLocalStorage;
 
-	$scope.setForm = function (form) {
-		$scope.formScope = form;
-	}
+        blade.dynamicProperties = '';
+        blade.originHtml = '';
 
-	function pluckAddress(address) {
-		if (address) {
-			return _(address).pluck('value');	
-		}
-		return address;
-	}
+        $scope.setForm = function (form) {
+            $scope.formScope = form;
+        }
 
-	blade.initialize = function () {
-		blade.isLoading = true;
-		blade.isRender = false;
-		var language = blade.languageCode ? blade.languageCode : 'default';
-        var data = angular.copy(blade.notification);
-        data.cc = pluckAddress(data.cc);
-        data.bcc = pluckAddress(data.bcc);
-        keyTemplateLocalStorage = blade.tenantType + '.' + blade.notification.type + '.' + language;
-        var itemFromLocalStorage = $localStorage[keyTemplateLocalStorage];
-        if (itemFromLocalStorage) {
-            blade.notification.context = itemFromLocalStorage;
-		} 
-		
-		if (blade.currentEntity.isReadonly)
-		{
-			notifications.renderTemplate({type: blade.notification.type, language: language},{ text: blade.currentEntity.body, data }, function (data) {
-				blade.originHtml = data.html;
-			});	
-		} else {
-			//TODO
-			blade.originHtml = "coming soon..";
-		}
-        
-		blade.isLoading = false;
-	};
+        function pluckAddress(address) {
+            return address ? _(address).pluck('value') : address;
+        }
 
-	blade.headIcon = 'fa-eye';
+        blade.initialize = function () {
+            blade.isLoading = true;
+            blade.isRender = false;
 
-	blade.initialize();
-}]);
+            var language = blade.languageCode ? blade.languageCode : 'default';
+
+            var data = angular.copy(blade.notification);
+            data.cc = pluckAddress(data.cc);
+            data.bcc = pluckAddress(data.bcc);
+
+            keyTemplateLocalStorage = blade.tenantType + '.' + blade.notification.type + '.' + language;
+            var itemFromLocalStorage = $localStorage[keyTemplateLocalStorage];
+            if (itemFromLocalStorage) {
+                blade.notification.context = itemFromLocalStorage;
+            }
+
+            notifications.renderTemplate({
+                type: blade.notification.type,
+                language: language
+            }, {
+                text: blade.currentEntity.body,
+                data
+            }, function (response) {
+                blade.originHtml = response.html;
+            });
+
+            blade.isLoading = false;
+        };
+
+        blade.headIcon = 'fa-eye';
+
+        blade.initialize();
+    }]);

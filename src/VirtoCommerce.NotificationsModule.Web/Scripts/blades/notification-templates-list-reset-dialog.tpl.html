@@ -1,0 +1,21 @@
+﻿<div class="modal-header">
+     <h3 class="modal-title">{{ 'notifications.dialogs.notification-template-reset-confirmation.title' | translate }}</h3>
+</div>
+ <div class="modal-body">
+     <div class="form-group">
+         <div class="form-error">{{ 'notifications.dialogs.notification-template-reset-confirmation.warning' | translate }}</div>
+     </div>
+     <p>{{ 'notifications.dialogs.notification-template-reset-confirmation.message' | translate:{ count: (templates.length  | number:0) } }}</p>
+     <ul>
+         <li ng-repeat="(templateIndex, template) in templates.slice(0, 10)">{{ template.languageCode || "default" }}</li>
+         <li ng-if="templates.length > 10">…</li>
+     </ul>
+     {{ 'notifications.dialogs.notification-template-reset-confirmation.instruction' | translate }}
+     <div class="form-input __mini">
+         <input ng-model="enteredText" ng-keyup="$event.which === 13 && 'yes' === enteredText && yes()" />
+     </div>
+ </div>
+<div class="modal-footer">
+    <button class="btn" ng-click="yes()" ng-class="{'__disabled': 'yes'!==enteredText}">{{ 'platform.commands.confirm' | translate }}</button>
+    <button class="btn" ng-click="cancel()">{{ 'platform.commands.cancel' | translate }}</button>
+</div>

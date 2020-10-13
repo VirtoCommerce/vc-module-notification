@@ -1,4 +1,3 @@
-using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
@@ -29,7 +28,8 @@ namespace VirtoCommerce.NotificationsModule.Web.Controllers
             , INotificationService notificationService
             , INotificationTemplateRenderer notificationTemplateRender
             , INotificationSender notificationSender
-            , INotificationMessageSearchService notificationMessageSearchService, INotificationMessageService notificationMessageService)
+            , INotificationMessageSearchService notificationMessageSearchService
+            , INotificationMessageService notificationMessageService)
         {
             _notificationSearchService = notificationSearchService;
             _notificationService = notificationService;
@@ -47,7 +47,7 @@ namespace VirtoCommerce.NotificationsModule.Web.Controllers
         [HttpPost]
         [Route("api/notifications")]
         [Authorize(ModuleConstants.Security.Permissions.Read)]
-        public async Task<ActionResult<NotificationSearchResult>> GetNotifications([FromBody]NotificationSearchCriteria searchCriteria)
+        public async Task<ActionResult<NotificationSearchResult>> GetNotifications([FromBody] NotificationSearchCriteria searchCriteria)
         {
             var notifications = await _notificationSearchService.SearchNotificationsAsync(searchCriteria);
 
@@ -84,13 +84,12 @@ namespace VirtoCommerce.NotificationsModule.Web.Controllers
         [Route("api/notifications/{type}")]
         [Authorize(ModuleConstants.Security.Permissions.Update)]
         [ProducesResponseType(typeof(void), StatusCodes.Status204NoContent)]
-        public async Task<ActionResult> UpdateNotification([FromBody]Notification notification)
+        public async Task<ActionResult> UpdateNotification([FromBody] Notification notification)
         {
             await _notificationService.SaveChangesAsync(new[] { notification });
 
             return NoContent();
         }
-
 
         /// <summary>
         /// Render content
@@ -101,9 +100,9 @@ namespace VirtoCommerce.NotificationsModule.Web.Controllers
         [HttpPost]
         [Route("api/notifications/{type}/templates/{language}/rendercontent")]
         [Authorize(ModuleConstants.Security.Permissions.ReadTemplates)]
-        public async Task<ActionResult> RenderingTemplate([FromBody]NotificationTemplateRequest request, string language)
+        public async Task<ActionResult> RenderingTemplate([FromBody] NotificationTemplateRequest request, string language)
         {
-            var template = request.Data.Templates.FindWithLanguage(language);
+            var template = request.Data.Templates.FindTemplateForLanguage(language);
             var result = await _notificationTemplateRender.RenderAsync(request.Text, request.Data, template.LanguageCode);
 
             return Ok(new { html = result });
@@ -114,7 +113,7 @@ namespace VirtoCommerce.NotificationsModule.Web.Controllers
         /// </summary>
         [HttpPost]
         [Route("api/notifications/send")]
-        public async Task<ActionResult<NotificationSendResult>> SendNotification([FromBody]Notification notificationRequest)
+        public async Task<ActionResult<NotificationSendResult>> SendNotification([FromBody] Notification notificationRequest)
         {
             var notification = await _notificationSearchService.GetNotificationAsync(notificationRequest.Type, notificationRequest.TenantIdentity);
             var result = await _notificationSender.SendNotificationAsync(notification.PopulateFromOther(notificationRequest));
@@ -127,7 +126,7 @@ namespace VirtoCommerce.NotificationsModule.Web.Controllers
         /// </summary>
         [HttpPost]
         [Route("api/notifications/schedule")]
-        public async Task<ActionResult> ScheduleSendNotification([FromBody]Notification notificationRequest)
+        public async Task<ActionResult> ScheduleSendNotification([FromBody] Notification notificationRequest)
         {
             var notification = await _notificationSearchService.GetNotificationAsync(notificationRequest.Type, notificationRequest.TenantIdentity);
             await _notificationSender.ScheduleSendNotificationAsync(notification.PopulateFromOther(notificationRequest));
@@ -146,7 +145,7 @@ namespace VirtoCommerce.NotificationsModule.Web.Controllers
         /// <param name="request">Notification request</param>
         [HttpPost]
         [Route("api/platform/notification/template/sendnotification")]
-        public async Task<ActionResult<NotificationSendResult>> SendNotificationByRequest([FromBody]NotificationRequest request)
+        public async Task<ActionResult<NotificationSendResult>> SendNotificationByRequest([FromBody] NotificationRequest request)
         {
             var notification = await _notificationSearchService.GetNotificationAsync(request.Type, new TenantIdentity(request.ObjectId, request.ObjectTypeId));
 
@@ -162,7 +161,7 @@ namespace VirtoCommerce.NotificationsModule.Web.Controllers
         }
 
         /// <summary>
-        /// Get all notification journal 
+        /// Get all notification journal
         /// </summary>
         /// <remarks>
         /// Method returns notification journal page with array of notification, that was send, sending or will be send in future. Result contains total count, that can be used
@@ -171,7 +170,7 @@ namespace VirtoCommerce.NotificationsModule.Web.Controllers
         /// <param name="criteria"></param>
         [HttpPost]
         [Route("api/notifications/journal")]
-        public async Task<ActionResult<NotificationMessageSearchResult>> GetNotificationJournal([FromBody]NotificationMessageSearchCriteria criteria)
+        public async Task<ActionResult<NotificationMessageSearchResult>> GetNotificationJournal([FromBody] NotificationMessageSearchCriteria criteria)
         {
             var result = await _notificationMessageSearchService.SearchMessageAsync(criteria);
 
@@ -187,12 +186,11 @@ namespace VirtoCommerce.NotificationsModule.Web.Controllers
             return Ok(result);
         }
 
-
         private void PopulateNotification(NotificationRequest request, Notification notification)
         {
             notification.TenantIdentity = new TenantIdentity(request.ObjectId, request.ObjectTypeId);
             notification.LanguageCode = request.Language;
-            
+
             foreach (var parameter in request.NotificationParameters)
             {
                 notification.SetValue(parameter);

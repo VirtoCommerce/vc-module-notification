@@ -9,6 +9,7 @@ namespace VirtoCommerce.NotificationsModule.Core.Services
     public interface INotificationService
     {
         Task<Notification[]> GetByIdsAsync(string[] ids, string responseGroup = null);
+
         Task SaveChangesAsync(Notification[] notifications);
     }
 }

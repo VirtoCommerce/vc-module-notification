@@ -47,7 +47,9 @@
           "body": "Body",
           "template": "Template",
           "preview-data": "Preview Data",
-          "preview-data-comment": "Template context data(JSON)"
+          "preview-data-comment": "Template context data(JSON)",
+          "note-caption": "Important!",
+          "note-text": "This template has predefined source. After notification saving, this version will be used instead of the prefedined one. You can restore the template to the predefined state using the corresponding button."
         },
         "descriptions": {
           "to": "Email recipient address",
@@ -70,7 +72,9 @@
           "body": "Body",
           "language": "Language",
           "created": "Created",
-          "modified": "Modified"
+          "modified": "Modified",
+          "predefined": "predefined",
+          "edited": "edited"
         }
       },
       "notifications-test-resolve": {
@@ -191,7 +195,16 @@
       "notification-template-delete-notification": {
         "title": "Can't delete template",
         "message": "Can't delete 'default' and 'predefined' templates. Please deselect that templates."
+      },
+      "notification-template-reset-confirmation": {
+        "title": "Reset template confrimation",
+        "warning": "WARNING: this change is permanent and can't be undone afterwards. It can lead to data loss.",
+        "message": "{{count}} template(s) for the following languages will be deleted:",
+        "instruction": "Enter 'yes' to enable deletion:"
       }
+    },
+    "commands": {
+      "restore": "Restore"
     }
   },
   "notificationTypes": {

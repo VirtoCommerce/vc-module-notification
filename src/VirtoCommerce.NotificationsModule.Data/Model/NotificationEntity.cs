@@ -52,8 +52,7 @@ namespace VirtoCommerce.NotificationsModule.Data.Model
         public virtual ObservableCollection<NotificationTemplateEntity> Templates { get; set; }
             = new NullCollection<NotificationTemplateEntity>();
 
-
-        #endregion
+        #endregion Navigation Properties
 
         public virtual Notification ToModel(Notification notification)
         {
@@ -103,6 +102,10 @@ namespace VirtoCommerce.NotificationsModule.Data.Model
             return this;
         }
 
+        /// <summary>
+        /// Patch notification entity
+        /// </summary>
+        /// <param name="notification">Target</param>
         public virtual void Patch(NotificationEntity notification)
         {
             if (IsActive.HasValue)

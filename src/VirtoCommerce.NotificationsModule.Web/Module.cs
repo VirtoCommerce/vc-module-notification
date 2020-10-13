@@ -66,7 +66,7 @@ namespace VirtoCommerce.NotificationsModule.Web
             switch (emailGateway)
             {
                 case SmtpEmailNotificationMessageSender.Name:
-                    {                       
+                    {
                         serviceCollection.AddOptions<SmtpSenderOptions>().Bind(configuration.GetSection($"Notifications:{SmtpEmailNotificationMessageSender.Name}")).ValidateDataAnnotations();
                         serviceCollection.AddTransient<INotificationMessageSender, SmtpEmailNotificationMessageSender>();
                         break;
@@ -96,7 +96,6 @@ namespace VirtoCommerce.NotificationsModule.Web
                 builder.AddCustomLiquidFilterType(typeof(TranslationFilter));
                 builder.AddCustomLiquidFilterType(typeof(UrlFilters));
             });
-
         }
 
         public void PostInitialize(IApplicationBuilder appBuilder)
@@ -138,12 +137,10 @@ namespace VirtoCommerce.NotificationsModule.Web
 
             using (var serviceScope = appBuilder.ApplicationServices.CreateScope())
             {
-                using (var notificationDbContext = serviceScope.ServiceProvider.GetRequiredService<NotificationDbContext>())
-                {
-                    notificationDbContext.Database.EnsureCreated();
-                    notificationDbContext.Database.Migrate();
-                }
-            }   
+                using var notificationDbContext = serviceScope.ServiceProvider.GetRequiredService<NotificationDbContext>();
+                notificationDbContext.Database.EnsureCreated();
+                notificationDbContext.Database.Migrate();
+            }
 
             var registrar = appBuilder.ApplicationServices.GetService<INotificationRegistrar>();
             registrar.RegisterNotification<ResetPasswordEmailNotification>();
@@ -155,7 +152,7 @@ namespace VirtoCommerce.NotificationsModule.Web
             registrar.RegisterNotification<TwoFactorEmailNotification>();
             registrar.RegisterNotification<TwoFactorSmsNotification>();
             registrar.RegisterNotification<ChangePhoneNumberSmsNotification>();
-           
+
             //Save all registered notifications in the database after application start
             var hostLifeTime = appBuilder.ApplicationServices.GetService<IHostApplicationLifetime>();
             hostLifeTime.ApplicationStarted.Register(() =>
@@ -163,7 +160,7 @@ namespace VirtoCommerce.NotificationsModule.Web
                 var notificationService = appBuilder.ApplicationServices.GetService<INotificationService>();
                 var allRegisteredNotifications = registrar.AllRegisteredNotifications.Select(x =>
                 {
-                    //Do not save predefined templates in the database to prevent rewrite of exists data  
+                    //Do not save predefined templates in the database to prevent rewrite of exists data
                     x.ReduceDetails(NotificationResponseGroup.Default.ToString());
                     return x;
                 }).ToArray();
@@ -173,7 +170,7 @@ namespace VirtoCommerce.NotificationsModule.Web
 
         public void Uninstall()
         {
-            //Nothing todo
+            //Nothing to do
         }
 
         public async Task ExportAsync(Stream outStream, ExportImportOptions options, Action<ExportImportProgressInfo> progressCallback, ICancellationToken cancellationToken)
