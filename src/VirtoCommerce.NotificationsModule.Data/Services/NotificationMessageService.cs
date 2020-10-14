@@ -42,7 +42,7 @@ namespace VirtoCommerce.NotificationsModule.Data.Services
 
         public async Task SaveNotificationMessagesAsync(NotificationMessage[] messages)
         {
-            var validationResult = ValidateMessageProperties(messages);
+            var validationResult = ValidateMessageProperties(messages.Where(m => m.Status == NotificationMessageStatus.Pending).ToArray());
             await InnerSaveNotificationMessagesAsync(messages);
 
             if (!validationResult)
@@ -88,26 +88,33 @@ namespace VirtoCommerce.NotificationsModule.Data.Services
             }
         }
 
-        private bool ValidateMessageProperties(IEnumerable<NotificationMessage> messages)
+        private bool ValidateMessageProperties(NotificationMessage[] messages)
         {
             if (messages == null)
             {
                 throw new ArgumentNullException(nameof(messages));
             }
 
-            var validator = AbstractTypeFactory<NotificationMessageValidator>.TryCreateInstance();
-            var validationResult = messages.Select(m =>
-            {
-                var result = validator.Validate(m);
-                if (!result.IsValid)
-                {
-                    m.LastSendError = string.Join(Environment.NewLine, result.Errors.Select(e => e.ErrorMessage));
-                    m.Status = NotificationMessageStatus.Error;
-                }
-                return result;
-            }).ToArray();
+            bool result = true;
 
-            return validationResult.Any(x => x.IsValid);
+            if (messages.Any())
+            {
+                var validator = AbstractTypeFactory<NotificationMessageValidator>.TryCreateInstance();
+                var validationResult = messages.Select(m =>
+                {
+                    var result = validator.Validate(m);
+                    if (!result.IsValid)
+                    {
+                        m.LastSendError = string.Join(Environment.NewLine, result.Errors.Select(e => e.ErrorMessage));
+                        m.Status = NotificationMessageStatus.Error;
+                    }
+                    return result;
+                }).ToArray();
+
+                result = validationResult.All(x => x.IsValid);
+            }
+
+            return result;
         }
     }
 }

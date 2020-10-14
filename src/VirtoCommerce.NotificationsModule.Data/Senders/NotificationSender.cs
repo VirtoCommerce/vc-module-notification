@@ -30,14 +30,9 @@ namespace VirtoCommerce.NotificationsModule.Data.Senders
             _jobClient = jobClient;
         }
 
-        public async Task ScheduleSendNotificationAsync(Notification notification)
+        public Task ScheduleSendNotificationAsync(Notification notification)
         {
-            if (notification.IsActive.Value)
-            {
-                var message = await CreateMessageAsync(notification);
-
-                _jobClient.Enqueue(() => TrySendNotificationMessageAsync(message.Id));
-            }
+            return InnerSendNotificationAsync(notification, true);
         }
 
         [Obsolete("need to use ScheduleSendNotificationAsync")]
@@ -45,42 +40,22 @@ namespace VirtoCommerce.NotificationsModule.Data.Senders
         {
             ScheduleSendNotificationAsync(notification).GetAwaiter().GetResult();
         }
-
         
-
-        public async Task<NotificationSendResult> SendNotificationAsync(Notification notification)
+        public Task<NotificationSendResult> SendNotificationAsync(Notification notification)
         {
-            if (notification == null)
-            {
-                throw new ArgumentNullException(nameof(notification));
-            }
-
-            if (notification.IsActive.GetValueOrDefault())
-            {
-                var message = await CreateMessageAsync(notification);
-
-                return await TrySendNotificationMessageAsync(message.Id);
-            }
-
-            return new NotificationSendResult();
+            return InnerSendNotificationAsync(notification);
         }
 
-
+        //Must be a public method
         public async Task<NotificationSendResult> TrySendNotificationMessageAsync(string messageId)
         {
             var result = new NotificationSendResult();
 
-            var message = (await _notificationMessageService.GetNotificationsMessageByIds(new[] {messageId})).FirstOrDefault();
+            var message = (await _notificationMessageService.GetNotificationsMessageByIds(new[] { messageId })).FirstOrDefault();
 
             if (message == null)
             {
                 result.ErrorMessage = $"Can't find notification message by {messageId}";
-                return result;
-            }
-
-            if (message.Status == NotificationMessageStatus.Error)
-            {
-                result.ErrorMessage = $"Can't send notification message by {messageId}. There are errors.";
                 return result;
             }
 
@@ -107,10 +82,48 @@ namespace VirtoCommerce.NotificationsModule.Data.Senders
             }
 
             await _notificationMessageService.SaveNotificationMessagesAsync(new[] { message });
-            
+
             return result;
         }
 
+
+        private async Task<NotificationSendResult> InnerSendNotificationAsync(Notification notification, bool schedule = false)
+        {
+            if (notification == null)
+            {
+                throw new ArgumentNullException(nameof(notification));
+            }
+
+            var notificationSendResult = new NotificationSendResult();
+
+            if (notification.IsActive.GetValueOrDefault())
+            {
+                var message = await CreateMessageAsync(notification);
+
+                if (message.Status == NotificationMessageStatus.Pending)
+                {
+                    if (schedule)
+                    {
+                        _jobClient.Enqueue(() => TrySendNotificationMessageAsync(message.Id));
+                    }
+                    else
+                    {
+                        notificationSendResult = await TrySendNotificationMessageAsync(message.Id);
+                    }
+                }
+                else if (message.Status == NotificationMessageStatus.Error)
+                {
+                    notificationSendResult.ErrorMessage = $"Can't send notification message by {message.Id}. There are errors.";
+                }
+            }
+            else
+            {
+                notificationSendResult.ErrorMessage = $"{notification.Type} notification isn't activated.";
+            }
+
+            return notificationSendResult;
+        }
+        
         private async Task<NotificationMessage> CreateMessageAsync(Notification notification)
         {
             var message = AbstractTypeFactory<NotificationMessage>.TryCreateInstance($"{notification.Kind}Message");

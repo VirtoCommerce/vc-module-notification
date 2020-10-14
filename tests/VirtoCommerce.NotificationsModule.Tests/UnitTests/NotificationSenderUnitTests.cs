@@ -382,7 +382,8 @@ namespace VirtoCommerce.NotificationsModule.Tests.UnitTests
                         Body = body,
                     }
                 },
-                LanguageCode = language
+                LanguageCode = language,
+                IsActive = false
             };
 
             //Act
@@ -390,6 +391,7 @@ namespace VirtoCommerce.NotificationsModule.Tests.UnitTests
 
             //Assert
             Assert.False(result.IsSuccess);
+            Assert.Equal($"{notification.Type} notification isn't activated.", result.ErrorMessage);
         }
 
         [Fact]
