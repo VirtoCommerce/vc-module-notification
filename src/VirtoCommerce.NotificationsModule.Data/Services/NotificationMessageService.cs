@@ -42,7 +42,7 @@ namespace VirtoCommerce.NotificationsModule.Data.Services
 
         public async Task SaveNotificationMessagesAsync(NotificationMessage[] messages)
         {
-            var validationResult = ValidateMessageProperties(messages.Where(m => m.Status == NotificationMessageStatus.Pending).ToArray());
+            var validationResult = ValidateMessageProperties(messages.ToArray());
             await InnerSaveNotificationMessagesAsync(messages);
 
             if (!validationResult)
@@ -100,7 +100,7 @@ namespace VirtoCommerce.NotificationsModule.Data.Services
             if (messages.Any())
             {
                 var validator = AbstractTypeFactory<NotificationMessageValidator>.TryCreateInstance();
-                var validationResult = messages.Select(m =>
+                var validationResult = messages.Where(m => m.Status == NotificationMessageStatus.Pending).Select(m =>
                 {
                     var result = validator.Validate(m);
                     if (!result.IsValid)

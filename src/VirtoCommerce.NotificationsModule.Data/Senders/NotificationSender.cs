@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Hangfire;
 using Polly;
 using VirtoCommerce.NotificationsModule.Core.Exceptions;
+using VirtoCommerce.NotificationsModule.Core.Extensions;
 using VirtoCommerce.NotificationsModule.Core.Model;
 using VirtoCommerce.NotificationsModule.Core.Services;
 using VirtoCommerce.Platform.Core.Common;
@@ -32,7 +33,7 @@ namespace VirtoCommerce.NotificationsModule.Data.Senders
 
         public Task ScheduleSendNotificationAsync(Notification notification)
         {
-            return InnerSendNotificationAsync(notification, true);
+            return CheckAndTryToSendNotificationAsync(notification, true);
         }
 
         [Obsolete("need to use ScheduleSendNotificationAsync")]
@@ -43,7 +44,7 @@ namespace VirtoCommerce.NotificationsModule.Data.Senders
         
         public Task<NotificationSendResult> SendNotificationAsync(Notification notification)
         {
-            return InnerSendNotificationAsync(notification);
+            return CheckAndTryToSendNotificationAsync(notification);
         }
 
         //Must be a public method
@@ -87,7 +88,7 @@ namespace VirtoCommerce.NotificationsModule.Data.Senders
         }
 
 
-        private async Task<NotificationSendResult> InnerSendNotificationAsync(Notification notification, bool schedule = false)
+        private async Task<NotificationSendResult> CheckAndTryToSendNotificationAsync(Notification notification, bool schedule = false)
         {
             if (notification == null)
             {
@@ -100,7 +101,7 @@ namespace VirtoCommerce.NotificationsModule.Data.Senders
             {
                 var message = await CreateMessageAsync(notification);
 
-                if (message.Status == NotificationMessageStatus.Pending)
+                if (message.CanSend(notificationSendResult))
                 {
                     if (schedule)
                     {
@@ -110,10 +111,6 @@ namespace VirtoCommerce.NotificationsModule.Data.Senders
                     {
                         notificationSendResult = await TrySendNotificationMessageAsync(message.Id);
                     }
-                }
-                else if (message.Status == NotificationMessageStatus.Error)
-                {
-                    notificationSendResult.ErrorMessage = $"Can't send notification message by {message.Id}. There are errors.";
                 }
             }
             else
