@@ -167,6 +167,13 @@ namespace VirtoCommerce.NotificationsModule.Data.Migrations
                  WHERE TABLE_NAME = '__MigrationHistory'))
                     BEGIN
                         BEGIN
+                            /*Synthesis of notifications v3 from notification templates v2
+                            as a unique combination of [NotificationTypeId], [ObjectTypeId], [ObjectID]*/
+                            WITH pnt2 as
+                            (
+	                            SELECT [NotificationTypeId], [ObjectTypeId], [ObjectID], MAX([Id]) [Id] FROM [PlatformNotificationTemplate]
+	                            GROUP BY [NotificationTypeId], [ObjectTypeId], [ObjectID]
+                            )
 	                        INSERT INTO [Notification]
                                        ([Id]
                                        ,[CreatedDate]
@@ -224,15 +231,18 @@ namespace VirtoCommerce.NotificationsModule.Data.Migrations
 	                            null, null
                             FROM 
                             [PlatformNotificationTemplate] pnt
-                            INNER JOIN 
-                            (
-	                            SELECT [NotificationTypeId], MAX([Id]) [Id] FROM [PlatformNotificationTemplate]
-	                            GROUP BY [NotificationTypeId]
-                            ) pnt2
+                            INNER JOIN pnt2
                             ON pnt.[Id] = pnt2.[Id]
                         END
 
                         BEGIN
+                            /*Convert notification templates v2 to v3 
+                            with references to newly created notifications*/
+                            WITH pnt2 as
+                            (
+	                            SELECT [NotificationTypeId], [ObjectTypeId], [ObjectID], MAX([Id]) [Id] FROM [PlatformNotificationTemplate]
+	                            GROUP BY [NotificationTypeId], [ObjectTypeId], [ObjectID]
+                            )
                             INSERT INTO [NotificationTemplate]
                                        ([Id]
                                        ,[CreatedDate]
@@ -266,15 +276,33 @@ namespace VirtoCommerce.NotificationsModule.Data.Migrations
 			                            END
 	                            END
                             FROM [PlatformNotificationTemplate] pnt
-                            INNER JOIN 
+                            INNER JOIN pnt2
+                            ON 
+                            /* Notification type should always be the same */
+                            pnt.[NotificationTypeId] = pnt2.[NotificationTypeId] 
+                            AND 
                             (
-	                            SELECT [NotificationTypeId], MAX([Id]) [Id] FROM [PlatformNotificationTemplate]
-	                            GROUP BY [NotificationTypeId]
-                            ) pnt2
-                            ON pnt.[NotificationTypeId] = pnt2.[NotificationTypeId]
+                                /* Variant: template for tenant-specific notification*/
+	                            (pnt.[ObjectTypeId] = pnt2.[ObjectTypeId] AND pnt.[ObjectID] = pnt2.[ObjectID])
+	                            OR 
+	                            /* Variant: template for default notification*/
+	                            ( pnt.[ObjectTypeId] IS NULL and pnt2.[ObjectTypeId] IS NULL AND pnt.[ObjectID] IS NULL AND pnt2.[ObjectID] IS NULL)
+                            )
                         END
 
                         BEGIN
+                            /*
+                            Convert notification messages from v2 to v3 with
+                            references to newly created notifications
+                            */	
+                            WITH pnt2 as
+                            (
+	                            SELECT [NotificationTypeId], [ObjectTypeId], [ObjectID], MAX([Id]) [Id] FROM [PlatformNotificationTemplate]
+	                            GROUP BY [NotificationTypeId], [ObjectTypeId], [ObjectID]
+	                            UNION
+	                            /* This is a fake record to simplify set NotificationId to NULL for messages with unknown Type */
+	                            SELECT '----DUMB----', NULL, NULL, NULL
+                            )
                             INSERT INTO [NotificationMessage]
                                        ([Id]
                                        ,[CreatedDate]
@@ -302,7 +330,7 @@ namespace VirtoCommerce.NotificationsModule.Data.Migrations
 	                            pn.[ModifiedBy],
 	                            pn.[ObjectId],
 	                            pn.[ObjectTypeId],
-	                            pnt2.Id [NotificationId],
+	                            pnt2.[Id] [NotificationId],
 	                            pn.[Type],
 	                            pn.[AttemptCount],
 	                            pn.[MaxAttemptCount],
@@ -311,8 +339,8 @@ namespace VirtoCommerce.NotificationsModule.Data.Migrations
 	                            pn.[SentDate],
 	                            pn.[Language],
 	                            pn.[Subject],
-	                            CASE WHEN pn.[Type] LIKE '%EmailNotification%' THEN [Body] ELSE '' END,
-	                            CASE WHEN pn.[Type] LIKE '%SmsNotification%' THEN [Body] ELSE '' END,
+	                            CASE WHEN pn.[Type] LIKE '%EmailNotification%' THEN [Body] ELSE '' END [Body],
+	                            CASE WHEN pn.[Type] LIKE '%SmsNotification%' THEN [Body] ELSE '' END [Message],
 	                            CASE 
 		                            WHEN pn.[Type] LIKE '%EmailNotification%' 
 		                            THEN 'EmailNotificationMessageEntity' 
@@ -322,16 +350,46 @@ namespace VirtoCommerce.NotificationsModule.Data.Migrations
     			                            THEN 'SmsNotificationMessageEntity'
     			                            ELSE 'EmailNotificationMessageEntity'
     		                            END
-	                            END
+	                            END [Discriminator]
 	                            FROM [PlatformNotification] pn
-	                            INNER JOIN 
+	                            INNER JOIN pnt2
+                                ON 
 	                            (
-		                            SELECT [NotificationTypeId], MAX([Id]) [Id] FROM [PlatformNotificationTemplate]
-		                            GROUP BY [NotificationTypeId]
-	                            ) pnt2
-	                            on pn.[Type] = pnt2.[NotificationTypeId]
+		                            /*
+		                            Here is the condition branch for messages with known type
+		                            */
+		                            pn.[Type] = pnt2.[NotificationTypeId] 	
+		                            AND 
+		                            ( 
+		                                /*
+			                            Variant: Messages with known type and tenant-specific notification -> tenant-specific notification
+			                            */
+			                            (pn.[ObjectTypeId] = pnt2.[ObjectTypeId] AND pn.[ObjectID] = pnt2.[ObjectID])	
+			                            OR
+			                            /*
+			                            Variant: Messages with known type, known tenant -> default notification
+			                            */
+			                            (
+				                            pnt2.[ObjectTypeId] IS NULL AND pn.[ObjectTypeId] NOT IN (SELECT DISTINCT [ObjectTypeId] FROM pnt2 WHERE NOT ObjectTypeId IS NULL AND pn.[Type] = pnt2.[NotificationTypeId])
+				                            AND
+				                            pnt2.[ObjectID] IS NULL AND pn.[ObjectID] NOT IN (SELECT DISTINCT [ObjectId] FROM pnt2 WHERE NOT ObjectId IS NULL AND pn.[Type] = pnt2.[NotificationTypeId])
+			                            )
+			                            /*
+			                            Variant: Messages with known type and null tenant -> default notification
+			                            */
+			                            OR
+			                            (
+				                            pnt2.[ObjectTypeId] IS NULL AND pn.[ObjectTypeId] IS NULL AND pnt2.[ObjectID] IS NULL AND pn.[ObjectID] IS NULL
+			                            )
+		                            )
+
+		                            /*
+		                            The condition branch for messages with unknown type (not found in [PlatformNotificationTemplate]).
+		                            Therefore set [NotificationTypeId] to NULL.
+		                            */
+		                            OR pn.[Type] NOT IN ( SELECT distinct [NotificationTypeId] from  pnt2) AND pnt2.[NotificationTypeId] = '----DUMB----'
+	                            )
                         END
-                        
                     END");
         }
 
