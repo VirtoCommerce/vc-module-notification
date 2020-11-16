@@ -262,8 +262,8 @@ namespace VirtoCommerce.NotificationsModule.Data.Migrations
                                 pnt.[ModifiedBy],
 	                            pnt.[Language],
 	                            pnt.[Subject],
-                                CASE WHEN pnt.[NotificationTypeId] LIKE '%EmailNotification%' THEN [Body] ELSE '' END,
-	                            CASE WHEN pnt.[NotificationTypeId] LIKE '%SmsNotification%' THEN [Body] ELSE '' END,
+	                            [Body] [Body],
+	                            [Body] [Message],
                                 pnt2.Id [NotificationId],
                                 CASE 
 		                            WHEN pnt.[NotificationTypeId] LIKE '%EmailNotification%' 
@@ -339,8 +339,8 @@ namespace VirtoCommerce.NotificationsModule.Data.Migrations
 	                            pn.[SentDate],
 	                            pn.[Language],
 	                            pn.[Subject],
-	                            CASE WHEN pn.[Type] LIKE '%EmailNotification%' THEN [Body] ELSE '' END [Body],
-	                            CASE WHEN pn.[Type] LIKE '%SmsNotification%' THEN [Body] ELSE '' END [Message],
+	                            [Body] [Body],
+	                            [Body] [Message],
 	                            CASE 
 		                            WHEN pn.[Type] LIKE '%EmailNotification%' 
 		                            THEN 'EmailNotificationMessageEntity' 
