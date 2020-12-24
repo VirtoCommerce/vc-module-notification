@@ -20,6 +20,11 @@
         <ProjectReference Include="..\..\src\VirtoCommerce.NotificationsModule.TemplateLoader.FileSystem\VirtoCommerce.NotificationsModule.TemplateLoader.FileSystem.csproj" />
     </ItemGroup>
     <ItemGroup>
+        <Content Include="Templates/**">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+    </ItemGroup>
+    <ItemGroup>
         <NotificationTemplates Include="Templates/**"/>
     </ItemGroup>
     <Target Name="CopyCustomContentOnPublish" AfterTargets="Publish">
