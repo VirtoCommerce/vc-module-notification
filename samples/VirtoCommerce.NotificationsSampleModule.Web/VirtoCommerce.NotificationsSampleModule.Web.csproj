@@ -20,9 +20,6 @@
         <ProjectReference Include="..\..\src\VirtoCommerce.NotificationsModule.TemplateLoader.FileSystem\VirtoCommerce.NotificationsModule.TemplateLoader.FileSystem.csproj" />
     </ItemGroup>
     <ItemGroup>
-        <None Update="_module.manifest">
-            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-        </None>
         <Content Include="Templates/**">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </Content>
