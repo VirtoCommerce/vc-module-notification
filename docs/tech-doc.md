@@ -12,16 +12,16 @@ If you would like to register a notification e.g. 'SampleEmailNotification':
         public SampleEmailNotification() : base(nameof(SampleEmailNotification)) {}
     }
     ```
-    
+    look at ![code](https://github.com/VirtoCommerce/vc-module-notification/blob/feature/VP-4474-add-tech-doc/samples/VirtoCommerce.NotificationsSampleModule.Web/Types/SampleEmailNotification.cs)
 1. Need to get a service `INotificationRegistrar` in `PostInitialize` method of `Module.cs`.
     ```cs
     var registrar = appBuilder.ApplicationServices.GetService<INotificationRegistrar>();
-    ```
+    ```    
 1. Then to call a method `RegisterNotification` and set generic type as `SampleEmailNotification`
     ```cs
     registrar.RegisterNotification<SampleEmailNotification>();
     ```
-
+    >look at ![code](https://github.com/VirtoCommerce/vc-module-notification/blob/feature/VP-4474-add-tech-doc/samples/VirtoCommerce.NotificationsSampleModule.Web/Module.cs#L59)
 ## How to define a template for the notification    
 1. If need to use predefined templates then 
     1. use construction:
@@ -32,6 +32,7 @@ If you would like to register a notification e.g. 'SampleEmailNotification':
                 Body = "<p>Sample text</p>",
             });
     ```
+    >look at ![code](https://github.com/VirtoCommerce/vc-module-notification/blob/feature/VP-4474-add-tech-doc/samples/VirtoCommerce.NotificationsSampleModule.Web/Module.cs#L59)
     1. or use resources like this
 
     ```cs
@@ -43,6 +44,7 @@ If you would like to register a notification e.g. 'SampleEmailNotification':
             });
 
     ```
+    
     and add the resources to 'Templates' folder (look at ![samples](https://github.com/VirtoCommerce/vc-module-notification/tree/dev/samples/VirtoCommerce.NotificationsSampleModule.Web/Templates))
 1. If need to discover some path with templates then use `WithTemplatesFromPath`
     ```cs
@@ -85,7 +87,7 @@ If you would like to register a notification e.g. 'SampleEmailNotification':
     ```cs
     _notificationSender.ScheduleSendNotification(notification);
     ``` 
-> NOTE: look at demo-code in `VirtoCommerce.NotificationsSampleModule.Web.Services.SampleService`        
+> NOTE: look at ![demo-code](https://github.com/VirtoCommerce/vc-module-notification/blob/feature/VP-4474-add-tech-doc/samples/VirtoCommerce.NotificationsSampleModule.Web/Services/SampleService.cs)        
 
 ## How to extend an exist notification type and template    
 
@@ -98,10 +100,12 @@ If you would like to register a notification e.g. 'SampleEmailNotification':
         }
     }
     ```
+    look at ![code](https://github.com/VirtoCommerce/vc-module-notification/blob/feature/VP-4474-add-tech-doc/samples/VirtoCommerce.NotificationsSampleModule.Web/Types/ExtendedSampleEmailNotification.cs)
 1. Then need to override the notification type via `INotificationRegistrar`
     ```cs
     registrar.OverrideNotificationType<SampleEmailNotification, ExtendedSampleEmailNotification>();
     ```
+    look at ![code](https://github.com/VirtoCommerce/vc-module-notification/blob/feature/VP-4474-add-tech-doc/samples/VirtoCommerce.NotificationsSampleModule.Web/Module.cs#L66)
 1. Also there is a possibility to add templates for the extended notification 
     ```cs
     registrar.OverrideNotificationType<SampleEmailNotification, ExtendedSampleEmailNotification>().WithTemplates(new EmailNotificationTemplate()
@@ -110,9 +114,10 @@ If you would like to register a notification e.g. 'SampleEmailNotification':
                 Body = "Extended SampleEmailNotification body test"
             });
     ```
+    look at ![code](https://github.com/VirtoCommerce/vc-module-notification/blob/feature/VP-4474-add-tech-doc/samples/VirtoCommerce.NotificationsSampleModule.Web/Module.cs#L66)
 1. And need to define derived notifications where has own types and convert the types to based type (like as SampleEmailNotification). It can be define with the Migration. 
     1. Need to create a clean migration in project.
     1. Then to add SQL-script which will be update notifications. 
-> NOTE: Look at example `VirtoCommerce.NotificationsSampleModule.Web.Migrations.OverridingNotificationsForBackwardV2`   
-    
-`NOTE: Look at all samples in 'VirtoCommerce.NotificationsSampleModule.Web' project`
+>Look at ![example](https://github.com/VirtoCommerce/vc-module-notification/blob/feature/VP-4474-add-tech-doc/samples/VirtoCommerce.NotificationsSampleModule.Web/Migrations/20200407123225_OverridingNotificationsForBackwardV2.cs)   
+
+#### NOTE: Look at all samples in ![project](https://github.com/VirtoCommerce/vc-module-notification/tree/feature/VP-4474-add-tech-doc/samples/VirtoCommerce.NotificationsSampleModule.Web)
