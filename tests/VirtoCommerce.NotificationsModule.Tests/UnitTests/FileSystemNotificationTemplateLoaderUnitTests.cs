@@ -55,10 +55,10 @@ namespace VirtoCommerce.NotificationsModule.Tests.UnitTests
         {
             public IEnumerator<object[]> GetEnumerator()
             {
-                yield return new object[] { nameof(SampleEmailNotification), null, "Content", Path.Combine("Content", "Default"), "Sample subject\r\n", "<p>Sample Text</p>" };
-                yield return new object[] { nameof(SampleEmailNotification), "en-US", "Content", Path.Combine("Content", "Default"), "en-US subject\r\n", "<p>en-US Text</p>" };
-                yield return new object[] { nameof(SampleEmailNotification), null, string.Empty, Path.Combine("Content", "Default"), "Sample subject as Default\r\n", "<p>Sample Text as Default</p>" };
-                yield return new object[] { nameof(DefaultSampleEmailNotification), null, "Content", Path.Combine("Content", "Default"), "Default subject\r\n", "<p>Default Text</p>" };
+                yield return new object[] { nameof(SampleEmailNotification), null, "Content", Path.Combine("Content", "Default"), "Sample subject", "<p>Sample Text</p>" };
+                yield return new object[] { nameof(SampleEmailNotification), "en-US", "Content", Path.Combine("Content", "Default"), "en-US subject", "<p>en-US Text</p>" };
+                yield return new object[] { nameof(SampleEmailNotification), null, string.Empty, Path.Combine("Content", "Default"), "Sample subject as Default", "<p>Sample Text as Default</p>" };
+                yield return new object[] { nameof(DefaultSampleEmailNotification), null, "Content", Path.Combine("Content", "Default"), "Default subject", "<p>Default Text</p>" };
             }
 
             IEnumerator IEnumerable.GetEnumerator()
