@@ -27,14 +27,6 @@
     <ItemGroup>
         <NotificationTemplates Include="Templates/**" />
     </ItemGroup>
-    <ItemGroup>
-      <Content Remove="Templates\SampleEmailNotification_body.html" />
-      <Content Remove="Templates\SampleEmailNotification_subject.txt" />
-    </ItemGroup>
-    <ItemGroup>
-      <EmbeddedResource Include="Templates\SampleEmailNotification_body.html" />
-      <EmbeddedResource Include="Templates\SampleEmailNotification_subject.txt" />
-    </ItemGroup>
     <Target Name="CopyCustomContentOnPublish" AfterTargets="Publish">
         <Copy SourceFiles="@(NotificationTemplates)" DestinationFiles="$(PublishDir)\..\%(Identity)" />
     </Target>
