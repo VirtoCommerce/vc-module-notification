@@ -17,6 +17,11 @@ namespace VirtoCommerce.NotificationsModule.TemplateLoader.FileSystem
             _options = options.Value;
         }
 
+        /// <summary>
+        /// Load templates from 'DiscoveryPath' of Options
+        /// </summary>
+        /// <param name="notification"></param>
+        /// <returns></returns>
         public virtual IEnumerable<NotificationTemplate> LoadTemplates(Notification notification)
         {
             var result = Enumerable.Empty<NotificationTemplate>();
@@ -27,7 +32,15 @@ namespace VirtoCommerce.NotificationsModule.TemplateLoader.FileSystem
             return result;
         }
 
-        public virtual IEnumerable<NotificationTemplate> LoadTemplates(Notification notification, string path, string fallbackPath = null)
+        /// <summary>
+        /// Load templates from path
+        /// There is default path for loading default templates from defaultPath. It could be null.
+        /// </summary>
+        /// <param name="notification"></param>
+        /// <param name="path"></param>
+        /// <param name="defaultPath"></param>
+        /// <returns></returns>
+        public virtual IEnumerable<NotificationTemplate> LoadTemplates(Notification notification, string path, string defaultPath = null)
         {
             if (notification == null)
             {
@@ -41,10 +54,10 @@ namespace VirtoCommerce.NotificationsModule.TemplateLoader.FileSystem
             var result = new List<NotificationTemplate>();
 
             var contents = LoadAllNotificationContentsFromPath(notification, path);
-            if (!string.IsNullOrEmpty(fallbackPath))
+            if (!string.IsNullOrEmpty(defaultPath))
             {
-                var fallbackContents = LoadAllNotificationContentsFromPath(notification, fallbackPath);
-                contents = fallbackContents.Concat(contents);
+                var defaultContents = LoadAllNotificationContentsFromPath(notification, defaultPath);
+                contents = defaultContents.Concat(contents);
             }
             foreach (var groupMatch in contents.GroupBy(x => x.LanguageCode))
             {

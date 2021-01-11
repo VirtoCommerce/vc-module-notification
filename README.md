@@ -19,6 +19,7 @@ The Notifications module supports notifications infrastructure and consists of t
 ## Documentation
 
 1. [Notification Module Document](/docs/index.md)
+1. [Instructions for developer](/docs/tech-doc.md)
 1. [View on GitHub](https://github.com/VirtoCommerce/vc-module-notification/tree/dev)
 1. [What’s customer_order object in the notifications templates](https://community.virtocommerce.com/t/whats-customer-order-object-in-the-notifications-templates/97)
 1. [Liquid as Primary Template Language](https://community.virtocommerce.com/t/liquid-as-primary-template-language/78)
