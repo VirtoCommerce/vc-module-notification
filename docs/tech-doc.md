@@ -100,12 +100,12 @@ If you would like to register a notification e.g. 'SampleEmailNotification':
         }
     }
     ```
-    look at [code](https://github.com/VirtoCommerce/vc-module-notification/blob/dev/VirtoCommerce.NotificationsSampleModule.Web/Types/ExtendedSampleEmailNotification.cs)
+    look at [code](https://github.com/VirtoCommerce/vc-module-notification/blob/dev/samples/VirtoCommerce.NotificationsSampleModule.Web/Types/ExtendedSampleEmailNotification.cs)
 1. Then need to override the notification type via `INotificationRegistrar`
     ```cs
     registrar.OverrideNotificationType<SampleEmailNotification, ExtendedSampleEmailNotification>();
     ```
-    look at [code](https://github.com/VirtoCommerce/vc-module-notification/blob/dev/VirtoCommerce.NotificationsSampleModule.Web/Module.cs#L66)
+    look at [code](https://github.com/VirtoCommerce/vc-module-notification/blob/dev/samples/VirtoCommerce.NotificationsSampleModule.Web/Module.cs#L66)
 1. Also there is a possibility to add templates for the extended notification 
     ```cs
     registrar.OverrideNotificationType<SampleEmailNotification, ExtendedSampleEmailNotification>().WithTemplates(new EmailNotificationTemplate()
@@ -114,7 +114,7 @@ If you would like to register a notification e.g. 'SampleEmailNotification':
                 Body = "Extended SampleEmailNotification body test"
             });
     ```
-    look at [code](https://github.com/VirtoCommerce/vc-module-notification/blob/dev/VirtoCommerce.NotificationsSampleModule.Web/Module.cs#L66)
+    look at [code](https://github.com/VirtoCommerce/vc-module-notification/blob/dev/samples/VirtoCommerce.NotificationsSampleModule.Web/Module.cs#L66)
 1. And need to define derived notifications where has own types and convert the types to based type (like as SampleEmailNotification). It can be define with the Migration. 
     1. Need to create a clean migration in project.
     1. Then to add SQL-script which will be update notifications. 
