@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using System.Reflection;
 
 namespace VirtoCommerce.NotificationsModule.Tests.Common
 {
@@ -8,14 +9,14 @@ namespace VirtoCommerce.NotificationsModule.Tests.Common
         public static string MapPath(string path)
         {
             var separatorChar = Path.DirectorySeparatorChar;
-            var baseDirectory = Directory.GetCurrentDirectory();
+            var baseDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
             if (baseDirectory.IndexOf($"{separatorChar}bin{separatorChar}", StringComparison.Ordinal) != -1)
             {
                 baseDirectory = baseDirectory.Remove(baseDirectory.IndexOf($"{separatorChar}bin{separatorChar}", StringComparison.Ordinal));
             }
 
             path = path.Replace("~/", "").TrimStart(separatorChar);
-            return $"{baseDirectory}{separatorChar}{path}";
+            return Path.Combine(baseDirectory, path);
         }
 
         public static string GetStringByPath(string path)

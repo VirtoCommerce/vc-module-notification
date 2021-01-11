@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using System.Reflection;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -14,6 +15,7 @@ using VirtoCommerce.NotificationsModule.TemplateLoader.FileSystem;
 using VirtoCommerce.NotificationsSampleModule.Web.Filters;
 using VirtoCommerce.NotificationsSampleModule.Web.Models;
 using VirtoCommerce.NotificationsSampleModule.Web.Repositories;
+using VirtoCommerce.NotificationsSampleModule.Web.Services;
 using VirtoCommerce.NotificationsSampleModule.Web.Types;
 using VirtoCommerce.Platform.Core.Common;
 using VirtoCommerce.Platform.Core.Modularity;
@@ -43,6 +45,8 @@ namespace VirtoCommerce.NotificationsSampleModule.Web
             serviceCollection.Configure<LiquidRenderOptions>(opt => opt.CustomFilterTypes.Add(typeof(CustomLiquidFilters)));
             //or this alternative syntax
             serviceCollection.AddLiquidRenderer().AddCustomLiquidFilterType(typeof(CustomLiquidFilters));
+
+            serviceCollection.AddTransient<SampleService>();
         }
 
         public void PostInitialize(IApplicationBuilder appBuilder)
@@ -57,15 +61,18 @@ namespace VirtoCommerce.NotificationsSampleModule.Web
                 Subject = "SampleEmailNotification test",
                 Body = "SampleEmailNotification body test",
             });
+
+            var assembly = Assembly.GetExecutingAssembly();
             registrar.OverrideNotificationType<SampleEmailNotification, ExtendedSampleEmailNotification>().WithTemplates(new EmailNotificationTemplate()
             {
-                Subject = "New SampleEmailNotification test",
-                Body = "New SampleEmailNotification body test",
+                Subject = assembly.GetManifestResourceStream("VirtoCommerce.NotificationsSampleModule.Web.Templates.SampleEmailNotification_subject.txt").ReadToString(),
+                Body = assembly.GetManifestResourceStream("VirtoCommerce.NotificationsSampleModule.Web.Templates.SampleEmailNotification_body.html").ReadToString()
             });
 
             var moduleTemplatesPath = Path.Combine(ModuleInfo.FullPhysicalPath, "Templates");
             //Set individual discovery folder for templates 
-            registrar.OverrideNotificationType<RegistrationEmailNotification, NewRegistrationEmailNotification>().WithTemplatesFromPath(Path.Combine(moduleTemplatesPath, "Custom"), Path.Combine(moduleTemplatesPath, "Default"));
+            registrar.OverrideNotificationType<RegistrationEmailNotification, NewRegistrationEmailNotification>()
+                     .WithTemplatesFromPath(Path.Combine(moduleTemplatesPath, "Custom"), Path.Combine(moduleTemplatesPath, "Default"));
 
             using (var serviceScope = appBuilder.ApplicationServices.CreateScope())
             {
@@ -75,6 +82,10 @@ namespace VirtoCommerce.NotificationsSampleModule.Web
                     notificationDbContext.Database.Migrate();
                 }
             }
+
+            //sample for showing how to send a notification
+            var service = appBuilder.ApplicationServices.GetService<SampleService>();
+            service.Do().GetAwaiter().GetResult();
         }
 
         public void Uninstall()
