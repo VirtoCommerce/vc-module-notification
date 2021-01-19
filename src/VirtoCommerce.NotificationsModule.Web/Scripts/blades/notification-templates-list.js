@@ -1,6 +1,6 @@
 angular.module('virtoCommerce.notificationsModule')
-    .controller('virtoCommerce.notificationsModule.notificationTemplatesListController', ['$scope', '$translate', '$filter', 'virtoCommerce.notificationsModule.notificationTemplatesResolverService', 'platformWebApp.bladeNavigationService', 'platformWebApp.dialogService', 'platformWebApp.settings', 'platformWebApp.ui-grid.extension', 'platformWebApp.uiGridHelper', 'platformWebApp.bladeUtils',
-        function ($scope, $translate, $filter, notificationTemplatesResolverService, bladeNavigationService, dialogService, settings, gridOptionExtension, uiGridHelper, bladeUtils) {
+    .controller('virtoCommerce.notificationsModule.notificationTemplatesListController', ['$scope', '$translate', 'virtoCommerce.notificationsModule.notificationTemplatesResolverService', 'platformWebApp.bladeNavigationService', 'platformWebApp.dialogService', 'platformWebApp.settings', 'platformWebApp.uiGridHelper', 'platformWebApp.bladeUtils',
+        function ($scope, $translate, notificationTemplatesResolverService, bladeNavigationService, dialogService, settings, uiGridHelper, bladeUtils) {
             $scope.uiGridConstants = uiGridHelper.uiGridConstants;
             var blade = $scope.blade;
             blade.selectedLanguage = null;
@@ -12,7 +12,6 @@ angular.module('virtoCommerce.notificationsModule')
             }
 
             blade.initialize = function () {
-                blade.isLoading = true;
                 blade.currentEntities = getEffectiveTemplateListByLanguage(blade.currentEntity.templates);
                 blade.isLoading = false;
             }
@@ -139,16 +138,14 @@ angular.module('virtoCommerce.notificationsModule')
                                             blade.currentEntity.templates.splice(index, 1);
                                         }
                                     });
-                                    bladeNavigationService.closeBlade(blade, function () {
-                                        blade.parentBlade.initialize();
-                                    });
+
+                                    blade.initialize();
                                 });
                             }
                         }
                     };
                     dialogService.showConfirmationDialog(dialog);
                 }
-
             }
 
             blade.toolbarCommands = [

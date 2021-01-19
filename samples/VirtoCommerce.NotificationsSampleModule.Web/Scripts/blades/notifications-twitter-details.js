@@ -1,5 +1,5 @@
 angular.module('virtoCommerce.notificationsSampleModule')
-    .controller('virtoCommerce.notificationsSampleModule.editTwitterController', ['$scope', '$filter', 'virtoCommerce.notificationsModule.notificationsModuleApi', 'platformWebApp.bladeNavigationService', 'platformWebApp.dialogService', function ($scope, $filter, notifications, bladeNavigationService, dialogService) {
+    .controller('virtoCommerce.notificationsSampleModule.editTwitterController', ['$scope', '$filter', 'virtoCommerce.notificationsModule.notificationsModuleApi', 'platformWebApp.bladeNavigationService', function ($scope, $filter, notifications, bladeNavigationService) {
         var blade = $scope.blade;
 
         blade.initialize = function () {
@@ -29,8 +29,6 @@ angular.module('virtoCommerce.notificationsSampleModule')
                 blade.isLoading = false;
                 blade.origEntity = angular.copy(blade.currentEntity);
                 blade.parentBlade.refresh();
-            }, function (error) {
-                bladeNavigationService.setError('Error ' + error.status, blade);
             });
         };
 
@@ -64,7 +62,7 @@ angular.module('virtoCommerce.notificationsSampleModule')
         }
 
         blade.onClose = function (closeCallback) {
-            bladeNavigationService.showConfirmationIfNeeded(isDirty(), canSave(), blade, blade.updateTemplate, closeCallback, "notifications.dialogs.notification-details-save.title", "notifications.dialogs.notification-details-save.message");
+            bladeNavigationService.showConfirmationIfNeeded(isDirty(), canSave(), blade, blade.updateNotification, closeCallback, "notifications.dialogs.notification-details-save.title", "notifications.dialogs.notification-details-save.message");
         };
 
         $scope.setForm = function (form) {
