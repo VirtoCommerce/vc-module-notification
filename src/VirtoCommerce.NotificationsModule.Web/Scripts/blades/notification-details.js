@@ -7,7 +7,6 @@ angular.module('virtoCommerce.notificationsModule')
 
             var blade = $scope.blade;
             blade.updatePermission = 'notifications:update';
-            var codemirrorEditor;
             blade.parametersForTemplate = [];
             $scope.isValid = false;
 
@@ -78,7 +77,7 @@ angular.module('virtoCommerce.notificationsModule')
 
             $scope.blade.toolbarCommands = [
                 {
-                    name: "platform.commands.save", icon: 'fa fa-save',
+                    name: "platform.commands.save", icon: 'fas fa-save',
                     executeMethod: blade.updateNotification,
                     canExecuteMethod: canSave,
                     permission: blade.updatePermission

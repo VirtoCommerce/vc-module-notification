@@ -34,7 +34,7 @@ angular.module('virtoCommerce.notificationsSampleModule')
 
         $scope.blade.toolbarCommands = [
             {
-                name: "platform.commands.save", icon: 'fa fa-save',
+                name: "platform.commands.save", icon: 'fas fa-save',
                 executeMethod: blade.updateNotification,
                 canExecuteMethod: canSave,
                 permission: blade.updatePermission
