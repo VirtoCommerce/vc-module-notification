@@ -1,4 +1,4 @@
-﻿angular.module('virtoCommerce.notificationsModule')
+angular.module('virtoCommerce.notificationsModule')
 .controller('virtoCommerce.notificationsModule.filterJournalDetailController', ['$scope', '$localStorage', '$translate',
     function ($scope, $localStorage, $translate) {
         var blade = $scope.blade;
@@ -52,7 +52,7 @@
                     canExecuteMethod: isDirty
                 },
                 {
-                    name: "platform.commands.delete", icon: 'fa fa-trash-o',
+                    name: "platform.commands.delete", icon: 'fas fa-trash-alt',
                     executeMethod: deleteEntry,
                     canExecuteMethod: function () {
                         return !blade.isNew;
