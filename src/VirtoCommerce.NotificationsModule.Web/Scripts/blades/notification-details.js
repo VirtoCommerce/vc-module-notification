@@ -7,6 +7,7 @@ angular.module('virtoCommerce.notificationsModule')
 
             var blade = $scope.blade;
             blade.updatePermission = 'notifications:update';
+            var codemirrorEditor;
             blade.parametersForTemplate = [];
             $scope.isValid = false;
 
