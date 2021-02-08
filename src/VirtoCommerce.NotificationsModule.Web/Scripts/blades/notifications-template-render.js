@@ -43,7 +43,7 @@ angular.module('virtoCommerce.notificationsModule')
             blade.isLoading = false;
         };
 
-        blade.headIcon = 'fa-eye';
+        blade.headIcon = 'fa fa-eye';
 
         blade.initialize();
     }]);

@@ -69,7 +69,7 @@ angular.module('virtoCommerce.notificationsSampleModule')
             $scope.formScope = form;
         }
 
-        blade.headIcon = 'fa-twitter';
+        blade.headIcon = 'fa fa-twitter';
 
         blade.initialize();
     }]);
