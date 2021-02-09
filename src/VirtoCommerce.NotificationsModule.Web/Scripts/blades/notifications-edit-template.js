@@ -186,7 +186,7 @@ angular.module('virtoCommerce.notificationsModule')
                 $scope.isValid = isDirty() && formScope && formScope.$valid && !blade.origEntity.isReadonly;
             }, true);
 
-            blade.headIcon = 'fa-envelope';
+            blade.headIcon = 'fa fa-envelope';
 
             blade.initialize();
         }]);

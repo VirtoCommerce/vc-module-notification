@@ -122,7 +122,7 @@ angular.module('virtoCommerce.notificationsModule')
                 bladeNavigationService.showConfirmationIfNeeded(isDirty(), canSave(), blade, blade.updateNotification, closeCallback, "notifications.dialogs.notification-details-save.title", "notifications.dialogs.notification-details-save.message");
             };
 
-            blade.headIcon = 'fa-envelope';
+            blade.headIcon = 'fa fa-envelope';
 
             blade.initialize();
         }]);

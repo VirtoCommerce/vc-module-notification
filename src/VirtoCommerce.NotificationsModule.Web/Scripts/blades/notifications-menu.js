@@ -5,8 +5,8 @@ angular.module('virtoCommerce.notificationsModule')
 
     function initializeBlade() {
         var entities = [
-            { id: '1', name: 'notifications.blades.notifications-list.title', templateName: 'notifications-list', controllerName: 'notificationsListController', icon: 'fa-list', subtitle: 'notifications.blades.notifications-list.subtitle' },
-            { id: '2', name: 'notifications.blades.notifications-journal.title', templateName: 'notifications-journal', controllerName: 'notificationsJournalController', icon: 'fa-book', subtitle: 'notifications.blades.notifications-journal.subtitle' }];
+            { id: '1', name: 'notifications.blades.notifications-list.title', templateName: 'notifications-list', controllerName: 'notificationsListController', icon: 'fa fa-list', subtitle: 'notifications.blades.notifications-list.subtitle' },
+            { id: '2', name: 'notifications.blades.notifications-journal.title', templateName: 'notifications-journal', controllerName: 'notificationsJournalController', icon: 'fa fa-book', subtitle: 'notifications.blades.notifications-journal.subtitle' }];
         blade.currentEntities = entities;
         blade.isLoading = false;
     };
@@ -30,7 +30,7 @@ angular.module('virtoCommerce.notificationsModule')
         bladeNavigationService.showBlade(newBlade, blade);
     }
 
-    blade.headIcon = 'fa-envelope';
+    blade.headIcon = 'fa fa-envelope';
 
     initializeBlade();
 

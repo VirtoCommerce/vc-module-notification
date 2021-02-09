@@ -63,23 +63,23 @@ angular.module('virtoCommerce.notificationsModule')
             }
         }
 
-		if (authService.checkPermission('notifications:access')) {
-			blade.editNotification = function (item) {
+        if (authService.checkPermission('notifications:access')) {
+            blade.editNotification = function (item) {
                 var foundNotification = resolveType(item.kind);
-				var newBlade = {
-					id: 'editNotification',
-					title: 'notifications.blades.notification-details.title',
-					titleValues: { displayName: $translate.instant('notificationTypes.' + item.type + '.displayName') },
-					type: item.type,
-					tenantId: blade.tenantId,
-					tenantType: blade.tenantType,
-					controller: foundNotification.detailBlade.controller,
+                var newBlade = {
+                    id: 'editNotification',
+                    title: 'notifications.blades.notification-details.title',
+                    titleValues: { displayName: $translate.instant('notificationTypes.' + item.type + '.displayName') },
+                    type: item.type,
+                    tenantId: blade.tenantId,
+                    tenantType: blade.tenantType,
+                    controller: foundNotification.detailBlade.controller,
                     template: foundNotification.detailBlade.template
-				};
+                };
 
-				bladeNavigationService.showBlade(newBlade, blade);
-			};
-		};
+                bladeNavigationService.showBlade(newBlade, blade);
+            };
+        };
 
         blade.setSelectedNode = function (listItem) {
             $scope.selectedNodeId = listItem.type;
@@ -88,7 +88,7 @@ angular.module('virtoCommerce.notificationsModule')
         $scope.selectNode = function (type) {
            blade.setSelectedNode(type);
            blade.selectedType = type;
-      	   blade.editNotification(type);
+           blade.editNotification(type);
         };
 
         // ui-grid
@@ -103,6 +103,6 @@ angular.module('virtoCommerce.notificationsModule')
             bladeUtils.initializePagination($scope);
         };
 
-        blade.headIcon = 'fa-list';
+        blade.headIcon = 'fa fa-list';
         //blade.refresh();
     }]);
