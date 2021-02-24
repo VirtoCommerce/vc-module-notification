@@ -232,6 +232,10 @@
       "displayName": "Email confirmation notification",
       "description": "This e-mail notification is for confirmation a new registered user e-mail"
     },
+    "VerificationEmailNotification": {
+      "displayName": "Email verification notification",
+      "description": "This e-mail notification is for verification user e-mail"
+    },
     "ChangePhoneNumberSmsNotification": {
       "displayName": "Phone number change notification",
       "description": "This notification sends by sms to client when phone number is changed"
