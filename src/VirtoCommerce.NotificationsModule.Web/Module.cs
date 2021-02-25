@@ -145,6 +145,7 @@ namespace VirtoCommerce.NotificationsModule.Web
             var registrar = appBuilder.ApplicationServices.GetService<INotificationRegistrar>();
             registrar.RegisterNotification<ResetPasswordEmailNotification>();
             registrar.RegisterNotification<ConfirmationEmailNotification>();
+            registrar.RegisterNotification<VerificationEmailNotification>();
             registrar.RegisterNotification<RegistrationEmailNotification>();
             registrar.RegisterNotification<RegistrationInvitationEmailNotification>();
             registrar.RegisterNotification<RemindUserNameEmailNotification>();
