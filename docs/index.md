@@ -2,17 +2,17 @@
 
 The Notifications module supports notifications infrastructure and consists of two main blocks:
 
-1. Notifications list
-1. Notification activity feed
+1. Notifications list;
+1. Notification activity feed.
 
 ![Notifications module](media/screen-notifications-module.png)
 
 ## Key Features
 
-1. Email Templates with Liquid
-1. Extendable Model
-1. Supports SMTP and SendGrid
-1. Async delivery with retry policy
+1. Email Templates with Liquid;
+1. Extendable Model;
+1. Supports SMTP and SendGrid;
+1. Async delivery with retry policy.
 
 ## Notifications list
 
