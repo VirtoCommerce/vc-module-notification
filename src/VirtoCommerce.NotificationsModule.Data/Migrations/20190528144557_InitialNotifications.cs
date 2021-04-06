@@ -263,7 +263,7 @@ namespace VirtoCommerce.NotificationsModule.Data.Migrations
 	                            pnt.[Language],
 	                            pnt.[Subject],
 	                            [Body] [Body],
-	                            [Body] [Message],
+	                            LEFT([Body], 1600) [Message],
                                 pnt2.Id [NotificationId],
                                 CASE 
 		                            WHEN pnt.[NotificationTypeId] LIKE '%EmailNotification%' 
