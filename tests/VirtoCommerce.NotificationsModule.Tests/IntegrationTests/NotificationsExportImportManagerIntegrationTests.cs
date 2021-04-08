@@ -14,11 +14,11 @@ using VirtoCommerce.NotificationsModule.Data.ExportImport;
 using VirtoCommerce.NotificationsModule.Data.Model;
 using VirtoCommerce.NotificationsModule.Data.Repositories;
 using VirtoCommerce.NotificationsModule.Data.Services;
-using VirtoCommerce.NotificationsModule.Web.JsonConverters;
 using VirtoCommerce.Platform.Core.Common;
 using VirtoCommerce.Platform.Core.Domain;
 using VirtoCommerce.Platform.Core.Events;
 using VirtoCommerce.Platform.Core.ExportImport;
+using VirtoCommerce.Platform.Core.JsonConverters;
 using Xunit;
 
 namespace VirtoCommerce.NotificationsModule.Tests.IntegrationTests
@@ -62,7 +62,7 @@ namespace VirtoCommerce.NotificationsModule.Tests.IntegrationTests
                 ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
                 NullValueHandling = NullValueHandling.Ignore,
                 Formatting = Formatting.Indented,
-                Converters = new List<JsonConverter> { new NotificationPolymorphicJsonConverter() }
+                Converters = new List<JsonConverter> { new PolymorphJsonConverter() }
             });
         }
 

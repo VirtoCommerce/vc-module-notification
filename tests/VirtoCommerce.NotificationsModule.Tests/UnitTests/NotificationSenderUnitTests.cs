@@ -23,8 +23,8 @@ using VirtoCommerce.NotificationsModule.LiquidRenderer.Filters;
 using VirtoCommerce.NotificationsModule.Tests.Common;
 using VirtoCommerce.NotificationsModule.Tests.Model;
 using VirtoCommerce.NotificationsModule.Tests.NotificationTypes;
-using VirtoCommerce.NotificationsModule.Web.JsonConverters;
 using VirtoCommerce.Platform.Core.Common;
+using VirtoCommerce.Platform.Core.JsonConverters;
 using Xunit;
 
 namespace VirtoCommerce.NotificationsModule.Tests.UnitTests
@@ -316,7 +316,7 @@ namespace VirtoCommerce.NotificationsModule.Tests.UnitTests
             };
 
             _messageServiceMock.Setup(ms => ms.GetNotificationsMessageByIds(It.IsAny<string[]>()))
-                .ReturnsAsync(new [] { message});
+                .ReturnsAsync(new[] { message });
 
             //Act
             var result = await _sender.SendNotificationAsync(notification);
@@ -462,9 +462,9 @@ namespace VirtoCommerce.NotificationsModule.Tests.UnitTests
             });
             var notification = AbstractTypeFactory<Notification>.TryCreateInstance(nameof(SampleEmailNotification));
             notification.IsActive = true;
-            var jsonSerializeSettings = new JsonSerializerSettings { Converters = new List<JsonConverter> { new NotificationPolymorphicJsonConverter() } };
+            var jsonSerializeSettings = new JsonSerializerSettings { Converters = new List<JsonConverter> { new PolymorphJsonConverter() } };
             GlobalConfiguration.Configuration.UseSerializerSettings(jsonSerializeSettings);
-            
+
             //Act
             await _sender.ScheduleSendNotificationAsync(notification);
 
@@ -508,7 +508,8 @@ namespace VirtoCommerce.NotificationsModule.Tests.UnitTests
             _messageServiceMock.Setup(ms => ms.SaveNotificationMessagesAsync(new NotificationMessage[] { message }));
             _messageSenderMock.Setup(ms => ms.SendNotificationAsync(It.IsAny<NotificationMessage>())).Throws(new SmtpException());
             _messageServiceMock.Setup(ms => ms.GetNotificationsMessageByIds(It.IsAny<string[]>())).ReturnsAsync(new[] { message })
-                .Callback(() => {
+                .Callback(() =>
+                {
                     message.Status = NotificationMessageStatus.Error;
                 });
 
