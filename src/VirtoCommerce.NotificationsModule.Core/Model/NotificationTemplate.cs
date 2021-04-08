@@ -18,6 +18,17 @@ namespace VirtoCommerce.NotificationsModule.Core.Model
         /// </summary>
         public abstract string Kind { get; }
 
+        /// <summary>
+        /// Discriminator of NotificationTemplate, name of real template descendant
+        /// </summary>
+        public string Type
+        {
+            get
+            {
+                return $"{Kind}Template";
+            }
+        }
+
         public bool IsReadonly { get; set; }
 
         public string OuterId { get; set; }

@@ -11,6 +11,17 @@ namespace VirtoCommerce.NotificationsModule.Core.Model
         public abstract string Kind { get; }
 
         /// <summary>
+        /// Discriminator of NotificationMessage, name of real message descendant
+        /// </summary>
+        public string Type
+        {
+            get
+            {
+                return $"{Kind}Message";
+            }
+        }
+
+        /// <summary>
         /// For detecting owner
         /// </summary>
         public TenantIdentity TenantIdentity { get; set; }

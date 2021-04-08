@@ -8,7 +8,6 @@ using System.Threading.Tasks;
 using Hangfire;
 using Hangfire.Common;
 using Hangfire.States;
-using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Moq;
 using Newtonsoft.Json;
@@ -23,8 +22,8 @@ using VirtoCommerce.NotificationsModule.LiquidRenderer.Filters;
 using VirtoCommerce.NotificationsModule.Tests.Common;
 using VirtoCommerce.NotificationsModule.Tests.Model;
 using VirtoCommerce.NotificationsModule.Tests.NotificationTypes;
-using VirtoCommerce.NotificationsModule.Web.JsonConverters;
 using VirtoCommerce.Platform.Core.Common;
+using VirtoCommerce.Platform.Core.JsonConverters;
 using Xunit;
 
 namespace VirtoCommerce.NotificationsModule.Tests.UnitTests
@@ -36,11 +35,9 @@ namespace VirtoCommerce.NotificationsModule.Tests.UnitTests
         private readonly INotificationTemplateRenderer _templateRender;
         private readonly Mock<INotificationMessageService> _messageServiceMock;
         private readonly Mock<INotificationMessageSender> _messageSenderMock;
-        private readonly Mock<ILogger<NotificationSender>> _logNotificationSenderMock;
         private readonly Mock<INotificationMessageSenderFactory> _senderFactoryMock;
         private readonly Mock<IBackgroundJobClient> _backgroundJobClient;
 
-        private readonly Mock<INotificationService> _notificationServiceMock;
         private readonly Mock<INotificationSearchService> _notificationSearchServiceMock;
         private readonly NotificationRegistrar _notificationRegistrar;
 
@@ -49,7 +46,6 @@ namespace VirtoCommerce.NotificationsModule.Tests.UnitTests
             _templateRender = new LiquidTemplateRenderer(Options.Create(new LiquidRenderOptions() { CustomFilterTypes = new HashSet<Type> { typeof(UrlFilters), typeof(TranslationFilter) } }));
             _messageServiceMock = new Mock<INotificationMessageService>();
             _messageSenderMock = new Mock<INotificationMessageSender>();
-            _logNotificationSenderMock = new Mock<ILogger<NotificationSender>>();
 
             _senderFactoryMock = new Mock<INotificationMessageSenderFactory>();
             _senderFactoryMock.Setup(s => s.GetSender(It.IsAny<NotificationMessage>())).Returns(_messageSenderMock.Object);
@@ -67,7 +63,6 @@ namespace VirtoCommerce.NotificationsModule.Tests.UnitTests
                 AbstractTypeFactory<NotificationScriptObject>.RegisterType<NotificationScriptObject>()
                     .WithFactory(() => new NotificationScriptObject(null, null));
 
-            _notificationServiceMock = new Mock<INotificationService>();
             _notificationSearchServiceMock = new Mock<INotificationSearchService>();
 
             _notificationRegistrar = new NotificationRegistrar(null);
@@ -316,7 +311,7 @@ namespace VirtoCommerce.NotificationsModule.Tests.UnitTests
             };
 
             _messageServiceMock.Setup(ms => ms.GetNotificationsMessageByIds(It.IsAny<string[]>()))
-                .ReturnsAsync(new [] { message});
+                .ReturnsAsync(new[] { message });
 
             //Act
             var result = await _sender.SendNotificationAsync(notification);
@@ -462,9 +457,9 @@ namespace VirtoCommerce.NotificationsModule.Tests.UnitTests
             });
             var notification = AbstractTypeFactory<Notification>.TryCreateInstance(nameof(SampleEmailNotification));
             notification.IsActive = true;
-            var jsonSerializeSettings = new JsonSerializerSettings { Converters = new List<JsonConverter> { new NotificationPolymorphicJsonConverter() } };
+            var jsonSerializeSettings = new JsonSerializerSettings { Converters = new List<JsonConverter> { new PolymorphJsonConverter() } };
             GlobalConfiguration.Configuration.UseSerializerSettings(jsonSerializeSettings);
-            
+
             //Act
             await _sender.ScheduleSendNotificationAsync(notification);
 
@@ -508,7 +503,8 @@ namespace VirtoCommerce.NotificationsModule.Tests.UnitTests
             _messageServiceMock.Setup(ms => ms.SaveNotificationMessagesAsync(new NotificationMessage[] { message }));
             _messageSenderMock.Setup(ms => ms.SendNotificationAsync(It.IsAny<NotificationMessage>())).Throws(new SmtpException());
             _messageServiceMock.Setup(ms => ms.GetNotificationsMessageByIds(It.IsAny<string[]>())).ReturnsAsync(new[] { message })
-                .Callback(() => {
+                .Callback(() =>
+                {
                     message.Status = NotificationMessageStatus.Error;
                 });
 
