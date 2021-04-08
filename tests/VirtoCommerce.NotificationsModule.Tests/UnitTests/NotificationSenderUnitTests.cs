@@ -36,11 +36,9 @@ namespace VirtoCommerce.NotificationsModule.Tests.UnitTests
         private readonly INotificationTemplateRenderer _templateRender;
         private readonly Mock<INotificationMessageService> _messageServiceMock;
         private readonly Mock<INotificationMessageSender> _messageSenderMock;
-        private readonly Mock<ILogger<NotificationSender>> _logNotificationSenderMock;
         private readonly Mock<INotificationMessageSenderFactory> _senderFactoryMock;
         private readonly Mock<IBackgroundJobClient> _backgroundJobClient;
 
-        private readonly Mock<INotificationService> _notificationServiceMock;
         private readonly Mock<INotificationSearchService> _notificationSearchServiceMock;
         private readonly NotificationRegistrar _notificationRegistrar;
 
@@ -49,7 +47,6 @@ namespace VirtoCommerce.NotificationsModule.Tests.UnitTests
             _templateRender = new LiquidTemplateRenderer(Options.Create(new LiquidRenderOptions() { CustomFilterTypes = new HashSet<Type> { typeof(UrlFilters), typeof(TranslationFilter) } }));
             _messageServiceMock = new Mock<INotificationMessageService>();
             _messageSenderMock = new Mock<INotificationMessageSender>();
-            _logNotificationSenderMock = new Mock<ILogger<NotificationSender>>();
 
             _senderFactoryMock = new Mock<INotificationMessageSenderFactory>();
             _senderFactoryMock.Setup(s => s.GetSender(It.IsAny<NotificationMessage>())).Returns(_messageSenderMock.Object);
@@ -67,7 +64,6 @@ namespace VirtoCommerce.NotificationsModule.Tests.UnitTests
                 AbstractTypeFactory<NotificationScriptObject>.RegisterType<NotificationScriptObject>()
                     .WithFactory(() => new NotificationScriptObject(null, null));
 
-            _notificationServiceMock = new Mock<INotificationService>();
             _notificationSearchServiceMock = new Mock<INotificationSearchService>();
 
             _notificationRegistrar = new NotificationRegistrar(null);
