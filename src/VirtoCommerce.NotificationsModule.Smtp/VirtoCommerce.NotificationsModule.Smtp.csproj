@@ -1,13 +1,20 @@
 <Project Sdk="Microsoft.NET.Sdk">
-  <PropertyGroup>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
-    <noWarn>1591</noWarn>
-    <IsPackable>False</IsPackable>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <NoWarn>1701;1702;1705</NoWarn>
-  </PropertyGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\VirtoCommerce.NotificationsModule.Core\VirtoCommerce.NotificationsModule.Core.csproj" />
-  </ItemGroup>
+    <PropertyGroup>
+        <TargetFramework>netcoreapp3.1</TargetFramework>
+        <noWarn>1591</noWarn>
+        <IsPackable>True</IsPackable>
+        <PublishRepositoryUrl>true</PublishRepositoryUrl>
+        <EmbedUntrackedSources>true</EmbedUntrackedSources>
+        <IncludeSymbols>true</IncludeSymbols>
+        <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+        <NoWarn>1701;1702;1705</NoWarn>
+    </PropertyGroup>
+    <ItemGroup>
+        <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All" />
+    </ItemGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\VirtoCommerce.NotificationsModule.Core\VirtoCommerce.NotificationsModule.Core.csproj" />
+    </ItemGroup>
 </Project>
