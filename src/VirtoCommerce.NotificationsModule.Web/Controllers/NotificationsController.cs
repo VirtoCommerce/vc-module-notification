@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
@@ -130,6 +131,41 @@ namespace VirtoCommerce.NotificationsModule.Web.Controllers
         {
             var notification = await _notificationSearchService.GetNotificationAsync(notificationRequest.Type, notificationRequest.TenantIdentity);
             await _notificationSender.ScheduleSendNotificationAsync(notification.PopulateFromOther(notificationRequest));
+
+            return Ok();
+        }
+
+        /// <summary>
+        /// Schedule resending notification
+        /// </summary>
+        [HttpPost]
+        [Route("api/notifications/scheduleresend")]
+        public async Task<IActionResult> ResendNotifications([FromBody] string[] messageIds)
+        {
+            var messages = await _notificationMessageService.GetNotificationsMessageByIds(messageIds);
+
+            if (!messages.Any())
+            {
+                return NotFound("Messages to send not found");
+            }
+
+            foreach (var message in messages)
+            {
+                message.Id = null;
+                message.CreatedDate = DateTime.UtcNow;
+                message.Status = NotificationMessageStatus.Pending;
+                message.SendAttemptCount = 0;
+                message.LastSendAttemptDate = null;
+                message.LastSendError = null;
+                message.SendDate = null;
+            }
+
+            await _notificationMessageService.SaveNotificationMessagesAsync(messages);
+
+            foreach (var id in messages.Select(x => x.Id))
+            {
+                _notificationSender.EnqueueNotificationSending(id);
+            }
 
             return Ok();
         }
