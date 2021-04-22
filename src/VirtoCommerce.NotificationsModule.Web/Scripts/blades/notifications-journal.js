@@ -69,9 +69,9 @@ angular.module('virtoCommerce.notificationsModule')
                 canExecuteMethod: function () { return true; }
             },
             {
-                name: 'notifications.blades.notification-journal.labels.resend-messages',
+                name: 'notifications.blades.notifications-journal.labels.resend-messages',
                 icon: 'fa fa-repeat',
-                executeMethod: function (blade) {
+                executeMethod: function () {
                     var messageIds = blade.$scope.gridApi.grid.rows
                         .filter(x => x.isSelected)
                         .map(x => x.entity.id);
@@ -80,7 +80,7 @@ angular.module('virtoCommerce.notificationsModule')
                             blade.refresh();
                         });
                 },
-                canExecuteMethod: function (blade) {
+                canExecuteMethod: function () {
                     return blade.$scope.gridApi !== undefined &&
                         blade.$scope.gridApi.grid.rows.filter(x => x.isSelected).length > 0;
                 }
