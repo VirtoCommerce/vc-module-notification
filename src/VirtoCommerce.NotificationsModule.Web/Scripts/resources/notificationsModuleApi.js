@@ -11,6 +11,7 @@ angular.module('virtoCommerce.notificationsModule')
             updateTemplate: { method: 'PUT', url: 'api/notifications/:type/templates/:id' },
             renderTemplate: { method: 'POST', url: 'api/notifications/:type/templates/:language/rendercontent' },
             getNotificationJournalList: { method: 'POST', url: 'api/notifications/journal' },
-            getNotificationJournalDetails: { method: 'GET', url: 'api/notifications/journal/:id' }
+            getNotificationJournalDetails: { method: 'GET', url: 'api/notifications/journal/:id' },
+            resendNotifications: { method: 'POST', url: 'api/notifications/scheduleresend' }
         })
     }]);

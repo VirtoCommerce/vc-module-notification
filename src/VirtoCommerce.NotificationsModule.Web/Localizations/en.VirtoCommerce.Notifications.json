@@ -114,7 +114,8 @@
           "filter-only-pending": "Only pending",
           "filter-with-errors": "With errors",
           "detail": "Show detail",
-          "sendAttemptCount": "Sending attempts count"
+          "sendAttemptCount": "Sending attempts count",
+          "resend-messages": "Resend messages"
         },
         "placeholders": {
           "select-filter": "Select filter"

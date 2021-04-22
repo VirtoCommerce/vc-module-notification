@@ -67,6 +67,23 @@ angular.module('virtoCommerce.notificationsModule')
                 name: "platform.commands.refresh", icon: 'fa fa-refresh',
                 executeMethod: blade.refresh,
                 canExecuteMethod: function () { return true; }
+            },
+            {
+                name: 'notifications.blades.notifications-journal.labels.resend-messages',
+                icon: 'fa fa-repeat',
+                executeMethod: function () {
+                    var messageIds = blade.$scope.gridApi.grid.rows
+                        .filter(x => x.isSelected)
+                        .map(x => x.entity.id);
+
+                    notifications.resendNotifications(messageIds, function () {
+                            blade.refresh();
+                        });
+                },
+                canExecuteMethod: function () {
+                    return blade.$scope.gridApi !== undefined &&
+                        blade.$scope.gridApi.grid.rows.filter(x => x.isSelected).length > 0;
+                }
             }
         ];
         

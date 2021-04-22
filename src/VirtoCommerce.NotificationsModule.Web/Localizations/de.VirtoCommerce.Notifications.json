@@ -70,16 +70,17 @@
             "notifications-journal": {
                 "title": "Journal senden",
                 "subtitle": "Marketing Service",
-                "labels": {
-                    "display-name": "Anzeigename",
-                    "recipient": "Empfänger",
-                    "sent-date": "Sendedatum",
-                    "channel": "Kanal",
-                    "error": "Fehler",
-                    "processing": "Verarbeitung",
-                    "success": "Erfolg",
-                    "no-notifications": "Keine Benachrichtigungen noch"
-                }
+              "labels": {
+                "display-name": "Anzeigename",
+                "recipient": "Empfänger",
+                "sent-date": "Sendedatum",
+                "channel": "Kanal",
+                "error": "Fehler",
+                "processing": "Verarbeitung",
+                "success": "Erfolg",
+                "no-notifications": "Keine Benachrichtigungen noch",
+                "resend-messages": "Nachrichten erneut senden"
+              }
             },
             "notifications-list": {
                 "title": "Benachrichtigungen",
