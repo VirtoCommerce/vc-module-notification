@@ -69,7 +69,7 @@ angular.module('virtoCommerce.notificationsModule')
                 canExecuteMethod: function () { return true; }
             },
             {
-                name: 'Resend messages',
+                name: 'notifications.blades.notification-journal.labels.resend-messages',
                 icon: 'fa fa-repeat',
                 executeMethod: function (blade) {
                     var messageIds = blade.$scope.gridApi.grid.rows
