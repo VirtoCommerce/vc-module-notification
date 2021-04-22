@@ -79,7 +79,7 @@
                 "processing": "Verarbeitung",
                 "success": "Erfolg",
                 "no-notifications": "Keine Benachrichtigungen noch",
-                "resend-messages": "Renvoyer les messages"
+                "resend-messages": "Nachrichten erneut senden"
               }
             },
             "notifications-list": {
