@@ -50,8 +50,8 @@ angular.module(moduleTemplateName, ['textAngular'])
             }
         };
     }])
-    .run(['$rootScope', 'platformWebApp.mainMenuService', 'platformWebApp.widgetService', '$state', 'virtoCommerce.notificationsModule.notificationTypesResolverService', 'virtoCommerce.notificationsModule.notificationTemplatesResolverService', '$http', '$compile', 'virtoCommerce.notificationsModule.predefinedSearchFilters',
-        function ($rootScope, mainMenuService, widgetService, $state, notificationTypesResolverService, notificationTemplatesResolverService, $http, $compile, predefinedSearchFilters) {
+    .run(['platformWebApp.mainMenuService', 'platformWebApp.widgetService', '$state', 'virtoCommerce.notificationsModule.notificationTypesResolverService', 'virtoCommerce.notificationsModule.notificationTemplatesResolverService', '$http', '$compile', 'virtoCommerce.notificationsModule.predefinedSearchFilters',
+        function (mainMenuService, widgetService, $state, notificationTypesResolverService, notificationTemplatesResolverService, $http, $compile, predefinedSearchFilters) {
             //Register module in main menu
             var menuItem = {
                 path: 'browse/notificationsModule',
@@ -59,7 +59,7 @@ angular.module(moduleTemplateName, ['textAngular'])
                 title: 'Notifications',
                 priority: 7,
                 action: function () { $state.go('workspace.notificationsModule'); },
-                permission: 'notificationsModulePermission'
+                permission: 'notifications:access'
             };
             mainMenuService.addMenuItem(menuItem);
 
