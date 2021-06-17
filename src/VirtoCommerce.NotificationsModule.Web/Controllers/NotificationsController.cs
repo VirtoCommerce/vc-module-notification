@@ -114,6 +114,7 @@ namespace VirtoCommerce.NotificationsModule.Web.Controllers
         /// </summary>
         [HttpPost]
         [Route("api/notifications/send")]
+        [Authorize(ModuleConstants.Security.Permissions.Update)]
         public async Task<ActionResult<NotificationSendResult>> SendNotification([FromBody] Notification notificationRequest)
         {
             var notification = await _notificationSearchService.GetNotificationAsync(notificationRequest.Type, notificationRequest.TenantIdentity);
@@ -127,6 +128,7 @@ namespace VirtoCommerce.NotificationsModule.Web.Controllers
         /// </summary>
         [HttpPost]
         [Route("api/notifications/schedule")]
+        [Authorize(ModuleConstants.Security.Permissions.Update)]
         public async Task<ActionResult> ScheduleSendNotification([FromBody] Notification notificationRequest)
         {
             var notification = await _notificationSearchService.GetNotificationAsync(notificationRequest.Type, notificationRequest.TenantIdentity);
@@ -140,6 +142,7 @@ namespace VirtoCommerce.NotificationsModule.Web.Controllers
         /// </summary>
         [HttpPost]
         [Route("api/notifications/scheduleresend")]
+        [Authorize(ModuleConstants.Security.Permissions.Update)]
         public async Task<IActionResult> ResendNotifications([FromBody] string[] messageIds)
         {
             var messages = await _notificationMessageService.GetNotificationsMessageByIds(messageIds);
@@ -181,6 +184,7 @@ namespace VirtoCommerce.NotificationsModule.Web.Controllers
         /// <param name="request">Notification request</param>
         [HttpPost]
         [Route("api/platform/notification/template/sendnotification")]
+        [Authorize(ModuleConstants.Security.Permissions.Update)]
         public async Task<ActionResult<NotificationSendResult>> SendNotificationByRequest([FromBody] NotificationRequest request)
         {
             var notification = await _notificationSearchService.GetNotificationAsync(request.Type, new TenantIdentity(request.ObjectId, request.ObjectTypeId));
@@ -206,6 +210,7 @@ namespace VirtoCommerce.NotificationsModule.Web.Controllers
         /// <param name="criteria"></param>
         [HttpPost]
         [Route("api/notifications/journal")]
+        [Authorize(ModuleConstants.Security.Permissions.Read)]
         public async Task<ActionResult<NotificationMessageSearchResult>> GetNotificationJournal([FromBody] NotificationMessageSearchCriteria criteria)
         {
             var result = await _notificationMessageSearchService.SearchMessageAsync(criteria);
@@ -215,6 +220,7 @@ namespace VirtoCommerce.NotificationsModule.Web.Controllers
 
         [HttpGet]
         [Route("api/notifications/journal/{id}")]
+        [Authorize(ModuleConstants.Security.Permissions.Read)]
         public async Task<ActionResult<NotificationMessage>> GetObjectNotificationJournal(string id)
         {
             var result = (await _notificationMessageService.GetNotificationsMessageByIds(new[] { id })).FirstOrDefault();
