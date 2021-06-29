@@ -1,11 +1,12 @@
 using System.Collections.Generic;
-using VirtoCommerce.Platform.Core.Modularity;
 using VirtoCommerce.Platform.Core.Settings;
 
 namespace VirtoCommerce.NotificationsModule.Core
 {
     public static class ModuleConstants
     {
+        public static int DefaultLiquidRendererLoopCount = 2000;
+
         public static class Security
         {
             public static class Permissions
