@@ -5,7 +5,7 @@ namespace VirtoCommerce.NotificationsModule.Core
 {
     public static class ModuleConstants
     {
-        public static int DefaultLiquidRendererLoopCount = 2000;
+        public static int DefaultLiquidRendererLoopCount { get; } = 2000;
 
         public static class Security
         {
