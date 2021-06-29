@@ -8,6 +8,6 @@ namespace VirtoCommerce.NotificationsModule.LiquidRenderer
     {
         public HashSet<Type> CustomFilterTypes { get; set; } = new HashSet<Type>();
 
-        public int LoopCount { get; set; } = ModuleConstants.DefaultLiquidRendererLoopCount;
+        public int LoopLimit { get; set; } = ModuleConstants.DefaultLiquidRendererLoopLimit;
     }
 }

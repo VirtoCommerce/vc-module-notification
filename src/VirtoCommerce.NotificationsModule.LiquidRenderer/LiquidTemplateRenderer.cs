@@ -28,7 +28,7 @@ namespace VirtoCommerce.NotificationsModule.LiquidRenderer
                 {
                     Mode = ScriptMode.Liquid
                 },
-                LoopLimit = _options.LoopCount
+                LoopLimit = _options.LoopLimit
             };
 
             var scriptObject = AbstractTypeFactory<NotificationScriptObject>.TryCreateInstance();

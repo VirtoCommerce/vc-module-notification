@@ -93,7 +93,7 @@ namespace VirtoCommerce.NotificationsModule.Web
             {
                 builder.AddCustomLiquidFilterType(typeof(TranslationFilter));
                 builder.AddCustomLiquidFilterType(typeof(UrlFilters));
-                builder.SetRendererLoopCount(configuration["Notifications:LiquidRenderOptions:LoopCount"].TryParse(ModuleConstants.DefaultLiquidRendererLoopCount));
+                builder.SetRendererLoopLimit(configuration["Notifications:LiquidRenderOptions:LoopLimit"].TryParse(ModuleConstants.DefaultLiquidRendererLoopLimit));
             });
         }
 
