@@ -39,6 +39,14 @@ namespace VirtoCommerce.NotificationsModule.LiquidRenderer
             return Configure(options => options.CustomFilterTypes.Add(type));
         }
 
+        public LiquidRendererBuilder SetRendererLoopLimit(int loopLimit)
+        {
+            if (loopLimit <= 0)
+            {
+                throw new ArgumentException("Loop limit must be greater than zero.", nameof(loopLimit));
+            }
 
+            return Configure(options => options.LoopLimit = loopLimit);
+        }
     }
 }

@@ -12,10 +12,12 @@ namespace VirtoCommerce.NotificationsModule.LiquidRenderer
     public class LiquidTemplateRenderer : INotificationTemplateRenderer
     {
         private readonly LiquidRenderOptions _options;
+
         public LiquidTemplateRenderer(IOptions<LiquidRenderOptions> options)
         {
             _options = options.Value;
         }
+
         public async Task<string> RenderAsync(string stringTemplate, object model, string language = null)
         {
             var context = new LiquidTemplateContext()
@@ -25,12 +27,14 @@ namespace VirtoCommerce.NotificationsModule.LiquidRenderer
                 TemplateLoaderLexerOptions = new LexerOptions
                 {
                     Mode = ScriptMode.Liquid
-                }
+                },
+                LoopLimit = _options.LoopLimit
             };
+
             var scriptObject = AbstractTypeFactory<NotificationScriptObject>.TryCreateInstance();
             scriptObject.Language = language;
             scriptObject.Import(model);
-            foreach(var customFilterType in _options.CustomFilterTypes)
+            foreach (var customFilterType in _options.CustomFilterTypes)
             {
                 scriptObject.Import(customFilterType);
             }
@@ -40,6 +44,6 @@ namespace VirtoCommerce.NotificationsModule.LiquidRenderer
             var result = await template.RenderAsync(context);
 
             return result;
-        }      
+        }
     }
 }
