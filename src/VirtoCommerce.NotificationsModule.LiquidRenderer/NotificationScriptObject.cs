@@ -1,5 +1,5 @@
 using Scriban.Runtime;
-using VirtoCommerce.Platform.Core.Assets;
+using VirtoCommerce.AssetsModule.Core.Assets;
 using VirtoCommerce.Platform.Core.Localizations;
 
 namespace VirtoCommerce.NotificationsModule.LiquidRenderer

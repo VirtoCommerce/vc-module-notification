@@ -3,7 +3,7 @@
   <id>VirtoCommerce.Notifications</id>
   <version>3.19.0</version>
   <version-tag />
-  <platformVersion>3.51.0</platformVersion>
+  <platformVersion>3.81.0</platformVersion>
   <title>Notifications module</title>
   <description>description</description>
   <authors>
@@ -21,6 +21,9 @@
   <tags>notifications</tags>
   <assemblyFile>VirtoCommerce.NotificationsModule.Web.dll</assemblyFile>
   <moduleType>VirtoCommerce.NotificationsModule.Web.Module, VirtoCommerce.NotificationsModule.Web</moduleType>
+  <dependencies>
+    <dependency id="VirtoCommerce.Assets" version="3.0.0" />
+  </dependencies>
   <groups>
     <group>commerce</group>
   </groups>
