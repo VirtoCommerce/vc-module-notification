@@ -85,7 +85,7 @@ angular.module('virtoCommerce.notificationsModule')
             //todo
             var contentType = 'image';//blade.contentType.substr(0, 1).toUpperCase() + blade.contentType.substr(1, blade.contentType.length - 1);
             $scope.fileUploader = new FileUploader({
-                url: 'api/platform/assets?folderUrl=cms-content/' + contentType + '/assets',
+                url: 'api/assets?folderUrl=cms-content/' + contentType + '/assets',
                 headers: { Accept: 'application/json' },
                 autoUpload: true,
                 removeAfterUpload: true,

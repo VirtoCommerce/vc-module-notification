@@ -1,11 +1,6 @@
-using System;
-using System.Globalization;
-using System.Linq;
-using System.Web;
 using Scriban;
 using Scriban.Syntax;
-using VirtoCommerce.Platform.Core.Assets;
-using VirtoCommerce.Platform.Core.Common;
+using VirtoCommerce.AssetsModule.Core.Assets;
 
 namespace VirtoCommerce.NotificationsModule.LiquidRenderer.Filters
 {
