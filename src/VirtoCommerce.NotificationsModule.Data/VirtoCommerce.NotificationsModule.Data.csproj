@@ -12,7 +12,7 @@
         <NoWarn>1701;1702;1705</NoWarn>
     </PropertyGroup>
     <ItemGroup>
-        <PackageReference Include="FluentValidation" Version="8.6.3" />
+        <PackageReference Include="FluentValidation" Version="10.3.4" />
         <PackageReference Include="Hangfire" Version="1.7.14" />
         <PackageReference Include="EntityFrameworkCore.Triggers" Version="1.2.2" />
         <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="6.0.0" />
