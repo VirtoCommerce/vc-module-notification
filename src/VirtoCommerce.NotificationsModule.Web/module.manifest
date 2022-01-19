@@ -1,9 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <module xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <id>VirtoCommerce.Notifications</id>
-  <version>3.20.0</version>
+  <version>3.200.0</version>
   <version-tag />
-  <platformVersion>3.81.0</platformVersion>
+  <platformVersion>3.200.0</platformVersion>
   <title>Notifications module</title>
   <description>description</description>
   <authors>
@@ -22,7 +22,7 @@
   <assemblyFile>VirtoCommerce.NotificationsModule.Web.dll</assemblyFile>
   <moduleType>VirtoCommerce.NotificationsModule.Web.Module, VirtoCommerce.NotificationsModule.Web</moduleType>
   <dependencies>
-    <dependency id="VirtoCommerce.Assets" version="1.0.0" />
+    <dependency id="VirtoCommerce.Assets" version="3.200.0" />
   </dependencies>
   <groups>
     <group>commerce</group>
