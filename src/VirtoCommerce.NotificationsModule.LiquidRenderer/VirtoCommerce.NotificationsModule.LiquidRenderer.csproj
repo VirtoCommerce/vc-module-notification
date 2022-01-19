@@ -1,6 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
-        <TargetFramework>netcoreapp3.1</TargetFramework>
+        <TargetFramework>net6.0</TargetFramework>
         <noWarn>1591</noWarn>
         <IsPackable>True</IsPackable>
         <PublishRepositoryUrl>true</PublishRepositoryUrl>
@@ -14,7 +14,7 @@
     <ItemGroup>
         <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All" />
         <PackageReference Include="Scriban" Version="2.1.1" />
-        <PackageReference Include="VirtoCommerce.AssetsModule.Core" Version="1.0.0" />
+        <PackageReference Include="VirtoCommerce.AssetsModule.Core" Version="3.200.0" />
     </ItemGroup>
     <ItemGroup>
         <ProjectReference Include="..\VirtoCommerce.NotificationsModule.Core\VirtoCommerce.NotificationsModule.Core.csproj" />
