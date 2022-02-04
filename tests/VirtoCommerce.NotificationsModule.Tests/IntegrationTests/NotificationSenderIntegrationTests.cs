@@ -97,8 +97,8 @@ namespace VirtoCommerce.NotificationsModule.Tests.IntegrationTests
             var notification = GetNotification();
 
             var message = AbstractTypeFactory<NotificationMessage>.TryCreateInstance($"{notification.Kind}Message") as EmailNotificationMessage;
-            message.From = "tasker.for.test@gmail.com";
-            message.To = "tasker.for.test@gmail.com";
+            message.From = Configuration["SenderEmail"];
+            message.To = Configuration["SenderEmail"];
 
             _messageServiceMock.Setup(x => x.GetNotificationsMessageByIds(It.IsAny<string[]>()))
                .ReturnsAsync(new[] { message });
@@ -141,7 +141,7 @@ namespace VirtoCommerce.NotificationsModule.Tests.IntegrationTests
 
             var message = AbstractTypeFactory<NotificationMessage>.TryCreateInstance($"{notification.Kind}Message") as EmailNotificationMessage;
             message.From = Configuration["SendgridSender"];
-            message.To = "e@ma.il";
+            message.To = Configuration["SendgridSender"];
             message.Subject = "subject";
             message.Body = "Message";
 
