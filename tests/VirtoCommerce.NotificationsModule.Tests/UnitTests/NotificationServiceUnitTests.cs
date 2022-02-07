@@ -46,8 +46,21 @@ namespace VirtoCommerce.NotificationsModule.Tests.UnitTests
 
             _notificationSearchServiceMock = new Mock<INotificationSearchService>();
 
-            if (!AbstractTypeFactory<NotificationEntity>.AllTypeInfos.SelectMany(x => x.AllSubclasses).Contains(typeof(EmailNotificationEntity)))
+            if (!AbstractTypeFactory<NotificationEntity>
+                    .AllTypeInfos
+                    .SelectMany(x => x.AllSubclasses)
+                    .Contains(typeof(EmailNotificationEntity)))
+            {
                 AbstractTypeFactory<NotificationEntity>.RegisterType<EmailNotificationEntity>();
+            }
+
+            if (!AbstractTypeFactory<Notification>
+                    .AllTypeInfos
+                    .SelectMany(x => x.AllSubclasses)
+                    .Contains(typeof(RegistrationEmailNotification)))
+            {
+                AbstractTypeFactory<Notification>.RegisterType<RegistrationEmailNotification>();
+            }
         }
 
         [Fact]
@@ -79,7 +92,7 @@ namespace VirtoCommerce.NotificationsModule.Tests.UnitTests
             Assert.Contains(type, result.Select(x => x.Type));
         }
 
-        [Fact(Skip = "fail. Temporary disabled. TODO")]
+        [Fact]
         public async Task SaveChangesAsync_SavedNotification()
         {
             //Arrange
@@ -96,11 +109,14 @@ namespace VirtoCommerce.NotificationsModule.Tests.UnitTests
             var responseGroup = NotificationResponseGroup.Default.ToString();
             _repositoryMock.Setup(n => n.GetByIdsAsync(new[] { id }, responseGroup))
                 .ReturnsAsync(notificationEntities.ToArray());
-            var notifications = notificationEntities.Select(n => n.ToModel(AbstractTypeFactory<Notification>.TryCreateInstance(n.Type)));
+            var notifications = notificationEntities
+                .Select(n => n.ToModel(AbstractTypeFactory<Notification>.TryCreateInstance(n.Type)))
+                .ToArray();
+
             var service = GetNotificationService();
 
             //Act
-            await service.SaveChangesAsync(notifications.ToArray());
+            await service.SaveChangesAsync(notifications);
         }
 
         private static IPlatformMemoryCache GetCache()
