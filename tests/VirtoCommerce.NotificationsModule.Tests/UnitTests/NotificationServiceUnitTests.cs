@@ -33,12 +33,15 @@ namespace VirtoCommerce.NotificationsModule.Tests.UnitTests
         private readonly IPlatformMemoryCache _memCache;
         private readonly Mock<ICacheEntry> _cacheEntryMock;
 
+        private readonly List<string> _mockStorage = new List<string>();
+
         public NotificationServiceUnitTests()
         {
             _repositoryMock = new Mock<INotificationRepository>();
             _repositoryFactory = () => _repositoryMock.Object;
             _mockUnitOfWork = new Mock<IUnitOfWork>();
             _repositoryMock.Setup(ss => ss.UnitOfWork).Returns(_mockUnitOfWork.Object);
+            _repositoryMock.Setup(x => x.Add(It.IsAny<NotificationEntity>())).Callback(() => _mockStorage.Add("item"));
             _eventPublisherMock = new Mock<IEventPublisher>();
             _memCache = GetCache();
             _cacheEntryMock = new Mock<ICacheEntry>();
@@ -117,6 +120,8 @@ namespace VirtoCommerce.NotificationsModule.Tests.UnitTests
 
             //Act
             await service.SaveChangesAsync(notifications);
+
+            Assert.True(_mockStorage.Any());
         }
 
         private static IPlatformMemoryCache GetCache()
