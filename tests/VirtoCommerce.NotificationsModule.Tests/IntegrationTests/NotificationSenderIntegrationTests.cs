@@ -52,8 +52,8 @@ namespace VirtoCommerce.NotificationsModule.Tests.IntegrationTests
             {
                 SmtpServer = "smtp.gmail.com", // If use smtp.gmail.com then SSL is enabled and check https://www.google.com/settings/security/lesssecureapps
                 Port = 587,
-                Login = "tasker.for.test@gmail.com",
-                Password = "",
+                Login = Configuration["SenderEmail"],
+                Password = Configuration["SenderEmailPassword"],
                 EnableSsl = true
             };
             _templateRender = new LiquidTemplateRenderer(Options.Create(new LiquidRenderOptions() { CustomFilterTypes = new HashSet<Type> { typeof(UrlFilters), typeof(TranslationFilter) } }));
@@ -96,6 +96,13 @@ namespace VirtoCommerce.NotificationsModule.Tests.IntegrationTests
             //Arrange
             var notification = GetNotification();
 
+            var message = AbstractTypeFactory<NotificationMessage>.TryCreateInstance($"{notification.Kind}Message") as EmailNotificationMessage;
+            message.From = Configuration["SenderEmail"];
+            message.To = Configuration["SenderEmail"];
+
+            _messageServiceMock.Setup(x => x.GetNotificationsMessageByIds(It.IsAny<string[]>()))
+               .ReturnsAsync(new[] { message });
+
             _messageSender = new SmtpEmailNotificationMessageSender(_emailSendingOptionsMock.Object);
 
             var notificationSender = GetNotificationSender();
@@ -132,8 +139,17 @@ namespace VirtoCommerce.NotificationsModule.Tests.IntegrationTests
             //Arrange
             var notification = GetNotification();
 
+            var message = AbstractTypeFactory<NotificationMessage>.TryCreateInstance($"{notification.Kind}Message") as EmailNotificationMessage;
+            message.From = Configuration["SendgridSender"];
+            message.To = Configuration["SendgridSender"];
+            message.Subject = "subject";
+            message.Body = "Message";
+
+            _messageServiceMock.Setup(x => x.GetNotificationsMessageByIds(It.IsAny<string[]>()))
+               .ReturnsAsync(new[] { message });
+
             var sendGridSendingOptionsMock = new Mock<IOptions<SendGridSenderOptions>>();
-            sendGridSendingOptionsMock.Setup(opt => opt.Value).Returns(new SendGridSenderOptions { ApiKey = "" });
+            sendGridSendingOptionsMock.Setup(opt => opt.Value).Returns(new SendGridSenderOptions { ApiKey = Configuration["SendgridApiKey"] });
             _messageSender = new SendGridEmailNotificationMessageSender(sendGridSendingOptionsMock.Object);
 
             var notificationSender = GetNotificationSender();
@@ -150,8 +166,10 @@ namespace VirtoCommerce.NotificationsModule.Tests.IntegrationTests
         {
             //Arrange
             var notification = GetSmsNotification();
-            var message = AbstractTypeFactory<NotificationMessage>.TryCreateInstance($"{notification.Kind}Message");
+            var message = AbstractTypeFactory<NotificationMessage>.TryCreateInstance($"{notification.Kind}Message") as SmsNotificationMessage;
             await notification.ToMessageAsync(message, _templateRender);
+            message.Number = Configuration["WwilioReciever"];
+
             var accountId = Configuration["TwilioAccountSID"];
             var accountPassword = Configuration["TwilioAuthToken"];
             var defaultSender = Configuration["TwilioDefaultSender"];
