@@ -33,16 +33,19 @@ using VirtoCommerce.Platform.Core.Settings;
 
 namespace VirtoCommerce.NotificationsModule.Web
 {
-    public class Module : IModule, IExportSupport, IImportSupport
+    public class Module : IModule, IExportSupport, IImportSupport, IHasConfiguration
     {
         public ManifestModuleInfo ModuleInfo { get; set; }
         private IApplicationBuilder _appBuilder;
+        public IConfiguration Configuration { get; set; }
 
         public void Initialize(IServiceCollection serviceCollection)
         {
-            var snapshot = serviceCollection.BuildServiceProvider();
-            var configuration = snapshot.GetService<IConfiguration>();
-            serviceCollection.AddDbContext<NotificationDbContext>(options => options.UseSqlServer(configuration.GetConnectionString("VirtoCommerce")));
+            serviceCollection.AddDbContext<NotificationDbContext>((provider, options) =>
+            {
+                var configuration = provider.GetRequiredService<IConfiguration>();
+                options.UseSqlServer(configuration.GetConnectionString(ModuleInfo.Id) ?? configuration.GetConnectionString("VirtoCommerce"));
+            });
             serviceCollection.AddTransient<INotificationRepository, NotificationRepository>();
             serviceCollection.AddTransient<Func<INotificationRepository>>(provider => () => provider.CreateScope().ServiceProvider.GetService<INotificationRepository>());
             serviceCollection.AddTransient<INotificationService, NotificationService>();
@@ -55,35 +58,35 @@ namespace VirtoCommerce.NotificationsModule.Web
             serviceCollection.AddTransient<NotificationsExportImport>();
             serviceCollection.AddTransient<NotificationScriptObject>();
 
-            serviceCollection.AddFileSystemTemplateLoader(opt => configuration.GetSection("Notifications:Templates").Bind(opt));
+            serviceCollection.AddFileSystemTemplateLoader(opt => Configuration.GetSection("Notifications:Templates").Bind(opt));
 
             serviceCollection.AddSingleton<INotificationMessageSenderFactory, NotificationMessageSenderFactory>();
 
-            serviceCollection.AddOptions<EmailSendingOptions>().Bind(configuration.GetSection("Notifications")).ValidateDataAnnotations();
-            var emailGateway = configuration.GetValue<string>("Notifications:Gateway");
+            serviceCollection.AddOptions<EmailSendingOptions>().Bind(Configuration.GetSection("Notifications")).ValidateDataAnnotations();
+            var emailGateway = Configuration.GetValue<string>("Notifications:Gateway");
             switch (emailGateway)
             {
                 case SmtpEmailNotificationMessageSender.Name:
                     {
-                        serviceCollection.AddOptions<SmtpSenderOptions>().Bind(configuration.GetSection($"Notifications:{SmtpEmailNotificationMessageSender.Name}")).ValidateDataAnnotations();
+                        serviceCollection.AddOptions<SmtpSenderOptions>().Bind(Configuration.GetSection($"Notifications:{SmtpEmailNotificationMessageSender.Name}")).ValidateDataAnnotations();
                         serviceCollection.AddTransient<INotificationMessageSender, SmtpEmailNotificationMessageSender>();
                         break;
                     }
                 case SendGridEmailNotificationMessageSender.Name:
                     {
-                        serviceCollection.AddOptions<SendGridSenderOptions>().Bind(configuration.GetSection($"Notifications:{SendGridEmailNotificationMessageSender.Name}")).ValidateDataAnnotations();
+                        serviceCollection.AddOptions<SendGridSenderOptions>().Bind(Configuration.GetSection($"Notifications:{SendGridEmailNotificationMessageSender.Name}")).ValidateDataAnnotations();
                         serviceCollection.AddTransient<INotificationMessageSender, SendGridEmailNotificationMessageSender>();
                         break;
                     }
             }
 
-            serviceCollection.AddOptions<SmsSendingOptions>().Bind(configuration.GetSection("Notifications")).ValidateDataAnnotations();
-            var smsGateway = configuration.GetValue<string>("Notifications:SmsGateway");
+            serviceCollection.AddOptions<SmsSendingOptions>().Bind(Configuration.GetSection("Notifications")).ValidateDataAnnotations();
+            var smsGateway = Configuration.GetValue<string>("Notifications:SmsGateway");
             switch (smsGateway)
             {
                 case TwilioSmsNotificationMessageSender.Name:
                     {
-                        serviceCollection.AddOptions<TwilioSenderOptions>().Bind(configuration.GetSection($"Notifications:{TwilioSmsNotificationMessageSender.Name}")).ValidateDataAnnotations();
+                        serviceCollection.AddOptions<TwilioSenderOptions>().Bind(Configuration.GetSection($"Notifications:{TwilioSmsNotificationMessageSender.Name}")).ValidateDataAnnotations();
                         serviceCollection.AddTransient<INotificationMessageSender, TwilioSmsNotificationMessageSender>();
                         break;
                     }
@@ -93,7 +96,7 @@ namespace VirtoCommerce.NotificationsModule.Web
             {
                 builder.AddCustomLiquidFilterType(typeof(TranslationFilter));
                 builder.AddCustomLiquidFilterType(typeof(UrlFilters));
-                builder.SetRendererLoopLimit(configuration["Notifications:LiquidRenderOptions:LoopLimit"].TryParse(ModuleConstants.DefaultLiquidRendererLoopLimit));
+                builder.SetRendererLoopLimit(Configuration["Notifications:LiquidRenderOptions:LoopLimit"].TryParse(ModuleConstants.DefaultLiquidRendererLoopLimit));
             });
         }
 
