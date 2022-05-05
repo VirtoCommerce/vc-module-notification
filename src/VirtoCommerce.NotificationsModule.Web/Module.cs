@@ -35,8 +35,9 @@ namespace VirtoCommerce.NotificationsModule.Web
 {
     public class Module : IModule, IExportSupport, IImportSupport, IHasConfiguration
     {
-        public ManifestModuleInfo ModuleInfo { get; set; }
         private IApplicationBuilder _appBuilder;
+
+        public ManifestModuleInfo ModuleInfo { get; set; }
         public IConfiguration Configuration { get; set; }
 
         public void Initialize(IServiceCollection serviceCollection)
