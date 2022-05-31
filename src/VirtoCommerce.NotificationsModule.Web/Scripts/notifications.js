@@ -71,10 +71,6 @@ angular.module(moduleTemplateName, ['textAngular'])
       	        controller: 'virtoCommerce.notificationsModule.notificationsLogWidgetController',
       	        template: 'Modules/$(VirtoCommerce.Notifications)/Scripts/widgets/notificationsLogWidget.tpl.html'
       	    }, 'notificationsDetail');
-            widgetService.registerWidget({
-      	        controller: 'virtoCommerce.notificationsModule.notificationsAttachmentsWidgetController',
-      	        template: 'Modules/$(VirtoCommerce.Notifications)/Scripts/widgets/notificationsAttachmentsWidget.tpl.html'
-      	    }, 'notificationsDetail');
             
             // register types
             notificationTypesResolverService.registerType({
