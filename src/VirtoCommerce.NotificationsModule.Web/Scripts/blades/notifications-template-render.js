@@ -1,5 +1,5 @@
 angular.module('virtoCommerce.notificationsModule')
-    .controller('virtoCommerce.notificationsModule.templateRenderController', ['$rootScope', '$scope', '$localStorage', 'platformWebApp.bladeNavigationService', 'platformWebApp.dialogService', 'virtoCommerce.notificationsModule.notificationsModuleApi', function ($rootScope, $scope, $localStorage, bladeNavigationService, dialogService, notifications) {
+    .controller('virtoCommerce.notificationsModule.templateRenderController', ['$rootScope', '$scope', '$sce', '$localStorage', 'platformWebApp.bladeNavigationService', 'platformWebApp.dialogService', 'virtoCommerce.notificationsModule.notificationsModuleApi', function ($rootScope, $scope, $sce, $localStorage, bladeNavigationService, dialogService, notifications) {
         var blade = $scope.blade;
         var keyTemplateLocalStorage;
 
@@ -15,8 +15,8 @@ angular.module('virtoCommerce.notificationsModule')
         }
 
         blade.initialize = function () {
+
             blade.isLoading = true;
-            blade.isRender = false;
 
             var language = blade.languageCode ? blade.languageCode : 'default';
 
@@ -37,9 +37,11 @@ angular.module('virtoCommerce.notificationsModule')
                 text: blade.currentEntity.body,
                 data
             }, function (response) {
-                blade.originHtml = response.html;
-            });
-
+                $('#notification_template_preview').load(function() {
+                    $('#notification_template_preview').height($('#notification_template_preview').contents().outerHeight());
+                });
+                blade.originHtml = $sce.trustAsHtml("<html><body>" + response.html + "</body></html>");
+            });           
             blade.isLoading = false;
         };
 
