@@ -154,6 +154,15 @@ angular.module('virtoCommerce.notificationsModule')
                 bladeNavigationService.showBlade(newBlade, blade);
             }
 
+            blade.isSampleValidJson = function () {
+                try {
+                    JSON.parse(blade.currentEntity.sample);
+                } catch (e) {
+                    return false;
+                }
+                return true;
+            }
+
             $scope.blade.toolbarCommands = [{
                 name: "platform.commands.preview",
                 icon: 'fa fa-eye',
@@ -179,11 +188,11 @@ angular.module('virtoCommerce.notificationsModule')
             }
 
             function canRender() {
-                return !isDirty();
+                return formScope && formScope.$valid && blade.isSampleValidJson() && !blade.origEntity.isReadonly;
             }
-
+            
             $scope.$watch("blade.currentEntity", function () {
-                $scope.isValid = isDirty() && formScope && formScope.$valid && !blade.origEntity.isReadonly;
+                $scope.isValid = isDirty() && canRender();
             }, true);
 
             blade.headIcon = 'fa fa-envelope';

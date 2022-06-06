@@ -19,8 +19,12 @@ angular.module('virtoCommerce.notificationsModule')
             blade.isLoading = true;
 
             var language = blade.languageCode ? blade.languageCode : 'default';
-
+            
             var data = angular.copy(blade.notification);
+            var sample = JSON.parse(blade.currentEntity.sample);
+
+            angular.extend(data, sample);
+
             data.cc = pluckAddress(data.cc);
             data.bcc = pluckAddress(data.bcc);
 

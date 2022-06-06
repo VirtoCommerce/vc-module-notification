@@ -46,7 +46,15 @@
                                 <input id="fileUploader" type="file" multiple style="display: none;" uploader="fileUploader" nv-file-select />
                                 <textarea ng-disabled="blade.currentEntity.isReadonly" vc-uk-htmleditor ng-model="blade.currentEntity.body" file-uploader="fileUploader"></textarea>
                             </div>
-
+                        </div>
+                        <div class="form-group" style="margin:0">
+                            <label class="form-label" style="margin:0">{{'notifications.blades.notifications-edit-template.labels.sample' | translate}}</label>
+                            <div class="form-input">
+                                <textarea class="__xlarge" ng-class="{'error': !blade.isSampleValidJson()}" class="form-control" cols="30" rows="30" ng-disabled="blade.currentEntity.isReadonly" ng-model="blade.currentEntity.sample"></textarea>
+                            </div>
+                            <div class="table-descr">
+                                {{ 'notifications.blades.notifications-edit-template.descriptions.sample' | translate }}
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -58,7 +66,6 @@
                                 <input id="fileUploader" type="file" multiple style="display: none;" uploader="fileUploader" nv-file-select />
                                 <textarea ng-disabled="blade.currentEntity.isReadonly" vc-uk-htmleditor ng-model="blade.currentEntity.message" file-uploader="fileUploader"></textarea>
                             </div>
-
                         </div>
                     </div>
                 </div>
