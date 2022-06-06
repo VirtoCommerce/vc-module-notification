@@ -155,10 +155,12 @@ angular.module('virtoCommerce.notificationsModule')
             }
 
             blade.isSampleValidJson = function () {
-                try {
-                    JSON.parse(blade.currentEntity.sample);
-                } catch (e) {
-                    return false;
+                if (blade.currentEntity.sample && blade.currentEntity.sample!="") {
+                    try {
+                        JSON.parse(blade.currentEntity.sample);
+                    } catch (e) {
+                        return false;
+                    }
                 }
                 return true;
             }
