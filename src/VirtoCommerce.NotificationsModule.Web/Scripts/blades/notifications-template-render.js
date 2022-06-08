@@ -106,7 +106,9 @@ angular.module('virtoCommerce.notificationsModule')
             executeMethod: function () {
                 blade.sharePreview();
             },
-            canExecuteMethod: true,
+            canExecuteMethod: function () {
+                return true;
+            },
             permission: 'notifications:templates:read'
         }];
 
