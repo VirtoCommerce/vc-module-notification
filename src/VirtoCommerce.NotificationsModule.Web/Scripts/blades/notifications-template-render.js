@@ -83,17 +83,16 @@ angular.module('virtoCommerce.notificationsModule')
             });
         }
 
+
         blade.sharePreview = function () {
             var eMailTo = authService.userLogin;
             accounts.get({ id: authService.userLogin }, function (data) {
                 eMailTo = data.email;
                 var dialog = {
                     id: "confirmSharePreview",
-                    eMailTo,
-                    callback: function (confirmed) {
-                        if (confirmed) {
-                            sharePreview(eMailTo);
-                        }
+                    email: eMailTo,
+                    setEmail: function (email) {
+                        sharePreview(email);
                     }
                 }
                 dialogService.showDialog(dialog, 'Modules/$(VirtoCommerce.Notifications)/Scripts/blades/notification-templates-share-preview-dialog.tpl.html', 'platformWebApp.confirmDialogController');

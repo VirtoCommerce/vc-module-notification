@@ -19,7 +19,7 @@
                                 <input ng-value="'notificationTypes.' + blade.currentEntity.type + '.displayName' | translate"  ng-disabled="blade.currentEntity.type" focus-on required placeholder="{{ 'notifications.blades.notification-details.placeholders.notificationType' | translate }}">
                             </div>
                         </div>
-                        <div class="form-group" style="margin:0" ng-hide="true">
+                        <div class="form-group" ng-hide="true">
                             <label class="form-label" style="margin:0">{{'notifications.blades.notifications-edit-template.labels.from' | translate}}</label>
                             <div class="form-group" style="margin-top:0">
                                 <div class="form-input">
@@ -30,7 +30,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="form-group" style="margin:0" ng-hide="true">
+                        <div class="form-group" ng-hide="true">
                             <label class="form-label" style="margin:0">{{'notifications.blades.notifications-edit-template.labels.to' | translate}}</label>
                             <div class="form-group" style="margin-top:0">
                                 <div class="form-input">
@@ -41,7 +41,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="form-group" style="margin:0">
+                        <div class="form-group">
                             <label class="form-label" style="margin:0">{{'notifications.blades.notifications-edit-template.labels.cc' | translate}}</label>
                             <div class="form-group" style="margin-top:0">
                                 <tags-input ng-model="blade.currentEntity.cc"
@@ -55,7 +55,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="form-group" style="margin:0">
+                        <div class="form-group">
                             <label class="form-label" style="margin:0">{{'notifications.blades.notifications-edit-template.labels.bcc' | translate}}</label>
                             <div class="form-group" style="margin-top:0">
                                 <tags-input ng-model="blade.currentEntity.bcc"
