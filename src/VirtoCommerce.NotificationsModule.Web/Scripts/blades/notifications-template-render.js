@@ -73,7 +73,7 @@ angular.module('virtoCommerce.notificationsModule')
                     dialogService.showSuccessDialog(dialog);
                 }
                 else {
-                    var dialog = {
+                    dialog = {
                         id: "shareError",
                         title: 'notifications.dialogs.share-error.title',
                         message: response.errorMessage
