@@ -85,7 +85,9 @@ namespace VirtoCommerce.NotificationsModule.Smtp
         {
             return new SmtpClient(_smtpOptions.SmtpServer, _smtpOptions.Port)
             {
+#pragma warning disable S5332 // EnableSsl should be set to true
                 EnableSsl = _smtpOptions.EnableSsl,
+#pragma warning restore S5332 // EnableSsl should be set to true
                 Credentials = new NetworkCredential(_smtpOptions.Login, _smtpOptions.Password)
             };
         }
