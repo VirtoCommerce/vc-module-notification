@@ -204,10 +204,22 @@
         "warning": "WARNING: This change is permanent and cannot be undone. Applying this change may result in a data loss.",
         "message": "{{count}} template(s) for the following languages will be deleted:",
         "instruction": "Type Yes to delete:"
+      },
+      "notification-share-preview-confirmation": {
+        "title": "Confirm share notification preview",
+        "message": "Would you like to send this preview notification to the specified email address?"
+      },
+      "share-success": {
+        "title": "Share preview",
+        "message": "Test message with the notification preview was sent successfully"
+      },
+      "share-error": {
+        "title": "Error"
       }
     },
     "commands": {
-      "restore": "Restore"
+      "restore": "Restore",
+      "share-preview": "Share"
     }
   },
   "notificationTypes": {

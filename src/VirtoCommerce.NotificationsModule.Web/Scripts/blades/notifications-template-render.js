@@ -1,5 +1,7 @@
 angular.module('virtoCommerce.notificationsModule')
-    .controller('virtoCommerce.notificationsModule.templateRenderController', ['$rootScope', '$scope', '$sce', '$localStorage', 'platformWebApp.bladeNavigationService', 'platformWebApp.dialogService', 'virtoCommerce.notificationsModule.notificationsModuleApi', function ($rootScope, $scope, $sce, $localStorage, bladeNavigationService, dialogService, notifications) {
+    .controller('virtoCommerce.notificationsModule.templateRenderController', ['$rootScope', '$scope', '$sce', '$localStorage', 'platformWebApp.bladeNavigationService', 'platformWebApp.dialogService', 'virtoCommerce.notificationsModule.notificationsModuleApi', 'platformWebApp.authService', 'platformWebApp.accounts',
+        function ($rootScope, $scope, $sce, $localStorage, bladeNavigationService, dialogService, notifications, authService, accounts) {
+
         var blade = $scope.blade;
         var keyTemplateLocalStorage;
 
@@ -18,18 +20,18 @@ angular.module('virtoCommerce.notificationsModule')
 
             blade.isLoading = true;
 
-            var language = blade.languageCode ? blade.languageCode : 'default';
+            blade.language = blade.languageCode ? blade.languageCode : 'default';
             
-            var data = angular.copy(blade.notification);
+            blade.data = angular.copy(blade.notification);
             if (blade.currentEntity.sample && blade.currentEntity.sample!="") {
                 var sample = JSON.parse(blade.currentEntity.sample);
-                angular.extend(data, sample);
+                angular.extend(blade.data, sample);
             }
 
-            data.cc = pluckAddress(data.cc);
-            data.bcc = pluckAddress(data.bcc);
+            blade.data.cc = pluckAddress(blade.data.cc);
+            blade.data.bcc = pluckAddress(blade.data.bcc);
 
-            keyTemplateLocalStorage = blade.tenantType + '.' + blade.notification.type + '.' + language;
+            keyTemplateLocalStorage = blade.tenantType + '.' + blade.notification.type + '.' + blade.language;
             var itemFromLocalStorage = $localStorage[keyTemplateLocalStorage];
             if (itemFromLocalStorage) {
                 blade.notification.context = itemFromLocalStorage;
@@ -37,10 +39,10 @@ angular.module('virtoCommerce.notificationsModule')
 
             notifications.renderTemplate({
                 type: blade.notification.type,
-                language: language
+                language: blade.language
             }, {
                 text: blade.currentEntity.body,
-                data
+                data: blade.data
             }, function (response) {
                 $('#notification_template_preview').load(function() {
                     $('#notification_template_preview').height($('#notification_template_preview').contents().outerHeight());
@@ -49,6 +51,66 @@ angular.module('virtoCommerce.notificationsModule')
             });           
             blade.isLoading = false;
         };
+
+        function sharePreview(eMailTo) {
+            delete blade.data.cc;
+            delete blade.data.bcc;
+            blade.data.to = eMailTo;
+
+            notifications.sharePreview({
+                type: blade.notification.type,
+                language: blade.language
+            }, {
+                text: blade.currentEntity.body,
+                data: blade.data
+            }, function (response) {
+                if (response.isSuccess) {
+                    var dialog = {
+                        id: "shareSuccess",
+                        title: 'notifications.dialogs.share-success.title',
+                        message: 'notifications.dialogs.share-success.message'
+                    };
+                    dialogService.showSuccessDialog(dialog);
+                }
+                else {
+                    var dialog = {
+                        id: "shareError",
+                        title: 'notifications.dialogs.share-error.title',
+                        message: response.errorMessage
+                    };
+                    dialogService.showErrorDialog(dialog);
+                }                
+            });
+        }
+
+        blade.sharePreview = function () {
+            var eMailTo = authService.userLogin;
+            accounts.get({ id: authService.userLogin }, function (data) {
+                eMailTo = data.email;
+                var dialog = {
+                    id: "confirmSharePreview",
+                    eMailTo,
+                    callback: function (confirmed) {
+                        if (confirmed) {
+                            sharePreview(eMailTo);
+                        }
+                    }
+                }
+                dialogService.showDialog(dialog, 'Modules/$(VirtoCommerce.Notifications)/Scripts/blades/notification-templates-share-preview-dialog.tpl.html', 'platformWebApp.confirmDialogController');
+            });
+
+        }
+
+        $scope.blade.toolbarCommands = [{
+            name: "notifications.commands.share-preview",
+            icon: 'fa fa-share-alt-square',
+            executeMethod: function () {
+                blade.sharePreview();
+            },
+            canExecuteMethod: true,
+            permission: 'notifications:templates:read'
+        }];
+
 
         blade.headIcon = 'fa fa-eye';
 
