@@ -21,12 +21,19 @@ namespace VirtoCommerce.NotificationsModule.Data.Model
         /// </summary>
         public string Body { get; set; }
 
+        /// <summary>
+        /// Sample notification object data, serialized to json.
+        /// This used to preview the full notification while edit.
+        /// </summary>
+        public string Sample { get; set; }
+
         public override NotificationTemplate ToModel(NotificationTemplate template)
         {
             if (template is EmailNotificationTemplate emailNotificationTemplate)
             {
                 emailNotificationTemplate.Subject = Subject;
                 emailNotificationTemplate.Body = Body;
+                emailNotificationTemplate.Sample = Sample;
             }
 
             return base.ToModel(template);
@@ -38,6 +45,7 @@ namespace VirtoCommerce.NotificationsModule.Data.Model
             {
                 Subject = emailNotificationTemplate.Subject;
                 Body = emailNotificationTemplate.Body;
+                Sample = emailNotificationTemplate.Sample;
             }
 
             return base.FromModel(template, pkMap);
@@ -49,6 +57,7 @@ namespace VirtoCommerce.NotificationsModule.Data.Model
             {
                 emailNotificationTemplateEntity.Subject = Subject;
                 emailNotificationTemplateEntity.Body = Body;
+                emailNotificationTemplateEntity.Sample = Sample;
             }
 
             base.Patch(target);

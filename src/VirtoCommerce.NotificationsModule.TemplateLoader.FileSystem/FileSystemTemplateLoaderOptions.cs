@@ -10,6 +10,6 @@ namespace VirtoCommerce.NotificationsModule.TemplateLoader.FileSystem
         //All found templates will only complement the templates are found on the main folder located by DiscoveryPath
         public string FallbackDiscoveryPath { get; set; }
 
-        public Regex TemplateFilePattern { get; set; } = new Regex(@"(?<type>[\w-]+)_(?<part>body|subject)(?<lang>\.[a-z]{1,8}(-[A-Za-z0-9]{1,8})?)?\.[\w]+$", RegexOptions.IgnoreCase);
+        public Regex TemplateFilePattern { get; set; } = new Regex(@"(?<type>[\w-]+)_(?<part>body|subject|sample)(?<lang>\.[a-z]{1,8}(-[A-Za-z0-9]{1,8})?)?\.[\w]+$", RegexOptions.IgnoreCase);
     }
 }

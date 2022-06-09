@@ -7,7 +7,7 @@
                 <p ng-if="blade.currentEntity.isPredefined && blade.currentEntity.isEdited" class="text __note"><span>{{ 'notifications.blades.notifications-edit-template.labels.note-caption' | translate }}</span> {{ 'notifications.blades.notifications-edit-template.labels.note-text' | translate }}</p>
                 <div class="columns clearfix">
                     <div class="column" ng-init="setForm(formScope)">
-                        <div class="form-group" style="margin:0 200px 0 0">
+                        <div class="form-group">
                             <label class="form-label" style="margin:0">{{'notifications.blades.notifications-edit-template.labels.language' | translate}}</label>
                             <div class="form-input" style="margin-top:0">
                                 <ui-select ng-model="blade.currentEntity.languageCode" ng-disabled="blade.currentEntity.isReadonly">
@@ -25,7 +25,7 @@
                 </div>
                 <div class="columns clearfix" ng-if="blade.notification.kind ==='EmailNotification'">
                     <div class="column">
-                        <div class="form-group" style="margin:0">
+                        <div class="form-group">
                             <label class="form-label" style="margin:0">{{'notifications.blades.notifications-edit-template.labels.subject' | translate}}</label>
                             <div class="form-group" style="margin:0">
                                 <div class="form-input">
@@ -40,25 +40,32 @@
                 </div>
                 <div class="inner-block" ng-if="blade.notification.kind ==='EmailNotification'">
                     <div class="column">
-                        <div class="form-group" style="margin:0">
+                        <div class="form-group">
                             <label class="form-label" style="margin:0">{{'notifications.blades.notifications-edit-template.labels.template' | translate}}</label>
                             <div class="form-group" style="margin:0">
                                 <input id="fileUploader" type="file" multiple style="display: none;" uploader="fileUploader" nv-file-select />
                                 <textarea ng-disabled="blade.currentEntity.isReadonly" vc-uk-htmleditor ng-model="blade.currentEntity.body" file-uploader="fileUploader"></textarea>
                             </div>
-
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" style="margin:0">{{'notifications.blades.notifications-edit-template.labels.sample' | translate}}</label>
+                            <div class="form-input">
+                                <textarea class="__xlarge form-control" ng-class="{'error': !blade.isSampleValidJson()}" cols="30" rows="30" ng-disabled="blade.currentEntity.isReadonly" ng-model="blade.currentEntity.sample"></textarea>
+                            </div>
+                            <div class="table-descr">
+                                {{ 'notifications.blades.notifications-edit-template.descriptions.sample' | translate }}
+                            </div>
                         </div>
                     </div>
                 </div>
                 <div class="inner-block" ng-if="blade.notification.kind ==='SmsNotification'">
                     <div class="column">
-                        <div class="form-group" style="margin:0">
+                        <div class="form-group">
                             <label class="form-label" style="margin:0">{{'notifications.blades.notifications-edit-template.labels.template' | translate}}</label>
                             <div class="form-group" style="margin:0">
                                 <input id="fileUploader" type="file" multiple style="display: none;" uploader="fileUploader" nv-file-select />
                                 <textarea ng-disabled="blade.currentEntity.isReadonly" vc-uk-htmleditor ng-model="blade.currentEntity.message" file-uploader="fileUploader"></textarea>
                             </div>
-
                         </div>
                     </div>
                 </div>

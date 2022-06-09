@@ -13,10 +13,12 @@ namespace VirtoCommerce.NotificationsModule.Smtp
     public class SmtpEmailNotificationMessageSender : INotificationMessageSender
     {
         public const string Name = "Smtp";
-        private readonly SmtpSenderOptions _emailSendingOptions;
+        private readonly SmtpSenderOptions _smtpOptions;
+        private readonly EmailSendingOptions _emailSendingOptions;
 
-        public SmtpEmailNotificationMessageSender(IOptions<SmtpSenderOptions> emailSendingOptions)
+        public SmtpEmailNotificationMessageSender(IOptions<SmtpSenderOptions> smtpOptions, IOptions<EmailSendingOptions> emailSendingOptions)
         {
+            _smtpOptions = smtpOptions.Value;
             _emailSendingOptions = emailSendingOptions.Value;
         }
 
@@ -38,7 +40,7 @@ namespace VirtoCommerce.NotificationsModule.Smtp
             {
                 using (var mailMsg = new MailMessage())
                 {
-                    mailMsg.From = new MailAddress(emailNotificationMessage.From);
+                    mailMsg.From = new MailAddress(emailNotificationMessage.From ?? _emailSendingOptions.DefaultSender);
                     mailMsg.To.Add(new MailAddress(emailNotificationMessage.To));
                     mailMsg.ReplyToList.Add(mailMsg.From);
 
@@ -81,10 +83,12 @@ namespace VirtoCommerce.NotificationsModule.Smtp
 
         private SmtpClient CreateClient()
         {
-            return new SmtpClient(_emailSendingOptions.SmtpServer, _emailSendingOptions.Port)
+            return new SmtpClient(_smtpOptions.SmtpServer, _smtpOptions.Port)
             {
-                EnableSsl = _emailSendingOptions.EnableSsl,
-                Credentials = new NetworkCredential(_emailSendingOptions.Login, _emailSendingOptions.Password)
+#pragma warning disable S5332 // EnableSsl should be set to true
+                EnableSsl = _smtpOptions.EnableSsl,
+#pragma warning restore S5332 // EnableSsl should be set to true
+                Credentials = new NetworkCredential(_smtpOptions.Login, _smtpOptions.Password)
             };
         }
     }
