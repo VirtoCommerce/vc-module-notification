@@ -1,0 +1,13 @@
+<div class="modal-header">
+     <h3 class="modal-title">{{ 'notifications.dialogs.notification-share-preview-confirmation.title' | translate }}</h3>
+</div>
+ <div class="modal-body">
+     <p>{{ 'notifications.dialogs.notification-share-preview-confirmation.message' | translate }}</p>
+     <div class="form-input">
+         <input type="email" ng-model="email" />
+     </div>
+ </div>
+<div class="modal-footer">
+    <button class="btn" ng-click="setEmail(email); yes()">{{ 'platform.commands.confirm' | translate }}</button>
+    <button class="btn" ng-click="cancel()">{{ 'platform.commands.cancel' | translate }}</button>
+</div>

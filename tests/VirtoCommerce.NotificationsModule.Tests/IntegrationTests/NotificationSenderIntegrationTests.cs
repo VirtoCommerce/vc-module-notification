@@ -31,12 +31,13 @@ namespace VirtoCommerce.NotificationsModule.Tests.IntegrationTests
         private INotificationMessageSender _messageSender;
         private readonly INotificationTemplateRenderer _templateRender;
         private readonly Mock<INotificationMessageService> _messageServiceMock;
-        private readonly Mock<IOptions<SmtpSenderOptions>> _emailSendingOptionsMock;
+        private readonly Mock<IOptions<SmtpSenderOptions>> _smptpOptionsMock;
+        private readonly Mock<IOptions<EmailSendingOptions>> _emailSendingOptions;
         private readonly INotificationRegistrar _notificationRegistrar;
         private readonly Mock<ILogger<NotificationSender>> _logNotificationSenderMock;
         private INotificationMessageSenderFactory _notificationMessageSenderFactory;
         private readonly Mock<INotificationService> _notificationServiceMock;
-        private readonly SmtpSenderOptions _emailSendingOptions;
+        private readonly SmtpSenderOptions _smtpOptionsGmail;
         private readonly Mock<INotificationSearchService> _notificationSearchServiceMock;
         private readonly Mock<IBackgroundJobClient> _backgroundJobClient;
         
@@ -48,7 +49,7 @@ namespace VirtoCommerce.NotificationsModule.Tests.IntegrationTests
 
             Configuration = builder.Build();
 
-            _emailSendingOptions = new SmtpSenderOptions()
+            _smtpOptionsGmail = new SmtpSenderOptions()
             {
                 SmtpServer = "smtp.gmail.com", // If use smtp.gmail.com then SSL is enabled and check https://www.google.com/settings/security/lesssecureapps
                 Port = 587,
@@ -58,7 +59,8 @@ namespace VirtoCommerce.NotificationsModule.Tests.IntegrationTests
             };
             _templateRender = new LiquidTemplateRenderer(Options.Create(new LiquidRenderOptions() { CustomFilterTypes = new HashSet<Type> { typeof(UrlFilters), typeof(TranslationFilter) } }));
             _messageServiceMock = new Mock<INotificationMessageService>();
-            _emailSendingOptionsMock = new Mock<IOptions<SmtpSenderOptions>>();
+            _smptpOptionsMock = new Mock<IOptions<SmtpSenderOptions>>();
+            _emailSendingOptions = new Mock<IOptions<EmailSendingOptions>>();
             _logNotificationSenderMock = new Mock<ILogger<NotificationSender>>();
             _notificationServiceMock = new Mock<INotificationService>();
             _notificationSearchServiceMock = new Mock<INotificationSearchService>();
@@ -85,7 +87,7 @@ namespace VirtoCommerce.NotificationsModule.Tests.IntegrationTests
                 AbstractTypeFactory<NotificationScriptObject>.RegisterType<NotificationScriptObject>()
                     .WithFactory(() => new NotificationScriptObject(null, null));
 
-            _emailSendingOptionsMock.Setup(opt => opt.Value).Returns(_emailSendingOptions);
+            _smptpOptionsMock.Setup(opt => opt.Value).Returns(_smtpOptionsGmail);
         }
 
         public IConfiguration Configuration { get; set; }
@@ -103,7 +105,7 @@ namespace VirtoCommerce.NotificationsModule.Tests.IntegrationTests
             _messageServiceMock.Setup(x => x.GetNotificationsMessageByIds(It.IsAny<string[]>()))
                .ReturnsAsync(new[] { message });
 
-            _messageSender = new SmtpEmailNotificationMessageSender(_emailSendingOptionsMock.Object);
+            _messageSender = new SmtpEmailNotificationMessageSender(_smptpOptionsMock.Object, _emailSendingOptions.Object);
 
             var notificationSender = GetNotificationSender();
 
@@ -120,9 +122,9 @@ namespace VirtoCommerce.NotificationsModule.Tests.IntegrationTests
             //Arrange
             var notification = GetNotification();
 
-            _emailSendingOptions.Password = "wrong_password";
-            _emailSendingOptionsMock.Setup(opt => opt.Value).Returns(_emailSendingOptions);
-            _messageSender = new SmtpEmailNotificationMessageSender(_emailSendingOptionsMock.Object);
+            _smtpOptionsGmail.Password = "wrong_password";
+            _smptpOptionsMock.Setup(opt => opt.Value).Returns(_smtpOptionsGmail);
+            _messageSender = new SmtpEmailNotificationMessageSender(_smptpOptionsMock.Object, _emailSendingOptions.Object);
 
             var notificationSender = GetNotificationSender();
 
@@ -150,7 +152,7 @@ namespace VirtoCommerce.NotificationsModule.Tests.IntegrationTests
 
             var sendGridSendingOptionsMock = new Mock<IOptions<SendGridSenderOptions>>();
             sendGridSendingOptionsMock.Setup(opt => opt.Value).Returns(new SendGridSenderOptions { ApiKey = Configuration["SendgridApiKey"] });
-            _messageSender = new SendGridEmailNotificationMessageSender(sendGridSendingOptionsMock.Object);
+            _messageSender = new SendGridEmailNotificationMessageSender(sendGridSendingOptionsMock.Object, _emailSendingOptions.Object);
 
             var notificationSender = GetNotificationSender();
 

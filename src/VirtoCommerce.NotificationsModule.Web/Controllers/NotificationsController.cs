@@ -4,7 +4,9 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Polly;
 using VirtoCommerce.NotificationsModule.Core;
+using VirtoCommerce.NotificationsModule.Core.Exceptions;
 using VirtoCommerce.NotificationsModule.Core.Extensions;
 using VirtoCommerce.NotificationsModule.Core.Model;
 using VirtoCommerce.NotificationsModule.Core.Model.Search;
@@ -24,13 +26,15 @@ namespace VirtoCommerce.NotificationsModule.Web.Controllers
         private readonly INotificationSender _notificationSender;
         private readonly INotificationMessageSearchService _notificationMessageSearchService;
         private readonly INotificationMessageService _notificationMessageService;
+        private readonly INotificationMessageSenderFactory _notificationMessageSenderFactory;
 
         public NotificationsController(INotificationSearchService notificationSearchService
             , INotificationService notificationService
             , INotificationTemplateRenderer notificationTemplateRender
             , INotificationSender notificationSender
             , INotificationMessageSearchService notificationMessageSearchService
-            , INotificationMessageService notificationMessageService)
+            , INotificationMessageService notificationMessageService
+            , INotificationMessageSenderFactory notificationMessageSenderFactory)
         {
             _notificationSearchService = notificationSearchService;
             _notificationService = notificationService;
@@ -38,6 +42,7 @@ namespace VirtoCommerce.NotificationsModule.Web.Controllers
             _notificationSender = notificationSender;
             _notificationMessageSearchService = notificationMessageSearchService;
             _notificationMessageService = notificationMessageService;
+            _notificationMessageSenderFactory = notificationMessageSenderFactory;
         }
 
         /// <summary>
@@ -107,6 +112,50 @@ namespace VirtoCommerce.NotificationsModule.Web.Controllers
             var result = await _notificationTemplateRender.RenderAsync(request.Text, request.Data, template.LanguageCode);
 
             return Ok(new { html = result });
+        }
+
+
+        /// <summary>
+        /// Send notification preview
+        /// </summary>
+        /// <param name="language"></param>
+        /// <param name="request">request of Notification Template with text and data</param>
+        /// <returns></returns>
+        [HttpPost]
+        [Route("api/notifications/{type}/templates/{language}/sharepreview")]
+        [Authorize(ModuleConstants.Security.Permissions.ReadTemplates)]
+        public async Task<ActionResult<NotificationSendResult>> SharePreview([FromBody] NotificationTemplateRequest request, string language)
+        {
+            var notification = request.Data;
+            var message = AbstractTypeFactory<NotificationMessage>.TryCreateInstance($"{notification.Kind}Message");
+
+            await notification.ToMessageAsync(message, _notificationTemplateRender);
+
+            var policy = Policy.Handle<SentNotificationException>().WaitAndRetryAsync(message.MaxSendAttemptCount, retryAttempt => TimeSpan.FromSeconds(Math.Pow(3, retryAttempt)));
+
+            var policyResult = await policy.ExecuteAndCaptureAsync(() =>
+            {
+                message.LastSendAttemptDate = DateTime.Now;
+                message.SendAttemptCount++;
+                return _notificationMessageSenderFactory.GetSender(message).SendNotificationAsync(message);
+            });
+
+            var result = new NotificationSendResult();
+
+            if (policyResult.Outcome == OutcomeType.Successful)
+            {
+                result.IsSuccess = true;
+                message.SendDate = DateTime.Now;
+                message.Status = NotificationMessageStatus.Sent;
+            }
+            else
+            {
+                result.ErrorMessage = "Failed to send message.";
+                message.LastSendError = policyResult.FinalException?.ToString();
+                message.Status = NotificationMessageStatus.Error;
+            }
+
+            return Ok(result);
         }
 
         /// <summary>

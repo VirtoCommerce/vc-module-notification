@@ -15,10 +15,12 @@ namespace VirtoCommerce.NotificationsModule.SendGrid
     public class SendGridEmailNotificationMessageSender : INotificationMessageSender
     {
         public const string Name = "SendGrid";
-        private readonly SendGridSenderOptions _emailSendingOptions;
+        private readonly SendGridSenderOptions _sendGridOptions;
+        private readonly EmailSendingOptions _emailSendingOptions;
 
-        public SendGridEmailNotificationMessageSender(IOptions<SendGridSenderOptions> emailSendingOptions)
+        public SendGridEmailNotificationMessageSender(IOptions<SendGridSenderOptions> sendGridOptions, IOptions<EmailSendingOptions> emailSendingOptions)
         {
+            _sendGridOptions = sendGridOptions.Value;
             _emailSendingOptions = emailSendingOptions.Value;
         }
 
@@ -33,12 +35,12 @@ namespace VirtoCommerce.NotificationsModule.SendGrid
 
             var emailNotificationMessage = message as EmailNotificationMessage;
 
-            var fromAddress = new EmailAddress(emailNotificationMessage.From);
+            var fromAddress = new EmailAddress(emailNotificationMessage.From ?? _emailSendingOptions.DefaultSender);
             var toAddress = new EmailAddress(emailNotificationMessage.To);
 
             try
             {
-                var client = new SendGridClient(_emailSendingOptions.ApiKey);
+                var client = new SendGridClient(_sendGridOptions.ApiKey);
                 var mailMsg = new SendGridMessage
                 {
                     From = fromAddress,
