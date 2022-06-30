@@ -13,7 +13,6 @@ namespace VirtoCommerce.NotificationsModule.Data.Model
         /// <summary>
         /// Message of notification
         /// </summary>
-        [StringLength(1600)]
         public string Message { get; set; }
 
         /// <summary>
