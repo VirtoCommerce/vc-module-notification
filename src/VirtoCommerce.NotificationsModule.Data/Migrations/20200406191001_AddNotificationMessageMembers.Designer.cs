@@ -331,8 +331,7 @@ namespace VirtoCommerce.NotificationsModule.Data.Migrations
                     b.HasBaseType("VirtoCommerce.NotificationsModule.Data.Model.NotificationMessageEntity");
 
                     b.Property<string>("Message")
-                        .HasColumnType("nvarchar(1600)")
-                        .HasMaxLength(1600);
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Number")
                         .HasColumnType("nvarchar(128)")
@@ -360,8 +359,7 @@ namespace VirtoCommerce.NotificationsModule.Data.Migrations
                     b.HasBaseType("VirtoCommerce.NotificationsModule.Data.Model.NotificationTemplateEntity");
 
                     b.Property<string>("Message")
-                        .HasColumnType("nvarchar(1600)")
-                        .HasMaxLength(1600);
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasDiscriminator().HasValue("SmsNotificationTemplateEntity");
                 });

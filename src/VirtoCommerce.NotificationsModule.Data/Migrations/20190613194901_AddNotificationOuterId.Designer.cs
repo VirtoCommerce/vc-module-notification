@@ -251,8 +251,7 @@ namespace VirtoCommerce.NotificationsModule.Data.Migrations
                 {
                     b.HasBaseType("VirtoCommerce.NotificationsModule.Data.Model.NotificationMessageEntity");
 
-                    b.Property<string>("Message")
-                        .HasMaxLength(1600);
+                    b.Property<string>("Message");
 
                     b.Property<string>("Number")
                         .HasMaxLength(128);
@@ -276,8 +275,7 @@ namespace VirtoCommerce.NotificationsModule.Data.Migrations
                 {
                     b.HasBaseType("VirtoCommerce.NotificationsModule.Data.Model.NotificationTemplateEntity");
 
-                    b.Property<string>("Message")
-                        .HasMaxLength(1600);
+                    b.Property<string>("Message");
 
                     b.HasDiscriminator().HasValue("SmsNotificationTemplateEntity");
                 });
