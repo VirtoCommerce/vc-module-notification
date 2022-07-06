@@ -15,7 +15,7 @@ namespace VirtoCommerce.NotificationsModule.Data.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "3.1.2")
+                .HasAnnotation("ProductVersion", "3.1.13")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -335,8 +335,7 @@ namespace VirtoCommerce.NotificationsModule.Data.Migrations
                     b.HasBaseType("VirtoCommerce.NotificationsModule.Data.Model.NotificationMessageEntity");
 
                     b.Property<string>("Message")
-                        .HasColumnType("nvarchar(1600)")
-                        .HasMaxLength(1600);
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Number")
                         .HasColumnType("nvarchar(128)")
@@ -364,8 +363,7 @@ namespace VirtoCommerce.NotificationsModule.Data.Migrations
                     b.HasBaseType("VirtoCommerce.NotificationsModule.Data.Model.NotificationTemplateEntity");
 
                     b.Property<string>("Message")
-                        .HasColumnType("nvarchar(1600)")
-                        .HasMaxLength(1600);
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasDiscriminator().HasValue("SmsNotificationTemplateEntity");
                 });
