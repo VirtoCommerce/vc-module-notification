@@ -100,7 +100,7 @@ namespace VirtoCommerce.NotificationsModule.Data.Migrations
                     Discriminator = table.Column<string>(maxLength: 128, nullable: false),
                     Subject = table.Column<string>(maxLength: 512, nullable: true),
                     Body = table.Column<string>(nullable: true),
-                    Message = table.Column<string>(maxLength: 1600, nullable: true),
+                    Message = table.Column<string>(nullable: true),
                     Number = table.Column<string>(maxLength: 128, nullable: true)
                 },
                 constraints: table =>
@@ -128,7 +128,7 @@ namespace VirtoCommerce.NotificationsModule.Data.Migrations
                     Discriminator = table.Column<string>(maxLength: 128, nullable: false),
                     Subject = table.Column<string>(maxLength: 512, nullable: true),
                     Body = table.Column<string>(nullable: true),
-                    Message = table.Column<string>(maxLength: 1600, nullable: true)
+                    Message = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -263,7 +263,7 @@ namespace VirtoCommerce.NotificationsModule.Data.Migrations
 	                            pnt.[Language],
 	                            pnt.[Subject],
 	                            [Body] [Body],
-	                            LEFT([Body], 1600) [Message],
+	                            [Body] [Message],
                                 pnt2.Id [NotificationId],
                                 CASE 
 		                            WHEN pnt.[NotificationTypeId] LIKE '%EmailNotification%' 
