@@ -27,6 +27,14 @@ namespace VirtoCommerce.NotificationsModule.Data.Model
         /// </summary>
         public string Sample { get; set; }
 
+        /// <summary>
+        /// Id of notification
+        /// </summary>
+        [StringLength(128)]
+        public string NotificationLayoutId { get; set; }
+
+        public NotificationLayoutEntity NotificationLayout { get; set; }
+
         public override NotificationTemplate ToModel(NotificationTemplate template)
         {
             if (template is EmailNotificationTemplate emailNotificationTemplate)

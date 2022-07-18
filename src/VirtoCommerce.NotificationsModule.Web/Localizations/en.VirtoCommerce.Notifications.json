@@ -79,6 +79,26 @@
           "edited": "Edited"
         }
       },
+      "notification-layouts-list": {
+        "title": "Notification layouts",
+        "subtitle": "Manage notification layouts",
+        "labels": {
+          "no-data": "No registered layouts yet",
+          "name": "Name",
+          "template": "Template"
+        }
+      },
+      "notification-layout-details": {
+        "title-new": "Create notification layout",
+        "subtitle": "Edit layout",
+        "labels": {
+          "name": "Name",
+          "template": "Template"
+        },
+        "placeholders": {
+          "name": "Enter name..."
+        }
+      },
       "notifications-test-resolve": {
         "title": "Preview notification",
         "subtitle": "Enter test data for {{type}}",

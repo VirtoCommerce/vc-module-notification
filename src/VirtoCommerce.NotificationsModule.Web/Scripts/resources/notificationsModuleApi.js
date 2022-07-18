@@ -13,6 +13,12 @@ angular.module('virtoCommerce.notificationsModule')
             sharePreview: { method: 'POST', url: 'api/notifications/:type/templates/:language/sharepreview' },
             getNotificationJournalList: { method: 'POST', url: 'api/notifications/journal' },
             getNotificationJournalDetails: { method: 'GET', url: 'api/notifications/journal/:id' },
-            resendNotifications: { method: 'POST', url: 'api/notifications/scheduleresend' }
+            resendNotifications: { method: 'POST', url: 'api/notifications/scheduleresend' },
+            /* notification layouts */
+            getNotificationLayout: { method: 'GET', url: 'api/notification-layouts/:id' },
+            searchNotificationLayouts: { method: 'POST', url: 'api/notification-layouts/search' },
+            createNotificationLayout: { method: 'POST', url: 'api/notification-layouts/' },
+            updateNotificationLayout: { method: 'PUT', url: 'api/notification-layouts/' },
+            deleteNotificationLayout: { method: 'DELETE', url: 'api/notification-layouts/' }
         })
     }]);

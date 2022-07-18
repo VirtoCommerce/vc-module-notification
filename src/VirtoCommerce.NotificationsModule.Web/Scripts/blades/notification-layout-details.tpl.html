@@ -1,0 +1,30 @@
+<div class="blade-content __xlarge-wide">
+    <div class="blade-inner">
+        <div class="inner-block">
+            <form class="form" name="formScope">
+                <div class="columns clearfix">
+                    <div class="column" ng-init="setForm(formScope)">
+                        <div class="form-group">
+                            <label class="form-label" style="margin:0">{{'notifications.blades.notification-layout-details.labels.name' | translate}}</label>
+                            <div class="form-group" style="margin:0">
+                                <div class="form-input">
+                                    <input focus-on="" required class="form-control" ng-model="blade.currentEntity.name"
+                                           placeholder="{{ 'notifications.blades.notification-layout-details.placeholders.name' | translate }}" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="column">
+                    <div class="form-group">
+                        <label class="form-label" style="margin:0">{{'notifications.blades.notification-layout-details.labels.template' | translate}}</label>
+                        <div class="form-group" style="margin:0">
+                            <input id="fileUploader" type="file" multiple style="display: none;" uploader="fileUploader" nv-file-select />
+                            <textarea vc-uk-htmleditor ng-model="blade.currentEntity.template" file-uploader="fileUploader"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

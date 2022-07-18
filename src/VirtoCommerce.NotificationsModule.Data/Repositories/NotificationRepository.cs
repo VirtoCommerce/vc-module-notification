@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
@@ -19,6 +20,7 @@ namespace VirtoCommerce.NotificationsModule.Data.Repositories
         public IQueryable<SmsNotificationEntity> SmsNotifications => DbContext.Set<SmsNotificationEntity>();
         public IQueryable<NotificationEntity> Notifications => DbContext.Set<NotificationEntity>();
         public IQueryable<NotificationMessageEntity> NotifcationMessages => DbContext.Set<NotificationMessageEntity>();
+        public IQueryable<NotificationLayoutEntity> NotificationLayouts => DbContext.Set<NotificationLayoutEntity>();
 
         public async Task<NotificationEntity[]> GetByIdsAsync(string[] ids, string responseGroup)
         {
@@ -67,6 +69,10 @@ namespace VirtoCommerce.NotificationsModule.Data.Repositories
             return result;
         }
 
+        public async Task<IEnumerable<NotificationLayoutEntity>> GetNotificationLayoutsByIdsAsync(IEnumerable<string> ids)
+        {
+            return await NotificationLayouts.Where(x => ids.Contains(x.Id)).ToListAsync();
+        }
 
         protected virtual async Task LoadNotificationDependenciesAsync(string[] ids, string responseGroup)
         {

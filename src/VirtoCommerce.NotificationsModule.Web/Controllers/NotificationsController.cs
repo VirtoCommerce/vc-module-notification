@@ -28,13 +28,14 @@ namespace VirtoCommerce.NotificationsModule.Web.Controllers
         private readonly INotificationMessageService _notificationMessageService;
         private readonly INotificationMessageSenderFactory _notificationMessageSenderFactory;
 
-        public NotificationsController(INotificationSearchService notificationSearchService
-            , INotificationService notificationService
-            , INotificationTemplateRenderer notificationTemplateRender
-            , INotificationSender notificationSender
-            , INotificationMessageSearchService notificationMessageSearchService
-            , INotificationMessageService notificationMessageService
-            , INotificationMessageSenderFactory notificationMessageSenderFactory)
+        public NotificationsController(
+            INotificationSearchService notificationSearchService,
+            INotificationService notificationService,
+            INotificationTemplateRenderer notificationTemplateRender,
+            INotificationSender notificationSender,
+            INotificationMessageSearchService notificationMessageSearchService,
+            INotificationMessageService notificationMessageService,
+            INotificationMessageSenderFactory notificationMessageSenderFactory)
         {
             _notificationSearchService = notificationSearchService;
             _notificationService = notificationService;

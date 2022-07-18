@@ -48,6 +48,11 @@ namespace VirtoCommerce.NotificationsModule.Data.Repositories
                        .HasForeignKey(x => x.NotificationId).OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<EmailNotificationTemplateEntity>();
+            modelBuilder.Entity<EmailNotificationTemplateEntity>().HasOne(x => x.NotificationLayout)
+                        .WithMany()
+                        .HasForeignKey(x => x.NotificationLayoutId)
+                        .OnDelete(DeleteBehavior.ClientSetNull);
+
             modelBuilder.Entity<SmsNotificationTemplateEntity>();
 
             #endregion
@@ -88,6 +93,13 @@ namespace VirtoCommerce.NotificationsModule.Data.Repositories
 
             modelBuilder.Entity<NotificationEmailRecipientEntity>().HasOne(x => x.Notification).WithMany(x => x.Recipients)
                   .HasForeignKey(x => x.NotificationId).OnDelete(DeleteBehavior.Cascade);
+
+            #endregion
+
+            #region NotificationLayout
+
+            modelBuilder.Entity<NotificationLayoutEntity>().ToTable("NotificationLayout").HasKey(x => x.Id);
+            modelBuilder.Entity<NotificationLayoutEntity>().Property(x => x.Id).HasMaxLength(128).ValueGeneratedOnAdd();
 
             #endregion
 
