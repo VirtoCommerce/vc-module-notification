@@ -11,6 +11,7 @@ using Hangfire.States;
 using Microsoft.Extensions.Options;
 using Moq;
 using Newtonsoft.Json;
+using Scriban.Runtime;
 using VirtoCommerce.NotificationsModule.Core.Model;
 using VirtoCommerce.NotificationsModule.Core.Services;
 using VirtoCommerce.NotificationsModule.Core.Types;
@@ -23,6 +24,7 @@ using VirtoCommerce.NotificationsModule.Tests.Common;
 using VirtoCommerce.NotificationsModule.Tests.Model;
 using VirtoCommerce.NotificationsModule.Tests.NotificationTypes;
 using VirtoCommerce.Platform.Core.Common;
+using VirtoCommerce.Platform.Core.GenericCrud;
 using VirtoCommerce.Platform.Core.JsonConverters;
 using Xunit;
 
@@ -37,13 +39,17 @@ namespace VirtoCommerce.NotificationsModule.Tests.UnitTests
         private readonly Mock<INotificationMessageSender> _messageSenderMock;
         private readonly Mock<INotificationMessageSenderFactory> _senderFactoryMock;
         private readonly Mock<IBackgroundJobClient> _backgroundJobClient;
+        private readonly Mock<ICrudService<NotificationLayout>> _notificationLayoutServiceMock;
 
         private readonly Mock<INotificationSearchService> _notificationSearchServiceMock;
         private readonly NotificationRegistrar _notificationRegistrar;
 
         public NotificationSenderUnitTests()
         {
-            _templateRender = new LiquidTemplateRenderer(Options.Create(new LiquidRenderOptions() { CustomFilterTypes = new HashSet<Type> { typeof(UrlFilters), typeof(TranslationFilter) } }));
+            _notificationLayoutServiceMock = new Mock<ICrudService<NotificationLayout>>();
+            Func<string, ITemplateLoader> factory = (layoutId) => new LayoutTemplateLoader(_notificationLayoutServiceMock.Object, layoutId);
+
+            _templateRender = new LiquidTemplateRenderer(Options.Create(new LiquidRenderOptions() { CustomFilterTypes = new HashSet<Type> { typeof(UrlFilters), typeof(TranslationFilter) } }), factory);
             _messageServiceMock = new Mock<INotificationMessageService>();
             _messageSenderMock = new Mock<INotificationMessageSender>();
 

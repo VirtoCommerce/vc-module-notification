@@ -5,11 +5,14 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Options;
 using Moq;
 using Newtonsoft.Json.Linq;
+using Scriban.Runtime;
+using VirtoCommerce.AssetsModule.Core.Assets;
+using VirtoCommerce.NotificationsModule.Core.Model;
 using VirtoCommerce.NotificationsModule.LiquidRenderer;
 using VirtoCommerce.NotificationsModule.LiquidRenderer.Filters;
 using VirtoCommerce.NotificationsModule.Tests.Model;
-using VirtoCommerce.AssetsModule.Core.Assets;
 using VirtoCommerce.Platform.Core.Common;
+using VirtoCommerce.Platform.Core.GenericCrud;
 using VirtoCommerce.Platform.Core.Localizations;
 using Xunit;
 
@@ -19,13 +22,18 @@ namespace VirtoCommerce.NotificationsModule.Tests.UnitTests
     {
         private readonly Mock<ITranslationService> _translationServiceMock;
         private readonly Mock<IBlobUrlResolver> _blobUrlResolverMock;
+        private readonly Mock<ICrudService<NotificationLayout>> _notificationLayoutServiceMock;
         private readonly LiquidTemplateRenderer _liquidTemplateRenderer;
+
         public LiquidTemplateRendererUnitTests()
         {
             _translationServiceMock = new Mock<ITranslationService>();
             _blobUrlResolverMock = new Mock<IBlobUrlResolver>();
-            _liquidTemplateRenderer = new LiquidTemplateRenderer(Options.Create(new LiquidRenderOptions() { CustomFilterTypes = new HashSet<Type> { typeof(UrlFilters), typeof(TranslationFilter) } }));
-            
+            _notificationLayoutServiceMock = new Mock<ICrudService<NotificationLayout>>();
+
+            Func<string, ITemplateLoader> factory = (layoutId) => new LayoutTemplateLoader(_notificationLayoutServiceMock.Object, layoutId);
+            _liquidTemplateRenderer = new LiquidTemplateRenderer(Options.Create(new LiquidRenderOptions() { CustomFilterTypes = new HashSet<Type> { typeof(UrlFilters), typeof(TranslationFilter) } }), factory);
+
             //TODO
             if (!AbstractTypeFactory<NotificationScriptObject>.AllTypeInfos.SelectMany(x => x.AllSubclasses).Contains(typeof(NotificationScriptObject)))
                 AbstractTypeFactory<NotificationScriptObject>.RegisterType<NotificationScriptObject>()
@@ -56,7 +64,7 @@ namespace VirtoCommerce.NotificationsModule.Tests.UnitTests
             string body = "Your order 123 changed status to New.";
             var jObject = JObject.FromObject(new { body });
             _translationServiceMock.Setup(x => x.GetTranslationDataForLanguage(string.Empty)).Returns(jObject);
-            
+
             string input = "{{ 'body' | translate }}";
 
             //Act
@@ -105,8 +113,6 @@ namespace VirtoCommerce.NotificationsModule.Tests.UnitTests
                 };
             }
         }
-
-
     }
 
     public class LiquidTestNotification
@@ -117,6 +123,4 @@ namespace VirtoCommerce.NotificationsModule.Tests.UnitTests
         public string RecipientLanguage { get; set; }
         public CustomerOrder Order { get; set; }
     }
-
-
 }

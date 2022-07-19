@@ -1,9 +1,11 @@
 using System;
+using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Options;
 using Scriban;
 using Scriban.Parsing;
 using Scriban.Runtime;
+using VirtoCommerce.NotificationsModule.Core.Model;
 using VirtoCommerce.NotificationsModule.Core.Services;
 using VirtoCommerce.Platform.Core.Common;
 
@@ -12,10 +14,15 @@ namespace VirtoCommerce.NotificationsModule.LiquidRenderer
     public class LiquidTemplateRenderer : INotificationTemplateRenderer
     {
         private readonly LiquidRenderOptions _options;
+        private readonly Func<string, ITemplateLoader> _templateLoaderFactory;
 
-        public LiquidTemplateRenderer(IOptions<LiquidRenderOptions> options)
+        private const string LayoutKeyword = "{{include 'layout'}}";
+
+        public LiquidTemplateRenderer(IOptions<LiquidRenderOptions> options, Func<string, ITemplateLoader> templateLoaderFactory)
         {
             _options = options.Value;
+
+            _templateLoaderFactory = templateLoaderFactory;
         }
 
         public async Task<string> RenderAsync(string stringTemplate, object model, string language = null)
@@ -26,10 +33,18 @@ namespace VirtoCommerce.NotificationsModule.LiquidRenderer
                 NewLine = Environment.NewLine,
                 TemplateLoaderLexerOptions = new LexerOptions
                 {
-                    Mode = ScriptMode.Liquid
+                    Mode = ScriptMode.Default,
+                    Lang = ScriptLang.Liquid,
                 },
-                LoopLimit = _options.LoopLimit
+                LoopLimit = _options.LoopLimit,
             };
+
+            if (model is IHasNotificationLayoutId hasLayout && !string.IsNullOrEmpty(hasLayout.NotificationLayoutId))
+            {
+                stringTemplate = IncludeLayout(stringTemplate);
+
+                context.TemplateLoader = _templateLoaderFactory(hasLayout.NotificationLayoutId);
+            }
 
             var scriptObject = AbstractTypeFactory<NotificationScriptObject>.TryCreateInstance();
             scriptObject.Language = language;
@@ -44,6 +59,17 @@ namespace VirtoCommerce.NotificationsModule.LiquidRenderer
             var result = await template.RenderAsync(context);
 
             return result;
+        }
+
+        /// <summary>
+        /// Append 'include' directive to the end of a template string for force layout loader
+        /// </summary>
+        private string IncludeLayout(string template)
+        {
+            var stringBuilder = new StringBuilder(template);
+            stringBuilder.Append(Environment.NewLine);
+            stringBuilder.Append(LayoutKeyword);
+            return stringBuilder.ToString();
         }
     }
 }

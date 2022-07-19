@@ -11,7 +11,7 @@ namespace VirtoCommerce.NotificationsModule.Core.Model
     /// <summary>
     /// Type of Notification for the Email
     /// </summary>
-    public abstract class EmailNotification : Notification
+    public abstract class EmailNotification : Notification, IHasNotificationLayoutId
     {
         [Obsolete("need to use ctor with 'type' parameter")]
         public EmailNotification()
@@ -25,6 +25,7 @@ namespace VirtoCommerce.NotificationsModule.Core.Model
         }
 
         public override string Kind => nameof(EmailNotification);
+
         /// <summary>
         /// Sender
         /// </summary>
@@ -46,7 +47,10 @@ namespace VirtoCommerce.NotificationsModule.Core.Model
         /// Array of BCC recipients
         /// </summary>
         public string[] BCC { get; set; }
+
         public IList<EmailAttachment> Attachments { get; set; }
+
+        public string NotificationLayoutId { get; set; }
 
         public override async Task ToMessageAsync(NotificationMessage message, INotificationTemplateRenderer render)
         {
@@ -57,8 +61,14 @@ namespace VirtoCommerce.NotificationsModule.Core.Model
             var template = (EmailNotificationTemplate)Templates.FindTemplateForLanguage(message.LanguageCode);
             if (template != null)
             {
-                emailMessage.Subject = await render.RenderAsync(template.Subject, this, template.LanguageCode);
-                emailMessage.Body = await render.RenderAsync(template.Body, this, template.LanguageCode);
+                //add layout id to notification object clone, this will force layout rendering for body 
+                var notification = Clone() as EmailNotification;
+
+                notification.NotificationLayoutId = null;
+                emailMessage.Subject = await render.RenderAsync(template.Subject, notification, template.LanguageCode);
+
+                notification.NotificationLayoutId = template.NotificationLayoutId;
+                emailMessage.Body = await render.RenderAsync(template.Body, notification, template.LanguageCode);
             }
 
             emailMessage.From = From;
@@ -96,7 +106,7 @@ namespace VirtoCommerce.NotificationsModule.Core.Model
                 BCC = emailRequest.BCC;
                 Attachments = emailRequest.Attachments;
             }
-            
+
             return base.PopulateFromOther(other);
         }
 

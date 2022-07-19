@@ -197,6 +197,10 @@ angular.module('virtoCommerce.notificationsModule')
                 $scope.isValid = isDirty() && canRender();
             }, true);
 
+            $scope.searchNotificationLayouts = function (criteria) {
+                return notifications.searchNotificationLayouts(criteria);
+            }
+
             blade.headIcon = 'fa fa-envelope';
 
             blade.initialize();

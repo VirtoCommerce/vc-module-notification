@@ -31,6 +31,8 @@ angular.module('virtoCommerce.notificationsModule')
             blade.data.cc = pluckAddress(blade.data.cc);
             blade.data.bcc = pluckAddress(blade.data.bcc);
 
+            blade.data.notificationLayoutId = blade.currentEntity.notificationLayoutId;
+
             keyTemplateLocalStorage = blade.tenantType + '.' + blade.notification.type + '.' + blade.language;
             var itemFromLocalStorage = $localStorage[keyTemplateLocalStorage];
             if (itemFromLocalStorage) {
@@ -55,6 +57,8 @@ angular.module('virtoCommerce.notificationsModule')
         function sharePreview(eMailTo) {
             delete blade.data.cc;
             delete blade.data.bcc;
+            delete blade.data.notificationLayoutId;
+            blade.data.languageCode = blade.language;
             blade.data.to = eMailTo;
 
             notifications.sharePreview({

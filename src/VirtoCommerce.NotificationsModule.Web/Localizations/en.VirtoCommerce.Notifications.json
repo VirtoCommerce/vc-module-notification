@@ -50,7 +50,8 @@
           "preview-data": "Preview Data",
           "preview-data-comment": "Template context data (JSON)",
           "note-caption": "Important!",
-          "note-text": "This template has a predefined source. Once you save your notification, this version will replace the predefined one. You can restore the original template using the appropriate button."
+          "note-text": "This template has a predefined source. Once you save your notification, this version will replace the predefined one. You can restore the original template using the appropriate button.",
+          "layout": "Layout"
         },
         "descriptions": {
           "to": "Email recipient address",
@@ -64,7 +65,8 @@
           "language": "Please select...",
           "recipient": "Recipient address",
           "email-addresses-note": "Please enter email addresses",
-          "subject": "Please enter email subject"
+          "subject": "Please enter email subject",
+          "layout": "Please select..."
         }
       },
       "notification-templates-list": {
