@@ -13,8 +13,8 @@ namespace VirtoCommerce.NotificationsModule.Web.Controllers
     [Authorize]
     public class NotificationLayoutsController : Controller
     {
-        private ICrudService<NotificationLayout> _layoutService;
-        private ISearchService<NotificationLayoutSearchCriteria, NotificationLayoutSearchResult, NotificationLayout> _layoutSearchService;
+        private readonly ICrudService<NotificationLayout> _layoutService;
+        private readonly ISearchService<NotificationLayoutSearchCriteria, NotificationLayoutSearchResult, NotificationLayout> _layoutSearchService;
 
         public NotificationLayoutsController(
             ICrudService<NotificationLayout> layoutService,

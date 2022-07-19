@@ -43,13 +43,11 @@ angular.module('virtoCommerce.notificationsModule')
                 };
 
                 function getSearchCriteria() {
-                    var searchCriteria = {
+                    return {
                         sort: uiGridHelper.getSortExpression($scope),
                         skip: ($scope.pageSettings.currentPage - 1) * $scope.pageSettings.itemsPerPageCount,
                         take: $scope.pageSettings.itemsPerPageCount
                     };
-
-                    return searchCriteria;
                 }
 
                 blade.refresh = function () {

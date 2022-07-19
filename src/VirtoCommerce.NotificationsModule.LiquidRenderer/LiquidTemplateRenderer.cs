@@ -59,7 +59,7 @@ namespace VirtoCommerce.NotificationsModule.LiquidRenderer
         /// <summary>
         /// Append 'include' directive to the end of a template string for force layout loader
         /// </summary>
-        private string IncludeLayout(string template, string layoutId)
+        private static string IncludeLayout(string template, string layoutId)
         {
             var layout = $"{{{{include '{layoutId}'}}}}";
             var stringBuilder = new StringBuilder(template);

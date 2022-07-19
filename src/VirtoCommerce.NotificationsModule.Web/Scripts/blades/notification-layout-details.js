@@ -50,7 +50,6 @@ angular.module('virtoCommerce.notificationsModule')
                         notifications.createNotificationLayout(blade.currentEntity,
                             function () {
                                 blade.parentBlade.refresh(true);
-                                blade.currentEntity = blade.currentEntity;
                                 $scope.bladeClose();
                             });
                     } else {

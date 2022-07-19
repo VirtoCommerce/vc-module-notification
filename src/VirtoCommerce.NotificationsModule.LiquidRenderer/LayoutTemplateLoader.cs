@@ -9,7 +9,7 @@ namespace VirtoCommerce.NotificationsModule.LiquidRenderer
 {
     public class LayoutTemplateLoader : ITemplateLoader
     {
-        private ICrudService<NotificationLayout> _notificationLayoutService;
+        private readonly ICrudService<NotificationLayout> _notificationLayoutService;
 
         public LayoutTemplateLoader(ICrudService<NotificationLayout> notificationLayoutService)
         {
@@ -23,18 +23,23 @@ namespace VirtoCommerce.NotificationsModule.LiquidRenderer
 
         public string Load(TemplateContext context, SourceSpan callerSpan, string templatePath)
         {
-            return LoadAsync(context, callerSpan, templatePath).GetAwaiter().GetResult();
+            return GetLayoutTemplate(templatePath).GetAwaiter().GetResult();
         }
 
         public async ValueTask<string> LoadAsync(TemplateContext context, SourceSpan callerSpan, string templatePath)
         {
-            if (string.IsNullOrEmpty(templatePath))
+            // use templatePath as notification layout ID
+            return await GetLayoutTemplate(templatePath);
+        }
+
+        private async Task<string> GetLayoutTemplate(string layoutId)
+        {
+            if (string.IsNullOrEmpty(layoutId))
             {
                 return string.Empty;
             }
 
-            // use templatePath as notification layout ID
-            var layout = await _notificationLayoutService.GetByIdAsync(templatePath);
+            var layout = await _notificationLayoutService.GetByIdAsync(layoutId);
 
             var result = layout?.Template ?? string.Empty;
             return result;
