@@ -72,7 +72,7 @@ angular.module('virtoCommerce.notificationsModule')
                         $scope.$broadcast('filesUploaded', { items: response });
                     },
                     onErrorItem: function (fileItem, response, status, headers) {
-                        bladeNavigationService.setError(fileItem._file.name + ' failed: ' + (response.message ? response.message : status), blade);
+                        bladeNavigationService.setError(`${fileItem._file.name} failed: ${(response.message ? response.message : status)}`, blade);
                     },
                     onCompleteAll: function () {
                         blade.isLoading = false;
