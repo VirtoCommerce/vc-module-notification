@@ -30,8 +30,7 @@ namespace VirtoCommerce.NotificationsModule.LiquidRenderer
                 NewLine = Environment.NewLine,
                 TemplateLoaderLexerOptions = new LexerOptions
                 {
-                    Mode = ScriptMode.Default,
-                    Lang = ScriptLang.Liquid,
+                    Mode = ScriptMode.Liquid,
                 },
                 LoopLimit = _options.LoopLimit,
             };
