@@ -1,12 +1,9 @@
 angular.module('virtoCommerce.notificationsModule')
     .controller('virtoCommerce.notificationsModule.notificationLayoutsListController',
-        ['$scope', '$translate',
-            'virtoCommerce.notificationsModule.notificationsModuleApi',
-            'platformWebApp.dialogService', 'platformWebApp.bladeUtils', 'platformWebApp.uiGridHelper', 'platformWebApp.ui-grid.extension', 'platformWebApp.i18n',
-            function ($scope, $translate, notifications, dialogService, bladeUtils, uiGridHelper, gridOptionExtension, i18n) {
+        ['$scope', 'virtoCommerce.notificationsModule.notificationsModuleApi',
+            'platformWebApp.dialogService', 'platformWebApp.bladeUtils', 'platformWebApp.uiGridHelper', 'platformWebApp.ui-grid.extension',
+            function ($scope, notifications, dialogService, bladeUtils, uiGridHelper, gridOptionExtension) {
                 var blade = $scope.blade;
-
-                //blade.currentLanguage = i18n.getLanguage();
 
                 $scope.uiGridConstants = uiGridHelper.uiGridConstants;
                 var bladeNavigationService = bladeUtils.bladeNavigationService;
@@ -96,8 +93,26 @@ angular.module('virtoCommerce.notificationsModule')
                     bladeNavigationService.showBlade(newBlade, blade);
                 };
 
-                function deleteList(items) {
-
+                function deleteList(selection) {
+                    var dialog = {
+                        id: "confirmDeleteLayouts",
+                        title: "notifications.dialogs.notification-layout-delete.title",
+                        message: "notifications.dialogs.notification-layout-delete.message",
+                        callback: function (remove) {
+                            if (remove) {
+                                bladeNavigationService.closeChildrenBlades(blade, function () {
+                                    var itemIds = _.pluck(selection, 'id');
+                                    notifications.deleteNotificationLayout({ ids: itemIds }, function () {
+                                        blade.refresh();
+                                    },
+                                    function (error) {
+                                        bladeNavigationService.setError('Error ' + error.status, blade);
+                                    });
+                                });
+                            }
+                        }
+                    };
+                    dialogService.showConfirmationDialog(dialog);
                 }
 
                 // ui-grid

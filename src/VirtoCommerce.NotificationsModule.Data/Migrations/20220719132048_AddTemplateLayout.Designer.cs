@@ -12,7 +12,7 @@ using VirtoCommerce.NotificationsModule.Data.Repositories;
 namespace VirtoCommerce.NotificationsModule.Data.Migrations
 {
     [DbContext(typeof(NotificationDbContext))]
-    [Migration("20220714150429_AddTemplateLayout")]
+    [Migration("20220719132048_AddTemplateLayout")]
     partial class AddTemplateLayout
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -458,7 +458,8 @@ namespace VirtoCommerce.NotificationsModule.Data.Migrations
                 {
                     b.HasOne("VirtoCommerce.NotificationsModule.Data.Model.NotificationLayoutEntity", "NotificationLayout")
                         .WithMany()
-                        .HasForeignKey("NotificationLayoutId");
+                        .HasForeignKey("NotificationLayoutId")
+                        .OnDelete(DeleteBehavior.SetNull);
 
                     b.Navigation("NotificationLayout");
                 });

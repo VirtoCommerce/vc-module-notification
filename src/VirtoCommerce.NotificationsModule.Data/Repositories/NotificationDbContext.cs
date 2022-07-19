@@ -51,7 +51,7 @@ namespace VirtoCommerce.NotificationsModule.Data.Repositories
             modelBuilder.Entity<EmailNotificationTemplateEntity>().HasOne(x => x.NotificationLayout)
                         .WithMany()
                         .HasForeignKey(x => x.NotificationLayoutId)
-                        .OnDelete(DeleteBehavior.ClientSetNull);
+                        .OnDelete(DeleteBehavior.SetNull);
 
             modelBuilder.Entity<SmsNotificationTemplateEntity>();
 

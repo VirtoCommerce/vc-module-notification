@@ -456,7 +456,8 @@ namespace VirtoCommerce.NotificationsModule.Data.Migrations
                 {
                     b.HasOne("VirtoCommerce.NotificationsModule.Data.Model.NotificationLayoutEntity", "NotificationLayout")
                         .WithMany()
-                        .HasForeignKey("NotificationLayoutId");
+                        .HasForeignKey("NotificationLayoutId")
+                        .OnDelete(DeleteBehavior.SetNull);
 
                     b.Navigation("NotificationLayout");
                 });

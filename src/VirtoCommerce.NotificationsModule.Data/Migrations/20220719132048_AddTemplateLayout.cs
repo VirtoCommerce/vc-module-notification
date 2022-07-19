@@ -43,7 +43,8 @@ namespace VirtoCommerce.NotificationsModule.Data.Migrations
                 table: "NotificationTemplate",
                 column: "NotificationLayoutId",
                 principalTable: "NotificationLayout",
-                principalColumn: "Id");
+                principalColumn: "Id",
+                onDelete: ReferentialAction.SetNull);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

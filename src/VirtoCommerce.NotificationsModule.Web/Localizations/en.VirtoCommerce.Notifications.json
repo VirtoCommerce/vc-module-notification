@@ -237,6 +237,10 @@
       },
       "share-error": {
         "title": "Error"
+      },
+      "notification-layout-delete": {
+        "title": "Confirm Delete",
+        "message": "Are you sure you want to delete selected layouts?"
       }
     },
     "commands": {

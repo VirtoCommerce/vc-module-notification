@@ -61,10 +61,8 @@ angular.module('virtoCommerce.notificationsModule')
                     }
                 };
 
-                var contentType = 'image';
-
                 $scope.fileUploader = new FileUploader({
-                    url: 'api/assets?folderUrl=cms-content/' + contentType + '/assets',
+                    url: 'api/assets?folderUrl=cms-content/layouts/assets',
                     headers: { Accept: 'application/json' },
                     autoUpload: true,
                     removeAfterUpload: true,
