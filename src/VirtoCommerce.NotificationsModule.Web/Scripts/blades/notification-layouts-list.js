@@ -1,8 +1,8 @@
 angular.module('virtoCommerce.notificationsModule')
     .controller('virtoCommerce.notificationsModule.notificationLayoutsListController',
-        ['$scope', 'virtoCommerce.notificationsModule.notificationsModuleApi',
+        ['$scope', 'virtoCommerce.notificationsModule.notificationLayoutsApi',
             'platformWebApp.dialogService', 'platformWebApp.bladeUtils', 'platformWebApp.uiGridHelper', 'platformWebApp.ui-grid.extension',
-            function ($scope, notifications, dialogService, bladeUtils, uiGridHelper, gridOptionExtension) {
+            function ($scope, layouts, dialogService, bladeUtils, uiGridHelper, gridOptionExtension) {
                 var blade = $scope.blade;
 
                 $scope.uiGridConstants = uiGridHelper.uiGridConstants;
@@ -53,7 +53,7 @@ angular.module('virtoCommerce.notificationsModule')
                 blade.refresh = function () {
                     var searchCriteria = getSearchCriteria();
 
-                    notifications.searchNotificationLayouts(searchCriteria, function (data) {
+                    layouts.searchNotificationLayouts(searchCriteria, function (data) {
                         blade.isLoading = false;
 
                         $scope.pageSettings.totalItems = data.totalCount;
@@ -100,7 +100,7 @@ angular.module('virtoCommerce.notificationsModule')
                             if (remove) {
                                 bladeNavigationService.closeChildrenBlades(blade, function () {
                                     var itemIds = _.pluck(selection, 'id');
-                                    notifications.deleteNotificationLayout({ ids: itemIds }, function () {
+                                    layouts.deleteNotificationLayout({ ids: itemIds }, function () {
                                         blade.refresh();
                                     },
                                     function (error) {

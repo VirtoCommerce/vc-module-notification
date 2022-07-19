@@ -1,7 +1,7 @@
 angular.module('virtoCommerce.notificationsModule')
     .controller('virtoCommerce.notificationsModule.notificationLayoutController',
-        ['$scope', '$filter', 'virtoCommerce.notificationsModule.notificationsModuleApi', 'platformWebApp.bladeNavigationService', 'FileUploader',
-            function ($scope, $filter, notifications, bladeNavigationService, FileUploader) {
+        ['$scope', 'virtoCommerce.notificationsModule.notificationLayoutsApi', 'platformWebApp.bladeNavigationService', 'FileUploader',
+            function ($scope, layouts, bladeNavigationService, FileUploader) {
                 var blade = $scope.blade;
                 blade.headIcon = 'fa fa-envelope';
                 blade.updatePermission = 'notifications:update';
@@ -20,7 +20,7 @@ angular.module('virtoCommerce.notificationsModule')
                     } else {
                         blade.isLoading = true;
 
-                        notifications.getNotificationLayout({ id: blade.currentEntityId }, initializeBlade);
+                        layouts.getNotificationLayout({ id: blade.currentEntityId }, initializeBlade);
 
                         if (parentRefresh) {
                             blade.parentBlade.refresh(true);
@@ -47,13 +47,13 @@ angular.module('virtoCommerce.notificationsModule')
                     blade.isLoading = true;
 
                     if (blade.isNew) {
-                        notifications.createNotificationLayout(blade.currentEntity,
+                        layouts.createNotificationLayout(blade.currentEntity,
                             function () {
                                 blade.parentBlade.refresh(true);
                                 $scope.bladeClose();
                             });
                     } else {
-                        notifications.updateNotificationLayout(blade.currentEntity,
+                        layouts.updateNotificationLayout(blade.currentEntity,
                             function () {
                                 blade.refresh(true);
                             });
