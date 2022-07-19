@@ -31,7 +31,7 @@ namespace VirtoCommerce.NotificationsModule.Tests.UnitTests
             _blobUrlResolverMock = new Mock<IBlobUrlResolver>();
             _notificationLayoutServiceMock = new Mock<ICrudService<NotificationLayout>>();
 
-            Func<string, ITemplateLoader> factory = (layoutId) => new LayoutTemplateLoader(_notificationLayoutServiceMock.Object, layoutId);
+            Func<ITemplateLoader> factory = () => new LayoutTemplateLoader(_notificationLayoutServiceMock.Object);
             _liquidTemplateRenderer = new LiquidTemplateRenderer(Options.Create(new LiquidRenderOptions() { CustomFilterTypes = new HashSet<Type> { typeof(UrlFilters), typeof(TranslationFilter) } }), factory);
 
             //TODO

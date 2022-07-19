@@ -14,14 +14,11 @@ namespace VirtoCommerce.NotificationsModule.LiquidRenderer
     public class LiquidTemplateRenderer : INotificationTemplateRenderer
     {
         private readonly LiquidRenderOptions _options;
-        private readonly Func<string, ITemplateLoader> _templateLoaderFactory;
+        private readonly Func<ITemplateLoader> _templateLoaderFactory;
 
-        private const string LayoutKeyword = "{{include 'layout'}}";
-
-        public LiquidTemplateRenderer(IOptions<LiquidRenderOptions> options, Func<string, ITemplateLoader> templateLoaderFactory)
+        public LiquidTemplateRenderer(IOptions<LiquidRenderOptions> options, Func<ITemplateLoader> templateLoaderFactory)
         {
             _options = options.Value;
-
             _templateLoaderFactory = templateLoaderFactory;
         }
 
@@ -41,9 +38,8 @@ namespace VirtoCommerce.NotificationsModule.LiquidRenderer
 
             if (model is IHasNotificationLayoutId hasLayout && !string.IsNullOrEmpty(hasLayout.NotificationLayoutId))
             {
-                stringTemplate = IncludeLayout(stringTemplate);
-
-                context.TemplateLoader = _templateLoaderFactory(hasLayout.NotificationLayoutId);
+                stringTemplate = IncludeLayout(stringTemplate, hasLayout.NotificationLayoutId);
+                context.TemplateLoader = _templateLoaderFactory();
             }
 
             var scriptObject = AbstractTypeFactory<NotificationScriptObject>.TryCreateInstance();
@@ -64,11 +60,12 @@ namespace VirtoCommerce.NotificationsModule.LiquidRenderer
         /// <summary>
         /// Append 'include' directive to the end of a template string for force layout loader
         /// </summary>
-        private string IncludeLayout(string template)
+        private string IncludeLayout(string template, string layoutId)
         {
+            var layout = $"{{{{include '{layoutId}'}}}}";
             var stringBuilder = new StringBuilder(template);
             stringBuilder.Append(Environment.NewLine);
-            stringBuilder.Append(LayoutKeyword);
+            stringBuilder.Append(layout);
             return stringBuilder.ToString();
         }
     }

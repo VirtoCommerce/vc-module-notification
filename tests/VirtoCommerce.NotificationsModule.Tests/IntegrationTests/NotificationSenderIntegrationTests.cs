@@ -61,7 +61,7 @@ namespace VirtoCommerce.NotificationsModule.Tests.IntegrationTests
             };
 
             _notificationLayoutServiceMock = new Mock<ICrudService<NotificationLayout>>();
-            Func<string, ITemplateLoader> factory = (layoutId) => new LayoutTemplateLoader(_notificationLayoutServiceMock.Object, layoutId);
+            Func<ITemplateLoader> factory = () => new LayoutTemplateLoader(_notificationLayoutServiceMock.Object);
             _templateRender = new LiquidTemplateRenderer(Options.Create(new LiquidRenderOptions() { CustomFilterTypes = new HashSet<Type> { typeof(UrlFilters), typeof(TranslationFilter) } }), factory);
             _messageServiceMock = new Mock<INotificationMessageService>();
             _smptpOptionsMock = new Mock<IOptions<SmtpSenderOptions>>();

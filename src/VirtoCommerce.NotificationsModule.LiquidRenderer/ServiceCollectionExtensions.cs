@@ -16,7 +16,7 @@ namespace VirtoCommerce.NotificationsModule.LiquidRenderer
             {
                 throw new ArgumentNullException(nameof(services));
             }
-            services.TryAddTransient<Func<string, ITemplateLoader>>(provider => (layoutId) => new LayoutTemplateLoader(provider.GetRequiredService<ICrudService<NotificationLayout>>(), layoutId));
+            services.TryAddTransient<Func<ITemplateLoader>>(provider => () => new LayoutTemplateLoader(provider.GetRequiredService<ICrudService<NotificationLayout>>()));
             services.TryAddTransient<INotificationTemplateRenderer, LiquidTemplateRenderer>();
 
             return new LiquidRendererBuilder(services);
