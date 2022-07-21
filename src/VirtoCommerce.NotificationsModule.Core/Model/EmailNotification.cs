@@ -25,6 +25,7 @@ namespace VirtoCommerce.NotificationsModule.Core.Model
         }
 
         public override string Kind => nameof(EmailNotification);
+
         /// <summary>
         /// Sender
         /// </summary>
@@ -46,6 +47,7 @@ namespace VirtoCommerce.NotificationsModule.Core.Model
         /// Array of BCC recipients
         /// </summary>
         public string[] BCC { get; set; }
+
         public IList<EmailAttachment> Attachments { get; set; }
 
         public override async Task ToMessageAsync(NotificationMessage message, INotificationTemplateRenderer render)
@@ -57,8 +59,24 @@ namespace VirtoCommerce.NotificationsModule.Core.Model
             var template = (EmailNotificationTemplate)Templates.FindTemplateForLanguage(message.LanguageCode);
             if (template != null)
             {
-                emailMessage.Subject = await render.RenderAsync(template.Subject, this, template.LanguageCode);
-                emailMessage.Body = await render.RenderAsync(template.Body, this, template.LanguageCode);
+                var subjectRenderContext = new NotificationRenderContext
+                {
+                    Template = template.Subject,
+                    Model = this,
+                    Language = template.LanguageCode,
+                };
+
+                emailMessage.Subject = await render.RenderAsync(subjectRenderContext);
+
+                var bodyRenderContext = new NotificationRenderContext
+                {
+                    Template = template.Body,
+                    Model = this,
+                    Language = template.LanguageCode,
+                    LayoutId = template.NotificationLayoutId,
+                };
+
+                emailMessage.Body = await render.RenderAsync(bodyRenderContext);
             }
 
             emailMessage.From = From;
@@ -96,7 +114,7 @@ namespace VirtoCommerce.NotificationsModule.Core.Model
                 BCC = emailRequest.BCC;
                 Attachments = emailRequest.Attachments;
             }
-            
+
             return base.PopulateFromOther(other);
         }
 

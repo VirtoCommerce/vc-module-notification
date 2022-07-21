@@ -25,6 +25,8 @@ namespace VirtoCommerce.NotificationsModule.Core.Model
         /// </summary>
         public string Sample { get; set; }
 
+        public string NotificationLayoutId { get; set; }
+
         public override void PopulateFromLocalizedContent(LocalizedTemplateContent content)
         {
             base.PopulateFromLocalizedContent(content);

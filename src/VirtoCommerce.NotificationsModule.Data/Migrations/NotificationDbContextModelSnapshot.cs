@@ -157,6 +157,38 @@ namespace VirtoCommerce.NotificationsModule.Data.Migrations
                     b.HasDiscriminator<string>("Discriminator").HasValue("NotificationEntity");
                 });
 
+            modelBuilder.Entity("VirtoCommerce.NotificationsModule.Data.Model.NotificationLayoutEntity", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
+
+                    b.Property<string>("CreatedBy")
+                        .HasMaxLength(64)
+                        .HasColumnType("nvarchar(64)");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("ModifiedBy")
+                        .HasMaxLength(64)
+                        .HasColumnType("nvarchar(64)");
+
+                    b.Property<DateTime?>("ModifiedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Template")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("NotificationLayout", (string)null);
+                });
+
             modelBuilder.Entity("VirtoCommerce.NotificationsModule.Data.Model.NotificationMessageEntity", b =>
                 {
                     b.Property<string>("Id")
@@ -329,12 +361,18 @@ namespace VirtoCommerce.NotificationsModule.Data.Migrations
                     b.Property<string>("Body")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("NotificationLayoutId")
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
+
                     b.Property<string>("Sample")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Subject")
                         .HasMaxLength(512)
                         .HasColumnType("nvarchar(512)");
+
+                    b.HasIndex("NotificationLayoutId");
 
                     b.HasDiscriminator().HasValue("EmailNotificationTemplateEntity");
                 });
@@ -412,6 +450,16 @@ namespace VirtoCommerce.NotificationsModule.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
 
                     b.Navigation("Notification");
+                });
+
+            modelBuilder.Entity("VirtoCommerce.NotificationsModule.Data.Model.EmailNotificationTemplateEntity", b =>
+                {
+                    b.HasOne("VirtoCommerce.NotificationsModule.Data.Model.NotificationLayoutEntity", "NotificationLayout")
+                        .WithMany()
+                        .HasForeignKey("NotificationLayoutId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.Navigation("NotificationLayout");
                 });
 
             modelBuilder.Entity("VirtoCommerce.NotificationsModule.Data.Model.NotificationEntity", b =>

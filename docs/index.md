@@ -53,6 +53,33 @@ These notifications types are provided by VC settings out-of-the-box. But the sy
 ![Notification Template](media/screen-notification-template.png)
 ![Preview](media/screen-notification-template-preview.png)
 
+### Notification Layouts
+
+VC Notification module provides email notification template layout functionality so you can simplify email notification management of footer, header, etc.
+
+1. On the 'Notifications' menu select 'Notification layouts' and add a new layout. Layout body is a Liquid template that will be populated by email content on rendering. Define a special variable, for example `content`, and place it between your html header and footer, for example: 
+```html
+<div>HEADER</div>
+     {{ content }}
+<div>FOOTER</div>
+```
+![Notification Layout](media/notification-layout-new.png)
+
+
+2. Open email template. For layout to render correctly you need to first select it in the Layout dropdown. Then after selecting a layout you need to provide content for the `content` variable defined inside the layout earlier. You can do it by placing it inside `capture` clause, for example:
+```liquid
+{% capture content %}
+     Renders the content by captured <strong>content</strong> keyword. <br />
+     Can use template variables: <strong>{{ customer_order.number }}</strong> 
+{% endcapture %}
+``` 
+3. You can check correctness of your email notification by clicking the Preview button:
+![Notification Layout Preview](media/notification-layout-preview.png)
+
+*Note*: you can have more than one content variable in a layout, they will be rendered as long as captured inside the notification template.
+
+4. Save changes to the notification template.
+
 ### Notification logs
 
 VC Notification module saves notification activity logs and store them under 'Notification sending log'.

@@ -15,4 +15,13 @@ angular.module('virtoCommerce.notificationsModule')
             getNotificationJournalDetails: { method: 'GET', url: 'api/notifications/journal/:id' },
             resendNotifications: { method: 'POST', url: 'api/notifications/scheduleresend' }
         })
+    }])
+    .factory('virtoCommerce.notificationsModule.notificationLayoutsApi', ['$resource', function ($resource) {
+        return $resource('api/notification-layouts/', {}, {
+            getNotificationLayout: { method: 'GET', url: 'api/notification-layouts/:id' },
+            searchNotificationLayouts: { method: 'POST', url: 'api/notification-layouts/search' },
+            createNotificationLayout: { method: 'POST' },
+            updateNotificationLayout: { method: 'PUT' },
+            deleteNotificationLayout: { method: 'DELETE' }
+        })
     }]);
