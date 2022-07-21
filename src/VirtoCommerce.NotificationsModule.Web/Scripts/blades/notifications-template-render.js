@@ -42,7 +42,8 @@ angular.module('virtoCommerce.notificationsModule')
                 language: blade.language
             }, {
                 text: blade.currentEntity.body,
-                data: blade.data
+                data: blade.data,
+                notificationLayoutId: blade.currentEntity.notificationLayoutId
             }, function (response) {
                 $('#notification_template_preview').load(function() {
                     $('#notification_template_preview').height($('#notification_template_preview').contents().outerHeight());
@@ -55,6 +56,7 @@ angular.module('virtoCommerce.notificationsModule')
         function sharePreview(eMailTo) {
             delete blade.data.cc;
             delete blade.data.bcc;
+            blade.data.languageCode = blade.language;
             blade.data.to = eMailTo;
 
             notifications.sharePreview({

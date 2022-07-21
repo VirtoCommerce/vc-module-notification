@@ -27,6 +27,14 @@ namespace VirtoCommerce.NotificationsModule.Data.Model
         /// </summary>
         public string Sample { get; set; }
 
+        /// <summary>
+        /// Id of notification
+        /// </summary>
+        [StringLength(128)]
+        public string NotificationLayoutId { get; set; }
+
+        public NotificationLayoutEntity NotificationLayout { get; set; }
+
         public override NotificationTemplate ToModel(NotificationTemplate template)
         {
             if (template is EmailNotificationTemplate emailNotificationTemplate)
@@ -34,6 +42,7 @@ namespace VirtoCommerce.NotificationsModule.Data.Model
                 emailNotificationTemplate.Subject = Subject;
                 emailNotificationTemplate.Body = Body;
                 emailNotificationTemplate.Sample = Sample;
+                emailNotificationTemplate.NotificationLayoutId = NotificationLayoutId;
             }
 
             return base.ToModel(template);
@@ -46,6 +55,7 @@ namespace VirtoCommerce.NotificationsModule.Data.Model
                 Subject = emailNotificationTemplate.Subject;
                 Body = emailNotificationTemplate.Body;
                 Sample = emailNotificationTemplate.Sample;
+                NotificationLayoutId = emailNotificationTemplate.NotificationLayoutId;
             }
 
             return base.FromModel(template, pkMap);
@@ -58,6 +68,7 @@ namespace VirtoCommerce.NotificationsModule.Data.Model
                 emailNotificationTemplateEntity.Subject = Subject;
                 emailNotificationTemplateEntity.Body = Body;
                 emailNotificationTemplateEntity.Sample = Sample;
+                emailNotificationTemplateEntity.NotificationLayoutId = NotificationLayoutId;
             }
 
             base.Patch(target);

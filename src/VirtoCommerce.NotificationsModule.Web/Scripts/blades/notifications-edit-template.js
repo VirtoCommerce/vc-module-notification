@@ -1,6 +1,6 @@
 angular.module('virtoCommerce.notificationsModule')
-    .controller('virtoCommerce.notificationsModule.editTemplateController', ['$rootScope', '$scope', '$timeout', '$localStorage', 'virtoCommerce.notificationsModule.notificationsModuleApi', 'FileUploader', 'platformWebApp.bladeNavigationService', 'platformWebApp.dialogService',
-        function ($rootScope, $scope, $timeout, $localStorage, notifications, FileUploader, bladeNavigationService, dialogService) {
+    .controller('virtoCommerce.notificationsModule.editTemplateController', ['$rootScope', '$scope', '$timeout', '$localStorage', 'virtoCommerce.notificationsModule.notificationsModuleApi', 'virtoCommerce.notificationsModule.notificationLayoutsApi', 'FileUploader', 'platformWebApp.bladeNavigationService', 'platformWebApp.dialogService',
+        function ($rootScope, $scope, $timeout, $localStorage, notifications, layouts, FileUploader, bladeNavigationService, dialogService) {
             var blade = $scope.blade;
             $scope.isValid = false;
 
@@ -196,6 +196,10 @@ angular.module('virtoCommerce.notificationsModule')
             $scope.$watch("blade.currentEntity", function () {
                 $scope.isValid = isDirty() && canRender();
             }, true);
+
+            $scope.searchNotificationLayouts = function (criteria) {
+                return layouts.searchNotificationLayouts(criteria);
+            }
 
             blade.headIcon = 'fa fa-envelope';
 

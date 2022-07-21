@@ -28,13 +28,14 @@ namespace VirtoCommerce.NotificationsModule.Web.Controllers
         private readonly INotificationMessageService _notificationMessageService;
         private readonly INotificationMessageSenderFactory _notificationMessageSenderFactory;
 
-        public NotificationsController(INotificationSearchService notificationSearchService
-            , INotificationService notificationService
-            , INotificationTemplateRenderer notificationTemplateRender
-            , INotificationSender notificationSender
-            , INotificationMessageSearchService notificationMessageSearchService
-            , INotificationMessageService notificationMessageService
-            , INotificationMessageSenderFactory notificationMessageSenderFactory)
+        public NotificationsController(
+            INotificationSearchService notificationSearchService,
+            INotificationService notificationService,
+            INotificationTemplateRenderer notificationTemplateRender,
+            INotificationSender notificationSender,
+            INotificationMessageSearchService notificationMessageSearchService,
+            INotificationMessageService notificationMessageService,
+            INotificationMessageSenderFactory notificationMessageSenderFactory)
         {
             _notificationSearchService = notificationSearchService;
             _notificationService = notificationService;
@@ -109,7 +110,16 @@ namespace VirtoCommerce.NotificationsModule.Web.Controllers
         public async Task<ActionResult> RenderingTemplate([FromBody] NotificationTemplateRequest request, string language)
         {
             var template = request.Data.Templates.FindTemplateForLanguage(language);
-            var result = await _notificationTemplateRender.RenderAsync(request.Text, request.Data, template.LanguageCode);
+
+            var context = new NotificationRenderContext
+            {
+                Template = request.Text,
+                Model = request.Data,
+                Language = template.LanguageCode,
+                LayoutId = request.NotificationLayoutId,
+            };
+
+            var result = await _notificationTemplateRender.RenderAsync(context);
 
             return Ok(new { html = result });
         }

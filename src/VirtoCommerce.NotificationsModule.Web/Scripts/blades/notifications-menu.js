@@ -5,8 +5,30 @@ angular.module('virtoCommerce.notificationsModule')
 
     function initializeBlade() {
         var entities = [
-            { id: '1', name: 'notifications.blades.notifications-list.title', templateName: 'notifications-list', controllerName: 'notificationsListController', icon: 'fa fa-list', subtitle: 'notifications.blades.notifications-list.subtitle' },
-            { id: '2', name: 'notifications.blades.notifications-journal.title', templateName: 'notifications-journal', controllerName: 'notificationsJournalController', icon: 'fa fa-book', subtitle: 'notifications.blades.notifications-journal.subtitle' }];
+            {
+                id: '1',
+                name: 'notifications.blades.notifications-list.title',
+                subtitle: 'notifications.blades.notifications-list.subtitle',
+                icon: 'fa fa-list',
+                templateName: 'notifications-list',
+                controllerName: 'notificationsListController'
+            },
+            {
+                id: '2',
+                name: 'notifications.blades.notification-layouts-list.title',
+                subtitle: 'notifications.blades.notification-layouts-list.subtitle',
+                icon: 'fa fa-list',
+                templateName: 'notification-layouts-list',
+                controllerName: 'notificationLayoutsListController'
+            },
+            {
+                id: '3',
+                name: 'notifications.blades.notifications-journal.title',
+                subtitle: 'notifications.blades.notifications-journal.subtitle',
+                icon: 'fa fa-book',
+                templateName: 'notifications-journal',
+                controllerName: 'notificationsJournalController'
+            }];
         blade.currentEntities = entities;
         blade.isLoading = false;
     };
