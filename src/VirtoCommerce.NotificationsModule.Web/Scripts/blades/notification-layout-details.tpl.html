@@ -18,7 +18,7 @@
                 <div class="column">
                     <div class="form-group">
                         <label class="form-label" style="margin:0">{{'notifications.blades.notification-layout-details.labels.template' | translate}}</label>
-                        <div class="form-group" style="margin:0">
+                        <div class="form-group" style="margin:0" ng-if="editorReloaded"> 
                             <input id="fileUploader" type="file" multiple style="display: none;" uploader="fileUploader" nv-file-select />
                             <textarea vc-uk-htmleditor ng-model="blade.currentEntity.template" file-uploader="fileUploader"></textarea>
                         </div>

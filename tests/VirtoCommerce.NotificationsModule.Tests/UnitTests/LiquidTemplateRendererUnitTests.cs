@@ -47,10 +47,13 @@ namespace VirtoCommerce.NotificationsModule.Tests.UnitTests
         {
             //Arrange
             _translationServiceMock.Setup(x => x.GetTranslationDataForLanguage(language)).Returns(jObject);
-            string input = "{{ 'order.subject1' | translate: \"" + language + "\" }} test";
+            var context = new NotificationRenderContext
+            {
+                Template = "{{ 'order.subject1' | translate: \"" + language + "\" }} test",
+            };
 
             //Act
-            var result = await _liquidTemplateRenderer.RenderAsync(input, null);
+            var result = await _liquidTemplateRenderer.RenderAsync(context);
 
             //Assert
             Assert.Equal("subj test", result);
@@ -65,10 +68,15 @@ namespace VirtoCommerce.NotificationsModule.Tests.UnitTests
             var jObject = JObject.FromObject(new { body });
             _translationServiceMock.Setup(x => x.GetTranslationDataForLanguage(string.Empty)).Returns(jObject);
 
-            string input = "{{ 'body' | translate }}";
+            var context = new NotificationRenderContext
+            {
+                Template = "{{ 'body' | translate }}",
+                Model = obj,
+                Language = string.Empty,
+            };
 
             //Act
-            var result = await _liquidTemplateRenderer.RenderAsync(input, obj, string.Empty);
+            var result = await _liquidTemplateRenderer.RenderAsync(context);
 
             //Assert
             Assert.Equal("Your order 123 changed status to New.", result);
@@ -78,10 +86,14 @@ namespace VirtoCommerce.NotificationsModule.Tests.UnitTests
         public async Task Render_GetCurrentYear()
         {
             //Arrange
-            string input = "{{created_date | date.to_string '%Y' }}";
+            var context = new NotificationRenderContext
+            {
+                Template = "{{created_date | date.to_string '%Y' }}",
+                Model = new { CreatedDate = DateTime.Now },
+            };
 
             //Act
-            var result = await _liquidTemplateRenderer.RenderAsync(input, new { CreatedDate = DateTime.Now });
+            var result = await _liquidTemplateRenderer.RenderAsync(context);
 
             //Assert
             Assert.Equal(DateTime.Now.Year.ToString(), result);
@@ -92,10 +104,13 @@ namespace VirtoCommerce.NotificationsModule.Tests.UnitTests
         {
             //Arrange
             _blobUrlResolverMock.Setup(x => x.GetAbsoluteUrl(It.IsAny<string>())).Returns("http://localhost:10645/assets/1.svg");
-            string input = "test {{ '1.svg' | asset_url }}";
+            var context = new NotificationRenderContext
+            {
+                Template = "test {{ '1.svg' | asset_url }}",
+            };
 
             //Act
-            var result = await _liquidTemplateRenderer.RenderAsync(input, null);
+            var result = await _liquidTemplateRenderer.RenderAsync(context);
 
             //Assert
             Assert.Equal("test http://localhost:10645/assets/1.svg", result);

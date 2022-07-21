@@ -5,6 +5,7 @@ namespace VirtoCommerce.NotificationsModule.Web.Model
     public class NotificationTemplateRequest
     {
         public string Text { get; set; }
+        public string NotificationLayoutId { get; set; }
         public Notification Data { get; set; }
     }
 }

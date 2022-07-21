@@ -31,8 +31,6 @@ angular.module('virtoCommerce.notificationsModule')
             blade.data.cc = pluckAddress(blade.data.cc);
             blade.data.bcc = pluckAddress(blade.data.bcc);
 
-            blade.data.notificationLayoutId = blade.currentEntity.notificationLayoutId;
-
             keyTemplateLocalStorage = blade.tenantType + '.' + blade.notification.type + '.' + blade.language;
             var itemFromLocalStorage = $localStorage[keyTemplateLocalStorage];
             if (itemFromLocalStorage) {
@@ -44,7 +42,8 @@ angular.module('virtoCommerce.notificationsModule')
                 language: blade.language
             }, {
                 text: blade.currentEntity.body,
-                data: blade.data
+                data: blade.data,
+                notificationLayoutId: blade.currentEntity.notificationLayoutId
             }, function (response) {
                 $('#notification_template_preview').load(function() {
                     $('#notification_template_preview').height($('#notification_template_preview').contents().outerHeight());
@@ -57,7 +56,6 @@ angular.module('virtoCommerce.notificationsModule')
         function sharePreview(eMailTo) {
             delete blade.data.cc;
             delete blade.data.bcc;
-            delete blade.data.notificationLayoutId;
             blade.data.languageCode = blade.language;
             blade.data.to = eMailTo;
 

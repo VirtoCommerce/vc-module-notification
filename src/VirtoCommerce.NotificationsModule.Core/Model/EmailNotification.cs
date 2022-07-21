@@ -11,7 +11,7 @@ namespace VirtoCommerce.NotificationsModule.Core.Model
     /// <summary>
     /// Type of Notification for the Email
     /// </summary>
-    public abstract class EmailNotification : Notification, IHasNotificationLayoutId
+    public abstract class EmailNotification : Notification
     {
         [Obsolete("need to use ctor with 'type' parameter")]
         public EmailNotification()
@@ -50,8 +50,6 @@ namespace VirtoCommerce.NotificationsModule.Core.Model
 
         public IList<EmailAttachment> Attachments { get; set; }
 
-        public string NotificationLayoutId { get; set; }
-
         public override async Task ToMessageAsync(NotificationMessage message, INotificationTemplateRenderer render)
         {
             await base.ToMessageAsync(message, render);
@@ -61,14 +59,24 @@ namespace VirtoCommerce.NotificationsModule.Core.Model
             var template = (EmailNotificationTemplate)Templates.FindTemplateForLanguage(message.LanguageCode);
             if (template != null)
             {
-                //add layout id to notification object clone, this will force layout rendering for body 
-                var notification = Clone() as EmailNotification;
+                var subjectRenderContext = new NotificationRenderContext
+                {
+                    Template = template.Subject,
+                    Model = this,
+                    Language = template.LanguageCode,
+                };
 
-                notification.NotificationLayoutId = null;
-                emailMessage.Subject = await render.RenderAsync(template.Subject, notification, template.LanguageCode);
+                emailMessage.Subject = await render.RenderAsync(subjectRenderContext);
 
-                notification.NotificationLayoutId = template.NotificationLayoutId;
-                emailMessage.Body = await render.RenderAsync(template.Body, notification, template.LanguageCode);
+                var bodyRenderContext = new NotificationRenderContext
+                {
+                    Template = template.Body,
+                    Model = this,
+                    Language = template.LanguageCode,
+                    LayoutId = template.NotificationLayoutId,
+                };
+
+                emailMessage.Body = await render.RenderAsync(bodyRenderContext);
             }
 
             emailMessage.From = From;

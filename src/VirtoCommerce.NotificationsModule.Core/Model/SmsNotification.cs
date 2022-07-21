@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using VirtoCommerce.NotificationsModule.Core.Extensions;
 using VirtoCommerce.NotificationsModule.Core.Services;
@@ -36,7 +35,14 @@ namespace VirtoCommerce.NotificationsModule.Core.Model
             var template = (SmsNotificationTemplate)Templates.FindTemplateForLanguage(message.LanguageCode);
             if (template != null)
             {
-                smsNotificationMessage.Message = await render.RenderAsync(template.Message, this, template.LanguageCode);
+                var renderContext = new NotificationRenderContext
+                {
+                    Template = template.Message,
+                    Language = template.LanguageCode,
+                    Model = this,
+                };
+
+                smsNotificationMessage.Message = await render.RenderAsync(renderContext);
             }
             smsNotificationMessage.Number = Number;
         }

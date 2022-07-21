@@ -1,10 +1,16 @@
 angular.module('virtoCommerce.notificationsModule')
     .controller('virtoCommerce.notificationsModule.notificationLayoutController',
-        ['$scope', 'virtoCommerce.notificationsModule.notificationLayoutsApi', 'platformWebApp.bladeNavigationService', 'FileUploader',
-            function ($scope, layouts, bladeNavigationService, FileUploader) {
+        ['$scope', '$timeout', 'virtoCommerce.notificationsModule.notificationLayoutsApi', 'platformWebApp.bladeNavigationService', 'FileUploader',
+            function ($scope, $timeout, layouts, bladeNavigationService, FileUploader) {
                 var blade = $scope.blade;
                 blade.headIcon = 'fa fa-envelope';
                 blade.updatePermission = 'notifications:update';
+
+                // since the vc-uk-htmleditor directive doesn't fully track changes in the data source
+                // force redraw editor directive on the blade after modifiying currentEntity
+                function reloadEditor() {
+                    $scope.editorReloaded = true;
+                }
 
                 if (blade.isNew) {
                     blade.title = 'notifications.blades.notification-layout-details.title-new';
@@ -14,6 +20,8 @@ angular.module('virtoCommerce.notificationsModule')
                 }
 
                 blade.refresh = function (parentRefresh) {
+                    reloadEditor();
+
                     if (blade.isNew) {
                         blade.currentEntity = {};
                         blade.isLoading = false;
@@ -95,6 +103,8 @@ angular.module('virtoCommerce.notificationsModule')
                             icon: 'fa fa-undo',
                             executeMethod: function () {
                                 angular.copy(blade.originalEntity, blade.currentEntity);
+                                $scope.editorReloaded = false;
+                                $timeout(reloadEditor, 0);
                             },
                             canExecuteMethod: isDirty,
                             permission: blade.updatePermission

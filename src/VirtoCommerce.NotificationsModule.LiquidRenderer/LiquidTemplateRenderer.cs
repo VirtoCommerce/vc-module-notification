@@ -24,7 +24,19 @@ namespace VirtoCommerce.NotificationsModule.LiquidRenderer
 
         public async Task<string> RenderAsync(string stringTemplate, object model, string language = null)
         {
-            var context = new LiquidTemplateContext()
+            var renderContext = new NotificationRenderContext
+            {
+                Template = stringTemplate,
+                Language = language,
+                Model = model,
+            };
+
+            return await RenderAsync(renderContext);
+        }
+
+        public async Task<string> RenderAsync(NotificationRenderContext renderContext)
+        {
+            var templateContext = new LiquidTemplateContext()
             {
                 EnableRelaxedMemberAccess = true,
                 NewLine = Environment.NewLine,
@@ -35,23 +47,25 @@ namespace VirtoCommerce.NotificationsModule.LiquidRenderer
                 LoopLimit = _options.LoopLimit,
             };
 
-            if (model is IHasNotificationLayoutId hasLayout && !string.IsNullOrEmpty(hasLayout.NotificationLayoutId))
+            var stringTemplate = renderContext.Template;
+
+            if (!string.IsNullOrEmpty(renderContext.LayoutId))
             {
-                stringTemplate = IncludeLayout(stringTemplate, hasLayout.NotificationLayoutId);
-                context.TemplateLoader = _templateLoaderFactory();
+                stringTemplate = IncludeLayout(stringTemplate, renderContext.LayoutId);
+                templateContext.TemplateLoader = _templateLoaderFactory();
             }
 
             var scriptObject = AbstractTypeFactory<NotificationScriptObject>.TryCreateInstance();
-            scriptObject.Language = language;
-            scriptObject.Import(model);
+            scriptObject.Language = renderContext.Language;
+            scriptObject.Import(renderContext.Model);
             foreach (var customFilterType in _options.CustomFilterTypes)
             {
                 scriptObject.Import(customFilterType);
             }
-            context.PushGlobal(scriptObject);
+            templateContext.PushGlobal(scriptObject);
 
             var template = Template.ParseLiquid(stringTemplate);
-            var result = await template.RenderAsync(context);
+            var result = await template.RenderAsync(templateContext);
 
             return result;
         }
