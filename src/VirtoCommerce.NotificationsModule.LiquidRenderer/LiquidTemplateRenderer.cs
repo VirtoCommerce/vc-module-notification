@@ -77,7 +77,6 @@ namespace VirtoCommerce.NotificationsModule.LiquidRenderer
         {
             var layout = $"{{{{include '{layoutId}'}}}}";
             var stringBuilder = new StringBuilder(template);
-            stringBuilder.Append(Environment.NewLine);
             stringBuilder.Append(layout);
             return stringBuilder.ToString();
         }

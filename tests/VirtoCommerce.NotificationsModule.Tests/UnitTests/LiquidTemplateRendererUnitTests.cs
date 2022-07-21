@@ -116,6 +116,30 @@ namespace VirtoCommerce.NotificationsModule.Tests.UnitTests
             Assert.Equal("test http://localhost:10645/assets/1.svg", result);
         }
 
+        [Fact]
+        public async Task RenderAsync_ContextHasLayoutId_LayoutRendered()
+        {
+            var layoutId = Guid.NewGuid().ToString();
+            var content = @"{% capture content %}test_content{% endcapture %}";
+            var layout = new NotificationLayout
+            {
+                Id = layoutId,
+                Template = "header {{content}} footer",
+            };
+
+            _notificationLayoutServiceMock
+                .Setup(x => x.GetByIdAsync(It.Is<string>(x => x == layoutId), It.IsAny<string>()))
+                .ReturnsAsync(layout);
+
+            var context = new NotificationRenderContext
+            {
+                Template = content,
+                LayoutId = layoutId,
+            };
+
+            var result = await _liquidTemplateRenderer.RenderAsync(context);
+            Assert.Equal("header test_content footer", result);
+        }
 
         public static IEnumerable<object[]> TranslateData
         {
