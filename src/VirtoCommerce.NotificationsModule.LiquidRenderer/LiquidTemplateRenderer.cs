@@ -22,7 +22,7 @@ namespace VirtoCommerce.NotificationsModule.LiquidRenderer
             _templateLoaderFactory = templateLoaderFactory;
         }
 
-        public async Task<string> RenderAsync(string stringTemplate, object model, string language = null)
+        public Task<string> RenderAsync(string stringTemplate, object model, string language = null)
         {
             var renderContext = new NotificationRenderContext
             {
@@ -31,7 +31,7 @@ namespace VirtoCommerce.NotificationsModule.LiquidRenderer
                 Model = model,
             };
 
-            return await RenderAsync(renderContext);
+            return RenderAsync(renderContext);
         }
 
         public async Task<string> RenderAsync(NotificationRenderContext renderContext)
@@ -42,7 +42,7 @@ namespace VirtoCommerce.NotificationsModule.LiquidRenderer
                 NewLine = Environment.NewLine,
                 TemplateLoaderLexerOptions = new LexerOptions
                 {
-                    Mode = ScriptMode.Liquid,
+                    Mode = ScriptMode.Default,
                 },
                 LoopLimit = _options.LoopLimit,
             };
