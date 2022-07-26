@@ -44,6 +44,9 @@ These notifications types are provided by VC settings out-of-the-box. But the sy
      1. 'BCC' field is blank by default. You can enter as many emails as needed.
 ![Notification Details](media/screen-notification-details.png)
 
+### Liquid language
+A liquid syntax used to describe email templates. Scriban library used to render liquid. Therefore the user can write liquid templates as well as scriban templates. [Take a reference](https://github.com/scriban/scriban/blob/master/doc/liquid-support.md) to Scriban library for detailed liquid syntax description.
+
 ### Notification Template
 
 1. On 'Notifications details' blade select the 'Templates' widget and then select the Template from the list on 'Manage notification templates' blade;
