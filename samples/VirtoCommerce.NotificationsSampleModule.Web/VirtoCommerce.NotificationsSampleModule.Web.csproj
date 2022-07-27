@@ -9,7 +9,6 @@
         <NoWarn>1701;1702;1705</NoWarn>
     </PropertyGroup>
     <ItemGroup>
-        <PackageReference Include="Scriban" Version="2.1.1" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.0">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
