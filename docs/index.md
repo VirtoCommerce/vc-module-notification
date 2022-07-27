@@ -1,9 +1,9 @@
 # Overview
 
-The Notifications module supports notifications infrastructure and consists of two main blocks:
+The Notifications module supports notification infrastructure and consists of two main blocks:
 
-1. Notifications list;
-1. Notification activity feed.
+1. Notifications list
+1. Notification activity feed
 
 ![Notifications module](media/screen-notifications-module.png)
 
@@ -43,6 +43,9 @@ These notifications types are provided by VC settings out-of-the-box. But the sy
      1. 'CC recipient' field has a default value, but the system allows enter additional email addresses;
      1. 'BCC' field is blank by default. You can enter as many emails as needed.
 ![Notification Details](media/screen-notification-details.png)
+
+### Liquid Language
+Liquid syntax is used to describe email templates. As Scriban library is leveraged to render liquid, you can write liquid templates as well as scriban templates. For more information on liquid syntax, go [here](https://github.com/scriban/scriban/blob/master/doc/liquid-support.md).
 
 ### Notification Template
 
