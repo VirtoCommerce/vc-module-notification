@@ -1,27 +1,30 @@
+# Creating Email Templates
+Coding email templates is not easy because each email service has its own features. Moreover, something may not be supported or may look different compared to other service or on different devices. Here are some useful tips and tricks you can leverage to work with email templates correctly:
 
-The email template coding - it's not easy, because each email service has its own characteristics - something is not supported or looks different from each other or on different devices. So here are some tips and tricks:
-
-1. Try to declare styles for every individual element within its style attribute (for example <element style=”style:value;”></element>), otherwise known as 'inline CSS'. Если Вы будете использовать internal CSS (i.e. styles written within a <style> element) в шаблонах писем, то разных почтовых сервисов и с разных устройств Ваш шаблон может отобразиться по-разному, или где-то CSS стили не будут учитываться вообще.
+1. Try to declare styles for every individual element within its style attribute , e.g., `<element style=”style:value;”></element>`. This is also known as *inline CSS*. If you use internal CSS, i.e. styles written within the `<style>` element), in email templates, different services and devices may display your template in a different manner, or even completely ignore your CSS.
 
 ![Correct template](/docs/media/template-correct-buttons.png)
-<p align=center>The correct template with internal CSS</p>
+
+<p align=center>Correct template with internal CSS</p>
 
 ![Template in Gmail](/docs/media/template-gmail-buttons.png)
-<p align=center>The display template in Gmail service with internal CSS</p>
+
+<p align=center>Template with internal CSS displayed in Gmail</p>
 
 ![Template in Outlook](/docs/media/template-outlook-buttons.png)
-<p align=center>The display template in Outlook service with internal CSS</p>
 
-2. Styles in Outlook service don't work within &lt;a&gt; tag. Use &lt;span&gt; or &lt;div&gt;.
+<p align=center>Template with internal CSS displayed in Outlook</p>
 
-3. Если необходимо добавить небольшие картинки, иконки в шаблон письма, то лучше всего использовать base64 format, т.к. в этом случае нет необходимости закидывать картинки в какой-либо внешний сервис и отображение картинок не зависит от работы этого сервиса. Но надо учитывать, что, например, сервис Gmail.com не всегда отображает картинки в формате base64.
+2. Styles in Outlook service do not work within the `<a>` tag. Use `<span>` or `<div>` instead.
 
-4. Try to set widths in each cell rather than on the table. The combination of widths on the table, widths on the cells, HTML margins and padding, and CSS margins and padding can be chaotic.
+3. If you need to add small images or icons into your template, try to use the *base64* format; this way, you will avoid uploading images to a services, while those images will be displayed in a similar way regardless of the service. Please note, however, that some services, such as Gmail.com, do not always successfuly display *base64* images.
 
-5. If the spacing is critical to you, try nesting tables inside your main table instead. Even when margins and padding are supported by most email clients, results will be inconsistent.
+4. Try to set widths in every cell rather than in a table. With widths in the table, widths in the cells, HTML margins and padding, and CSS margins and padding, you may end up in a complete mess.
 
-![Template in iPhone - buttons are not correct](/docs/media/template-buttons-in-phone-not-correct.png)
-<p align=center>The display template in iPhone emulator - IOS 15.0 in Safari browser without using table for buttons</p>
+5. If the spacing is critical to you, try nesting tables inside your main table. Even though margins and padding are supported by most email clients, the result may be inconsistent.
+
+![Template displayed on iPhone with incorrect buttons](/docs/media/template-buttons-in-phone-not-correct.png)
+<p align=center>Template displayed in iPhone emulator (iOS 15.0, Safari) without using any table for buttons</p>
 
 ![Template in iPhone - buttons are correct](/docs/media/template-buttons-in-phone-correct.png)
-<p align=center>The display template in iPhone emulator - IOS 15.0 in Safari browser with using table for buttons</p>
+<p align=center>Template displayed in iPhone emulator (iOS 15.0, Safari) using a table for buttons</p>
