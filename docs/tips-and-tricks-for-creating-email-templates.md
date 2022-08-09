@@ -5,15 +5,15 @@ Coding email templates is not easy because each email service has its own featur
 
 ![Correct template](/docs/media/template-correct-buttons.png)
 
-<p align=center>Correct template with internal CSS</p>
+Correct template with internal CSS
 
 ![Template in Gmail](/docs/media/template-gmail-buttons.png)
 
-<p align=center>Template with internal CSS displayed in Gmail</p>
+Template with internal CSS displayed in Gmail
 
 ![Template in Outlook](/docs/media/template-outlook-buttons.png)
 
-<p align=center>Template with internal CSS displayed in Outlook</p>
+Template with internal CSS displayed in Outlook
 
 2. Styles in Outlook service do not work within the `<a>` tag. Use `<span>` or `<div>` instead.
 
@@ -24,7 +24,7 @@ Coding email templates is not easy because each email service has its own featur
 5. If the spacing is critical to you, try nesting tables inside your main table. Even though margins and padding are supported by most email clients, the result may be inconsistent.
 
 ![Template displayed on iPhone with incorrect buttons](/docs/media/template-buttons-in-phone-not-correct.png)
-<p align=center>Template displayed in iPhone emulator (iOS 15.0, Safari) without using any table for buttons</p>
+Template displayed in iPhone emulator (iOS 15.0, Safari) without using any table for buttons
 
 ![Template in iPhone - buttons are correct](/docs/media/template-buttons-in-phone-correct.png)
-<p align=center>Template displayed in iPhone emulator (iOS 15.0, Safari) using a table for buttons</p>
+Template displayed in iPhone emulator (iOS 15.0, Safari) using a table for buttons
