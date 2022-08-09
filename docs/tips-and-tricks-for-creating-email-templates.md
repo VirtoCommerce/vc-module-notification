@@ -23,5 +23,5 @@ The email template coding - it's not easy, because each email service has its ow
 ![Template in iPhone - buttons are not correct](/docs/media/template-buttons-in-phone-not-correct.png)
 <p align=center>The display template in iPhone emulator - IOS 15.0 in Safari browser without using table for buttons</p>
 
-![Template in iPhone - buttons are correct](/docs/media/template-buttons-in-phone-not-correct.png)
+![Template in iPhone - buttons are correct](/docs/media/template-buttons-in-phone-correct.png)
 <p align=center>The display template in iPhone emulator - IOS 15.0 in Safari browser with using table for buttons</p>
