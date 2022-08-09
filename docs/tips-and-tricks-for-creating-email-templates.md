@@ -17,7 +17,7 @@ Coding email templates is not easy because each email service has its own featur
 
 2. Styles in Outlook service do not work within the `<a>` tag. Use `<span>` or `<div>` instead.
 
-3. If you need to add small images or icons into your template, try to use the *base64* format; this way, you will avoid uploading images to a services, while those images will be displayed in a similar way regardless of the service. Please note, however, that some services, such as Gmail.com, do not always successfuly display *base64* images.
+3. If you need to add small images or icons into your template, try to use the *base64* format; this way, you will avoid uploading images to a services, while those images will be displayed in a similar way regardless of the service. <u>Please note, however, that some services, such as Gmail.com, do not always successfuly display *base64* images.</u>
 
 4. Try to set widths in every cell rather than in a table. With widths in the table, widths in the cells, HTML margins and padding, and CSS margins and padding, you may end up in a complete mess.
 
