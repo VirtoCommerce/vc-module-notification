@@ -55,7 +55,7 @@ namespace VirtoCommerce.NotificationsModule.Data.Services
                     repository.DisableChangesTracking();
 
                     var entities = await repository.GetByIdsAsync(ids, responseGroup);
-                    var notifications = entities.Select(n => n.ToModel(CreateNotification(n.Type, new UnregisteredNotification()))).ToArray();
+                    var notifications = entities.Select(ToModel).ToArray();
                     //Load predefined notifications templates
                     if (EnumUtility.SafeParseFlags(responseGroup, NotificationResponseGroup.Full).HasFlag(NotificationResponseGroup.WithTemplates))
                     {
@@ -91,7 +91,7 @@ namespace VirtoCommerce.NotificationsModule.Data.Services
                 {
                     var existingNotificationEntities = await repository.GetByNotificationsAsync(notifications, NotificationResponseGroup.Full.ToString());
                     //Convert db entities to domain notification to be able compare them with passed as parameter
-                    var existingNotifications = existingNotificationEntities.Select(e => e.ToModel(AbstractTypeFactory<Notification>.TryCreateInstance(e.Type))).ToArray();
+                    var existingNotifications = existingNotificationEntities.Select(ToModel).ToArray();
                     var comparer = AnonymousComparer.Create((Notification x) => string.Join("-", x.Type, x.TenantIdentity.Id, x.TenantIdentity.Type));
                     foreach (var notification in notifications)
                     {
@@ -107,7 +107,7 @@ namespace VirtoCommerce.NotificationsModule.Data.Services
                             /// https://docs.microsoft.com/en-us/ef/core/what-is-new/ef-core-3.0/breaking-changes#detectchanges-honors-store-generated-key-values
                             repository.TrackModifiedAsAddedForNewChildEntities(originalEntity);
 
-                            changedEntries.Add(new GenericChangedEntry<Notification>(notification, originalEntity.ToModel(AbstractTypeFactory<Notification>.TryCreateInstance()), EntryState.Modified));
+                            changedEntries.Add(new GenericChangedEntry<Notification>(notification, ToModel(originalEntity), EntryState.Modified));
                             modifiedEntity?.Patch(originalEntity);
 
                         }
@@ -155,15 +155,19 @@ namespace VirtoCommerce.NotificationsModule.Data.Services
             }
         }
 
-        private static Notification CreateNotification(string typeName, Notification defaultObj)
+        private static Notification ToModel(NotificationEntity entity)
         {
-            var result = defaultObj;
+            Notification result = null;
+            var typeName = entity.Type;
             var typeInfo = AbstractTypeFactory<Notification>.FindTypeInfoByName(typeName);
+
             if (typeInfo != null)
             {
                 result = AbstractTypeFactory<Notification>.TryCreateInstance(typeName);
+                entity.ToModel(result);
             }
-            return result;
+
+            return result ?? new UnregisteredNotification();
         }
     }
 }
