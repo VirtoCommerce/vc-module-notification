@@ -87,6 +87,8 @@ namespace VirtoCommerce.NotificationsModule.Data.Services
 
                 var pkMap = new PrimaryKeyResolvingMap();
                 var changedEntries = new List<GenericChangedEntry<Notification>>();
+                var changedEntities = new List<NotificationEntity>();
+
                 using (var repository = _repositoryFactory())
                 {
                     var existingNotificationEntities = await repository.GetByNotificationsAsync(notifications, NotificationResponseGroup.Full.ToString());
@@ -109,13 +111,14 @@ namespace VirtoCommerce.NotificationsModule.Data.Services
 
                             changedEntries.Add(new GenericChangedEntry<Notification>(notification, ToModel(originalEntity), EntryState.Modified));
                             modifiedEntity?.Patch(originalEntity);
-
+                            changedEntities.Add(originalEntity);
                         }
                         else
                         {
                             //need to reset entity data for create notification with tenant based on the global notification
                             repository.Add(modifiedEntity.ResetEntityData());
                             changedEntries.Add(new GenericChangedEntry<Notification>(notification, EntryState.Added));
+                            changedEntities.Add(modifiedEntity);
                         }
                     }
 
@@ -125,6 +128,11 @@ namespace VirtoCommerce.NotificationsModule.Data.Services
                     await repository.UnitOfWork.CommitAsync();
                     pkMap.ResolvePrimaryKeys();
                     ClearCache(notifications);
+
+                    foreach (var (changedEntry, i) in changedEntries.Select((x, i) => (x, i)))
+                    {
+                        changedEntry.NewEntry = ToModel(changedEntities[i]);
+                    }
 
                     await _eventPublisher.Publish(new NotificationChangedEvent(changedEntries));
                 }
