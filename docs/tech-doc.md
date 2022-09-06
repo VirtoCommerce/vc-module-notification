@@ -1,4 +1,6 @@
-# Overview
+# How to register own notification
+
+## Overview
 
 The documentation describes how to get notifications, templates and how to send.
 
