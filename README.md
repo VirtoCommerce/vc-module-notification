@@ -2,19 +2,20 @@
 
 [![CI status](https://github.com/VirtoCommerce/vc-module-notification/workflows/Module%20CI/badge.svg?branch=dev)](https://github.com/VirtoCommerce/vc-module-notification/actions?query=workflow%3A"Module+CI") [![Quality gate](https://sonarcloud.io/api/project_badges/measure?project=VirtoCommerce_vc-module-notification&metric=alert_status&branch=dev)](https://sonarcloud.io/dashboard?id=VirtoCommerce_vc-module-notification) [![Reliability rating](https://sonarcloud.io/api/project_badges/measure?project=VirtoCommerce_vc-module-notification&metric=reliability_rating&branch=dev)](https://sonarcloud.io/dashboard?id=VirtoCommerce_vc-module-notification) [![Security rating](https://sonarcloud.io/api/project_badges/measure?project=VirtoCommerce_vc-module-notification&metric=security_rating&branch=dev)](https://sonarcloud.io/dashboard?id=VirtoCommerce_vc-module-notification) [![Sqale rating](https://sonarcloud.io/api/project_badges/measure?project=VirtoCommerce_vc-module-notification&metric=sqale_rating&branch=dev)](https://sonarcloud.io/dashboard?id=VirtoCommerce_vc-module-notification)
 
-The Notifications module supports notifications infrastructure and consists of two main blocks:
+The Notifications module supports notification infrastructure and consists of:
 
 1. Notifications list
+1. Notification templates layouts
 1. Notification activity feed
 
 ![Notifications module](docs/media/screen-notifications-module.png)
 
 ## Key Features
 
-1. Email Templates with Liquid
-1. Extendable Model
-1. Supports SMTP and SendGrid
-1. Async delivery with retry policy
+1. Email Templates with Scriban (Liquid support enabled);
+1. Extendable Model;
+1. Supports SMTP and SendGrid;
+1. Async delivery with retry policy.
 
 ## Documentation
 

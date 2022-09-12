@@ -1,10 +1,10 @@
-# How to register own notification
+# Developing your custom notification
 
 ## Overview
 
-The documentation describes how to get notifications, templates and how to send.
+The documentation describes how to define notifications, notification predefinitions and how to send.
 
-## How to register own notification
+## How to register your own notification
 
 If you would like to register a notification e.g. 'SampleEmailNotification':
 1. Create the notification with name 'SampleEmailNotification' and based on 'EmailNotification' (also there is a standard based class 'SmsNotification')
@@ -15,44 +15,68 @@ If you would like to register a notification e.g. 'SampleEmailNotification':
     }
     ```
     look at [the code](https://github.com/VirtoCommerce/vc-module-notification/blob/dev/samples/VirtoCommerce.NotificationsSampleModule.Web/Types/SampleEmailNotification.cs)
-1. Need to get a service `INotificationRegistrar` in `PostInitialize` method of `Module.cs`.
+1. Get a service `INotificationRegistrar` in `PostInitialize` method of `Module.cs`.
     ```cs
     var registrar = appBuilder.ApplicationServices.GetService<INotificationRegistrar>();
     ```    
-1. Then to call a method `RegisterNotification` and set generic type as `SampleEmailNotification`
+1. Call a method `RegisterNotification` and set generic type parameter to `SampleEmailNotification`
     ```cs
     registrar.RegisterNotification<SampleEmailNotification>();
     ```
     >look at [the code](https://github.com/VirtoCommerce/vc-module-notification/blob/dev/samples/VirtoCommerce.NotificationsSampleModule.Web/Module.cs#L59)
-## How to define a template for the notification    
-1. If need to use predefined templates then 
-    1. use construction:
-    ```cs
-    registrar.RegisterNotification<SampleEmailNotification>().WithTemplates(new EmailNotificationTemplate()
-            {
-                Subject = "Sample subject",
-                Body = "<p>Sample text</p>",
-            });
-    ```
-    >look at [the code](https://github.com/VirtoCommerce/vc-module-notification/blob/dev/samples/VirtoCommerce.NotificationsSampleModule.Web/Module.cs#L59)
-    1. or use resources like this
 
-    ```cs
-    var assembly = Assembly.GetExecutingAssembly();
-    registrar.RegisterNotification<SampleEmailNotification>().WithTemplates(new EmailNotificationTemplate()
-            {
-                Subject = assembly.GetManifestResourceStream("VirtoCommerce.NotificationsSampleModule.Web.Templates.SampleEmailNotification_subject.txt").ReadToString(),
-                Body = assembly.GetManifestResourceStream("VirtoCommerce.NotificationsSampleModule.Web.Templates.SampleEmailNotification_body.html").ReadToString()
-            });
+## Set default notification templates and sample data
+There are two ways to declare and distribute predefined notification templates and sample data:
+1. In files included to the module bundle
+2. Inline definition in the source code
 
-    ```
-    
-    and add the resources to 'Templates' folder (look at [samples](https://github.com/VirtoCommerce/vc-module-notification/tree/dev/samples/VirtoCommerce.NotificationsSampleModule.Web/Templates))
-1. If need to discover some path with templates then use `WithTemplatesFromPath`
-    ```cs
-    var moduleTemplatesPath = Path.Combine(ModuleInfo.FullPhysicalPath, "Templates");
-    registrar.RegisterNotification<SampleEmailNotification>().WithTemplatesFromPath(Path.Combine(moduleTemplatesPath, "Custom"), Path.Combine(moduleTemplatesPath, "Default"));
-    ```    
+### Use module bundle
+This is the main way to distribute defaults. Commerce bundled VC-modules store notification predifinitions this manner. To do the same in your custom module, do the followings:
+1. For every notification type: create subject template of the mail, body template and sample data in three different files, accordingly to the conventioned filename template: `[NotificationName]_[PartPostfixe]`, where `PartPostfixe`:
+
+|PartPostfixe|Description|
+|-|-|
+|subject.txt|UTF-8 text file with subject rendering template|
+|body.html|Body rendering template|
+|sample.json|Sample object JSON|
+
+2. Place files to some folder inside of `*.Web` project of your module (for example, `Templates`)
+3. Modify `*.Web.csproj` file to allow predifinitions file to be copied on publishing. Add following lines:
+```
+    <ItemGroup>
+        <NotificationTemplates Include="Templates/**" />
+    </ItemGroup>
+    <Target Name="CopyCustomContentOnPublish" AfterTargets="Publish">
+        <Copy SourceFiles="@(NotificationTemplates)" DestinationFiles="$(PublishDir)\..\%(Identity)" />
+    </Target>
+```
+4. Use `WithTemplatesFromPath` extension to attach predifinitions from the folder while registering notification type in `Module.cs`:
+```cs
+var moduleTemplatesPath = Path.Combine(ModuleInfo.FullPhysicalPath, "Templates");
+registrar.RegisterNotification<SampleEmailNotification>().WithTemplatesFromPath(Path.Combine(moduleTemplatesPath, "Custom"), Path.Combine(moduleTemplatesPath, "Default"));
+```    
+
+Look full sample at [samples](https://github.com/VirtoCommerce/vc-module-notification/tree/dev/samples/VirtoCommerce.NotificationsSampleModule.Web/Templates). Also, we recommend to see how it's made in real commerce-bundle module, like [OrderModule](https://github.com/VirtoCommerce/vc-module-order/tree/dev/src/VirtoCommerce.OrdersModule.Web).
+
+### Hardcode as inline definition: 
+There are less useful, but possible way to define predifinitions directly in source code:
+```cs
+registrar.RegisterNotification<SampleEmailNotification>().WithTemplates(new EmailNotificationTemplate()
+        {
+            Subject = "Sample subject",
+            Body = "<p>Sample text</p>",
+        });
+``` 
+...or from  assembly embedded resource:
+```cs
+var assembly = Assembly.GetExecutingAssembly();
+registrar.RegisterNotification<SampleEmailNotification>().WithTemplates(new EmailNotificationTemplate()
+        {
+            Subject = assembly.GetManifestResourceStream("VirtoCommerce.NotificationsSampleModule.Web.Templates.SampleEmailNotification_subject.txt").ReadToString(),
+            Body = assembly.GetManifestResourceStream("VirtoCommerce.NotificationsSampleModule.Web.Templates.SampleEmailNotification_body.html").ReadToString()
+        });
+```
+>look at [the sample code](https://github.com/VirtoCommerce/vc-module-notification/blob/dev/samples/VirtoCommerce.NotificationsSampleModule.Web/Module.cs#L59)
 
 ## How to send notification from code
 
