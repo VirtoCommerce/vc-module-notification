@@ -61,6 +61,7 @@ namespace VirtoCommerce.NotificationsSampleModule.Web
 
             registrar.RegisterNotification<SampleEmailNotification>().WithTemplates(new EmailNotificationTemplate()
             {
+                Sample = "",
                 Subject = "SampleEmailNotification test",
                 Body = "SampleEmailNotification body test",
             });
@@ -68,8 +69,9 @@ namespace VirtoCommerce.NotificationsSampleModule.Web
             var assembly = Assembly.GetExecutingAssembly();
             registrar.OverrideNotificationType<SampleEmailNotification, ExtendedSampleEmailNotification>().WithTemplates(new EmailNotificationTemplate()
             {
-                Subject = assembly.GetManifestResourceStream("VirtoCommerce.NotificationsSampleModule.Web.Templates.SampleEmailNotification_subject.txt").ReadToString(),
-                Body = assembly.GetManifestResourceStream("VirtoCommerce.NotificationsSampleModule.Web.Templates.SampleEmailNotification_body.html").ReadToString()
+                Sample = "",
+                Subject = assembly.GetManifestResourceStream("VirtoCommerce.NotificationsSampleModule.Web.TemplatesEmbedded.SampleEmailNotification_subject.txt").ReadToString(),
+                Body = assembly.GetManifestResourceStream("VirtoCommerce.NotificationsSampleModule.Web.TemplatesEmbedded.SampleEmailNotification_body.html").ReadToString()
             });
 
             var moduleTemplatesPath = Path.Combine(ModuleInfo.FullPhysicalPath, "Templates");
