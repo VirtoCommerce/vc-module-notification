@@ -3,10 +3,14 @@ angular.module('virtoCommerce.notificationsModule')
         function ($scope, $translate, bladeNavigationService, notifications, bladeUtils, dialogService, uiGridConstants, uiGridHelper) {
             var blade = $scope.blade;
             $scope.uiGridConstants = uiGridConstants;
+
             // simple and advanced filtering
-            var filter = blade.filter = { keyword: blade.filterKeyword };
+            var filter = $scope.filter = {};
+
             filter.criteriaChanged = function () {
-                if (filter.keyword) {
+                if ($scope.pageSettings.currentPage > 1) {
+                    $scope.pageSettings.currentPage = 1;
+                } else {
                     blade.refresh();
                 }
             };
