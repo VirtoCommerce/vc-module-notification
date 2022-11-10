@@ -1,109 +1,154 @@
 # Overview
 
-The Notifications module supports notification infrastructure and consists of two main blocks:
+The *Notifications* module supports notification infrastructure and consists of the following:
 
-1. Notifications list
+1. Notification list
+1. Notification templates layouts
 1. Notification activity feed
 
 ![Notifications module](media/screen-notifications-module.png)
 
 ## Key Features
 
-1. Email Templates with Liquid;
-1. Extendable Model;
-1. Supports SMTP and SendGrid;
-1. Async delivery with retry policy.
+1. Email templates with Scriban (Liquid support enabled)
+1. Extendable model
+1. Support for SMTP and SendGrid
+1. Async delivery with retry policy
 
-## Notifications list
+## Notification List
 
-The Notifications list block of Notifications module contains all types of notifications and notification templates registered in VC business modules.
+The *Notification List* section of the *Notifications* module contains all types of notifications and notification templates registered by running modules.
+
 ![Notifications list](media/screen-notifications-list.png)
 
-The following modules are connected with the Notifications module by default:
+The following modules from the commerce bundle declare notifications by default:
 
-1. Customer module;
-1. Orders module;
-1. Subscription module.
+1. Customer module
+1. Orders module
+1. Subscription module
 
-By default the Notification module supports two types of notifications:
+There are two basic types of notifications supported:
 
-1. Email notifications;
-1. SMS notifications.
+1. Email notifications
+1. Text message (SMS) notifications
 
-These notifications types are provided by VC settings out-of-the-box. But the system also allows register new notifications types from a third party module, integrated with VC.
+These notification types are provided by VC settings out-of-the-box. The system also allows you to register new notification types coming from third party modules integrated with Virto Commerce.
 
-### Notification Details
+## Email Notification Details
 
-1. Open Notifications module->Notifications list and select a notification from the list;
-1. The system displays the Notification details blade:
-     1. 'Is Active' button allows activate or de-activate the selected notification;
-     1. 'Notification name' field is a label and can not be edited;
-     1. 'From'- this field has a default value, but is active and you can add additional email addresses in case of need;
-     1. 'To'- this field is blank by default and you should enter the recipient email address here;
-     1. 'CC recipient' field has a default value, but the system allows enter additional email addresses;
-     1. 'BCC' field is blank by default. You can enter as many emails as needed.
+1. Open the *Notifications* module, navigate to *Notifications list* and select a notification with the email type.
+1. The system will display the *Notification details* screen with the following elements:
+     + The *Active* enables or disables the selected notification.
+     + The *Notification name* field is a label and cannot be edited.     
+     + The *CC recipient* field has a default value, although you can enter an additional email addresses.
+     + The *BCC* field is blank by default. You can enter as many emails as you need.
+
 ![Notification Details](media/screen-notification-details.png)
 
-### Liquid Language
-Liquid syntax is used to describe email templates. As Scriban library is leveraged to render liquid, you can write liquid templates as well as scriban templates. For more information on liquid syntax, go [here](https://github.com/scriban/scriban/blob/master/doc/liquid-support.md).
+### Notification Templates
+Every notification can have one or more templates to render the notification in different languages.
 
-### Notification Template
+Scriban/Liquid syntax is used to describe email templates. As Scriban library is leveraged to render notifications, you can write both Liquid and Scriban templates. For more information on Liquid syntax, go [here](https://github.com/scriban/scriban/blob/master/doc/liquid-support.md).
 
-1. On 'Notifications details' blade select the 'Templates' widget and then select the Template from the list on 'Manage notification templates' blade;
-1. You can select the language for your template, edit the subject and the template content;
-1. To preview the template content, select  the 'Preview' tab;
-1. Changes made to the template should be saved.
+## Editing Notification Template
+
+On the *Notifications details* screen, select the *Templates* widget, and then select the template from the list on the *Manage notification templates* screen:
+
 ![Notification Template](media/screen-notification-template.png)
+
+On the *Template details* screen, you can:
+1. Select language for your template.
+1. Select layout for your template (if applicable).
+1. Edit email subject.
+1. Edit template for the email body.
+1. Edit the sample data JSON file (scroll the screen to the bottom):
+
+![Sample data JSON file](media/sample-data-json.png)
+
+6. Click *OK* to save the template or *Cancel* to discard your changes.
+
+### Reverting Template and Sample Data to Predefined State
+Most of the notifications have predefined templates and sample data. You can use them as a base for your custom template. Predefined templates are shipped within notification hosting modules.
+
+To revert your notification template and sample data to the predefined state, click the *Restore* button:
+
+![Restore](media/screen-notification-template-restore.png)
+
+### Previewing Notification and Sending Test Email
+To preview the rendered email, click the *Preview* button on the top of the screen. The template will be rendered with the object described in the sample data JSON file, and the result will be shown in a separate screen:
+
 ![Preview](media/screen-notification-template-preview.png)
 
-### Notification Layouts
+The preview screen shows the sample of the email body. All styles in the preview screen are in the default state and you can see the sample on the *as is* basis.
+Unfortunately, different email clients show HTML markups in a slightly different way and not exactly as it is in the browser with the default styles.
 
-VC Notification module provides email notification template layout functionality so you can simplify email notification management of footer, header, etc.
+We encourage you to refer to our [template construction tips](tips-and-tricks-for-creating-email-templates.md) to understand the basics of template development and avoid typical problems with email client differences.
 
-1. On the 'Notifications' menu select 'Notification layouts' and add a new layout. Layout body is a Liquid template that will be populated by email content on rendering. Define a special variable, for example `content`, and place it between your html header and footer, for example: 
+You can send the preview to someone to ensure the body looks well in your email client software using the *Share* button:
+
+![Send preview](media/screen-notification-template-send-preview.png)
+
+Enter the email address in question and click *Confirm*.
+
+## Working with Layouts
+
+Template layout is a common part of the notification template subset. It may come in handy to extract common parts of the notification body into a separate document to simplify the editing process of common notification parts, such as footer, header, etc.
+
+The layout feature is implemented with the Scriban *capture* [statement](https://github.com/scriban/scriban/blob/master/doc/language.md#96-capture-variable--end).
+
+Let's take a close look to the example to understand how it works:
+
+1. In the *Notifications* menu, select *Notification layouts* and add a new layout. The layout body is a template that will be populated together with notification template on email body rendering. Define a special variable within the body, for example, *content*, and place it between header and footer, e.g.:
+
 ```html
 <div>HEADER</div>
      {{ content }}
 <div>FOOTER</div>
 ```
+
+The `{{ content }}` statement inserts a part of the notification template with the `content` name into the resulting document.
+
+We are assuming here that the `content` variable contains the result of rendering a named part of the notification template.
+
 ![Notification Layout](media/notification-layout-new.png)
 
+2. To use this layout, open the email template. Select the created layout in the dropdown list and provide the template code for the `content` variable. You should do it with the `capture` statement, e.g.:
 
-2. Open email template. For layout to render correctly you need to first select it in the Layout dropdown. Then after selecting a layout you need to provide content for the `content` variable defined inside the layout earlier. You can do it by placing it inside `capture` clause, for example:
-```liquid
+```html
 {% capture content %}
      Renders the content by captured <strong>content</strong> keyword. <br />
      Can use template variables: <strong>{{ customer_order.number }}</strong> 
 {% endcapture %}
 ``` 
-3. You can check correctness of your email notification by clicking the Preview button:
+
+3. As usual, you can check whether your email notification is correct by clicking the *Preview* button:
+
 ![Notification Layout Preview](media/notification-layout-preview.png)
 
-*Note*: you can have more than one content variable in a layout, they will be rendered as long as captured inside the notification template.
+As you can see on the sample image, the template was rendered with the use of layout.
 
-4. Save changes to the notification template.
+!!! note
+    You can have as many variables in a layout as you want; they will be captured from the notification template.
 
-### Notification logs
+Obviously, the same layout with the variable values varying from template to template helps you manage common notification body parts easily.
 
-VC Notification module saves notification activity logs and store them under 'Notification sending log'.
+4. <ake sure to save changes in the notification template.
 
-To view the sending logs, select the notification, open 'Notification details' and select the 'Send log' widget.
-The system will display the existing logs on the 'Notification sending logs' blade.
+## Notification Logs
+
+Virto's *Notifications* module saves notification activity logs and stores them under the *Notification log*.
+
+To view the logs, select the notification, open *Notification details* and select the *Send log* widget.
+    
+The system will display the existing logs on the *Notification sending logs* screen:
 
 ![Notification logs](media/screen-sending-logs.png)
 
- **Important** 
- 
- 1. Notification templates are customizable;
- There is no possibility to create new notifications in Notifications module;
- 1. All notifications are predefined and registered by VC business modules. Only registered notifications appear in Notifications module;
- 1. There is no possibility to delete the notification in Notifications module.
+ ## Notification Activity Feed
 
-## Notification activity feed
+Thissection of the *Notifications* module displays the list of all notification recorders created within the system by the business modules. 
 
-This block of the Notification module displays the list of all notification recorders that were created in the system by the business modules. 
-
-In order to view the notification details, simply select the Notification you need and the system will display the Notification Info on a separate blade.
+To view the notification details, select the notification in question, and the system will display the notification info on a separate screen:
 
 ![Activity feed](media/screen-notification-activity-feed.png)
 

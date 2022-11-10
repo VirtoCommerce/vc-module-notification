@@ -47,7 +47,7 @@ namespace VirtoCommerce.NotificationsModule.Data.Services
                                                    .ToArrayAsync();
 
                     var unorderedResults = await _messageService.GetNotificationsMessageByIds(messageIds);
-                    result.Results = unorderedResults.OrderBy(x => Array.IndexOf(messageIds, x.Id)).ToList();             
+                    result.Results = unorderedResults.OrderBy(x => Array.IndexOf(messageIds, x.Id)).ToList();
                 }
             }
 
@@ -76,6 +76,13 @@ namespace VirtoCommerce.NotificationsModule.Data.Services
             if (!string.IsNullOrEmpty(criteria.Status))
             {
                 query = query.Where(x => x.Status == criteria.Status);
+            }
+
+            if (!string.IsNullOrEmpty(criteria.Keyword))
+            {
+                query = query.Where(x =>
+                    (x is EmailNotificationMessageEntity && ((EmailNotificationMessageEntity)x).To.Contains(criteria.Keyword))
+                    || x.NotificationType.Contains(criteria.Keyword));
             }
 
             return query;
