@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
 using Moq;
 using Newtonsoft.Json;
 using VirtoCommerce.NotificationsModule.Core.Model;
@@ -30,6 +31,7 @@ namespace VirtoCommerce.NotificationsModule.Tests.IntegrationTests
         private readonly Mock<INotificationService> _notificationServiceMock;
         private readonly Mock<INotificationRepository> _repositoryMock;
         private readonly Mock<IUnitOfWork> _mockUnitOfWork;
+        private readonly Mock<ILogger<NotificationsExportImport>> _loggerMock;
 
         public NotificationsExportImportManagerIntegrationTests()
         {
@@ -38,14 +40,18 @@ namespace VirtoCommerce.NotificationsModule.Tests.IntegrationTests
             _repositoryMock.Setup(ss => ss.UnitOfWork).Returns(_mockUnitOfWork.Object);
             _notificationSearchServiceMock = new Mock<INotificationSearchService>();
             _notificationServiceMock = new Mock<INotificationService>();
+            _loggerMock = new Mock<ILogger<NotificationsExportImport>>();
 
-            _notificationsExportImportManager = new NotificationsExportImport(_notificationSearchServiceMock.Object, _notificationServiceMock.Object, GetJsonSerializer());
+            _notificationsExportImportManager = new NotificationsExportImport(_notificationSearchServiceMock.Object, _notificationServiceMock.Object,
+                GetJsonSerializer(), _loggerMock.Object);
 
             if (!AbstractTypeFactory<NotificationTemplate>.AllTypeInfos.SelectMany(x => x.AllSubclasses).Contains(typeof(EmailNotificationTemplate)))
                 AbstractTypeFactory<NotificationTemplate>.RegisterType<EmailNotificationTemplate>().MapToType<NotificationTemplateEntity>();
 
             if (!AbstractTypeFactory<NotificationMessage>.AllTypeInfos.SelectMany(x => x.AllSubclasses).Contains(typeof(EmailNotificationMessage)))
                 AbstractTypeFactory<NotificationMessage>.RegisterType<EmailNotificationMessage>().MapToType<NotificationMessageEntity>();
+
+            AbstractTypeFactory<NotificationEntity>.RegisterType<EmailNotificationEntity>();
 
             _notificationRegistrar = new NotificationRegistrar(null);
             _notificationRegistrar.RegisterNotification<RegistrationEmailNotification>();
@@ -104,5 +110,6 @@ namespace VirtoCommerce.NotificationsModule.Tests.IntegrationTests
 
             fileStream.Close();
         }
+        
     }
 }

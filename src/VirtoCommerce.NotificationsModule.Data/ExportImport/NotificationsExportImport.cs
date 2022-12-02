@@ -2,9 +2,11 @@ using System;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using VirtoCommerce.NotificationsModule.Core.Model;
 using VirtoCommerce.NotificationsModule.Core.Services;
+using VirtoCommerce.NotificationsModule.Data.Model;
 using VirtoCommerce.Platform.Core.Common;
 using VirtoCommerce.Platform.Core.ExportImport;
 using VirtoCommerce.Platform.Data.ExportImport;
@@ -17,12 +19,15 @@ namespace VirtoCommerce.NotificationsModule.Data.ExportImport
         private readonly INotificationService _notificationService;
         private const int _batchSize = 50;
         private readonly JsonSerializer _jsonSerializer;
+        private readonly ILogger _logger;
 
-        public NotificationsExportImport(INotificationSearchService notificationSearchService, INotificationService notificationService, JsonSerializer jsonSerializer)
+        public NotificationsExportImport(INotificationSearchService notificationSearchService, INotificationService notificationService,
+            JsonSerializer jsonSerializer, ILogger<NotificationsExportImport> logger)
         {
             _notificationSearchService = notificationSearchService;
             _notificationService = notificationService;
             _jsonSerializer = jsonSerializer;
+            _logger = logger;
         }
 
         public async Task DoExportAsync(Stream outStream, Action<ExportImportProgressInfo> progressCallback, ICancellationToken cancellationToken)
@@ -71,19 +76,39 @@ namespace VirtoCommerce.NotificationsModule.Data.ExportImport
             {
                 while (reader.Read())
                 {
-                    if (reader.TokenType == JsonToken.PropertyName)
+                    if (reader.TokenType == JsonToken.PropertyName &&
+                        reader.Value.ToString() == "Notifications")
                     {
-                        if (reader.Value.ToString() == "Notifications")
-                        {
-                            await reader.DeserializeJsonArrayWithPagingAsync<Notification>(_jsonSerializer, _batchSize, items => _notificationService.SaveChangesAsync(items.ToArray()), processedCount =>
+                        await reader.DeserializeJsonArrayWithPagingAsync<Notification>(_jsonSerializer, _batchSize,
+                            items => _notificationService.SaveChangesAsync(items.Where(n => IsValidNotification(n)).ToArray()),
+                            processedCount =>
                             {
-                                progressInfo.Description = $"{ processedCount } notifications have been imported";
+                                progressInfo.Description = $"{processedCount} notifications have been imported";
                                 progressCallback(progressInfo);
                             }, cancellationToken);
-                        }
                     }
                 }
             }
+        }
+
+        /// <summary>
+        /// Skip notifications which we can not create on import. 
+        /// </summary>
+        /// <param name="notification"></param>
+        /// <returns></returns>
+        private bool IsValidNotification(Notification notification)
+        {
+            try
+            {
+                AbstractTypeFactory<NotificationEntity>.TryCreateInstance($"{notification.Kind}Entity");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Notification {notification.Kind} validation failed", ex);
+                return false;
+            }
+
+            return true;
         }
     }
 }
