@@ -19,15 +19,12 @@ namespace VirtoCommerce.NotificationsModule.Data.ExportImport
         private readonly INotificationService _notificationService;
         private const int _batchSize = 50;
         private readonly JsonSerializer _jsonSerializer;
-        private readonly ILogger _logger;
 
-        public NotificationsExportImport(INotificationSearchService notificationSearchService, INotificationService notificationService,
-            JsonSerializer jsonSerializer, ILogger<NotificationsExportImport> logger)
+        public NotificationsExportImport(INotificationSearchService notificationSearchService, INotificationService notificationService, JsonSerializer jsonSerializer)
         {
             _notificationSearchService = notificationSearchService;
             _notificationService = notificationService;
             _jsonSerializer = jsonSerializer;
-            _logger = logger;
         }
 
         public async Task DoExportAsync(Stream outStream, Action<ExportImportProgressInfo> progressCallback, ICancellationToken cancellationToken)
@@ -99,9 +96,11 @@ namespace VirtoCommerce.NotificationsModule.Data.ExportImport
         private bool IsValidNotification(Notification notification)
         {
             var typeName = $"{notification.Kind}Entity";
-            var typeInfo = AbstractTypeFactory<NotificationEntity>.FindTypeInfoByName(typeName);
+            if (typeName == "NotificationEntity")
+                return true;
 
-            return typeInfo != null || typeName == "NotificationEntity";
+            var typeInfo = AbstractTypeFactory<NotificationEntity>.FindTypeInfoByName(typeName);
+            return typeInfo != null;
         }
     }
 }

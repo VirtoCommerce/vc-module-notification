@@ -40,10 +40,8 @@ namespace VirtoCommerce.NotificationsModule.Tests.IntegrationTests
             _repositoryMock.Setup(ss => ss.UnitOfWork).Returns(_mockUnitOfWork.Object);
             _notificationSearchServiceMock = new Mock<INotificationSearchService>();
             _notificationServiceMock = new Mock<INotificationService>();
-            _loggerMock = new Mock<ILogger<NotificationsExportImport>>();
 
-            _notificationsExportImportManager = new NotificationsExportImport(_notificationSearchServiceMock.Object, _notificationServiceMock.Object,
-                GetJsonSerializer(), _loggerMock.Object);
+            _notificationsExportImportManager = new NotificationsExportImport(_notificationSearchServiceMock.Object, _notificationServiceMock.Object, GetJsonSerializer());
 
             if (!AbstractTypeFactory<NotificationTemplate>.AllTypeInfos.SelectMany(x => x.AllSubclasses).Contains(typeof(EmailNotificationTemplate)))
                 AbstractTypeFactory<NotificationTemplate>.RegisterType<EmailNotificationTemplate>().MapToType<NotificationTemplateEntity>();
@@ -72,7 +70,7 @@ namespace VirtoCommerce.NotificationsModule.Tests.IntegrationTests
         public async Task DoExport_SuccessExport()
         {
             //Arrange
-            var fileStream = new FileStream(Path.GetFullPath("export_test.json"), FileMode.Create);
+            using var fileStream = new FileStream(Path.GetFullPath("export_test.json"), FileMode.Create);
             var entity = AbstractTypeFactory<Notification>.TryCreateInstance(nameof(EmailNotification));
             entity.Id = Guid.NewGuid().ToString();
             entity.Type = nameof(RegistrationEmailNotification);
@@ -92,23 +90,19 @@ namespace VirtoCommerce.NotificationsModule.Tests.IntegrationTests
 
             //Assert
             Assert.True(true); // Remove smell
-
-            fileStream.Close();
         }
 
         [Fact]
         public async Task DoImport_SuccessImport()
         {
             //Arrange
-            var fileStream = new FileStream(Path.GetFullPath("export_test.json"), FileMode.Open);
+            using var fileStream = new FileStream(Path.GetFullPath("export_test.json"), FileMode.Open);
 
             //Act
             await _notificationsExportImportManager.DoImportAsync(fileStream, exportImportProgressInfo => { }, new CancellationTokenWrapper(CancellationToken.None));
 
             //Assert
             Assert.True(true); // Remove smell
-
-            fileStream.Close();
         }
         
     }
