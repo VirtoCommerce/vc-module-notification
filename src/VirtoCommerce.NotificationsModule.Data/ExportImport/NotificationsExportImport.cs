@@ -2,7 +2,6 @@ using System;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using VirtoCommerce.NotificationsModule.Core.Model;
 using VirtoCommerce.NotificationsModule.Core.Services;
@@ -74,10 +73,10 @@ namespace VirtoCommerce.NotificationsModule.Data.ExportImport
                 while (reader.Read())
                 {
                     if (reader.TokenType == JsonToken.PropertyName &&
-                        reader.Value.ToString() == "Notifications")
+                        reader.Value?.ToString() == "Notifications")
                     {
                         await reader.DeserializeJsonArrayWithPagingAsync<Notification>(_jsonSerializer, _batchSize,
-                            items => _notificationService.SaveChangesAsync(items.Where(n => IsValidNotification(n)).ToArray()),
+                            items => _notificationService.SaveChangesAsync(items.Where(IsRegisteredNotification).ToArray()),
                             processedCount =>
                             {
                                 progressInfo.Description = $"{processedCount} notifications have been imported";
@@ -88,19 +87,12 @@ namespace VirtoCommerce.NotificationsModule.Data.ExportImport
             }
         }
 
-        /// <summary>
-        /// Skip notification which we can not create it on import because module is not installed. 
-        /// </summary>
-        /// <param name="notification"></param>
-        /// <returns></returns>
-        private bool IsValidNotification(Notification notification)
+        private static bool IsRegisteredNotification(Notification notification)
         {
             var typeName = $"{notification.Kind}Entity";
-            if (typeName == "NotificationEntity")
-                return true;
 
-            var typeInfo = AbstractTypeFactory<NotificationEntity>.FindTypeInfoByName(typeName);
-            return typeInfo != null;
+            return typeName == nameof(NotificationEntity) ||
+                   AbstractTypeFactory<NotificationEntity>.FindTypeInfoByName(typeName) != null;
         }
     }
 }

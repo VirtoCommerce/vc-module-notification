@@ -5,7 +5,6 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.Extensions.Logging;
 using Moq;
 using Newtonsoft.Json;
 using VirtoCommerce.NotificationsModule.Core.Model;
@@ -31,7 +30,6 @@ namespace VirtoCommerce.NotificationsModule.Tests.IntegrationTests
         private readonly Mock<INotificationService> _notificationServiceMock;
         private readonly Mock<INotificationRepository> _repositoryMock;
         private readonly Mock<IUnitOfWork> _mockUnitOfWork;
-        private readonly Mock<ILogger<NotificationsExportImport>> _loggerMock;
 
         public NotificationsExportImportManagerIntegrationTests()
         {
@@ -48,8 +46,6 @@ namespace VirtoCommerce.NotificationsModule.Tests.IntegrationTests
 
             if (!AbstractTypeFactory<NotificationMessage>.AllTypeInfos.SelectMany(x => x.AllSubclasses).Contains(typeof(EmailNotificationMessage)))
                 AbstractTypeFactory<NotificationMessage>.RegisterType<EmailNotificationMessage>().MapToType<NotificationMessageEntity>();
-
-            AbstractTypeFactory<NotificationEntity>.RegisterType<EmailNotificationEntity>();
 
             _notificationRegistrar = new NotificationRegistrar(null);
             _notificationRegistrar.RegisterNotification<RegistrationEmailNotification>();
@@ -104,6 +100,5 @@ namespace VirtoCommerce.NotificationsModule.Tests.IntegrationTests
             //Assert
             Assert.True(true); // Remove smell
         }
-        
     }
 }
