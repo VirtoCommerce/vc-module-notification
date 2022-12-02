@@ -92,7 +92,7 @@ namespace VirtoCommerce.NotificationsModule.Data.ExportImport
         }
 
         /// <summary>
-        /// Skip notifications which we can not create on import. 
+        /// Skip notification which we can not create it on import because module is not installed. 
         /// </summary>
         /// <param name="notification"></param>
         /// <returns></returns>
@@ -104,7 +104,7 @@ namespace VirtoCommerce.NotificationsModule.Data.ExportImport
             }
             catch (Exception ex)
             {
-                _logger.LogError($"Notification {notification.Kind} validation failed", ex);
+                _logger.LogError("Notification validation failed", ex);
                 return false;
             }
 
