@@ -98,17 +98,10 @@ namespace VirtoCommerce.NotificationsModule.Data.ExportImport
         /// <returns></returns>
         private bool IsValidNotification(Notification notification)
         {
-            try
-            {
-                AbstractTypeFactory<NotificationEntity>.TryCreateInstance($"{notification.Kind}Entity");
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError("Notification validation failed", ex);
-                return false;
-            }
+            var typeName = $"{notification.Kind}Entity";
+            var typeInfo = AbstractTypeFactory<NotificationEntity>.FindTypeInfoByName(typeName);
 
-            return true;
+            return typeInfo != null || typeName == "NotificationEntity";
         }
     }
 }
