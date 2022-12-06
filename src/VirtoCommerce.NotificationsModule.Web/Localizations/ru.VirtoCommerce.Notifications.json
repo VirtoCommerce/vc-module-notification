@@ -1,0 +1,315 @@
+{
+  "notifications": {
+    "blades": {
+      "notification-journal-details": {
+        "title": "Детали уведомления",
+        "subtitle": "{{ displayName }}: Тип уведомления",
+        "labels": {
+          "id": "ID сообщения:",
+          "notification-info": "Информация об уведомлении",
+          "display-name": "Имя",
+          "source": "Источник",
+          "sending-gateway": "Шлюз отправки",
+          "active": "Действующий",
+          "not-active": "Недействующий",
+          "created": "Создан:",
+          "sent-success": "Успешно отправлено",
+          "not-sent": "Не отправлено",
+          "sent": "Отправить",
+          "sent-date": "Дата отправки",
+          "sender": "От:",
+          "recipient": "Кому:",
+          "bcc": "Скрытая копия",
+          "cc": "Копия",
+          "sending-attempts-count": "Количество попыток отправки",
+          "last-fail-attempt-date": "Последняя дата неудачной попытки",
+          "last-fail-attempt-message": "Ошибки:",
+          "subject": "Тема:",
+          "body": "Сообщение:"
+        }
+      },
+      "notifications-edit-template": {
+        "title": "{{ displayName }}: Шаблон",
+        "subtitle": "Редактировать шаблон уведомления",
+        "title-new": "{{ displayName }}: Создать шаблон",
+        "labels": {
+          "note": "Это список параметров уведомлений. Скопируйте и вставьте этот код, чтобы вставить значения параметров в свой шаблон.",
+          "parameter-name": "Имя параметра",
+          "parameter-description": "Описание параметра",
+          "paremeter-code": "Код параметра в шаблоне (скопируйте этот код и вставьте его в любую часть шаблона)",
+          "language": "Язык",
+          "blank-note": "Оставить поле пустым, чтобы использовать значение по умолчанию",
+          "from": "От",
+          "to": "Кому",
+          "cc": "Копия",
+          "bcc": "Скрытая копия",
+          "subject": "Тема",
+          "body": "Сообщение",
+          "template": "Шаблон",
+          "sample": "Пример данных JSON",
+          "preview-data": "Предварительный просмотр",
+          "preview-data-comment": "Предварительный просмотр контекста (JSON)",
+          "note-caption": "Важно!",
+          "note-text": "Этот шаблон имеет предопределенный источник. После сохранения уведомления эта версия заменит предустановленную. Вы можете восстановить исходный шаблон с помощью соответствующей кнопки.",
+          "layout": "Макет"
+        },
+        "descriptions": {
+          "to": "Адрес получателя",
+          "cc": "Адреса получателей копии",
+          "bcc": "Адрес получателя скрытой копии",
+          "from": "Адрес отправителя",
+          "subject": "Тема уведомления",
+          "sample": "Используется при предварительном просмотре как образец уведомления."
+        },
+        "placeholders": {
+          "language": "Выберите...",
+          "recipient": "Адрес получателя",
+          "email-addresses-note": "Введите адреса электронной почты",
+          "subject": "Введите тему сообщения",
+          "layout": "Выберите..."
+        }
+      },
+      "notification-templates-list": {
+        "title": "Шаблоны уведомлений",
+        "labels": {
+          "subject": "Тема",
+          "body": "Сообщение",
+          "language": "Язык",
+          "created": "Создан",
+          "modified": "Изменен",
+          "predefined": "Предопределенный",
+          "edited": "Отредактирован"
+        }
+      },
+      "notification-layouts-list": {
+        "title": "Макеты уведомлений",
+        "subtitle": "Управление макетами уведомлений",
+        "labels": {
+          "no-data": "Пока нет зарегистрированных макетов",
+          "name": "Имя",
+          "template": "Шаблон"
+        }
+      },
+      "notification-layout-details": {
+        "title-new": "Создать макет уведомления",
+        "subtitle": "Редактировать макет",
+        "labels": {
+          "name": "Имя",
+          "template": "Шаблон"
+        },
+        "placeholders": {
+          "name": "Введите имя..."
+        }
+      },
+      "notifications-test-resolve": {
+        "title": "Предварительный просмотр уведомления",
+        "subtitle": "Введите тестовые данные для {{type}}",
+        "labels": {
+          "test": "Тест",
+          "enter-test-data": "Введите тестовые данные"
+        }
+      },
+      "notifications-test-send": {
+        "title": "Отправить уведомление",
+        "subtitle": "Введите тестовые данные для {{type}}",
+        "labels": {
+          "send": "Отправить",
+          "enter-test-data": "Введите тестовые данные"
+        }
+      },
+      "notifications-journal": {
+        "title": "Лента событий уведомлений",
+        "subtitle": "Этот раздел содержит список всех уведомлений, зарегистрированных в системе.",
+        "subtitle-search": "Результаты поиска для \"{{keyword}}\"",
+        "labels": {
+          "display-name": "Имя",
+          "notification": "Уведомление",
+          "created": "Создан",
+          "status": "Статус",
+          "recipient": "Получатель",
+          "sent-date": "Дата отправки",
+          "channel": "Канал",
+          "error": "Ошибка",
+          "processing": "Обработка",
+          "success": "Успех",
+          "no-notifications": "Пока нет уведомлений",
+          "unnamed-filter": "Безымянный фильтр",
+          "filter-new": "<strong>Добавить новый фильтр</strong>",
+          "filter-only-pending": "Только в ожидании",
+          "filter-with-errors": "С ошибками",
+          "detail": "Показать детали",
+          "sendAttemptCount": "Количество попыток отправки",
+          "resend-messages": "Переслать сообщения"
+        },
+        "placeholders": {
+          "select-filter": "Выберите фильтр"
+        }
+      },
+      "notifications-list": {
+        "title": "Список уведомлений",
+        "subtitle": "Этот раздел содержит список всех уведомлений, зарегистрированных в системе",
+        "labels": {
+          "no-notifications": "Пока нет уведомлений",
+          "display-name": "Имя",
+          "type": "Тип",
+          "active": "Действует"
+        }
+      },
+      "notification-details": {
+        "title": "{{ displayName }}: Детали",
+        "labels": {
+          "is-active": "Действует",
+          "name": "Имя уведомления",
+          "number": "Номер телефона"
+        },
+        "placeholders": {
+          "number": "Номер телефона для текстового сообщения"
+        },
+        "descriptions": {
+          "number": "Номер телефона, который получит текстовое сообщение (СМС)"
+        }
+      },
+      "filter-detail": {
+        "subtitle": "Редактировать фильтр",
+        "new-title": "Новый фильтр",
+        "new-subtitle": "Создать новый фильтр",
+        "labels": {
+          "criteria": "Поисковая фраза",
+          "name": "Имя фильтра"
+        },
+        "placeholders": {
+          "criteria": "Введите фразу для поиска",
+          "name": "Введите имя фильтра"
+        }
+      },
+      "notifications-template-render": {
+        "title": "Форма предварительного просмотра",
+        "subtitle": "Эта форма показывает шаблон"
+      }
+    },
+    "widgets": {
+      "notificationsTemplatesWidget": {
+        "title": "Шаблоны",
+        "blade-title": "{{displayName}}: Список шаблонов",
+        "blade-subtitle": "Управление шаблонами уведомлений"
+      },
+      "notificationsLogWidget": {
+        "title": "Лог уведомлений",
+        "blade-title": "Лог сохранных дынных о уведомлениях",
+        "blade-subtitle": "Просмотр лога уведомлений"
+      },
+      "notificationsAttachmentsWidget": {
+        "title": "Вложения (скоро)",
+        "blade-title": "Вложения",
+        "blade-subtitle": "Вложения"
+      }
+    },
+    "dialogs": {
+      "unknown-kind": {
+        "title": "Ошибка",
+        "message": "Невозможно изменить шаблон неопределенного типа:: '{{kind}}'."
+      },
+      "notification-details-save": {
+        "title": "Сохранить изменения",
+        "message": "Шаблон уведомления изменен. Вы хотите сохранить изменения?"
+      },
+      "notification-template-delete": {
+        "title": "Подтвердите удаление",
+        "message": "Вы уверены, что хотите удалить выбранные шаблоны??"
+      },
+      "notification-template-delete-notification": {
+        "title": "Не удалось удалить шаблон",
+        "message": "Вы не можете удалить стандартные или предопределенные шаблоны. Отмените выбор таких шаблонов и повторите попытку."
+      },
+      "notification-template-reset-confirmation": {
+        "title": "Подтвердите сброс шаблона",
+        "warning": "ВНИМАНИЕ! Это изменение является необратимым и не может быть отменено. Применение этого изменения может привести к потере данных.",
+        "message": "{{count}} шаблон(ы) для следующих языков будут удалены:",
+        "instruction": "Нажмите Да для удаления:"
+      },
+      "notification-share-preview-confirmation": {
+        "title": "Подтвердите доступ к предварительному просмотру",
+        "message": "Вы хотите отправить это уведомление для предварительного просмотра на указанный адрес электронной почты?"
+      },
+      "share-success": {
+        "title": "Разрешить предварительный просмотр",
+        "message": "Тестовое сообщение для предварительного просмотра успешно отправлено"
+      },
+      "share-error": {
+        "title": "Ошибка"
+      },
+      "notification-layout-delete": {
+        "title": "Подтвердите удаление",
+        "message": "Вы уверены, что хотите удалить выбранные макеты?"
+      }
+    },
+    "commands": {
+      "restore": "Восстановить",
+      "share-preview": "Предоставить"
+    }
+  },
+  "notificationTypes": {
+    "UnregisteredNotification": {
+      "displayName": "Незарегистрированное уведомление",
+      "description": "Оригинальный тип уведомления: {{type}}"
+    },
+    "RegistrationEmailNotification": {
+      "displayName": "Уведомление о регистрации",
+      "description": "Клиент получит уведомление по электронной почте после регистрации"
+    },
+    "ResetPasswordEmailNotification": {
+      "displayName": "Уведомление о сбросе пароля",
+      "description": "Клиент получит уведомление по электронной почте на запрос сброса пароля"
+    },
+    "TwoFactorEmailNotification": {
+      "displayName": "Двухфакторная аутентификация",
+      "description": "Это уведомление содержит токен безопасности для двухфакторной проверки подлинности"
+    },
+    "TwoFactorSmsNotification": {
+      "displayName": "Двухфакторная аутентификация",
+      "description": "Это уведомление содержит токен безопасности для двухфакторной проверки подлинности"
+    },
+    "ConfirmationEmailNotification": {
+      "displayName": "Подтверждение электронной почты",
+      "description": "Это сообщение подтверждает адрес электронной почты нового зарегистрированного пользователя."
+    },
+    "ChangePhoneNumberSmsNotification": {
+      "displayName": "Уведомление об изменении номера телефона",
+      "description": "Клиент получит текстовое сообщение после изменения номера телефона"
+    },
+    "ResetPasswordSmsNotification": {
+      "displayName": "Уведомление о сбросе пароля",
+      "description": "Клиент получит сообщение, когда его пароль будет сброшен."
+    },
+    "RegistrationInvitationEmailNotification": {
+      "displayName": "Уведомление о приглашении зарегистрироваться",
+      "description": "Клиент получит уведомление по электронной почте, как только получит приглашение зарегистрироваться"
+    },
+    "RemindUserNameEmailNotification": {
+      "displayName": "Уведомление о забытом имени пользователя",
+      "description": "Клиент получит уведомление по электронной почте после того, как нажмет «Забыли имя пользователя»."
+    }
+  },
+  "permissions": {
+    "notifications:read": "Просмотр уведомлений",
+    "notifications:create": "Создание нового уведомления",
+    "notifications:update": "Обновление существующего уведомления",
+    "notifications:delete": "Удаление уведомления",
+    "notifications:access": "Доступ к уведомлениям",
+    "notifications:export": "Экспорт уведомлений",
+    "notifications:import": "Импорт уведомлений",
+    "notifications:templates:read": "Просмотр шаблонов уведомлений",
+    "notifications:templates:create": "Создание шаблонов уведомлений"
+  },
+  "settings": {
+    "VirtoCommerce.Notifications.General.Languages": {
+      "description": "Список доступных языков для уведомлений",
+      "title": "Языки"
+    }
+  },
+  "module": {
+    "VirtoCommerce.Notifications": {
+      "description": "Экспорт или импорт уведомлений"
+    }
+  }
+}
