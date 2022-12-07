@@ -66,7 +66,7 @@ namespace VirtoCommerce.NotificationsModule.Tests.IntegrationTests
         public async Task DoExport_SuccessExport()
         {
             //Arrange
-            var fileStream = new FileStream(Path.GetFullPath("export_test.json"), FileMode.Create);
+            using var fileStream = new FileStream(Path.GetFullPath("export_test.json"), FileMode.Create);
             var entity = AbstractTypeFactory<Notification>.TryCreateInstance(nameof(EmailNotification));
             entity.Id = Guid.NewGuid().ToString();
             entity.Type = nameof(RegistrationEmailNotification);
@@ -86,23 +86,19 @@ namespace VirtoCommerce.NotificationsModule.Tests.IntegrationTests
 
             //Assert
             Assert.True(true); // Remove smell
-
-            fileStream.Close();
         }
 
         [Fact]
         public async Task DoImport_SuccessImport()
         {
             //Arrange
-            var fileStream = new FileStream(Path.GetFullPath("export_test.json"), FileMode.Open);
+            using var fileStream = new FileStream(Path.GetFullPath("export_test.json"), FileMode.Open);
 
             //Act
             await _notificationsExportImportManager.DoImportAsync(fileStream, exportImportProgressInfo => { }, new CancellationTokenWrapper(CancellationToken.None));
 
             //Assert
             Assert.True(true); // Remove smell
-
-            fileStream.Close();
         }
     }
 }
