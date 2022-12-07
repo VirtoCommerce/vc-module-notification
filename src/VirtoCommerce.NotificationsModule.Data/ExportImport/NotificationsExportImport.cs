@@ -1,10 +1,12 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using VirtoCommerce.NotificationsModule.Core.Model;
 using VirtoCommerce.NotificationsModule.Core.Services;
+using VirtoCommerce.NotificationsModule.Data.Model;
 using VirtoCommerce.Platform.Core.Common;
 using VirtoCommerce.Platform.Core.ExportImport;
 using VirtoCommerce.Platform.Data.ExportImport;
@@ -71,16 +73,52 @@ namespace VirtoCommerce.NotificationsModule.Data.ExportImport
             {
                 while (reader.Read())
                 {
-                    if (reader.TokenType == JsonToken.PropertyName)
+                    if (reader.TokenType == JsonToken.PropertyName &&
+                        reader.Value?.ToString() == "Notifications")
                     {
-                        if (reader.Value.ToString() == "Notifications")
-                        {
-                            await reader.DeserializeJsonArrayWithPagingAsync<Notification>(_jsonSerializer, _batchSize, items => _notificationService.SaveChangesAsync(items.ToArray()), processedCount =>
+                        await SafeDeserializeJsonArrayWithPagingAsync<Notification>(reader, _jsonSerializer, _batchSize, progressInfo,
+                            items => _notificationService.SaveChangesAsync(items.ToArray()),
+                            processedCount =>
                             {
-                                progressInfo.Description = $"{ processedCount } notifications have been imported";
+                                progressInfo.Description = $"{processedCount} notifications have been imported";
                                 progressCallback(progressInfo);
                             }, cancellationToken);
-                        }
+                    }
+                }
+            }
+        }
+
+        private static async Task SafeDeserializeJsonArrayWithPagingAsync<T>(JsonTextReader reader, JsonSerializer serializer, int pageSize,
+           ExportImportProgressInfo progressInfo, Func<IEnumerable<T>, Task> action, Action<int> progressCallback, ICancellationToken cancellationToken)
+        {
+            reader.Read();
+            if (reader.TokenType == JsonToken.StartArray)
+            {
+                reader.Read();
+
+                var items = new List<T>();
+                var processedCount = 0;
+                while (reader.TokenType != JsonToken.EndArray)
+                {
+                    cancellationToken.ThrowIfCancellationRequested();
+
+                    try
+                    {
+                        var item = serializer.Deserialize<T>(reader);
+                        items.Add(item);
+                    }
+                    catch (Exception ex)
+                    {
+                        progressInfo.Errors.Add($"Warning. Skip import for the template. Could not deserialize it. More details: {ex}");
+                    }
+
+                    processedCount++;
+                    reader.Read();
+                    if (processedCount % pageSize == 0 || reader.TokenType == JsonToken.EndArray)
+                    {
+                        await action(items);
+                        items.Clear();
+                        progressCallback(processedCount);
                     }
                 }
             }
