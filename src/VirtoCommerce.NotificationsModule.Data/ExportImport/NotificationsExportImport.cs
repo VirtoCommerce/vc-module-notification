@@ -62,8 +62,34 @@ namespace VirtoCommerce.NotificationsModule.Data.ExportImport
             }
         }
 
+        public async Task DoImportAsync(Stream inputStream, Action<ExportImportProgressInfo> progressCallback, ICancellationToken cancellationToken)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+
+            var progressInfo = new ExportImportProgressInfo();
+
+            using (var streamReader = new StreamReader(inputStream))
+            using (var reader = new JsonTextReader(streamReader))
+            {
+                while (reader.Read())
+                {
+                    if (reader.TokenType == JsonToken.PropertyName &&
+                        reader.Value?.ToString() == "Notifications")
+                    {
+                        await SafeDeserializeJsonArrayWithPagingAsync<Notification>(reader, _jsonSerializer, _batchSize, progressInfo,
+                            items => _notificationService.SaveChangesAsync(items.ToArray()),
+                            processedCount =>
+                            {
+                                progressInfo.Description = $"{processedCount} notifications have been imported";
+                                progressCallback(progressInfo);
+                            }, cancellationToken);
+                    }
+                }
+            }
+        }
+
         private static async Task SafeDeserializeJsonArrayWithPagingAsync<T>(JsonTextReader reader, JsonSerializer serializer, int pageSize,
-            ExportImportProgressInfo progressInfo, Func<IEnumerable<T>, Task> action, Action<int> progressCallback, ICancellationToken cancellationToken)
+           ExportImportProgressInfo progressInfo, Func<IEnumerable<T>, Task> action, Action<int> progressCallback, ICancellationToken cancellationToken)
         {
             reader.Read();
             if (reader.TokenType == JsonToken.StartArray)
@@ -97,33 +123,5 @@ namespace VirtoCommerce.NotificationsModule.Data.ExportImport
                 }
             }
         }
-
-        public async Task DoImportAsync(Stream inputStream, Action<ExportImportProgressInfo> progressCallback, ICancellationToken cancellationToken)
-        {
-            cancellationToken.ThrowIfCancellationRequested();
-
-            var progressInfo = new ExportImportProgressInfo();
-
-            using (var streamReader = new StreamReader(inputStream))
-            using (var reader = new JsonTextReader(streamReader))
-            {
-                while (reader.Read())
-                {
-                    if (reader.TokenType == JsonToken.PropertyName &&
-                        reader.Value?.ToString() == "Notifications")
-                    {
-                        await SafeDeserializeJsonArrayWithPagingAsync<Notification>(reader, _jsonSerializer, _batchSize, progressInfo,
-                            items => _notificationService.SaveChangesAsync(items.ToArray()),
-                            processedCount =>
-                            {
-                                progressInfo.Description = $"{processedCount} notifications have been imported";
-                                progressCallback(progressInfo);
-                            }, cancellationToken);
-                    }
-                }
-            }
-        }
-
-        
     }
 }
