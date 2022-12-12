@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using VirtoCommerce.NotificationsModule.Data.Repositories;
 
-namespace VirtoCommerce.NotificationsModule.Data.Migrations
+namespace VirtoCommerce.NotificationsModule.Data.SqlServer.Migrations
 {
     [DbContext(typeof(NotificationDbContext))]
     [Migration("20190528144557_InitialNotifications")]

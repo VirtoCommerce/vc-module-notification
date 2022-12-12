@@ -1,3 +1,4 @@
+using System.Reflection;
 using EntityFrameworkCore.Triggers;
 using Microsoft.EntityFrameworkCore;
 using VirtoCommerce.NotificationsModule.Data.Model;
@@ -6,7 +7,6 @@ namespace VirtoCommerce.NotificationsModule.Data.Repositories
 {
     public class NotificationDbContext : DbContextWithTriggers
     {
-        //Add-Migration Initial -Context VirtoCommerce.NotificationsModule.Data.Repositories.NotificationDbContext -StartupProject VirtoCommerce.NotificationsModule.Data  -Verbose -OutputDir Migrations
         public NotificationDbContext(DbContextOptions<NotificationDbContext> options)
             : base(options)
         {
@@ -104,6 +104,21 @@ namespace VirtoCommerce.NotificationsModule.Data.Repositories
             #endregion
 
             base.OnModelCreating(modelBuilder);
+
+            // Allows configuration for an entity type for different database types.
+            // Applies configuration from all <see cref="IEntityTypeConfiguration{TEntity}" in VirtoCommerce.NotificationsModule.Data.XXX project. /> 
+            switch (this.Database.ProviderName)
+            {
+                case "Pomelo.EntityFrameworkCore.MySql":
+                    modelBuilder.ApplyConfigurationsFromAssembly(Assembly.Load("VirtoCommerce.NotificationsModule.Data.MySql"));
+                    break;
+                case "Npgsql.EntityFrameworkCore.PostgreSQL":
+                    modelBuilder.ApplyConfigurationsFromAssembly(Assembly.Load("VirtoCommerce.NotificationsModule.Data.PostgreSql"));
+                    break;
+                case "Microsoft.EntityFrameworkCore.SqlServer":
+                    modelBuilder.ApplyConfigurationsFromAssembly(Assembly.Load("VirtoCommerce.NotificationsModule.Data.SqlServer"));
+                    break;
+            }
         }
     }
 }
