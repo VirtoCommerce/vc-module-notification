@@ -22,6 +22,9 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\VirtoCommerce.NotificationsModule.Core\VirtoCommerce.NotificationsModule.Core.csproj" />
+    <ProjectReference Include="..\VirtoCommerce.NotificationsModule.Data.MySql\VirtoCommerce.NotificationsModule.Data.MySql.csproj" />
+    <ProjectReference Include="..\VirtoCommerce.NotificationsModule.Data.PostgreSql\VirtoCommerce.NotificationsModule.Data.PostgreSql.csproj" />
+    <ProjectReference Include="..\VirtoCommerce.NotificationsModule.Data.SqlServer\VirtoCommerce.NotificationsModule.Data.SqlServer.csproj" />
     <ProjectReference Include="..\VirtoCommerce.NotificationsModule.Data\VirtoCommerce.NotificationsModule.Data.csproj" />
     <ProjectReference Include="..\VirtoCommerce.NotificationsModule.LiquidRenderer\VirtoCommerce.NotificationsModule.LiquidRenderer.csproj" />
     <ProjectReference Include="..\VirtoCommerce.NotificationsModule.SendGrid\VirtoCommerce.NotificationsModule.SendGrid.csproj" />

@@ -160,8 +160,9 @@ namespace VirtoCommerce.NotificationsModule.Web.Controllers
             }
             else
             {
-                result.ErrorMessage = "Failed to send message.";
-                message.LastSendError = policyResult.FinalException?.ToString();
+                var errorDetails = policyResult.FinalException?.Message.ToString();
+                result.ErrorMessage = $"Failed to send message. Error Details: {errorDetails}";
+                message.LastSendError = errorDetails;
                 message.Status = NotificationMessageStatus.Error;
             }
 
