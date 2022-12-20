@@ -15,11 +15,11 @@ using VirtoCommerce.NotificationsModule.Core.Services;
 using VirtoCommerce.NotificationsModule.Core.Types;
 using VirtoCommerce.NotificationsModule.Data.ExportImport;
 using VirtoCommerce.NotificationsModule.Data.Model;
+using VirtoCommerce.NotificationsModule.Data.MySql;
+using VirtoCommerce.NotificationsModule.Data.PostgreSql;
 using VirtoCommerce.NotificationsModule.Data.Repositories;
 using VirtoCommerce.NotificationsModule.Data.Senders;
 using VirtoCommerce.NotificationsModule.Data.Services;
-using VirtoCommerce.NotificationsModule.Data.PostgreSql;
-using VirtoCommerce.NotificationsModule.Data.MySql;
 using VirtoCommerce.NotificationsModule.Data.SqlServer;
 using VirtoCommerce.NotificationsModule.LiquidRenderer;
 using VirtoCommerce.NotificationsModule.LiquidRenderer.Filters;
@@ -164,7 +164,6 @@ namespace VirtoCommerce.NotificationsModule.Web
             using (var serviceScope = appBuilder.ApplicationServices.CreateScope())
             {
                 using var notificationDbContext = serviceScope.ServiceProvider.GetRequiredService<NotificationDbContext>();
-                notificationDbContext.Database.EnsureCreated();
                 notificationDbContext.Database.Migrate();
             }
 

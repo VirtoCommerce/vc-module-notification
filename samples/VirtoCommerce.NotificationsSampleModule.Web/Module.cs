@@ -83,7 +83,6 @@ namespace VirtoCommerce.NotificationsSampleModule.Web
             {
                 using (var notificationDbContext = serviceScope.ServiceProvider.GetRequiredService<TwitterNotificationDbContext>())
                 {
-                    notificationDbContext.Database.EnsureCreated();
                     notificationDbContext.Database.Migrate();
                 }
             }
