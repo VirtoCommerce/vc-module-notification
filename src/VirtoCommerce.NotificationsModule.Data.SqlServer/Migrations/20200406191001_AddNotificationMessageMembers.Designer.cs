@@ -7,11 +7,11 @@ using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using VirtoCommerce.NotificationsModule.Data.Repositories;
 
-namespace VirtoCommerce.NotificationsModule.Data.Migrations
+namespace VirtoCommerce.NotificationsModule.Data.SqlServer.Migrations
 {
     [DbContext(typeof(NotificationDbContext))]
-    [Migration("20200903093624_IsActiveNullable")]
-    partial class IsActiveNullable
+    [Migration("20200406191001_AddNotificationMessageMembers")]
+    partial class AddNotificationMessageMembers
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -115,10 +115,8 @@ namespace VirtoCommerce.NotificationsModule.Data.Migrations
                         .HasColumnType("nvarchar(128)")
                         .HasMaxLength(128);
 
-                    b.Property<bool?>("IsActive")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValue(true);
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
 
                     b.Property<string>("Kind")
                         .HasColumnType("nvarchar(128)")
@@ -207,10 +205,6 @@ namespace VirtoCommerce.NotificationsModule.Data.Migrations
 
                     b.Property<DateTime?>("SendDate")
                         .HasColumnType("datetime2");
-
-                    b.Property<string>("Status")
-                        .HasColumnType("nvarchar(20)")
-                        .HasMaxLength(20);
 
                     b.Property<string>("TenantId")
                         .HasColumnType("nvarchar(128)")
@@ -308,14 +302,14 @@ namespace VirtoCommerce.NotificationsModule.Data.Migrations
 
                     b.Property<string>("BCC")
                         .HasColumnType("nvarchar(1024)")
-                        .HasMaxLength(1024);
+                        .HasMaxLength(512);
 
                     b.Property<string>("Body")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("CC")
                         .HasColumnType("nvarchar(1024)")
-                        .HasMaxLength(1024);
+                        .HasMaxLength(512);
 
                     b.Property<string>("From")
                         .HasColumnType("nvarchar(128)")

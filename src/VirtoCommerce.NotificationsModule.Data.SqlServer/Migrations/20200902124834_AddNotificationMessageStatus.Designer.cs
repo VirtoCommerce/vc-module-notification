@@ -7,17 +7,17 @@ using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using VirtoCommerce.NotificationsModule.Data.Repositories;
 
-namespace VirtoCommerce.NotificationsModule.Data.Migrations
+namespace VirtoCommerce.NotificationsModule.Data.SqlServer.Migrations
 {
     [DbContext(typeof(NotificationDbContext))]
-    [Migration("20191210105848_AddNotificationKeyAsIndex")]
-    partial class AddNotificationKeyAsIndex
+    [Migration("20200902124834_AddNotificationMessageStatus")]
+    partial class AddNotificationMessageStatus
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "2.2.3-servicing-35854")
+                .HasAnnotation("ProductVersion", "3.1.2")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -25,33 +25,44 @@ namespace VirtoCommerce.NotificationsModule.Data.Migrations
                 {
                     b.Property<string>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("nvarchar(128)")
                         .HasMaxLength(128);
 
                     b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(64)")
                         .HasMaxLength(64);
 
-                    b.Property<DateTime>("CreatedDate");
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("FileName")
+                        .HasColumnType("nvarchar(512)")
                         .HasMaxLength(512);
 
                     b.Property<string>("LanguageCode")
+                        .HasColumnType("nvarchar(10)")
                         .HasMaxLength(10);
 
                     b.Property<string>("MimeType")
+                        .HasColumnType("nvarchar(50)")
                         .HasMaxLength(50);
 
                     b.Property<string>("ModifiedBy")
+                        .HasColumnType("nvarchar(64)")
                         .HasMaxLength(64);
 
-                    b.Property<DateTime?>("ModifiedDate");
+                    b.Property<DateTime?>("ModifiedDate")
+                        .HasColumnType("datetime2");
 
-                    b.Property<string>("NotificationId");
+                    b.Property<string>("NotificationId")
+                        .HasColumnType("nvarchar(128)");
 
                     b.Property<string>("Size")
+                        .HasColumnType("nvarchar(128)")
                         .HasMaxLength(128);
 
                     b.Property<string>("Url")
+                        .HasColumnType("nvarchar(2048)")
                         .HasMaxLength(2048);
 
                     b.HasKey("Id");
@@ -65,14 +76,18 @@ namespace VirtoCommerce.NotificationsModule.Data.Migrations
                 {
                     b.Property<string>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("nvarchar(128)")
                         .HasMaxLength(128);
 
                     b.Property<string>("EmailAddress")
+                        .HasColumnType("nvarchar(128)")
                         .HasMaxLength(128);
 
-                    b.Property<string>("NotificationId");
+                    b.Property<string>("NotificationId")
+                        .HasColumnType("nvarchar(128)");
 
-                    b.Property<int>("RecipientType");
+                    b.Property<int>("RecipientType")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -85,37 +100,49 @@ namespace VirtoCommerce.NotificationsModule.Data.Migrations
                 {
                     b.Property<string>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("nvarchar(128)")
                         .HasMaxLength(128);
 
                     b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(64)")
                         .HasMaxLength(64);
 
-                    b.Property<DateTime>("CreatedDate");
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Discriminator")
                         .IsRequired()
+                        .HasColumnType("nvarchar(128)")
                         .HasMaxLength(128);
 
-                    b.Property<bool>("IsActive");
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
 
                     b.Property<string>("Kind")
+                        .HasColumnType("nvarchar(128)")
                         .HasMaxLength(128);
 
                     b.Property<string>("ModifiedBy")
+                        .HasColumnType("nvarchar(64)")
                         .HasMaxLength(64);
 
-                    b.Property<DateTime?>("ModifiedDate");
+                    b.Property<DateTime?>("ModifiedDate")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("OuterId")
+                        .HasColumnType("nvarchar(128)")
                         .HasMaxLength(128);
 
                     b.Property<string>("TenantId")
+                        .HasColumnType("nvarchar(128)")
                         .HasMaxLength(128);
 
                     b.Property<string>("TenantType")
+                        .HasColumnType("nvarchar(128)")
                         .HasMaxLength(128);
 
                     b.Property<string>("Type")
+                        .HasColumnType("nvarchar(128)")
                         .HasMaxLength(128);
 
                     b.HasKey("Id");
@@ -131,44 +158,64 @@ namespace VirtoCommerce.NotificationsModule.Data.Migrations
                 {
                     b.Property<string>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("nvarchar(128)")
                         .HasMaxLength(128);
 
                     b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(64)")
                         .HasMaxLength(64);
 
-                    b.Property<DateTime>("CreatedDate");
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Discriminator")
                         .IsRequired()
+                        .HasColumnType("nvarchar(128)")
                         .HasMaxLength(128);
 
                     b.Property<string>("LanguageCode")
+                        .HasColumnType("nvarchar(10)")
                         .HasMaxLength(10);
 
-                    b.Property<DateTime?>("LastSendAttemptDate");
+                    b.Property<DateTime?>("LastSendAttemptDate")
+                        .HasColumnType("datetime2");
 
-                    b.Property<string>("LastSendError");
+                    b.Property<string>("LastSendError")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("MaxSendAttemptCount");
+                    b.Property<int>("MaxSendAttemptCount")
+                        .HasColumnType("int");
 
                     b.Property<string>("ModifiedBy")
+                        .HasColumnType("nvarchar(64)")
                         .HasMaxLength(64);
 
-                    b.Property<DateTime?>("ModifiedDate");
+                    b.Property<DateTime?>("ModifiedDate")
+                        .HasColumnType("datetime2");
 
-                    b.Property<string>("NotificationId");
+                    b.Property<string>("NotificationId")
+                        .HasColumnType("nvarchar(128)");
 
                     b.Property<string>("NotificationType")
+                        .HasColumnType("nvarchar(128)")
                         .HasMaxLength(128);
 
-                    b.Property<int>("SendAttemptCount");
+                    b.Property<int>("SendAttemptCount")
+                        .HasColumnType("int");
 
-                    b.Property<DateTime?>("SendDate");
+                    b.Property<DateTime?>("SendDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Status")
+                        .HasColumnType("nvarchar(20)")
+                        .HasMaxLength(20);
 
                     b.Property<string>("TenantId")
+                        .HasColumnType("nvarchar(128)")
                         .HasMaxLength(128);
 
                     b.Property<string>("TenantType")
+                        .HasColumnType("nvarchar(128)")
                         .HasMaxLength(128);
 
                     b.HasKey("Id");
@@ -184,29 +231,38 @@ namespace VirtoCommerce.NotificationsModule.Data.Migrations
                 {
                     b.Property<string>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("nvarchar(128)")
                         .HasMaxLength(128);
 
                     b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(64)")
                         .HasMaxLength(64);
 
-                    b.Property<DateTime>("CreatedDate");
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Discriminator")
                         .IsRequired()
+                        .HasColumnType("nvarchar(128)")
                         .HasMaxLength(128);
 
                     b.Property<string>("LanguageCode")
+                        .HasColumnType("nvarchar(10)")
                         .HasMaxLength(10);
 
                     b.Property<string>("ModifiedBy")
+                        .HasColumnType("nvarchar(64)")
                         .HasMaxLength(64);
 
-                    b.Property<DateTime?>("ModifiedDate");
+                    b.Property<DateTime?>("ModifiedDate")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("NotificationId")
+                        .HasColumnType("nvarchar(128)")
                         .HasMaxLength(128);
 
                     b.Property<string>("OuterId")
+                        .HasColumnType("nvarchar(128)")
                         .HasMaxLength(128);
 
                     b.HasKey("Id");
@@ -223,9 +279,11 @@ namespace VirtoCommerce.NotificationsModule.Data.Migrations
                     b.HasBaseType("VirtoCommerce.NotificationsModule.Data.Model.NotificationEntity");
 
                     b.Property<string>("From")
+                        .HasColumnType("nvarchar(128)")
                         .HasMaxLength(128);
 
                     b.Property<string>("To")
+                        .HasColumnType("nvarchar(128)")
                         .HasMaxLength(128);
 
                     b.HasDiscriminator().HasValue("EmailNotificationEntity");
@@ -236,6 +294,7 @@ namespace VirtoCommerce.NotificationsModule.Data.Migrations
                     b.HasBaseType("VirtoCommerce.NotificationsModule.Data.Model.NotificationEntity");
 
                     b.Property<string>("Number")
+                        .HasColumnType("nvarchar(128)")
                         .HasMaxLength(128);
 
                     b.HasDiscriminator().HasValue("SmsNotificationEntity");
@@ -245,10 +304,28 @@ namespace VirtoCommerce.NotificationsModule.Data.Migrations
                 {
                     b.HasBaseType("VirtoCommerce.NotificationsModule.Data.Model.NotificationMessageEntity");
 
-                    b.Property<string>("Body");
+                    b.Property<string>("BCC")
+                        .HasColumnType("nvarchar(1024)")
+                        .HasMaxLength(1024);
+
+                    b.Property<string>("Body")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CC")
+                        .HasColumnType("nvarchar(1024)")
+                        .HasMaxLength(1024);
+
+                    b.Property<string>("From")
+                        .HasColumnType("nvarchar(128)")
+                        .HasMaxLength(128);
 
                     b.Property<string>("Subject")
+                        .HasColumnType("nvarchar(512)")
                         .HasMaxLength(512);
+
+                    b.Property<string>("To")
+                        .HasColumnType("nvarchar(128)")
+                        .HasMaxLength(128);
 
                     b.HasDiscriminator().HasValue("EmailNotificationMessageEntity");
                 });
@@ -257,9 +334,11 @@ namespace VirtoCommerce.NotificationsModule.Data.Migrations
                 {
                     b.HasBaseType("VirtoCommerce.NotificationsModule.Data.Model.NotificationMessageEntity");
 
-                    b.Property<string>("Message");
+                    b.Property<string>("Message")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Number")
+                        .HasColumnType("nvarchar(128)")
                         .HasMaxLength(128);
 
                     b.HasDiscriminator().HasValue("SmsNotificationMessageEntity");
@@ -269,9 +348,11 @@ namespace VirtoCommerce.NotificationsModule.Data.Migrations
                 {
                     b.HasBaseType("VirtoCommerce.NotificationsModule.Data.Model.NotificationTemplateEntity");
 
-                    b.Property<string>("Body");
+                    b.Property<string>("Body")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Subject")
+                        .HasColumnType("nvarchar(512)")
                         .HasMaxLength(512);
 
                     b.HasDiscriminator().HasValue("EmailNotificationTemplateEntity");
@@ -281,7 +362,8 @@ namespace VirtoCommerce.NotificationsModule.Data.Migrations
                 {
                     b.HasBaseType("VirtoCommerce.NotificationsModule.Data.Model.NotificationTemplateEntity");
 
-                    b.Property<string>("Message");
+                    b.Property<string>("Message")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasDiscriminator().HasValue("SmsNotificationTemplateEntity");
                 });

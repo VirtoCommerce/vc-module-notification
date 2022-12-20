@@ -4,13 +4,14 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using VirtoCommerce.NotificationsModule.Data.Repositories;
 
-namespace VirtoCommerce.NotificationsModule.Data.Migrations
+namespace VirtoCommerce.NotificationsModule.Data.SqlServer.Migrations
 {
     [DbContext(typeof(NotificationDbContext))]
-    [Migration("20190613194901_AddNotificationOuterId")]
-    partial class AddNotificationOuterId
+    [Migration("20191210105848_AddNotificationKeyAsIndex")]
+    partial class AddNotificationKeyAsIndex
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -91,8 +92,9 @@ namespace VirtoCommerce.NotificationsModule.Data.Migrations
 
                     b.Property<DateTime>("CreatedDate");
 
-                    b.Property<string>("Discriminator").HasMaxLength(128)
-                        .IsRequired();
+                    b.Property<string>("Discriminator")
+                        .IsRequired()
+                        .HasMaxLength(128);
 
                     b.Property<bool>("IsActive");
 
@@ -118,6 +120,8 @@ namespace VirtoCommerce.NotificationsModule.Data.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("Type", "TenantId", "TenantType");
+
                     b.ToTable("Notification");
 
                     b.HasDiscriminator<string>("Discriminator").HasValue("NotificationEntity");
@@ -134,8 +138,9 @@ namespace VirtoCommerce.NotificationsModule.Data.Migrations
 
                     b.Property<DateTime>("CreatedDate");
 
-                    b.Property<string>("Discriminator").HasMaxLength(128)
-                        .IsRequired();
+                    b.Property<string>("Discriminator")
+                        .IsRequired()
+                        .HasMaxLength(128);
 
                     b.Property<string>("LanguageCode")
                         .HasMaxLength(10);
@@ -186,8 +191,9 @@ namespace VirtoCommerce.NotificationsModule.Data.Migrations
 
                     b.Property<DateTime>("CreatedDate");
 
-                    b.Property<string>("Discriminator").HasMaxLength(128)
-                        .IsRequired();
+                    b.Property<string>("Discriminator")
+                        .IsRequired()
+                        .HasMaxLength(128);
 
                     b.Property<string>("LanguageCode")
                         .HasMaxLength(10);

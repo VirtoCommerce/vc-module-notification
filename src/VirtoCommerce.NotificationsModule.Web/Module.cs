@@ -15,9 +15,12 @@ using VirtoCommerce.NotificationsModule.Core.Services;
 using VirtoCommerce.NotificationsModule.Core.Types;
 using VirtoCommerce.NotificationsModule.Data.ExportImport;
 using VirtoCommerce.NotificationsModule.Data.Model;
+using VirtoCommerce.NotificationsModule.Data.MySql;
+using VirtoCommerce.NotificationsModule.Data.PostgreSql;
 using VirtoCommerce.NotificationsModule.Data.Repositories;
 using VirtoCommerce.NotificationsModule.Data.Senders;
 using VirtoCommerce.NotificationsModule.Data.Services;
+using VirtoCommerce.NotificationsModule.Data.SqlServer;
 using VirtoCommerce.NotificationsModule.LiquidRenderer;
 using VirtoCommerce.NotificationsModule.LiquidRenderer.Filters;
 using VirtoCommerce.NotificationsModule.SendGrid;
@@ -46,9 +49,23 @@ namespace VirtoCommerce.NotificationsModule.Web
         {
             serviceCollection.AddDbContext<NotificationDbContext>((provider, options) =>
             {
-                var configuration = provider.GetRequiredService<IConfiguration>();
-                options.UseSqlServer(configuration.GetConnectionString(ModuleInfo.Id) ?? configuration.GetConnectionString("VirtoCommerce"));
+                var databaseProvider = Configuration.GetValue("DatabaseProvider", "SqlServer");
+                var connectionString = Configuration.GetConnectionString(ModuleInfo.Id) ?? Configuration.GetConnectionString("VirtoCommerce");
+
+                switch (databaseProvider)
+                {
+                    case "MySql":
+                        options.UseMySqlDatabase(connectionString);
+                        break;
+                    case "PostgreSql":
+                        options.UsePostgreSqlDatabase(connectionString);
+                        break;
+                    default:
+                        options.UseSqlServerDatabase(connectionString);
+                        break;
+                }
             });
+
             serviceCollection.AddTransient<INotificationRepository, NotificationRepository>();
             serviceCollection.AddTransient<Func<INotificationRepository>>(provider => () => provider.CreateScope().ServiceProvider.GetService<INotificationRepository>());
             serviceCollection.AddTransient<INotificationService, NotificationService>();
@@ -147,7 +164,6 @@ namespace VirtoCommerce.NotificationsModule.Web
             using (var serviceScope = appBuilder.ApplicationServices.CreateScope())
             {
                 using var notificationDbContext = serviceScope.ServiceProvider.GetRequiredService<NotificationDbContext>();
-                notificationDbContext.Database.EnsureCreated();
                 notificationDbContext.Database.Migrate();
             }
 
