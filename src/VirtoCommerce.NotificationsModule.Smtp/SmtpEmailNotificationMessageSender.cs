@@ -30,7 +30,7 @@ namespace VirtoCommerce.NotificationsModule.Smtp
 
         public async Task SendNotificationAsync(NotificationMessage message)
         {
-            var emailNotificationMessage = message as EmailNotificationMessage ?? throw new ArgumentException("The message is not EmailNotificationMessage type");
+            var emailNotificationMessage = message as EmailNotificationMessage ?? throw new ArgumentException($"The message is not {nameof(EmailNotificationMessage)} type");
 
             try
             {
