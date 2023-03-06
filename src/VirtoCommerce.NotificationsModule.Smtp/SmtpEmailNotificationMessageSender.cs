@@ -65,7 +65,7 @@ public class SmtpEmailNotificationMessageSender : INotificationMessageSender
             }
 
             using var client = new SmtpClient();
-            await client.ConnectAsync(_smtpOptions.SmtpServer, _smtpOptions.Port, _smtpOptions.EnableSsl
+            await client.ConnectAsync(_smtpOptions.SmtpServer, _smtpOptions.Port, _smtpOptions.ForceSslTls
                 ? SecureSocketOptions.SslOnConnect
                 : SecureSocketOptions.StartTlsWhenAvailable);
             await client.AuthenticateAsync(_smtpOptions.Login, _smtpOptions.Password);

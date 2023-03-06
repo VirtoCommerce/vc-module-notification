@@ -1,3 +1,5 @@
+using System;
+
 namespace VirtoCommerce.NotificationsModule.Smtp
 {
     /// <summary>
@@ -30,11 +32,24 @@ namespace VirtoCommerce.NotificationsModule.Smtp
         public string Password { get; set; }
 
         /// <summary>
-        /// Enable SSL option
+        /// Force SSL/TLS
         /// <remarks>
         /// Don't need to be enabled if server supports STARTTLS
         /// </remarks>
         /// </summary>
-        public bool EnableSsl { get; set; }
+        public bool ForceSslTls { get; set; }
+
+        /// <summary>
+        /// Force SSL/TLS
+        /// <remarks>
+        /// Don't need to be enabled if server supports STARTTLS
+        /// </remarks>
+        /// </summary>
+        [Obsolete("Use ForceSslTls instead")]
+        public bool EnableSsl
+        {
+            get => ForceSslTls;
+            set => ForceSslTls = value;
+        }
     }
 }
