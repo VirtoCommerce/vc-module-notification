@@ -35,15 +35,15 @@ public class SmtpEmailNotificationMessageSender : INotificationMessageSender
         try
         {
             using var mailMsg = new MimeMessage();
-                
-            mailMsg.From.Add(new MailboxAddress(null, emailNotificationMessage.From ?? _emailSendingOptions.DefaultSender));
-            mailMsg.To.Add(new MailboxAddress(null, emailNotificationMessage.To));
+            
+            mailMsg.From.Add(new MailboxAddress(name: null, emailNotificationMessage.From ?? _emailSendingOptions.DefaultSender));
+            mailMsg.To.Add(new MailboxAddress(name: null, emailNotificationMessage.To));
 
             if (!emailNotificationMessage.CC.IsNullOrEmpty())
             {
                 foreach (var ccEmail in emailNotificationMessage.CC)
                 {
-                    mailMsg.Cc.Add(new MailboxAddress(null, ccEmail));
+                    mailMsg.Cc.Add(new MailboxAddress(name: null, ccEmail));
                 }
             }
 
@@ -51,14 +51,14 @@ public class SmtpEmailNotificationMessageSender : INotificationMessageSender
             {
                 foreach (var bccEmail in emailNotificationMessage.BCC)
                 {
-                    mailMsg.Bcc.Add(new MailboxAddress(null, bccEmail));
+                    mailMsg.Bcc.Add(new MailboxAddress(name: null, bccEmail));
                 }
             }
 
             mailMsg.Subject = emailNotificationMessage.Subject;
-                    
+            
             var bodyBuilder = new BodyBuilder { HtmlBody = emailNotificationMessage.Body };
-                
+            
             foreach (var attachment in emailNotificationMessage.Attachments)
             {
                 await bodyBuilder.Attachments.AddAsync(attachment.FileName, ContentType.Parse(attachment.MimeType));
@@ -70,7 +70,7 @@ public class SmtpEmailNotificationMessageSender : INotificationMessageSender
                 : SecureSocketOptions.StartTlsWhenAvailable);
             await client.AuthenticateAsync(_smtpOptions.Login, _smtpOptions.Password);
             await client.SendAsync(mailMsg);
-            await client.DisconnectAsync(true);
+            await client.DisconnectAsync(quit: true);
         }
         catch (Exception ex)
         {
