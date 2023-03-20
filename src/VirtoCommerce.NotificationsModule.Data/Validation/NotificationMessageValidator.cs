@@ -1,6 +1,5 @@
 using FluentValidation;
 using VirtoCommerce.NotificationsModule.Core.Model;
-using FluentValidation.Validators;
 
 namespace VirtoCommerce.NotificationsModule.Data.Validation
 {
@@ -10,11 +9,12 @@ namespace VirtoCommerce.NotificationsModule.Data.Validation
         {
             RuleFor(m => m.NotificationType).NotEmpty();
 
-            //special rules for derived types
+            // Special rules for derived types
             When(model => model.GetType() == typeof(EmailNotificationMessage), () =>
             {
-                RuleFor(m => ((EmailNotificationMessage)m).From).NotEmpty().EmailAddress(EmailValidationMode.AspNetCoreCompatible);
-                RuleFor(m => ((EmailNotificationMessage)m).To).NotEmpty().EmailAddress(EmailValidationMode.AspNetCoreCompatible);
+                // If email notification message "From" is null, then "DefaultSender" will be used
+                RuleFor(m => ((EmailNotificationMessage)m).From).NotEmpty().EmailAddress().When(m => ((EmailNotificationMessage)m).From != null);
+                RuleFor(m => ((EmailNotificationMessage)m).To).NotEmpty().EmailAddress();
                 RuleFor(m => ((EmailNotificationMessage)m).Subject).NotEmpty();
                 RuleFor(m => ((EmailNotificationMessage)m).Body).NotEmpty();
             });
