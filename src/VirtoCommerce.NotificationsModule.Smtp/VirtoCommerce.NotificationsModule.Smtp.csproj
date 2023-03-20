@@ -12,6 +12,7 @@
         <NoWarn>1701;1702;1705</NoWarn>
     </PropertyGroup>
     <ItemGroup>
+        <PackageReference Include="MailKit" Version="3.6.0" />
         <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All" />
     </ItemGroup>
     <ItemGroup>
