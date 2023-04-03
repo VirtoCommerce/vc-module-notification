@@ -1,6 +1,8 @@
 using System;
 using System.IO;
 using System.Linq;
+using System.Reflection;
+using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
@@ -71,6 +73,7 @@ namespace VirtoCommerce.NotificationsModule.Web
             serviceCollection.AddTransient<INotificationService, NotificationService>();
             serviceCollection.AddTransient<INotificationSearchService, NotificationSearchService>();
             serviceCollection.AddSingleton<INotificationRegistrar, NotificationRegistrar>();
+            serviceCollection.AddSingleton<INotificationLayoutRegistrar, NotificationLayoutRegistrar>();
             serviceCollection.AddTransient<INotificationMessageService, NotificationMessageService>();
             serviceCollection.AddTransient<INotificationMessageSearchService, NotificationMessageSearchService>();
             serviceCollection.AddTransient<INotificationSender, NotificationSender>();
@@ -190,6 +193,26 @@ namespace VirtoCommerce.NotificationsModule.Web
                     return x;
                 }).ToArray();
                 notificationService.SaveChangesAsync(allRegisteredNotifications).GetAwaiter().GetResult();
+            });
+
+            //Save all register notifications layouts in the database after application start
+            var registrarNotificationLayout = appBuilder.ApplicationServices.GetService<INotificationLayoutRegistrar>();
+
+            hostLifeTime.ApplicationStarted.Register(() =>
+            {
+                var notificationLayoutService = appBuilder.ApplicationServices.GetService<ICrudService<NotificationLayout>>();
+                var notificationLayoutSearchService = appBuilder.ApplicationServices.GetService<ISearchService<NotificationLayoutSearchCriteria, NotificationLayoutSearchResult, NotificationLayout>>();
+                var allRegisterNotificationLayouts = registrarNotificationLayout.AllRegisteredNotificationsLayout.Distinct().ToArray();
+
+                var existingNotificationLayout = notificationLayoutSearchService.SearchAsync(new NotificationLayoutSearchCriteria
+                {
+                    Skip = 0,
+                    Take = 1000
+                }).GetAwaiter().GetResult();
+
+                var uniqueAllRegisterNotificationLayouts = allRegisterNotificationLayouts.Except(existingNotificationLayout.Results);
+
+                notificationLayoutService.SaveChangesAsync(uniqueAllRegisterNotificationLayouts).GetAwaiter().GetResult();
             });
         }
 

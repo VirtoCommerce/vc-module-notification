@@ -74,6 +74,13 @@ namespace VirtoCommerce.NotificationsSampleModule.Web
                 Body = assembly.GetManifestResourceStream("VirtoCommerce.NotificationsSampleModule.Web.TemplatesEmbedded.SampleEmailNotification_body.html").ReadToString()
             });
 
+            //Register notification layouts
+            var registrarNotificationLayout = appBuilder.ApplicationServices.GetService<INotificationLayoutRegistrar>();
+            registrarNotificationLayout.RegisterNotificationLayout<NotificationLayout>().WithParams(
+                name: "Sample Layout",
+                template: assembly.GetManifestResourceStream("VirtoCommerce.NotificationsSampleModule.Web.NotificationLayoutsTemplate.SampleNotificationLayout_template.html").ReadToString()
+                );
+
             var moduleTemplatesPath = Path.Combine(ModuleInfo.FullPhysicalPath, "Templates");
             //Set individual discovery folder for templates 
             registrar.OverrideNotificationType<RegistrationEmailNotification, NewRegistrationEmailNotification>()
