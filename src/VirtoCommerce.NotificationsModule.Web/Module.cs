@@ -29,6 +29,7 @@ using VirtoCommerce.NotificationsModule.SendGrid;
 using VirtoCommerce.NotificationsModule.Smtp;
 using VirtoCommerce.NotificationsModule.TemplateLoader.FileSystem;
 using VirtoCommerce.NotificationsModule.Twilio;
+using VirtoCommerce.NotificationsSampleModule.Web.Types;
 using VirtoCommerce.Platform.Core.Common;
 using VirtoCommerce.Platform.Core.ExportImport;
 using VirtoCommerce.Platform.Core.GenericCrud;
@@ -210,7 +211,9 @@ namespace VirtoCommerce.NotificationsModule.Web
                     Take = 1000
                 }).GetAwaiter().GetResult();
 
-                var uniqueAllRegisterNotificationLayouts = allRegisterNotificationLayouts.Except(existingNotificationLayout.Results);
+                var layoutComparer = AnonymousComparer.Create((NotificationLayout x) => x.Name);
+
+                var uniqueAllRegisterNotificationLayouts = allRegisterNotificationLayouts.Except(existingNotificationLayout.Results, layoutComparer);
 
                 notificationLayoutService.SaveChangesAsync(uniqueAllRegisterNotificationLayouts).GetAwaiter().GetResult();
             });

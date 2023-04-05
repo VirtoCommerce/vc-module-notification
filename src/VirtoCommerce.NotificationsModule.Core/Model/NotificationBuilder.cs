@@ -1,5 +1,9 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using Microsoft.Extensions.DependencyInjection;
+using VirtoCommerce.NotificationsModule.Core.Model.Search;
+using VirtoCommerce.Platform.Core.GenericCrud;
 
 namespace VirtoCommerce.NotificationsModule.Core.Model
 {
@@ -39,6 +43,36 @@ namespace VirtoCommerce.NotificationsModule.Core.Model
                 template.IsPredefined = true;
                 Notification.Templates.Add(template);
             }
+            return this;
+        }
+
+        public NotificationBuilder WithLayout(string name)
+        {
+            if (string.IsNullOrEmpty(name))
+            {
+                return this;
+            }
+
+            var notificationLayoutSearchService = ServiceProvider.GetService<ISearchService<NotificationLayoutSearchCriteria, NotificationLayoutSearchResult, NotificationLayout>>();
+
+            var layouts = notificationLayoutSearchService.SearchAsync(new NotificationLayoutSearchCriteria
+            {
+                Keyword = name,
+                Take = 1,
+                Skip = 0,
+            }).GetAwaiter().GetResult();
+
+            if (layouts.Results.Any())
+            {
+                foreach (var template in Notification.Templates)
+                {
+                    if (template is EmailNotificationTemplate emailTemplate)
+                    {
+                        emailTemplate.NotificationLayoutId = layouts.Results.FirstOrDefault()?.Id;
+                    }
+                }
+            }
+
             return this;
         }
 

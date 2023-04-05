@@ -31,6 +31,11 @@ namespace VirtoCommerce.NotificationsModule.Data.Services
                 query = query.Where(x => criteria.ObjectIds.Contains(x.Id));
             }
 
+            if (!criteria.Keyword.IsNullOrEmpty())
+            {
+                query = query.Where(x => x.Name.Contains(criteria.Keyword));
+            }
+
             return query;
         }
 
