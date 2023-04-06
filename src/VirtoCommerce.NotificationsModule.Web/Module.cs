@@ -1,7 +1,6 @@
 using System;
 using System.IO;
 using System.Linq;
-using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
@@ -29,7 +28,6 @@ using VirtoCommerce.NotificationsModule.SendGrid;
 using VirtoCommerce.NotificationsModule.Smtp;
 using VirtoCommerce.NotificationsModule.TemplateLoader.FileSystem;
 using VirtoCommerce.NotificationsModule.Twilio;
-using VirtoCommerce.NotificationsSampleModule.Web.Types;
 using VirtoCommerce.Platform.Core.Common;
 using VirtoCommerce.Platform.Core.ExportImport;
 using VirtoCommerce.Platform.Core.GenericCrud;
@@ -84,6 +82,7 @@ namespace VirtoCommerce.NotificationsModule.Web
 
             serviceCollection.AddTransient<ICrudService<NotificationLayout>, NotificationLayoutService>();
             serviceCollection.AddTransient<ISearchService<NotificationLayoutSearchCriteria, NotificationLayoutSearchResult, NotificationLayout>, NotificationLayoutSearchService>();
+            serviceCollection.AddSingleton<INotificationLayoutRegistrar, NotificationLayoutRegistrar>();
 
             serviceCollection.AddFileSystemTemplateLoader(opt => Configuration.GetSection("Notifications:Templates").Bind(opt));
 
@@ -203,7 +202,7 @@ namespace VirtoCommerce.NotificationsModule.Web
             {
                 var notificationLayoutService = appBuilder.ApplicationServices.GetService<ICrudService<NotificationLayout>>();
                 var notificationLayoutSearchService = appBuilder.ApplicationServices.GetService<ISearchService<NotificationLayoutSearchCriteria, NotificationLayoutSearchResult, NotificationLayout>>();
-                var allRegisterNotificationLayouts = registrarNotificationLayout.AllRegisteredNotificationsLayout.Distinct().ToArray();
+                var allRegisterNotificationLayouts = registrarNotificationLayout.AllRegisteredNotificationsLayout.ToArray();
 
                 var existingNotificationLayout = notificationLayoutSearchService.SearchAsync(new NotificationLayoutSearchCriteria
                 {
@@ -211,11 +210,17 @@ namespace VirtoCommerce.NotificationsModule.Web
                     Take = 1000
                 }).GetAwaiter().GetResult();
 
-                var layoutComparer = AnonymousComparer.Create((NotificationLayout x) => x.Name);
+                foreach (var layout in allRegisterNotificationLayouts)
+                {
+                    var existLayout = existingNotificationLayout.Results.FirstOrDefault(x => x.Name == layout.Name);
 
-                var uniqueAllRegisterNotificationLayouts = allRegisterNotificationLayouts.Except(existingNotificationLayout.Results, layoutComparer);
+                    if (existLayout != null)
+                    {
+                        layout.Id = existLayout.Id;
+                    }
+                }
 
-                notificationLayoutService.SaveChangesAsync(uniqueAllRegisterNotificationLayouts).GetAwaiter().GetResult();
+                notificationLayoutService.SaveChangesAsync(allRegisterNotificationLayouts).GetAwaiter().GetResult();
             });
         }
 

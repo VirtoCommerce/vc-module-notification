@@ -1,43 +1,43 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using VirtoCommerce.NotificationsModule.Core.Model;
 using VirtoCommerce.NotificationsModule.Core.Services;
-using VirtoCommerce.Platform.Core.Common;
 
 namespace VirtoCommerce.NotificationsModule.Data.Services
 {
     public class NotificationLayoutRegistrar : INotificationLayoutRegistrar
     {
-        private readonly IServiceProvider _serviceProvider;
+        private readonly IList<NotificationLayout> _layouts = new List<NotificationLayout>();
 
         public IEnumerable<NotificationLayout> AllRegisteredNotificationsLayout
         {
             get
             {
-                return AbstractTypeFactory<NotificationLayout>.AllTypeInfos.Select(x => AbstractTypeFactory<NotificationLayout>.TryCreateInstance(x.TypeName));
+                return _layouts;
             }
         }
 
-        public NotificationLayoutRegistrar(IServiceProvider serviceProvider)
+        public NotificationLayoutRegistrar()
         {
-            _serviceProvider = serviceProvider;
         }
 
-        public NotificationLayoutBuilder NotificationLayout<TNotificationLayout>() where TNotificationLayout : NotificationLayout
+        public void RegisterNotificationLayoutWithParams(string name, string template)
         {
-            var typeInfo = AbstractTypeFactory<NotificationLayout>.RegisterType<TNotificationLayout>();
-            var builder = new NotificationLayoutBuilder(_serviceProvider, typeof(TNotificationLayout), typeInfo.Factory);
-            typeInfo.WithFactory(() => builder.Build());
-            return builder;
-        }
+            var existLayout = _layouts.FirstOrDefault(x => x.Name == name);
 
-        public NotificationLayoutBuilder RegisterNotificationLayout<TNotificationLayout>(Func<NotificationLayout> factory = null) where TNotificationLayout : NotificationLayout
-        {
-            var typeInfo = AbstractTypeFactory<NotificationLayout>.RegisterType<TNotificationLayout>();
-            var builder = new NotificationLayoutBuilder(_serviceProvider, typeof(TNotificationLayout), factory);
-            typeInfo.WithFactory(() => builder.Build());
-            return builder;
+            if (existLayout == null)
+            {
+                var layout = new NotificationLayout();
+
+                layout.Name = name;
+                layout.Template = template;
+
+                _layouts.Add(layout);
+            }
+            else
+            {
+                existLayout.Template = template;
+            }
         }
     }
 }

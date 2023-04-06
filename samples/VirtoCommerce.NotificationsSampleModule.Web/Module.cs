@@ -76,9 +76,15 @@ namespace VirtoCommerce.NotificationsSampleModule.Web
 
             //Register notification layouts
             var registrarNotificationLayout = appBuilder.ApplicationServices.GetService<INotificationLayoutRegistrar>();
-            registrarNotificationLayout.RegisterNotificationLayout<NotificationLayout>().WithParams(
+            registrarNotificationLayout.RegisterNotificationLayoutWithParams(
                 name: "Sample Layout",
                 template: assembly.GetManifestResourceStream("VirtoCommerce.NotificationsSampleModule.Web.NotificationLayoutsTemplate.SampleNotificationLayout_template.html").ReadToString()
+                );
+
+            //Override notification layout template
+            registrarNotificationLayout.RegisterNotificationLayoutWithParams(
+                name: "Sample Layout",
+                template: "New template with exist notificaiont layout"
                 );
 
             var moduleTemplatesPath = Path.Combine(ModuleInfo.FullPhysicalPath, "Templates");
