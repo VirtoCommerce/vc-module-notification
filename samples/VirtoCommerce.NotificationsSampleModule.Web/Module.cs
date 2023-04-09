@@ -87,6 +87,9 @@ namespace VirtoCommerce.NotificationsSampleModule.Web
                 template: "New template with exist notificaiont layout"
                 );
 
+            var defaultTemplatesDirectory = Path.Combine(ModuleInfo.FullPhysicalPath, "NotificationLayoutsTemplate");
+            registrarNotificationLayout.RegisterNotificationLayoutWithTemplateFromPath("SampleNotificationLayout", defaultTemplatesDirectory);
+
             var moduleTemplatesPath = Path.Combine(ModuleInfo.FullPhysicalPath, "Templates");
             //Set individual discovery folder for templates 
             registrar.OverrideNotificationType<RegistrationEmailNotification, NewRegistrationEmailNotification>()

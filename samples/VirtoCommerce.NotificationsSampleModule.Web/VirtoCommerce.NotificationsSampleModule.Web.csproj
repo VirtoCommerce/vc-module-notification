@@ -27,10 +27,10 @@
         <NotificationTemplates Include="Templates/**" />
     </ItemGroup>
     <ItemGroup>
-      <None Remove="NotificationLayoutsTemplate\SampleNotificationLayout_template.html" />
+      <None Remove="NotificationLayoutsTemplate\SampleNotificationLayout.html" />
     </ItemGroup>
     <ItemGroup>
-      <EmbeddedResource Include="NotificationLayoutsTemplate\SampleNotificationLayout_template.html" />
+      <EmbeddedResource Include="NotificationLayoutsTemplate\SampleNotificationLayout.html" />
       <EmbeddedResource Include="TemplatesEmbedded\SampleEmailNotification_body.html" />
       <EmbeddedResource Include="TemplatesEmbedded\SampleEmailNotification_subject.txt" />
     </ItemGroup>
