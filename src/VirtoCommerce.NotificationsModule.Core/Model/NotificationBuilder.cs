@@ -17,16 +17,16 @@ namespace VirtoCommerce.NotificationsModule.Core.Model
             Notification.IsActive = null;
         }
 
-        public Notification Notification { get; private set; }
+        public Notification Notification { get; }
 
-        public IServiceProvider ServiceProvider { get; private set; }
+        public IServiceProvider ServiceProvider { get; }
 
         public NotificationBuilder SetIsActive(bool isActive)
         {
             Notification.IsActive = isActive;
+
             return this;
         }
-
 
         public NotificationBuilder WithTemplates(params NotificationTemplate[] templates)
         {
@@ -34,15 +34,15 @@ namespace VirtoCommerce.NotificationsModule.Core.Model
             {
                 throw new ArgumentNullException(nameof(templates));
             }
-            if (Notification.Templates == null)
-            {
-                Notification.Templates = new List<NotificationTemplate>();
-            }
+
+            Notification.Templates ??= new List<NotificationTemplate>();
+
             foreach (var template in templates)
             {
                 template.IsPredefined = true;
                 Notification.Templates.Add(template);
             }
+
             return this;
         }
 
@@ -57,19 +57,16 @@ namespace VirtoCommerce.NotificationsModule.Core.Model
 
             var layouts = notificationLayoutSearchService.SearchAsync(new NotificationLayoutSearchCriteria
             {
-                Keyword = name,
-                Take = 1,
-                Skip = 0,
+                Names = new[] { name },
+                Take = 1
             }).GetAwaiter().GetResult();
 
             if (layouts.Results.Any())
             {
-                foreach (var template in Notification.Templates)
+                var layoutId = layouts.Results.First().Id;
+                foreach (var template in Notification.Templates.OfType<EmailNotificationTemplate>())
                 {
-                    if (template is EmailNotificationTemplate emailTemplate)
-                    {
-                        emailTemplate.NotificationLayoutId = layouts.Results.FirstOrDefault()?.Id;
-                    }
+                    template.NotificationLayoutId = layoutId;
                 }
             }
 

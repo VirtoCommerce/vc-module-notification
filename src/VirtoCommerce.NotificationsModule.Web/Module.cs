@@ -1,7 +1,6 @@
 using System;
 using System.IO;
 using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
@@ -81,7 +80,9 @@ namespace VirtoCommerce.NotificationsModule.Web
             serviceCollection.AddTransient<NotificationScriptObject>();
 
             serviceCollection.AddTransient<ICrudService<NotificationLayout>, NotificationLayoutService>();
+            serviceCollection.AddTransient(x => (INotificationLayoutService)x.GetRequiredService<ICrudService<NotificationLayout>>());
             serviceCollection.AddTransient<ISearchService<NotificationLayoutSearchCriteria, NotificationLayoutSearchResult, NotificationLayout>, NotificationLayoutSearchService>();
+            serviceCollection.AddTransient(x => (INotificationLayoutSearchService)x.GetRequiredService<ISearchService<NotificationLayoutSearchCriteria, NotificationLayoutSearchResult, NotificationLayout>>());
             serviceCollection.AddSingleton<INotificationLayoutRegistrar, NotificationLayoutRegistrar>();
 
             serviceCollection.AddFileSystemTemplateLoader(opt => Configuration.GetSection("Notifications:Templates").Bind(opt));
@@ -153,7 +154,7 @@ namespace VirtoCommerce.NotificationsModule.Web
 
             var permissionsRegistrar = appBuilder.ApplicationServices.GetRequiredService<IPermissionsRegistrar>();
             permissionsRegistrar.RegisterPermissions(ModuleConstants.Security.Permissions.AllPermissions.Select(x =>
-                new Permission()
+                new Permission
                 {
                     GroupName = "Notifications",
                     ModuleId = ModuleInfo.Id,
@@ -181,8 +182,38 @@ namespace VirtoCommerce.NotificationsModule.Web
             registrar.RegisterNotification<TwoFactorSmsNotification>();
             registrar.RegisterNotification<ChangePhoneNumberSmsNotification>();
 
-            //Save all registered notifications in the database after application start
             var hostLifeTime = appBuilder.ApplicationServices.GetService<IHostApplicationLifetime>();
+
+            //Save all register notifications layouts in the database after application start
+            hostLifeTime.ApplicationStarted.Register(() =>
+            {
+                var notificationLayoutRegistrar = appBuilder.ApplicationServices.GetService<INotificationLayoutRegistrar>();
+                var registeredLayouts = notificationLayoutRegistrar.AllRegisteredLayouts.ToArray();
+                if (!registeredLayouts.Any())
+                {
+                    return;
+                }
+
+                var notificationLayoutService = appBuilder.ApplicationServices.GetService<ICrudService<NotificationLayout>>();
+                var notificationLayoutSearchService = appBuilder.ApplicationServices.GetService<ISearchService<NotificationLayoutSearchCriteria, NotificationLayoutSearchResult, NotificationLayout>>();
+
+                var searchCriteria = new NotificationLayoutSearchCriteria
+                {
+                    Names = registeredLayouts.Select(x => x.Name).ToArray(),
+                    Take = 1000
+                };
+                var existingLayouts = notificationLayoutSearchService.SearchAsync(searchCriteria).GetAwaiter().GetResult();
+
+                foreach (var layout in registeredLayouts)
+                {
+                    var existingLayout = existingLayouts.Results.FirstOrDefault(x => x.Name.EqualsInvariant(layout.Name));
+                    layout.Id = existingLayout?.Id;
+                }
+
+                notificationLayoutService.SaveChangesAsync(registeredLayouts).GetAwaiter().GetResult();
+            });
+
+            //Save all registered notifications in the database after application start
             hostLifeTime.ApplicationStarted.Register(() =>
             {
                 var notificationService = appBuilder.ApplicationServices.GetService<INotificationService>();
@@ -193,34 +224,6 @@ namespace VirtoCommerce.NotificationsModule.Web
                     return x;
                 }).ToArray();
                 notificationService.SaveChangesAsync(allRegisteredNotifications).GetAwaiter().GetResult();
-            });
-
-            //Save all register notifications layouts in the database after application start
-            var registrarNotificationLayout = appBuilder.ApplicationServices.GetService<INotificationLayoutRegistrar>();
-
-            hostLifeTime.ApplicationStarted.Register(() =>
-            {
-                var notificationLayoutService = appBuilder.ApplicationServices.GetService<ICrudService<NotificationLayout>>();
-                var notificationLayoutSearchService = appBuilder.ApplicationServices.GetService<ISearchService<NotificationLayoutSearchCriteria, NotificationLayoutSearchResult, NotificationLayout>>();
-                var allRegisterNotificationLayouts = registrarNotificationLayout.AllRegisteredNotificationsLayout.ToArray();
-
-                var existingNotificationLayout = notificationLayoutSearchService.SearchAsync(new NotificationLayoutSearchCriteria
-                {
-                    Skip = 0,
-                    Take = 1000
-                }).GetAwaiter().GetResult();
-
-                foreach (var layout in allRegisterNotificationLayouts)
-                {
-                    var existLayout = existingNotificationLayout.Results.FirstOrDefault(x => x.Name == layout.Name);
-
-                    if (existLayout != null)
-                    {
-                        layout.Id = existLayout.Id;
-                    }
-                }
-
-                notificationLayoutService.SaveChangesAsync(allRegisterNotificationLayouts).GetAwaiter().GetResult();
             });
         }
 

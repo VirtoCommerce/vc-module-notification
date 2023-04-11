@@ -3,6 +3,7 @@ using System.IO;
 using System.Linq;
 using VirtoCommerce.NotificationsModule.Core.Model;
 using VirtoCommerce.NotificationsModule.Core.Services;
+using VirtoCommerce.Platform.Core.Common;
 
 namespace VirtoCommerce.NotificationsModule.Data.Services
 {
@@ -10,56 +11,34 @@ namespace VirtoCommerce.NotificationsModule.Data.Services
     {
         private readonly IList<NotificationLayout> _layouts = new List<NotificationLayout>();
 
-        public IEnumerable<NotificationLayout> AllRegisteredNotificationsLayout
+        public IEnumerable<NotificationLayout> AllRegisteredLayouts => _layouts;
+
+        public void RegisterLayout(string name, string template)
         {
-            get
+            var layout = _layouts.FirstOrDefault(x => x.Name.EqualsInvariant(name));
+
+            if (layout == null)
             {
-                return _layouts;
-            }
-        }
-
-        public NotificationLayoutRegistrar()
-        {
-        }
-
-        public void RegisterNotificationLayoutWithParams(string name, string template)
-        {
-            RegisterNotificationLayout(name, template);
-        }
-
-        public void RegisterNotificationLayoutWithTemplateFromPath(string name, string path)
-        {
-            var template = LoadTemplateNotificationLayout(name, path);
-
-            RegisterNotificationLayout(name, template);
-        }
-
-        private void RegisterNotificationLayout(string name, string template)
-        {
-            var existLayout = _layouts.FirstOrDefault(x => x.Name == name);
-
-            if (existLayout == null)
-            {
-                var layout = new NotificationLayout();
-
+                layout = AbstractTypeFactory<NotificationLayout>.TryCreateInstance();
                 layout.Name = name;
-                layout.Template = template;
 
                 _layouts.Add(layout);
             }
-            else
-            {
-                existLayout.Template = template;
-            }
+
+            layout.Template = template;
         }
 
-        private string LoadTemplateNotificationLayout(string name, string path)
+        public void RegisterLayoutWithTemplateFromPath(string name, string path)
         {
-            var result = string.Empty;
+            RegisterLayout(name, LoadTemplateNotificationLayout(name, path));
+        }
+
+        private static string LoadTemplateNotificationLayout(string name, string path)
+        {
+            string result = null;
             if (Directory.Exists(path))
             {
-                var file = Directory.GetFiles(path, $"{name}*.*", SearchOption.TopDirectoryOnly).FirstOrDefault();
-
+                var file = Directory.EnumerateFiles(path, $"{name}*.*", SearchOption.TopDirectoryOnly).FirstOrDefault();
                 if (file != null)
                 {
                     result = File.ReadAllText(file);
