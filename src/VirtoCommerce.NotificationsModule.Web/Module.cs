@@ -182,36 +182,13 @@ namespace VirtoCommerce.NotificationsModule.Web
             registrar.RegisterNotification<TwoFactorSmsNotification>();
             registrar.RegisterNotification<ChangePhoneNumberSmsNotification>();
 
+            var registrarLayout = appBuilder.ApplicationServices.GetService<INotificationLayoutRegistrar>();
+            registrarLayout.RegisterLayout(
+                name: "test",
+                template: "test"
+                );
+
             var hostLifeTime = appBuilder.ApplicationServices.GetService<IHostApplicationLifetime>();
-
-            //Save all register notifications layouts in the database after application start
-            hostLifeTime.ApplicationStarted.Register(() =>
-            {
-                var notificationLayoutRegistrar = appBuilder.ApplicationServices.GetService<INotificationLayoutRegistrar>();
-                var registeredLayouts = notificationLayoutRegistrar.AllRegisteredLayouts.ToArray();
-                if (!registeredLayouts.Any())
-                {
-                    return;
-                }
-
-                var notificationLayoutService = appBuilder.ApplicationServices.GetService<ICrudService<NotificationLayout>>();
-                var notificationLayoutSearchService = appBuilder.ApplicationServices.GetService<ISearchService<NotificationLayoutSearchCriteria, NotificationLayoutSearchResult, NotificationLayout>>();
-
-                var searchCriteria = new NotificationLayoutSearchCriteria
-                {
-                    Names = registeredLayouts.Select(x => x.Name).ToArray(),
-                    Take = 1000
-                };
-                var existingLayouts = notificationLayoutSearchService.SearchAsync(searchCriteria).GetAwaiter().GetResult();
-
-                foreach (var layout in registeredLayouts)
-                {
-                    var existingLayout = existingLayouts.Results.FirstOrDefault(x => x.Name.EqualsInvariant(layout.Name));
-                    layout.Id = existingLayout?.Id;
-                }
-
-                notificationLayoutService.SaveChangesAsync(registeredLayouts).GetAwaiter().GetResult();
-            });
 
             //Save all registered notifications in the database after application start
             hostLifeTime.ApplicationStarted.Register(() =>
