@@ -182,12 +182,6 @@ namespace VirtoCommerce.NotificationsModule.Web
             registrar.RegisterNotification<TwoFactorSmsNotification>();
             registrar.RegisterNotification<ChangePhoneNumberSmsNotification>();
 
-            var registrarLayout = appBuilder.ApplicationServices.GetService<INotificationLayoutRegistrar>();
-            registrarLayout.RegisterLayout(
-                name: "test",
-                template: "test"
-                );
-
             var hostLifeTime = appBuilder.ApplicationServices.GetService<IHostApplicationLifetime>();
 
             //Save all registered notifications in the database after application start

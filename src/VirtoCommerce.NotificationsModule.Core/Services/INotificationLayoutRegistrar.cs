@@ -7,6 +7,8 @@ namespace VirtoCommerce.NotificationsModule.Core.Services
     {
         IEnumerable<NotificationLayout> AllRegisteredLayouts { get; }
         void RegisterLayout(string name, string template);
+        void RegisterAndSaveLayout(string name, string template);
         void RegisterLayoutWithTemplateFromPath(string name, string path);
+        void SaveChanges();
     }
 }
