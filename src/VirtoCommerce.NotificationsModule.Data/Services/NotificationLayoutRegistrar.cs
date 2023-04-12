@@ -66,7 +66,7 @@ namespace VirtoCommerce.NotificationsModule.Data.Services
             return result;
         }
 
-        private void SaveChanges()
+        public void SaveChanges()
         {
             var criteria = new NotificationLayoutSearchCriteria
             {
