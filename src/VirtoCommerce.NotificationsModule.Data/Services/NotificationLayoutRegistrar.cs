@@ -24,14 +24,7 @@ namespace VirtoCommerce.NotificationsModule.Data.Services
 
         public IEnumerable<NotificationLayout> AllRegisteredLayouts => _layouts;
 
-        public void RegisterAndSaveLayout(string name, string template)
-        {
-            RegisterLayout(name, template);
-
-            SaveChanges();
-        }
-
-        public void RegisterLayout(string name, string template)
+        public void RegisterLayout(string name, string template, bool saveChanges = false)
         {
             var layout = _layouts.FirstOrDefault(x => x.Name.EqualsInvariant(name));
 
@@ -44,11 +37,16 @@ namespace VirtoCommerce.NotificationsModule.Data.Services
             }
 
             layout.Template = template;
+
+            if (saveChanges)
+            {
+                SaveChanges();
+            }
         }
 
-        public void RegisterLayoutWithTemplateFromPath(string name, string path)
+        public void RegisterLayoutWithTemplateFromPath(string name, string path, bool saveChanges = false)
         {
-            RegisterLayout(name, LoadTemplateNotificationLayout(name, path));
+            RegisterLayout(name, LoadTemplateNotificationLayout(name, path), saveChanges);
         }
 
         private static string LoadTemplateNotificationLayout(string name, string path)
