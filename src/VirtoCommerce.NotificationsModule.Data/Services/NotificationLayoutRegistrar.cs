@@ -68,6 +68,11 @@ namespace VirtoCommerce.NotificationsModule.Data.Services
 
         public void SaveChanges()
         {
+            if (!_layouts.Any())
+            {
+                return;
+            }
+
             var criteria = new NotificationLayoutSearchCriteria
             {
                 Names = _layouts.Select(x => x.Name).ToArray(),

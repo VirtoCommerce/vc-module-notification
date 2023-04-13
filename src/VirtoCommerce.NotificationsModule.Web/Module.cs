@@ -184,6 +184,13 @@ namespace VirtoCommerce.NotificationsModule.Web
 
             var hostLifeTime = appBuilder.ApplicationServices.GetService<IHostApplicationLifetime>();
 
+            //Save all registered notification layouts in the database after application start
+            hostLifeTime.ApplicationStarted.Register(() =>
+            {
+                var notificationLayoutRegistrar = appBuilder.ApplicationServices.GetService<INotificationLayoutRegistrar>();
+                notificationLayoutRegistrar.SaveChanges();
+            });
+
             //Save all registered notifications in the database after application start
             hostLifeTime.ApplicationStarted.Register(() =>
             {
