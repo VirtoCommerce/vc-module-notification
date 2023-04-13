@@ -100,13 +100,14 @@ namespace VirtoCommerce.NotificationsModule.Data.Repositories
 
             modelBuilder.Entity<NotificationLayoutEntity>().ToTable("NotificationLayout").HasKey(x => x.Id);
             modelBuilder.Entity<NotificationLayoutEntity>().Property(x => x.Id).HasMaxLength(128).ValueGeneratedOnAdd();
+            modelBuilder.Entity<NotificationLayoutEntity>().HasIndex(x => x.Name).IsUnique();
 
             #endregion
 
             base.OnModelCreating(modelBuilder);
 
             // Allows configuration for an entity type for different database types.
-            // Applies configuration from all <see cref="IEntityTypeConfiguration{TEntity}" in VirtoCommerce.NotificationsModule.Data.XXX project. /> 
+            // Applies configuration from all <see cref="IEntityTypeConfiguration{TEntity}" in VirtoCommerce.NotificationsModule.Data.XXX project. />
             switch (this.Database.ProviderName)
             {
                 case "Pomelo.EntityFrameworkCore.MySql":
