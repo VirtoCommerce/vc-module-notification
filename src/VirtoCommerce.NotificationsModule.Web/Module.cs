@@ -71,6 +71,7 @@ namespace VirtoCommerce.NotificationsModule.Web
             serviceCollection.AddTransient<INotificationService, NotificationService>();
             serviceCollection.AddTransient<INotificationSearchService, NotificationSearchService>();
             serviceCollection.AddSingleton<INotificationRegistrar, NotificationRegistrar>();
+            serviceCollection.AddSingleton<INotificationLayoutRegistrar, NotificationLayoutRegistrar>();
             serviceCollection.AddTransient<INotificationMessageService, NotificationMessageService>();
             serviceCollection.AddTransient<INotificationMessageSearchService, NotificationMessageSearchService>();
             serviceCollection.AddTransient<INotificationSender, NotificationSender>();
@@ -79,7 +80,10 @@ namespace VirtoCommerce.NotificationsModule.Web
             serviceCollection.AddTransient<NotificationScriptObject>();
 
             serviceCollection.AddTransient<ICrudService<NotificationLayout>, NotificationLayoutService>();
+            serviceCollection.AddTransient(x => (INotificationLayoutService)x.GetRequiredService<ICrudService<NotificationLayout>>());
             serviceCollection.AddTransient<ISearchService<NotificationLayoutSearchCriteria, NotificationLayoutSearchResult, NotificationLayout>, NotificationLayoutSearchService>();
+            serviceCollection.AddTransient(x => (INotificationLayoutSearchService)x.GetRequiredService<ISearchService<NotificationLayoutSearchCriteria, NotificationLayoutSearchResult, NotificationLayout>>());
+            serviceCollection.AddSingleton<INotificationLayoutRegistrar, NotificationLayoutRegistrar>();
 
             serviceCollection.AddFileSystemTemplateLoader(opt => Configuration.GetSection("Notifications:Templates").Bind(opt));
 
@@ -150,7 +154,7 @@ namespace VirtoCommerce.NotificationsModule.Web
 
             var permissionsRegistrar = appBuilder.ApplicationServices.GetRequiredService<IPermissionsRegistrar>();
             permissionsRegistrar.RegisterPermissions(ModuleConstants.Security.Permissions.AllPermissions.Select(x =>
-                new Permission()
+                new Permission
                 {
                     GroupName = "Notifications",
                     ModuleId = ModuleInfo.Id,
@@ -178,8 +182,16 @@ namespace VirtoCommerce.NotificationsModule.Web
             registrar.RegisterNotification<TwoFactorSmsNotification>();
             registrar.RegisterNotification<ChangePhoneNumberSmsNotification>();
 
-            //Save all registered notifications in the database after application start
             var hostLifeTime = appBuilder.ApplicationServices.GetService<IHostApplicationLifetime>();
+
+            //Save all registered notification layouts in the database after application start
+            hostLifeTime.ApplicationStarted.Register(() =>
+            {
+                var notificationLayoutRegistrar = appBuilder.ApplicationServices.GetService<INotificationLayoutRegistrar>();
+                notificationLayoutRegistrar.SaveChanges();
+            });
+
+            //Save all registered notifications in the database after application start
             hostLifeTime.ApplicationStarted.Register(() =>
             {
                 var notificationService = appBuilder.ApplicationServices.GetService<INotificationService>();
