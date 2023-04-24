@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations;
 using VirtoCommerce.NotificationsModule.Core.Model;
 using VirtoCommerce.Platform.Core.Common;
 using VirtoCommerce.Platform.Core.Domain;
@@ -6,6 +7,7 @@ namespace VirtoCommerce.NotificationsModule.Data.Model
 {
     public class NotificationLayoutEntity : AuditableEntity, IDataEntity<NotificationLayoutEntity, NotificationLayout>
     {
+        [Required, StringLength(128)]
         public string Name { get; set; }
 
         public string Template { get; set; }
