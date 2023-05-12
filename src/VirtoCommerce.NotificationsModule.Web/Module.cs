@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -168,6 +169,8 @@ namespace VirtoCommerce.NotificationsModule.Web
             using (var serviceScope = appBuilder.ApplicationServices.CreateScope())
             {
                 using var notificationDbContext = serviceScope.ServiceProvider.GetRequiredService<NotificationDbContext>();
+                //Apply ConnectionTimeout is taken from connection string in order to be able change this settings in configuration
+                notificationDbContext.Database.SetCommandTimeout(notificationDbContext.Database.GetDbConnection().ConnectionTimeout);
                 notificationDbContext.Database.Migrate();
             }
 
