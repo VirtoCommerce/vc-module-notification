@@ -13,7 +13,7 @@
   <owners>
     <owner>Virto Commerce</owner>
   </owners>
-  <projectUrl>https://virtocommerce.com/apps/extensions/virto-module-notification</projectUrl>
+  <projectUrl>https://github.com/VirtoCommerce/vc-module-notification</projectUrl>
   <iconUrl>Modules/$(VirtoCommerce.Notifications)/Content/logoVC.png</iconUrl>
   <requireLicenseAcceptance>false</requireLicenseAcceptance>
   <releaseNotes />
