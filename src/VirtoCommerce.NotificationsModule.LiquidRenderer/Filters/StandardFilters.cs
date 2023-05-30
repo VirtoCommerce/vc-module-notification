@@ -419,7 +419,7 @@ namespace VirtoCommerce.NotificationsModule.LiquidRenderer.Filters
 
             if (input.ToString().Equals("now", StringComparison.OrdinalIgnoreCase))
             {
-                date = DateTime.Now;
+                date = DateTime.UtcNow;
                 dateParsed = true;
             }
             else if (DateTime.TryParse(input.ToString(), out date))

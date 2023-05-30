@@ -45,7 +45,7 @@ namespace VirtoCommerce.NotificationsModule.Data.Senders
         {
             ScheduleSendNotificationAsync(notification).GetAwaiter().GetResult();
         }
-        
+
         public async Task<NotificationSendResult> SendNotificationAsync(Notification notification)
         {
             if (notification == null)
@@ -72,7 +72,7 @@ namespace VirtoCommerce.NotificationsModule.Data.Senders
         {
             var result = new NotificationSendResult();
 
-            var message = (await _notificationMessageService.GetNotificationsMessageByIds(new[] {messageId})).FirstOrDefault();
+            var message = (await _notificationMessageService.GetNotificationsMessageByIds(new[] { messageId })).FirstOrDefault();
 
             if (message == null)
             {
@@ -90,7 +90,7 @@ namespace VirtoCommerce.NotificationsModule.Data.Senders
 
             var policyResult = await policy.ExecuteAndCaptureAsync(() =>
             {
-                message.LastSendAttemptDate = DateTime.Now;
+                message.LastSendAttemptDate = DateTime.UtcNow;
                 message.SendAttemptCount++;
                 return _notificationMessageSenderFactory.GetSender(message).SendNotificationAsync(message);
             });
@@ -98,7 +98,7 @@ namespace VirtoCommerce.NotificationsModule.Data.Senders
             if (policyResult.Outcome == OutcomeType.Successful)
             {
                 result.IsSuccess = true;
-                message.SendDate = DateTime.Now;
+                message.SendDate = DateTime.UtcNow;
                 message.Status = NotificationMessageStatus.Sent;
             }
             else
@@ -109,7 +109,7 @@ namespace VirtoCommerce.NotificationsModule.Data.Senders
             }
 
             await _notificationMessageService.SaveNotificationMessagesAsync(new[] { message });
-            
+
             return result;
         }
 
