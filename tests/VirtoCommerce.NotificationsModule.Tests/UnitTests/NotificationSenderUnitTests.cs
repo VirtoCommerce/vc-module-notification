@@ -87,11 +87,9 @@ namespace VirtoCommerce.NotificationsModule.Tests.UnitTests
             {
                 CustomerOrder = new CustomerOrder()
                 {
-                    Number = "123"
-                    ,
-                    Shipments = new[] { new Shipment() { Number = "some_number" } }
-                    ,
-                    ModifiedDate = DateTime.Now
+                    Number = "123",
+                    Shipments = new[] { new Shipment() { Number = "some_number" } },
+                    ModifiedDate = DateTime.UtcNow
                 },
                 Templates = new List<NotificationTemplate>()
                 {
@@ -140,7 +138,7 @@ namespace VirtoCommerce.NotificationsModule.Tests.UnitTests
                     Id = "adsffads",
                     Number = "123",
                     ShippingTotal = 123456.789m,
-                    CreatedDate = DateTime.Now,
+                    CreatedDate = DateTime.UtcNow,
                     Status = "Paid",
                     Total = 123456.789m,
                     FeeTotal = 123456.789m,
@@ -249,7 +247,7 @@ namespace VirtoCommerce.NotificationsModule.Tests.UnitTests
                     Number = "123",
                     Total = 1234.56m,
                     Currency = "USD",
-                    ModifiedDate = DateTime.Now
+                    ModifiedDate = DateTime.UtcNow
                 },
                 Templates = new List<NotificationTemplate>()
                 {
@@ -312,7 +310,7 @@ namespace VirtoCommerce.NotificationsModule.Tests.UnitTests
                 To = "to@to.com",
                 Subject = subject,
                 Body = body,
-                SendDate = DateTime.Now,
+                SendDate = DateTime.UtcNow,
                 TenantIdentity = new TenantIdentity(null, null)
             };
 
@@ -353,7 +351,7 @@ namespace VirtoCommerce.NotificationsModule.Tests.UnitTests
                 To = "to@to.com",
                 Subject = subject,
                 Body = body,
-                SendDate = DateTime.Now
+                SendDate = DateTime.UtcNow
             };
 
             _messageServiceMock.Setup(ms => ms.SaveNotificationMessagesAsync(new NotificationMessage[] { message }));
@@ -431,7 +429,7 @@ namespace VirtoCommerce.NotificationsModule.Tests.UnitTests
                 To = "to@to.com",
                 Subject = subject,
                 Body = body,
-                SendDate = DateTime.Now
+                SendDate = DateTime.UtcNow
             };
 
             _messageServiceMock.Setup(ms => ms.SaveNotificationMessagesAsync(new NotificationMessage[] { message }));
@@ -503,7 +501,7 @@ namespace VirtoCommerce.NotificationsModule.Tests.UnitTests
                 To = "to@to.com",
                 Subject = subject,
                 Body = body,
-                SendDate = DateTime.Now
+                SendDate = DateTime.UtcNow
             };
 
             _messageServiceMock.Setup(ms => ms.SaveNotificationMessagesAsync(new NotificationMessage[] { message }));

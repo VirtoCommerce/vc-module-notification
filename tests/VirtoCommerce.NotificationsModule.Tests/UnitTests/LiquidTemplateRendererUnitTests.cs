@@ -89,14 +89,14 @@ namespace VirtoCommerce.NotificationsModule.Tests.UnitTests
             var context = new NotificationRenderContext
             {
                 Template = "{{created_date | date.to_string '%Y' }}",
-                Model = new { CreatedDate = DateTime.Now },
+                Model = new { CreatedDate = DateTime.UtcNow },
             };
 
             //Act
             var result = await _liquidTemplateRenderer.RenderAsync(context);
 
             //Assert
-            Assert.Equal(DateTime.Now.Year.ToString(), result);
+            Assert.Equal(DateTime.UtcNow.Year.ToString(), result);
         }
 
         [Fact]
