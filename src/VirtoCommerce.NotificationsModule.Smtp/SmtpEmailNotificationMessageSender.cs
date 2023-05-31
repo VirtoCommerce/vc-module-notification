@@ -35,7 +35,7 @@ public class SmtpEmailNotificationMessageSender : INotificationMessageSender
         try
         {
             using var mailMsg = new MimeMessage();
-            
+
             mailMsg.From.Add(new MailboxAddress(name: null, emailNotificationMessage.From ?? _emailSendingOptions.DefaultSender));
             mailMsg.To.Add(new MailboxAddress(name: null, emailNotificationMessage.To));
 
@@ -56,13 +56,14 @@ public class SmtpEmailNotificationMessageSender : INotificationMessageSender
             }
 
             mailMsg.Subject = emailNotificationMessage.Subject;
-            
+
             var bodyBuilder = new BodyBuilder { HtmlBody = emailNotificationMessage.Body };
-            
+
             foreach (var attachment in emailNotificationMessage.Attachments)
             {
                 await bodyBuilder.Attachments.AddAsync(attachment.FileName, ContentType.Parse(attachment.MimeType));
             }
+            mailMsg.Body = bodyBuilder.ToMessageBody();
 
             using var client = new SmtpClient();
             await client.ConnectAsync(_smtpOptions.SmtpServer, _smtpOptions.Port, _smtpOptions.ForceSslTls

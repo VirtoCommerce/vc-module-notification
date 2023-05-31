@@ -145,7 +145,7 @@ namespace VirtoCommerce.NotificationsModule.Web.Controllers
 
             var policyResult = await policy.ExecuteAndCaptureAsync(() =>
             {
-                message.LastSendAttemptDate = DateTime.Now;
+                message.LastSendAttemptDate = DateTime.UtcNow;
                 message.SendAttemptCount++;
                 return _notificationMessageSenderFactory.GetSender(message).SendNotificationAsync(message);
             });
@@ -155,7 +155,7 @@ namespace VirtoCommerce.NotificationsModule.Web.Controllers
             if (policyResult.Outcome == OutcomeType.Successful)
             {
                 result.IsSuccess = true;
-                message.SendDate = DateTime.Now;
+                message.SendDate = DateTime.UtcNow;
                 message.Status = NotificationMessageStatus.Sent;
             }
             else
