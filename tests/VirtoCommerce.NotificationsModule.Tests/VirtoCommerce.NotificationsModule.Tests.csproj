@@ -3,11 +3,8 @@
     <TargetFramework>net6.0</TargetFramework>
     <noWarn>1591</noWarn>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <NoWarn>1701;1702;1705</NoWarn>
-  </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="coverlet.collector" Version="3.2.0">
+    <PackageReference Include="coverlet.collector" Version="6.0.0">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
@@ -31,16 +28,15 @@
     <ProjectReference Include="..\..\src\VirtoCommerce.NotificationsModule.Smtp\VirtoCommerce.NotificationsModule.Smtp.csproj" />
     <ProjectReference Include="..\..\src\VirtoCommerce.NotificationsModule.Web\VirtoCommerce.NotificationsModule.Web.csproj" />
   </ItemGroup>
-
-    <PropertyGroup>
-        <UserSecretsId>VirtoCommerce.NotificationsModule.Tests-45791f6c-66dd-4623-8d97-1513b5965229</UserSecretsId>
-    </PropertyGroup>
-    <ItemGroup>
-        <DotNetCliToolReference Include="Microsoft.Extensions.SecretManager.Tools" Version="1.0.1" />
-    </ItemGroup>
-    <ItemGroup>
-      <None Update="secrets.json">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </None>
-    </ItemGroup>    
+  <PropertyGroup>
+    <UserSecretsId>VirtoCommerce.NotificationsModule.Tests-45791f6c-66dd-4623-8d97-1513b5965229</UserSecretsId>
+  </PropertyGroup>
+  <ItemGroup>
+    <DotNetCliToolReference Include="Microsoft.Extensions.SecretManager.Tools" Version="1.0.1" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Update="secrets.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
 </Project>

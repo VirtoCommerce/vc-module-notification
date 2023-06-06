@@ -6,10 +6,8 @@ using System.Threading.Tasks;
 using Newtonsoft.Json;
 using VirtoCommerce.NotificationsModule.Core.Model;
 using VirtoCommerce.NotificationsModule.Core.Services;
-using VirtoCommerce.NotificationsModule.Data.Model;
 using VirtoCommerce.Platform.Core.Common;
 using VirtoCommerce.Platform.Core.ExportImport;
-using VirtoCommerce.Platform.Data.ExportImport;
 
 namespace VirtoCommerce.NotificationsModule.Data.ExportImport
 {
@@ -43,7 +41,7 @@ namespace VirtoCommerce.NotificationsModule.Data.ExportImport
                 progressCallback(progressInfo);
 
                 await writer.WritePropertyNameAsync("Notifications");
-                await writer.SerializeJsonArrayWithPagingAsync(_jsonSerializer, _batchSize, async (skip, take) =>
+                await writer.SerializeArrayWithPagingAsync(_jsonSerializer, _batchSize, async (skip, take) =>
                 {
                     var searchCriteria = AbstractTypeFactory<NotificationSearchCriteria>.TryCreateInstance();
                     searchCriteria.Take = take;
@@ -71,12 +69,12 @@ namespace VirtoCommerce.NotificationsModule.Data.ExportImport
             using (var streamReader = new StreamReader(inputStream))
             using (var reader = new JsonTextReader(streamReader))
             {
-                while (reader.Read())
+                while (await reader.ReadAsync())
                 {
                     if (reader.TokenType == JsonToken.PropertyName &&
                         reader.Value?.ToString() == "Notifications")
                     {
-                        await SafeDeserializeJsonArrayWithPagingAsync<Notification>(reader, _jsonSerializer, _batchSize, progressInfo,
+                        await SafeDeserializeArrayWithPagingAsync<Notification>(reader, _jsonSerializer, _batchSize, progressInfo,
                             items => _notificationService.SaveChangesAsync(items.ToArray()),
                             processedCount =>
                             {
@@ -88,13 +86,13 @@ namespace VirtoCommerce.NotificationsModule.Data.ExportImport
             }
         }
 
-        private static async Task SafeDeserializeJsonArrayWithPagingAsync<T>(JsonTextReader reader, JsonSerializer serializer, int pageSize,
-           ExportImportProgressInfo progressInfo, Func<IEnumerable<T>, Task> action, Action<int> progressCallback, ICancellationToken cancellationToken)
+        private static async Task SafeDeserializeArrayWithPagingAsync<T>(JsonTextReader reader, JsonSerializer serializer, int pageSize,
+           ExportImportProgressInfo progressInfo, Func<IList<T>, Task> action, Action<int> progressCallback, ICancellationToken cancellationToken)
         {
-            reader.Read();
+            await reader.ReadAsync();
             if (reader.TokenType == JsonToken.StartArray)
             {
-                reader.Read();
+                await reader.ReadAsync();
 
                 var items = new List<T>();
                 var processedCount = 0;
@@ -113,7 +111,7 @@ namespace VirtoCommerce.NotificationsModule.Data.ExportImport
                     }
 
                     processedCount++;
-                    reader.Read();
+                    await reader.ReadAsync();
                     if (processedCount % pageSize == 0 || reader.TokenType == JsonToken.EndArray)
                     {
                         await action(items);

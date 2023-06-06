@@ -1,40 +1,40 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
-    <PropertyGroup>
-        <TargetFramework>net6.0</TargetFramework>
-        <noWarn>1591</noWarn>
-        <OutputType>Library</OutputType>
-        <IsPackable>False</IsPackable>
-    </PropertyGroup>
-    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-        <NoWarn>1701;1702;1705</NoWarn>
-    </PropertyGroup>
-    <ItemGroup>
-        <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.0">
-            <PrivateAssets>all</PrivateAssets>
-            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-        </PackageReference>
-        <ProjectReference Include="..\..\src\VirtoCommerce.NotificationsModule.Core\VirtoCommerce.NotificationsModule.Core.csproj" />
-        <ProjectReference Include="..\..\src\VirtoCommerce.NotificationsModule.Data\VirtoCommerce.NotificationsModule.Data.csproj" />
-        <ProjectReference Include="..\..\src\VirtoCommerce.NotificationsModule.LiquidRenderer\VirtoCommerce.NotificationsModule.LiquidRenderer.csproj" />
-        <ProjectReference Include="..\..\src\VirtoCommerce.NotificationsModule.TemplateLoader.FileSystem\VirtoCommerce.NotificationsModule.TemplateLoader.FileSystem.csproj" />
-    </ItemGroup>
-    <ItemGroup>
-        <Content Include="Templates/**">
-            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-        </Content>
-    </ItemGroup>
-    <ItemGroup>
-        <NotificationTemplates Include="Templates/**" />
-    </ItemGroup>
-    <ItemGroup>
-      <None Remove="NotificationLayoutsTemplate\SampleNotificationLayout.html" />
-    </ItemGroup>
-    <ItemGroup>
-      <EmbeddedResource Include="NotificationLayoutsTemplate\SampleNotificationLayout.html" />
-      <EmbeddedResource Include="TemplatesEmbedded\SampleEmailNotification_body.html" />
-      <EmbeddedResource Include="TemplatesEmbedded\SampleEmailNotification_subject.txt" />
-    </ItemGroup>
-    <Target Name="CopyCustomContentOnPublish" AfterTargets="Publish">
-        <Copy SourceFiles="@(NotificationTemplates)" DestinationFiles="$(PublishDir)\..\%(Identity)" />
-    </Target>
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <noWarn>1591</noWarn>
+    <OutputType>Library</OutputType>
+    <IsPackable>False</IsPackable>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\VirtoCommerce.NotificationsModule.Core\VirtoCommerce.NotificationsModule.Core.csproj" />
+    <ProjectReference Include="..\..\src\VirtoCommerce.NotificationsModule.Data.SqlServer\VirtoCommerce.NotificationsModule.Data.SqlServer.csproj" />
+    <ProjectReference Include="..\..\src\VirtoCommerce.NotificationsModule.Data\VirtoCommerce.NotificationsModule.Data.csproj" />
+    <ProjectReference Include="..\..\src\VirtoCommerce.NotificationsModule.LiquidRenderer\VirtoCommerce.NotificationsModule.LiquidRenderer.csproj" />
+    <ProjectReference Include="..\..\src\VirtoCommerce.NotificationsModule.TemplateLoader.FileSystem\VirtoCommerce.NotificationsModule.TemplateLoader.FileSystem.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Templates/**">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <NotificationTemplates Include="Templates/**" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="NotificationLayoutsTemplate\SampleNotificationLayout.html" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="NotificationLayoutsTemplate\SampleNotificationLayout.html" />
+    <EmbeddedResource Include="TemplatesEmbedded\SampleEmailNotification_body.html" />
+    <EmbeddedResource Include="TemplatesEmbedded\SampleEmailNotification_subject.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.13">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+  <Target Name="CopyCustomContentOnPublish" AfterTargets="Publish">
+    <Copy SourceFiles="@(NotificationTemplates)" DestinationFiles="$(PublishDir)\..\%(Identity)" />
+  </Target>
 </Project>
