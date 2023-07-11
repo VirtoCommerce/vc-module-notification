@@ -43,6 +43,7 @@ namespace VirtoCommerce.NotificationsModule.Tests.IntegrationTests
         private readonly Mock<INotificationSearchService> _notificationSearchServiceMock;
         private readonly Mock<IBackgroundJobClient> _backgroundJobClient;
         private readonly Mock<ICrudService<NotificationLayout>> _notificationLayoutServiceMock;
+        private readonly Mock<INotificationLayoutSearchService> _notificationLayoutSearchService;
 
         public NotificationSenderIntegrationTests()
         {
@@ -61,8 +62,9 @@ namespace VirtoCommerce.NotificationsModule.Tests.IntegrationTests
             };
 
             _notificationLayoutServiceMock = new Mock<ICrudService<NotificationLayout>>();
+            _notificationLayoutSearchService = new Mock<INotificationLayoutSearchService>();
             Func<ITemplateLoader> factory = () => new LayoutTemplateLoader(_notificationLayoutServiceMock.Object);
-            _templateRender = new LiquidTemplateRenderer(Options.Create(new LiquidRenderOptions() { CustomFilterTypes = new HashSet<Type> { typeof(UrlFilters), typeof(TranslationFilter) } }), factory);
+            _templateRender = new LiquidTemplateRenderer(Options.Create(new LiquidRenderOptions() { CustomFilterTypes = new HashSet<Type> { typeof(UrlFilters), typeof(TranslationFilter) } }), factory, _notificationLayoutSearchService.Object);
             _messageServiceMock = new Mock<INotificationMessageService>();
             _smptpOptionsMock = new Mock<IOptions<SmtpSenderOptions>>();
             _emailSendingOptions = new Mock<IOptions<EmailSendingOptions>>();
