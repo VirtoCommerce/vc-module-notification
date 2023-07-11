@@ -8,6 +8,7 @@ using Newtonsoft.Json.Linq;
 using Scriban.Runtime;
 using VirtoCommerce.AssetsModule.Core.Assets;
 using VirtoCommerce.NotificationsModule.Core.Model;
+using VirtoCommerce.NotificationsModule.Core.Model.Search;
 using VirtoCommerce.NotificationsModule.Core.Services;
 using VirtoCommerce.NotificationsModule.LiquidRenderer;
 using VirtoCommerce.NotificationsModule.LiquidRenderer.Filters;
@@ -32,7 +33,10 @@ namespace VirtoCommerce.NotificationsModule.Tests.UnitTests
             _translationServiceMock = new Mock<ITranslationService>();
             _blobUrlResolverMock = new Mock<IBlobUrlResolver>();
             _notificationLayoutServiceMock = new Mock<ICrudService<NotificationLayout>>();
+
             _notificationLayoutSearchService = new Mock<INotificationLayoutSearchService>();
+            var notificationLayoutSearchResult = new NotificationLayoutSearchResult() { Results = new List<NotificationLayout>() };
+            _notificationLayoutSearchService.Setup(x => x.SearchAsync(It.IsAny<NotificationLayoutSearchCriteria>())).ReturnsAsync(notificationLayoutSearchResult);
 
             Func<ITemplateLoader> factory = () => new LayoutTemplateLoader(_notificationLayoutServiceMock.Object);
             _liquidTemplateRenderer = new LiquidTemplateRenderer(Options.Create(new LiquidRenderOptions() { CustomFilterTypes = new HashSet<Type> { typeof(UrlFilters), typeof(TranslationFilter) } }), factory, _notificationLayoutSearchService.Object);
