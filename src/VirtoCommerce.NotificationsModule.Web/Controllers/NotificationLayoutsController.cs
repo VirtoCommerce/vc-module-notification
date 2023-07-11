@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -60,11 +59,6 @@ namespace VirtoCommerce.NotificationsModule.Web.Controllers
         [ProducesResponseType(typeof(void), StatusCodes.Status204NoContent)]
         public async Task<ActionResult> UpdateNotificationLayout([FromBody] NotificationLayout layout)
         {
-            if (layout == null)
-            {
-                throw new ArgumentNullException(nameof(layout));
-            }
-
             var layouts = new List<NotificationLayout> { layout };
 
             if (layout.IsDefault)
