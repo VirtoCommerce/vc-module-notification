@@ -9,7 +9,7 @@
               rowTemplate: 'notification-layout-list.row.html',
               rowHeight: 60,
               columnDefs: [
-                { name: 'name', displayName: 'notifications.blades.notification-layouts-list.labels.name' },
+                { name: 'name', displayName: 'notifications.blades.notification-layouts-list.labels.name', cellTemplate: 'layout-list-name.cell.html' },
               ]})">
               <div ui-grid="gridOptions" ui-grid-auto-resize ui-grid-save-state ui-grid-selection ui-grid-resize-columns ui-grid-move-columns ui-grid-pinning ui-grid-height></div>
             </div>
@@ -25,5 +25,14 @@
          ng-class="{'ui-grid-row-header-cell': col.isRowHeader, '__hovered': grid.appScope.contextMenuEntity === row.entity, '__selected': row.entity.id===grid.appScope.selectedNodeId }"
          role="{{ col.isRowHeader ? 'rowheader' : 'gridcell' }}"
          ui-grid-cell>
+    </div>
+</script>
+
+<script type="text/ng-template" id="layout-list-name.cell.html">
+    <div class="ui-grid-cell-contents">
+        <div class="inner-contents">
+            <div class="table-t">{{COL_FIELD}}</div>
+            <div class="table-descr" ng-if="row.entity.isDefault === true">{{ 'notifications.blades.notification-layouts-list.labels.default' | translate }}</div>
+        </div>
     </div>
 </script>

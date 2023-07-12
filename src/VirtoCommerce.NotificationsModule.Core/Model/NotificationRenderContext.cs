@@ -9,5 +9,7 @@ namespace VirtoCommerce.NotificationsModule.Core.Model
         public string Language { get; set; }
 
         public string LayoutId { get; set; }
+
+        public bool UseLayouts { get; set; }
     }
 }
