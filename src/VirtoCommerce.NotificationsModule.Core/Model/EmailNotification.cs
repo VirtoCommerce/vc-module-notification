@@ -74,6 +74,7 @@ namespace VirtoCommerce.NotificationsModule.Core.Model
                     Model = this,
                     Language = template.LanguageCode,
                     LayoutId = template.NotificationLayoutId,
+                    UseLayouts = true
                 };
 
                 emailMessage.Body = await render.RenderAsync(bodyRenderContext);

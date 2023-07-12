@@ -8,6 +8,8 @@ using Newtonsoft.Json.Linq;
 using Scriban.Runtime;
 using VirtoCommerce.AssetsModule.Core.Assets;
 using VirtoCommerce.NotificationsModule.Core.Model;
+using VirtoCommerce.NotificationsModule.Core.Model.Search;
+using VirtoCommerce.NotificationsModule.Core.Services;
 using VirtoCommerce.NotificationsModule.LiquidRenderer;
 using VirtoCommerce.NotificationsModule.LiquidRenderer.Filters;
 using VirtoCommerce.NotificationsModule.Tests.Model;
@@ -23,6 +25,7 @@ namespace VirtoCommerce.NotificationsModule.Tests.UnitTests
         private readonly Mock<ITranslationService> _translationServiceMock;
         private readonly Mock<IBlobUrlResolver> _blobUrlResolverMock;
         private readonly Mock<ICrudService<NotificationLayout>> _notificationLayoutServiceMock;
+        private readonly Mock<INotificationLayoutSearchService> _notificationLayoutSearchService;
         private readonly LiquidTemplateRenderer _liquidTemplateRenderer;
 
         public LiquidTemplateRendererUnitTests()
@@ -31,8 +34,12 @@ namespace VirtoCommerce.NotificationsModule.Tests.UnitTests
             _blobUrlResolverMock = new Mock<IBlobUrlResolver>();
             _notificationLayoutServiceMock = new Mock<ICrudService<NotificationLayout>>();
 
+            _notificationLayoutSearchService = new Mock<INotificationLayoutSearchService>();
+            var notificationLayoutSearchResult = new NotificationLayoutSearchResult() { Results = new List<NotificationLayout>() };
+            _notificationLayoutSearchService.Setup(x => x.SearchAsync(It.IsAny<NotificationLayoutSearchCriteria>())).ReturnsAsync(notificationLayoutSearchResult);
+
             Func<ITemplateLoader> factory = () => new LayoutTemplateLoader(_notificationLayoutServiceMock.Object);
-            _liquidTemplateRenderer = new LiquidTemplateRenderer(Options.Create(new LiquidRenderOptions() { CustomFilterTypes = new HashSet<Type> { typeof(UrlFilters), typeof(TranslationFilter) } }), factory);
+            _liquidTemplateRenderer = new LiquidTemplateRenderer(Options.Create(new LiquidRenderOptions() { CustomFilterTypes = new HashSet<Type> { typeof(UrlFilters), typeof(TranslationFilter) } }), factory, _notificationLayoutSearchService.Object);
 
             //TODO
             if (!AbstractTypeFactory<NotificationScriptObject>.AllTypeInfos.SelectMany(x => x.AllSubclasses).Contains(typeof(NotificationScriptObject)))

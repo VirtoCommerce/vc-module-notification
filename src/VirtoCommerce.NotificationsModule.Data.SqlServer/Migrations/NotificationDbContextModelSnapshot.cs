@@ -171,6 +171,9 @@ namespace VirtoCommerce.NotificationsModule.Data.SqlServer.SqlServer.Migrations
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<bool>("IsDefault")
+                        .HasColumnType("bit");
+
                     b.Property<string>("ModifiedBy")
                         .HasMaxLength(64)
                         .HasColumnType("nvarchar(64)");

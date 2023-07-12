@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Options;
@@ -6,6 +7,7 @@ using Scriban;
 using Scriban.Parsing;
 using Scriban.Runtime;
 using VirtoCommerce.NotificationsModule.Core.Model;
+using VirtoCommerce.NotificationsModule.Core.Model.Search;
 using VirtoCommerce.NotificationsModule.Core.Services;
 using VirtoCommerce.Platform.Core.Common;
 
@@ -15,11 +17,16 @@ namespace VirtoCommerce.NotificationsModule.LiquidRenderer
     {
         private readonly LiquidRenderOptions _options;
         private readonly Func<ITemplateLoader> _templateLoaderFactory;
+        private readonly INotificationLayoutSearchService _notificationLayoutSearchService;
 
-        public LiquidTemplateRenderer(IOptions<LiquidRenderOptions> options, Func<ITemplateLoader> templateLoaderFactory)
+        public LiquidTemplateRenderer(
+            IOptions<LiquidRenderOptions> options,
+            Func<ITemplateLoader> templateLoaderFactory,
+            INotificationLayoutSearchService notificationLayoutSearchService)
         {
             _options = options.Value;
             _templateLoaderFactory = templateLoaderFactory;
+            _notificationLayoutSearchService = notificationLayoutSearchService;
         }
 
         public Task<string> RenderAsync(string stringTemplate, object model, string language = null)
@@ -48,6 +55,12 @@ namespace VirtoCommerce.NotificationsModule.LiquidRenderer
             };
 
             var stringTemplate = renderContext.Template;
+
+            if (renderContext.UseLayouts && string.IsNullOrEmpty(renderContext.LayoutId))
+            {
+                var layoutSearchResult = await _notificationLayoutSearchService.SearchAsync(new NotificationLayoutSearchCriteria() { IsDefault = true });
+                renderContext.LayoutId = layoutSearchResult.Results.FirstOrDefault()?.Id;
+            }
 
             if (!string.IsNullOrEmpty(renderContext.LayoutId))
             {

@@ -51,7 +51,8 @@
           "preview-data-comment": "Template context data (JSON)",
           "note-caption": "Important!",
           "note-text": "This template has a predefined source. Once you save your notification, this version will replace the predefined one. You can restore the original template using the appropriate button.",
-          "layout": "Layout"
+          "layout": "Layout",
+          "layout-blank-note": "Leave this field blank to use selected default layout"
         },
         "descriptions": {
           "to": "Email recipient address",
@@ -87,7 +88,8 @@
         "labels": {
           "no-data": "No registered layouts yet",
           "name": "Name",
-          "template": "Template"
+          "template": "Template",
+          "default": "Default"
         }
       },
       "notification-layout-details": {
@@ -95,7 +97,8 @@
         "subtitle": "Edit layout",
         "labels": {
           "name": "Name",
-          "template": "Template"
+          "template": "Template",
+          "default": "Default"
         },
         "placeholders": {
           "name": "Enter name..."

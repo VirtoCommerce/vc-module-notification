@@ -12,6 +12,8 @@ namespace VirtoCommerce.NotificationsModule.Data.Model
 
         public string Template { get; set; }
 
+        public bool IsDefault { get; set; }
+
         public NotificationLayoutEntity FromModel(NotificationLayout model, PrimaryKeyResolvingMap pkMap)
         {
             pkMap.AddPair(model, this);
@@ -24,6 +26,7 @@ namespace VirtoCommerce.NotificationsModule.Data.Model
 
             Name = model.Name;
             Template = model.Template;
+            IsDefault = model.IsDefault;
 
             return this;
         }
@@ -38,6 +41,7 @@ namespace VirtoCommerce.NotificationsModule.Data.Model
 
             model.Name = Name;
             model.Template = Template;
+            model.IsDefault = IsDefault;
 
             return model;
         }
@@ -46,6 +50,7 @@ namespace VirtoCommerce.NotificationsModule.Data.Model
         {
             target.Name = Name;
             target.Template = Template;
+            target.IsDefault = IsDefault;
         }
     }
 }

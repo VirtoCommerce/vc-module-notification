@@ -44,6 +44,11 @@ namespace VirtoCommerce.NotificationsModule.Data.Services
                 query = query.Where(x => x.Name.Contains(criteria.Keyword));
             }
 
+            if (criteria.IsDefault.HasValue)
+            {
+                query = query.Where(x => x.IsDefault == criteria.IsDefault);
+            }
+
             return query;
         }
 

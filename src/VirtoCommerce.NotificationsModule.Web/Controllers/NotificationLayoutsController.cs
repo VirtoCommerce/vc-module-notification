@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -57,7 +59,21 @@ namespace VirtoCommerce.NotificationsModule.Web.Controllers
         [ProducesResponseType(typeof(void), StatusCodes.Status204NoContent)]
         public async Task<ActionResult> UpdateNotificationLayout([FromBody] NotificationLayout layout)
         {
-            await _layoutService.SaveChangesAsync(new[] { layout });
+            var layouts = new List<NotificationLayout> { layout };
+
+            if (layout.IsDefault)
+            {
+                var layoutSearchResult = await _layoutSearchService.SearchAsync(new NotificationLayoutSearchCriteria() { IsDefault = true });
+                var defaultLayout = layoutSearchResult.Results.FirstOrDefault();
+
+                if (defaultLayout != null)
+                {
+                    defaultLayout.IsDefault = false;
+                    layouts.Add(defaultLayout);
+                }
+            }
+
+            await _layoutService.SaveChangesAsync(layouts);
             return NoContent();
         }
 
