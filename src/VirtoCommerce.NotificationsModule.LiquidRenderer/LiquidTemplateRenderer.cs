@@ -19,9 +19,10 @@ namespace VirtoCommerce.NotificationsModule.LiquidRenderer
         private readonly Func<ITemplateLoader> _templateLoaderFactory;
         private readonly INotificationLayoutSearchService _notificationLayoutSearchService;
 
-        public LiquidTemplateRenderer(IOptions<LiquidRenderOptions> options
-            , Func<ITemplateLoader> templateLoaderFactory
-            , INotificationLayoutSearchService notificationLayoutSearchService)
+        public LiquidTemplateRenderer(
+            IOptions<LiquidRenderOptions> options,
+            Func<ITemplateLoader> templateLoaderFactory,
+            INotificationLayoutSearchService notificationLayoutSearchService)
         {
             _options = options.Value;
             _templateLoaderFactory = templateLoaderFactory;
