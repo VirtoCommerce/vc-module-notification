@@ -97,7 +97,8 @@
         "subtitle": "Edit layout",
         "labels": {
           "name": "Name",
-          "template": "Template"
+          "template": "Template",
+          "default": "Default"
         },
         "placeholders": {
           "name": "Enter name..."
@@ -247,9 +248,7 @@
     },
     "commands": {
       "restore": "Restore",
-      "share-preview": "Share",
-      "select-default": "Select default",
-      "deselect-default": "Deselect default"
+      "share-preview": "Share"
     }
   },
   "notificationTypes": {

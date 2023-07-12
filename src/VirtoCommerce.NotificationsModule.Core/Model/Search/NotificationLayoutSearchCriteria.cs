@@ -7,6 +7,6 @@ namespace VirtoCommerce.NotificationsModule.Core.Model.Search
     {
         public IList<string> Names { get; set; }
 
-        public bool IsDefault { get; set; }
+        public bool? IsDefault { get; set; }
     }
 }

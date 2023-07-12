@@ -34,8 +34,6 @@ angular.module('virtoCommerce.notificationsModule')
                             blade.parentBlade.refresh(true);
                         }
                     }
-
-                    initializeToolBar();
                 };
 
                 function initializeBlade(data) {
@@ -89,64 +87,29 @@ angular.module('virtoCommerce.notificationsModule')
                     }
                 });
 
-                function initializeToolBar() {
+                blade.toolbarCommands = [
+                    {
+                        name: "platform.commands.save",
+                        icon: 'fas fa-save',
+                        executeMethod: $scope.saveChanges,
+                        canExecuteMethod: canSave,
+                        permission: blade.updatePermission
+                    }];
 
-                    blade.toolbarCommands = [
+                if (!blade.isNew) {
+                    blade.toolbarCommands.push(
                         {
-                            name: "platform.commands.save",
-                            icon: 'fas fa-save',
-                            executeMethod: $scope.saveChanges,
-                            canExecuteMethod: canSave,
+                            name: "platform.commands.reset",
+                            icon: 'fa fa-undo',
+                            executeMethod: function () {
+                                angular.copy(blade.originalEntity, blade.currentEntity);
+                                $scope.editorReloaded = false;
+                                $timeout(reloadEditor, 0);
+                            },
+                            canExecuteMethod: isDirty,
                             permission: blade.updatePermission
-                        }];
-
-                    if (!blade.isNew) {
-                        blade.toolbarCommands.push(
-                            {
-                                name: "platform.commands.reset",
-                                icon: 'fa fa-undo',
-                                executeMethod: function () {
-                                    angular.copy(blade.originalEntity, blade.currentEntity);
-                                    $scope.editorReloaded = false;
-                                    $timeout(reloadEditor, 0);
-                                },
-                                canExecuteMethod: isDirty,
-                                permission: blade.updatePermission
-                            }
-                        );
-                        if (!blade.currentEntity.isDefault) {
-                            blade.toolbarCommands.push(
-                                {
-                                    name: "notifications.commands.select-default",
-                                    icon: 'fas fa-flag',
-                                    executeMethod: function () {
-                                        blade.currentEntity.isDefault = true;
-                                        $scope.saveChanges();
-                                    },
-                                    canExecuteMethod: function () {
-                                        return !isDirty();
-                                    },
-                                    permission: blade.updatePermission
-                                }
-                            );
                         }
-                        else {
-                            blade.toolbarCommands.push(
-                                {
-                                    name: "notifications.commands.deselect-default",
-                                    icon: 'fas fa-times',
-                                    executeMethod: function () {
-                                        blade.currentEntity.isDefault = false;
-                                        $scope.saveChanges();
-                                    },
-                                    canExecuteMethod: function () {
-                                        return !isDirty();
-                                    },
-                                    permission: blade.updatePermission
-                                }
-                            );
-                        }
-                    }
+                    );
                 }
 
                 function canSave() {

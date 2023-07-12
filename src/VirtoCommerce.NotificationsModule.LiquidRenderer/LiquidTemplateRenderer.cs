@@ -55,7 +55,7 @@ namespace VirtoCommerce.NotificationsModule.LiquidRenderer
 
             var stringTemplate = renderContext.Template;
 
-            if (string.IsNullOrEmpty(renderContext.LayoutId))
+            if (renderContext.UseLayouts && string.IsNullOrEmpty(renderContext.LayoutId))
             {
                 var layoutSearchResult = await _notificationLayoutSearchService.SearchAsync(new NotificationLayoutSearchCriteria() { IsDefault = true });
                 renderContext.LayoutId = layoutSearchResult.Results.FirstOrDefault()?.Id;
