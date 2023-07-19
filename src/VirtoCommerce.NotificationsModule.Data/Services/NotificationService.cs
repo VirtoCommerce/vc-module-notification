@@ -54,9 +54,9 @@ namespace VirtoCommerce.NotificationsModule.Data.Services
                     repository.DisableChangesTracking();
 
                     var entities = await repository.GetByIdsAsync(ids, responseGroup);
-                    var notifications = entities.Select(ToModel).ToArray();
+                    var notifications = entities?.Select(ToModel).ToArray();
                     //Load predefined notifications templates
-                    if (EnumUtility.SafeParseFlags(responseGroup, NotificationResponseGroup.Full).HasFlag(NotificationResponseGroup.WithTemplates))
+                    if (notifications != null && EnumUtility.SafeParseFlags(responseGroup, NotificationResponseGroup.Full).HasFlag(NotificationResponseGroup.WithTemplates))
                     {
                         foreach (var notification in notifications)
                         {
@@ -75,7 +75,7 @@ namespace VirtoCommerce.NotificationsModule.Data.Services
                 }
             });
 
-            return result.Select(x => x.Clone() as Notification).ToArray();
+            return result?.Select(x => x.Clone() as Notification).ToArray();
         }
 
         public async Task SaveChangesAsync(Notification[] notifications)
@@ -92,13 +92,13 @@ namespace VirtoCommerce.NotificationsModule.Data.Services
                 {
                     var existingNotificationEntities = await repository.GetByNotificationsAsync(notifications, NotificationResponseGroup.Full.ToString());
                     //Convert db entities to domain notification to be able compare them with passed as parameter
-                    var existingNotifications = existingNotificationEntities.Select(ToModel).ToArray();
+                    var existingNotifications = existingNotificationEntities?.Select(ToModel).ToArray();
                     var comparer = AnonymousComparer.Create((Notification x) => string.Join("-", x.Type, x.TenantIdentity.Id, x.TenantIdentity.Type));
                     foreach (var notification in notifications)
                     {
                         var modifiedEntity = AbstractTypeFactory<NotificationEntity>.TryCreateInstance($"{notification.Kind}Entity").FromModel(notification, pkMap);
 
-                        var existingNotification = existingNotifications.FirstOrDefault(x => comparer.Equals(x, notification));
+                        var existingNotification = existingNotifications?.FirstOrDefault(x => comparer.Equals(x, notification));
                         if (existingNotification != null)
                         {
                             var originalEntity = existingNotificationEntities.First(n => n.Id.EqualsInvariant(existingNotification.Id));

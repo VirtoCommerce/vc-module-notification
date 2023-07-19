@@ -20,7 +20,7 @@ namespace VirtoCommerce.NotificationsModule.Data.Services
         {
         }
 
-        protected override Task<IEnumerable<NotificationLayoutEntity>> LoadEntities(IRepository repository, IEnumerable<string> ids, string responseGroup)
+        protected override Task<IList<NotificationLayoutEntity>> LoadEntities(IRepository repository, IList<string> ids, string responseGroup)
         {
             return ((INotificationRepository)repository).GetNotificationLayoutsByIdsAsync(ids);
         }

@@ -23,7 +23,6 @@ using VirtoCommerce.NotificationsModule.Tests.Model;
 using VirtoCommerce.NotificationsModule.Tests.NotificationTypes;
 using VirtoCommerce.NotificationsModule.Twilio;
 using VirtoCommerce.Platform.Core.Common;
-using VirtoCommerce.Platform.Core.GenericCrud;
 using Xunit;
 
 namespace VirtoCommerce.NotificationsModule.Tests.IntegrationTests
@@ -43,7 +42,7 @@ namespace VirtoCommerce.NotificationsModule.Tests.IntegrationTests
         private readonly SmtpSenderOptions _smtpOptionsGmail;
         private readonly Mock<INotificationSearchService> _notificationSearchServiceMock;
         private readonly Mock<IBackgroundJobClient> _backgroundJobClient;
-        private readonly Mock<ICrudService<NotificationLayout>> _notificationLayoutServiceMock;
+        private readonly Mock<INotificationLayoutService> _notificationLayoutServiceMock;
         private readonly Mock<INotificationLayoutSearchService> _notificationLayoutSearchService;
 
         public NotificationSenderIntegrationTests()
@@ -59,14 +58,14 @@ namespace VirtoCommerce.NotificationsModule.Tests.IntegrationTests
                 Port = 587,
                 Login = Configuration["SenderEmail"],
                 Password = Configuration["SenderEmailPassword"],
-                EnableSsl = true
+                ForceSslTls = true,
             };
 
-            _notificationLayoutServiceMock = new Mock<ICrudService<NotificationLayout>>();
+            _notificationLayoutServiceMock = new Mock<INotificationLayoutService>();
 
             _notificationLayoutSearchService = new Mock<INotificationLayoutSearchService>();
             var notificationLayoutSearchResult = new NotificationLayoutSearchResult() { Results = new List<NotificationLayout>() };
-            _notificationLayoutSearchService.Setup(x => x.SearchAsync(It.IsAny<NotificationLayoutSearchCriteria>())).ReturnsAsync(notificationLayoutSearchResult);
+            _notificationLayoutSearchService.Setup(x => x.SearchAsync(It.IsAny<NotificationLayoutSearchCriteria>(), It.IsAny<bool>())).ReturnsAsync(notificationLayoutSearchResult);
 
             Func<ITemplateLoader> factory = () => new LayoutTemplateLoader(_notificationLayoutServiceMock.Object);
             _templateRender = new LiquidTemplateRenderer(Options.Create(new LiquidRenderOptions() { CustomFilterTypes = new HashSet<Type> { typeof(UrlFilters), typeof(TranslationFilter) } }), factory, _notificationLayoutSearchService.Object);

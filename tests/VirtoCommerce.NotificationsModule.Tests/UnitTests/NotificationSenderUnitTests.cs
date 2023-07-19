@@ -25,7 +25,6 @@ using VirtoCommerce.NotificationsModule.Tests.Common;
 using VirtoCommerce.NotificationsModule.Tests.Model;
 using VirtoCommerce.NotificationsModule.Tests.NotificationTypes;
 using VirtoCommerce.Platform.Core.Common;
-using VirtoCommerce.Platform.Core.GenericCrud;
 using VirtoCommerce.Platform.Core.JsonConverters;
 using Xunit;
 
@@ -40,18 +39,18 @@ namespace VirtoCommerce.NotificationsModule.Tests.UnitTests
         private readonly Mock<INotificationMessageSender> _messageSenderMock;
         private readonly Mock<INotificationMessageSenderFactory> _senderFactoryMock;
         private readonly Mock<IBackgroundJobClient> _backgroundJobClient;
-        private readonly Mock<ICrudService<NotificationLayout>> _notificationLayoutServiceMock;
+        private readonly Mock<INotificationLayoutService> _notificationLayoutServiceMock;
         private readonly Mock<INotificationLayoutSearchService> _notificationLayoutSearchService;
         private readonly Mock<INotificationSearchService> _notificationSearchServiceMock;
         private readonly NotificationRegistrar _notificationRegistrar;
 
         public NotificationSenderUnitTests()
         {
-            _notificationLayoutServiceMock = new Mock<ICrudService<NotificationLayout>>();
+            _notificationLayoutServiceMock = new Mock<INotificationLayoutService>();
 
             _notificationLayoutSearchService = new Mock<INotificationLayoutSearchService>();
             var notificationLayoutSearchResult = new NotificationLayoutSearchResult() { Results = new List<NotificationLayout>() };
-            _notificationLayoutSearchService.Setup(x => x.SearchAsync(It.IsAny<NotificationLayoutSearchCriteria>())).ReturnsAsync(notificationLayoutSearchResult);
+            _notificationLayoutSearchService.Setup(x => x.SearchAsync(It.IsAny<NotificationLayoutSearchCriteria>(), It.IsAny<bool>())).ReturnsAsync(notificationLayoutSearchResult);
 
             Func<ITemplateLoader> factory = () => new LayoutTemplateLoader(_notificationLayoutServiceMock.Object);
 

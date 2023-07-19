@@ -56,7 +56,7 @@ namespace VirtoCommerce.NotificationsModule.Data.Services
 
         protected virtual IQueryable<NotificationMessageEntity> BuildQuery(INotificationRepository repository, NotificationMessageSearchCriteria criteria)
         {
-            var query = repository.NotifcationMessages;
+            var query = repository.NotificationMessages;
 
             if (!criteria.ObjectIds.IsNullOrEmpty())
             {

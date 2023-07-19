@@ -10,7 +10,6 @@ using Microsoft.Extensions.Hosting;
 using VirtoCommerce.Notifications.Core.Types;
 using VirtoCommerce.NotificationsModule.Core;
 using VirtoCommerce.NotificationsModule.Core.Model;
-using VirtoCommerce.NotificationsModule.Core.Model.Search;
 using VirtoCommerce.NotificationsModule.Core.Services;
 using VirtoCommerce.NotificationsModule.Core.Types;
 using VirtoCommerce.NotificationsModule.Data.ExportImport;
@@ -29,7 +28,6 @@ using VirtoCommerce.NotificationsModule.TemplateLoader.FileSystem;
 using VirtoCommerce.NotificationsModule.Twilio;
 using VirtoCommerce.Platform.Core.Common;
 using VirtoCommerce.Platform.Core.ExportImport;
-using VirtoCommerce.Platform.Core.GenericCrud;
 using VirtoCommerce.Platform.Core.JsonConverters;
 using VirtoCommerce.Platform.Core.Modularity;
 using VirtoCommerce.Platform.Core.Notifications;
@@ -79,10 +77,8 @@ namespace VirtoCommerce.NotificationsModule.Web
             serviceCollection.AddTransient<NotificationsExportImport>();
             serviceCollection.AddTransient<NotificationScriptObject>();
 
-            serviceCollection.AddTransient<ICrudService<NotificationLayout>, NotificationLayoutService>();
-            serviceCollection.AddTransient(x => (INotificationLayoutService)x.GetRequiredService<ICrudService<NotificationLayout>>());
-            serviceCollection.AddTransient<ISearchService<NotificationLayoutSearchCriteria, NotificationLayoutSearchResult, NotificationLayout>, NotificationLayoutSearchService>();
-            serviceCollection.AddTransient(x => (INotificationLayoutSearchService)x.GetRequiredService<ISearchService<NotificationLayoutSearchCriteria, NotificationLayoutSearchResult, NotificationLayout>>());
+            serviceCollection.AddTransient<INotificationLayoutService, NotificationLayoutService>();
+            serviceCollection.AddTransient<INotificationLayoutSearchService, NotificationLayoutSearchService>();
             serviceCollection.AddSingleton<INotificationLayoutRegistrar, NotificationLayoutRegistrar>();
 
             serviceCollection.AddFileSystemTemplateLoader(opt => Configuration.GetSection("Notifications:Templates").Bind(opt));
@@ -153,13 +149,7 @@ namespace VirtoCommerce.NotificationsModule.Web
             settingsRegistrar.RegisterSettings(ModuleConstants.Settings.AllSettings, ModuleInfo.Id);
 
             var permissionsRegistrar = appBuilder.ApplicationServices.GetRequiredService<IPermissionsRegistrar>();
-            permissionsRegistrar.RegisterPermissions(ModuleConstants.Security.Permissions.AllPermissions.Select(x =>
-                new Permission
-                {
-                    GroupName = "Notifications",
-                    ModuleId = ModuleInfo.Id,
-                    Name = x
-                }).ToArray());
+            permissionsRegistrar.RegisterPermissions(ModuleInfo.Id, "Notifications", ModuleConstants.Security.Permissions.AllPermissions);
 
             PolymorphJsonConverter.RegisterTypeForDiscriminator(typeof(Notification), nameof(Notification.Type));
             PolymorphJsonConverter.RegisterTypeForDiscriminator(typeof(NotificationTemplate), nameof(NotificationTemplate.Type));
