@@ -7,7 +7,8 @@ using Microsoft.AspNetCore.Mvc;
 using VirtoCommerce.NotificationsModule.Core;
 using VirtoCommerce.NotificationsModule.Core.Model;
 using VirtoCommerce.NotificationsModule.Core.Model.Search;
-using VirtoCommerce.Platform.Core.GenericCrud;
+using VirtoCommerce.NotificationsModule.Core.Services;
+using VirtoCommerce.Platform.Core.Common;
 
 namespace VirtoCommerce.NotificationsModule.Web.Controllers
 {
@@ -15,12 +16,12 @@ namespace VirtoCommerce.NotificationsModule.Web.Controllers
     [Authorize]
     public class NotificationLayoutsController : Controller
     {
-        private readonly ICrudService<NotificationLayout> _layoutService;
-        private readonly ISearchService<NotificationLayoutSearchCriteria, NotificationLayoutSearchResult, NotificationLayout> _layoutSearchService;
+        private readonly INotificationLayoutService _layoutService;
+        private readonly INotificationLayoutSearchService _layoutSearchService;
 
         public NotificationLayoutsController(
-            ICrudService<NotificationLayout> layoutService,
-            ISearchService<NotificationLayoutSearchCriteria, NotificationLayoutSearchResult, NotificationLayout> layoutSearchService)
+            INotificationLayoutService layoutService,
+            INotificationLayoutSearchService layoutSearchService)
         {
             _layoutService = layoutService;
             _layoutSearchService = layoutSearchService;
@@ -31,7 +32,7 @@ namespace VirtoCommerce.NotificationsModule.Web.Controllers
         [Authorize(ModuleConstants.Security.Permissions.Access)]
         public async Task<ActionResult<Notification>> GetNotificationLayoutById(string id)
         {
-            var layout = await _layoutService.GetByIdAsync(id);
+            var layout = await _layoutService.GetNoCloneAsync(id);
             return Ok(layout);
         }
 
@@ -40,7 +41,7 @@ namespace VirtoCommerce.NotificationsModule.Web.Controllers
         [Authorize(ModuleConstants.Security.Permissions.Read)]
         public async Task<ActionResult<NotificationLayoutSearchResult>> SearchNotificationLayouts([FromBody] NotificationLayoutSearchCriteria searchCriteria)
         {
-            var searchResult = await _layoutSearchService.SearchAsync(searchCriteria);
+            var searchResult = await _layoutSearchService.SearchNoCloneAsync(searchCriteria);
             return Ok(searchResult);
         }
 

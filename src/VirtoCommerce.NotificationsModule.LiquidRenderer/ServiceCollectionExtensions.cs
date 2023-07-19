@@ -2,9 +2,7 @@ using System;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Scriban.Runtime;
-using VirtoCommerce.NotificationsModule.Core.Model;
 using VirtoCommerce.NotificationsModule.Core.Services;
-using VirtoCommerce.Platform.Core.GenericCrud;
 
 namespace VirtoCommerce.NotificationsModule.LiquidRenderer
 {
@@ -16,7 +14,7 @@ namespace VirtoCommerce.NotificationsModule.LiquidRenderer
             {
                 throw new ArgumentNullException(nameof(services));
             }
-            services.TryAddTransient<Func<ITemplateLoader>>(provider => () => new LayoutTemplateLoader(provider.GetRequiredService<ICrudService<NotificationLayout>>()));
+            services.TryAddTransient<Func<ITemplateLoader>>(provider => () => new LayoutTemplateLoader(provider.GetRequiredService<INotificationLayoutService>()));
             services.TryAddTransient<INotificationTemplateRenderer, LiquidTemplateRenderer>();
 
             return new LiquidRendererBuilder(services);

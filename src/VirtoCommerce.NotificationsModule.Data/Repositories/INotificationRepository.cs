@@ -10,11 +10,12 @@ namespace VirtoCommerce.NotificationsModule.Data.Repositories
     public interface INotificationRepository : IRepository
     {
         IQueryable<NotificationEntity> Notifications { get; }
-        IQueryable<NotificationMessageEntity> NotifcationMessages { get; }
+        IQueryable<NotificationMessageEntity> NotificationMessages { get; }
         IQueryable<NotificationLayoutEntity> NotificationLayouts { get; }
-        Task<NotificationEntity[]> GetByIdsAsync(string[] ids, string responseGroup);
-        Task<NotificationEntity[]> GetByNotificationsAsync(Notification[] notifications, string responseGroup);
-        Task<NotificationMessageEntity[]> GetMessagesByIdsAsync(string[] ids);
-        Task<IEnumerable<NotificationLayoutEntity>> GetNotificationLayoutsByIdsAsync(IEnumerable<string> ids);
+
+        Task<IList<NotificationEntity>> GetByIdsAsync(IList<string> ids, string responseGroup);
+        Task<IList<NotificationEntity>> GetByNotificationsAsync(IList<Notification> notifications, string responseGroup);
+        Task<IList<NotificationMessageEntity>> GetMessagesByIdsAsync(IList<string> ids);
+        Task<IList<NotificationLayoutEntity>> GetNotificationLayoutsByIdsAsync(IList<string> ids);
     }
 }

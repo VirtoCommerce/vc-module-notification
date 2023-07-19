@@ -14,7 +14,6 @@ using VirtoCommerce.NotificationsModule.LiquidRenderer;
 using VirtoCommerce.NotificationsModule.LiquidRenderer.Filters;
 using VirtoCommerce.NotificationsModule.Tests.Model;
 using VirtoCommerce.Platform.Core.Common;
-using VirtoCommerce.Platform.Core.GenericCrud;
 using VirtoCommerce.Platform.Core.Localizations;
 using Xunit;
 
@@ -24,7 +23,7 @@ namespace VirtoCommerce.NotificationsModule.Tests.UnitTests
     {
         private readonly Mock<ITranslationService> _translationServiceMock;
         private readonly Mock<IBlobUrlResolver> _blobUrlResolverMock;
-        private readonly Mock<ICrudService<NotificationLayout>> _notificationLayoutServiceMock;
+        private readonly Mock<INotificationLayoutService> _notificationLayoutServiceMock;
         private readonly Mock<INotificationLayoutSearchService> _notificationLayoutSearchService;
         private readonly LiquidTemplateRenderer _liquidTemplateRenderer;
 
@@ -32,21 +31,26 @@ namespace VirtoCommerce.NotificationsModule.Tests.UnitTests
         {
             _translationServiceMock = new Mock<ITranslationService>();
             _blobUrlResolverMock = new Mock<IBlobUrlResolver>();
-            _notificationLayoutServiceMock = new Mock<ICrudService<NotificationLayout>>();
+            _notificationLayoutServiceMock = new Mock<INotificationLayoutService>();
 
             _notificationLayoutSearchService = new Mock<INotificationLayoutSearchService>();
             var notificationLayoutSearchResult = new NotificationLayoutSearchResult() { Results = new List<NotificationLayout>() };
-            _notificationLayoutSearchService.Setup(x => x.SearchAsync(It.IsAny<NotificationLayoutSearchCriteria>())).ReturnsAsync(notificationLayoutSearchResult);
+            _notificationLayoutSearchService.Setup(x => x.SearchAsync(It.IsAny<NotificationLayoutSearchCriteria>(), It.IsAny<bool>())).ReturnsAsync(notificationLayoutSearchResult);
 
             Func<ITemplateLoader> factory = () => new LayoutTemplateLoader(_notificationLayoutServiceMock.Object);
             _liquidTemplateRenderer = new LiquidTemplateRenderer(Options.Create(new LiquidRenderOptions() { CustomFilterTypes = new HashSet<Type> { typeof(UrlFilters), typeof(TranslationFilter) } }), factory, _notificationLayoutSearchService.Object);
 
             //TODO
             if (!AbstractTypeFactory<NotificationScriptObject>.AllTypeInfos.SelectMany(x => x.AllSubclasses).Contains(typeof(NotificationScriptObject)))
+            {
                 AbstractTypeFactory<NotificationScriptObject>.RegisterType<NotificationScriptObject>()
                     .WithFactory(() => new NotificationScriptObject(_translationServiceMock.Object, _blobUrlResolverMock.Object));
-            else AbstractTypeFactory<NotificationScriptObject>.OverrideType<NotificationScriptObject, NotificationScriptObject>()
+            }
+            else
+            {
+                AbstractTypeFactory<NotificationScriptObject>.OverrideType<NotificationScriptObject, NotificationScriptObject>()
                     .WithFactory(() => new NotificationScriptObject(_translationServiceMock.Object, _blobUrlResolverMock.Object));
+            }
         }
 
         [Theory, MemberData(nameof(TranslateData))]
@@ -135,8 +139,8 @@ namespace VirtoCommerce.NotificationsModule.Tests.UnitTests
             };
 
             _notificationLayoutServiceMock
-                .Setup(x => x.GetByIdAsync(It.Is<string>(x => x == layoutId), It.IsAny<string>()))
-                .ReturnsAsync(layout);
+                .Setup(x => x.GetAsync(It.Is<IList<string>>(x => x.FirstOrDefault() == layoutId), It.IsAny<string>(), It.IsAny<bool>()))
+                .ReturnsAsync(new[] { layout });
 
             var context = new NotificationRenderContext
             {

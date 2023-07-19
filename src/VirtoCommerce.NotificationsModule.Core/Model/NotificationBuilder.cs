@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Extensions.DependencyInjection;
 using VirtoCommerce.NotificationsModule.Core.Model.Search;
-using VirtoCommerce.Platform.Core.GenericCrud;
+using VirtoCommerce.NotificationsModule.Core.Services;
+using VirtoCommerce.Platform.Core.Common;
 
 namespace VirtoCommerce.NotificationsModule.Core.Model
 {
@@ -53,9 +54,9 @@ namespace VirtoCommerce.NotificationsModule.Core.Model
                 return this;
             }
 
-            var notificationLayoutSearchService = ServiceProvider.GetService<ISearchService<NotificationLayoutSearchCriteria, NotificationLayoutSearchResult, NotificationLayout>>();
+            var notificationLayoutSearchService = ServiceProvider.GetService<INotificationLayoutSearchService>();
 
-            var layouts = notificationLayoutSearchService.SearchAsync(new NotificationLayoutSearchCriteria
+            var layouts = notificationLayoutSearchService.SearchNoCloneAsync(new NotificationLayoutSearchCriteria
             {
                 Names = new[] { name },
                 Take = 1

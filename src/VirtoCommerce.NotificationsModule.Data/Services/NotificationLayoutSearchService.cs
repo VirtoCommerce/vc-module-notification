@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.Extensions.Options;
 using VirtoCommerce.NotificationsModule.Core.Model;
 using VirtoCommerce.NotificationsModule.Core.Model.Search;
 using VirtoCommerce.NotificationsModule.Core.Services;
@@ -18,8 +19,9 @@ namespace VirtoCommerce.NotificationsModule.Data.Services
         public NotificationLayoutSearchService(
             Func<INotificationRepository> repositoryFactory,
             IPlatformMemoryCache platformMemoryCache,
-            ICrudService<NotificationLayout> service)
-            : base(repositoryFactory, platformMemoryCache, service)
+            INotificationLayoutService crudService,
+            IOptions<CrudOptions> crudOptions)
+            : base(repositoryFactory, platformMemoryCache, crudService, crudOptions)
         {
         }
 
@@ -29,7 +31,9 @@ namespace VirtoCommerce.NotificationsModule.Data.Services
 
             if (!criteria.ObjectIds.IsNullOrEmpty())
             {
-                query = query.Where(x => criteria.ObjectIds.Contains(x.Id));
+                query = criteria.ObjectIds.Count == 1
+                    ? query.Where(x => x.Id == criteria.ObjectIds.First())
+                    : query.Where(x => criteria.ObjectIds.Contains(x.Id));
             }
 
             if (!criteria.Names.IsNullOrEmpty())

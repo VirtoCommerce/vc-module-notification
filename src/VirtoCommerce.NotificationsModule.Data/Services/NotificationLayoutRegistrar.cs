@@ -5,7 +5,6 @@ using VirtoCommerce.NotificationsModule.Core.Model;
 using VirtoCommerce.NotificationsModule.Core.Model.Search;
 using VirtoCommerce.NotificationsModule.Core.Services;
 using VirtoCommerce.Platform.Core.Common;
-using VirtoCommerce.Platform.Core.GenericCrud;
 
 namespace VirtoCommerce.NotificationsModule.Data.Services
 {
@@ -13,10 +12,10 @@ namespace VirtoCommerce.NotificationsModule.Data.Services
     {
         private readonly IList<NotificationLayout> _layouts = new List<NotificationLayout>();
 
-        private readonly ICrudService<NotificationLayout> _layoutService;
-        private readonly ISearchService<NotificationLayoutSearchCriteria, NotificationLayoutSearchResult, NotificationLayout> _layoutSearchService;
+        private readonly INotificationLayoutService _layoutService;
+        private readonly INotificationLayoutSearchService _layoutSearchService;
 
-        public NotificationLayoutRegistrar(ICrudService<NotificationLayout> layoutService, ISearchService<NotificationLayoutSearchCriteria, NotificationLayoutSearchResult, NotificationLayout> layoutSearchService)
+        public NotificationLayoutRegistrar(INotificationLayoutService layoutService, INotificationLayoutSearchService layoutSearchService)
         {
             _layoutService = layoutService;
             _layoutSearchService = layoutSearchService;
@@ -76,7 +75,7 @@ namespace VirtoCommerce.NotificationsModule.Data.Services
                 Names = _layouts.Select(x => x.Name).ToArray(),
                 Take = 1000
             };
-            var existingNotificationLayout = _layoutSearchService.SearchAsync(criteria).GetAwaiter().GetResult();
+            var existingNotificationLayout = _layoutSearchService.SearchNoCloneAsync(criteria).GetAwaiter().GetResult();
 
             foreach (var layout in _layouts)
             {

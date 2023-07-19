@@ -2,16 +2,16 @@ using System.Threading.Tasks;
 using Scriban;
 using Scriban.Parsing;
 using Scriban.Runtime;
-using VirtoCommerce.NotificationsModule.Core.Model;
-using VirtoCommerce.Platform.Core.GenericCrud;
+using VirtoCommerce.NotificationsModule.Core.Services;
+using VirtoCommerce.Platform.Core.Common;
 
 namespace VirtoCommerce.NotificationsModule.LiquidRenderer
 {
     public class LayoutTemplateLoader : ITemplateLoader
     {
-        private readonly ICrudService<NotificationLayout> _notificationLayoutService;
+        private readonly INotificationLayoutService _notificationLayoutService;
 
-        public LayoutTemplateLoader(ICrudService<NotificationLayout> notificationLayoutService)
+        public LayoutTemplateLoader(INotificationLayoutService notificationLayoutService)
         {
             _notificationLayoutService = notificationLayoutService;
         }
@@ -39,7 +39,7 @@ namespace VirtoCommerce.NotificationsModule.LiquidRenderer
                 return string.Empty;
             }
 
-            var layout = await _notificationLayoutService.GetByIdAsync(layoutId);
+            var layout = await _notificationLayoutService.GetNoCloneAsync(layoutId);
 
             var result = layout?.Template ?? string.Empty;
             return result;
