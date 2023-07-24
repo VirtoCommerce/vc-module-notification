@@ -45,7 +45,7 @@ angular.module('virtoCommerce.notificationsModule')
                 data: blade.data,
                 notificationLayoutId: blade.currentEntity.notificationLayoutId
             }, function (response) {
-                $('#notification_template_preview').load(function() {
+                $("#notification_template_preview").on("load", function() {
                     $('#notification_template_preview').height($('#notification_template_preview').contents().outerHeight());
                 });
                 blade.originHtml = $sce.trustAsHtml("<html><body>" + response.html + "</body></html>");
