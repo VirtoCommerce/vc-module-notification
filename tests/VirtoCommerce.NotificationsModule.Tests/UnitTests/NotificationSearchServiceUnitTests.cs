@@ -50,29 +50,29 @@ namespace VirtoCommerce.NotificationsModule.Tests.UnitTests
             _notificationRegistrar = new NotificationRegistrar(null);
             _notificationSearchService = new NotificationSearchService(_repositoryFactory, _notificationServiceMock.Object, _memCache);
 
-         
+
             var criteria = AbstractTypeFactory<NotificationSearchCriteria>.TryCreateInstance();
             criteria.Take = 1;
             criteria.NotificationType = nameof(InvoiceEmailNotification);
             _notificationSearchServiceMock.Setup(x => x.SearchNotificationsAsync(criteria)).ReturnsAsync(new NotificationSearchResult());
             _notificationRegistrar.RegisterNotification<InvoiceEmailNotification>();
-          
+
             criteria.NotificationType = nameof(OrderSentEmailNotification);
             _notificationSearchServiceMock.Setup(x => x.SearchNotificationsAsync(criteria)).ReturnsAsync(new NotificationSearchResult());
             _notificationRegistrar.RegisterNotification<OrderSentEmailNotification>();
-        
+
             criteria.NotificationType = nameof(OrderPaidEmailNotification);
             _notificationSearchServiceMock.Setup(x => x.SearchNotificationsAsync(criteria)).ReturnsAsync(new NotificationSearchResult());
             _notificationRegistrar.RegisterNotification<OrderPaidEmailNotification>();
-          
+
             criteria.NotificationType = nameof(RemindUserNameEmailNotification);
             _notificationSearchServiceMock.Setup(x => x.SearchNotificationsAsync(criteria)).ReturnsAsync(new NotificationSearchResult());
             _notificationRegistrar.RegisterNotification<RemindUserNameEmailNotification>();
-         
+
             criteria.NotificationType = nameof(RegistrationEmailNotification);
             _notificationSearchServiceMock.Setup(x => x.SearchNotificationsAsync(criteria)).ReturnsAsync(new NotificationSearchResult());
             _notificationRegistrar.RegisterNotification<RegistrationEmailNotification>();
-           
+
 
         }
 
@@ -125,7 +125,7 @@ namespace VirtoCommerce.NotificationsModule.Tests.UnitTests
             criteria4.Take = 1;
             criteria4.NotificationType = type;
             _notificationSearchServiceMock.Setup(x => x.SearchNotificationsAsync(criteria4)).ReturnsAsync(new NotificationSearchResult());
-           
+
             var mockNotifications = notifications.AsQueryable().BuildMock();
             _repositoryMock.Setup(r => r.Notifications).Returns(mockNotifications.Object);
             var ids = notifications.Select(n => n.Id).ToArray();
@@ -165,7 +165,7 @@ namespace VirtoCommerce.NotificationsModule.Tests.UnitTests
             var ids = notifications.Select(n => n.Id).ToArray();
             _notificationServiceMock.Setup(ns => ns.GetByIdsAsync(ids, null))
                 .ReturnsAsync(notifications.Select(n => n.ToModel(AbstractTypeFactory<Notification>.TryCreateInstance(n.Type))).ToArray());
-            
+
 
             //Act
             var result = await _notificationSearchService.SearchNotificationsAsync(searchCriteria);
@@ -196,7 +196,7 @@ namespace VirtoCommerce.NotificationsModule.Tests.UnitTests
             var ids = notificationEntities.Select(n => n.Id).ToArray();
             _notificationServiceMock.Setup(ns => ns.GetByIdsAsync(ids, responseGroup))
                 .ReturnsAsync(notifications);
-           
+
 
             //Act
             var result = await _notificationSearchService.SearchNotificationsAsync(searchCriteria);
@@ -225,7 +225,7 @@ namespace VirtoCommerce.NotificationsModule.Tests.UnitTests
             var notifications = notificationEntities.Select(n => n.ToModel(AbstractTypeFactory<Notification>.TryCreateInstance(n.Type))).ToArray();
             _notificationServiceMock.Setup(ns => ns.GetByIdsAsync(It.IsAny<string[]>(), responseGroup))
                 .ReturnsAsync(notifications.Where(n => expectedTypes.Contains(n.Type)).ToArray());
-          
+
             //Act
             var result = await _notificationSearchService.SearchNotificationsAsync(searchCriteria);
 
@@ -256,7 +256,7 @@ namespace VirtoCommerce.NotificationsModule.Tests.UnitTests
             var notifications = notificationEntities.Select(n => n.ToModel(AbstractTypeFactory<Notification>.TryCreateInstance(n.Type))).ToArray();
             _notificationServiceMock.Setup(ns => ns.GetByIdsAsync(It.IsAny<string[]>(), null))
                 .ReturnsAsync(notifications.ToArray());
-          
+
 
             //Act
             var result = await NotificationSearchServiceExtensions.GetNotificationAsync<RegistrationEmailNotification>(_notificationSearchService, searchTenant);
@@ -267,6 +267,37 @@ namespace VirtoCommerce.NotificationsModule.Tests.UnitTests
             Assert.Equal(searchType, result.Type);
         }
 
+        [Fact]
+        public async Task GetNotificationAsync_GetByTenant_WithGlobal()
+        {
+            //Arrange
+            var searchTenant = new TenantIdentity(Guid.NewGuid().ToString(), "Store");
+            var searchType = nameof(RegistrationEmailNotification);
+            var searchCriteria = AbstractTypeFactory<NotificationSearchCriteria>.TryCreateInstance();
+            searchCriteria.Take = 1;
+            searchCriteria.Skip = 0;
+            searchCriteria.TenantId = searchTenant.Id;
+            searchCriteria.TenantType = searchTenant.Type;
+            searchCriteria.NotificationType = searchType;
+            var notificationEntities = new List<NotificationEntity> {
+                new EmailNotificationEntity { Type  = searchType, Kind = nameof(EmailNotification), Id = Guid.NewGuid().ToString(), TenantId = null, TenantType = null },
+                new EmailNotificationEntity { Type  = searchType, Kind = nameof(EmailNotification), Id = Guid.NewGuid().ToString(), TenantId = "someId", TenantType = "Store" },
+            };
+            var mockNotifications = notificationEntities.AsQueryable().BuildMock();
+            _repositoryMock.Setup(r => r.Notifications).Returns(mockNotifications.Object);
+            var notifications = notificationEntities.Select(n => n.ToModel(AbstractTypeFactory<Notification>.TryCreateInstance(n.Type))).ToArray();
+            _notificationServiceMock.Setup(ns => ns.GetByIdsAsync(It.IsAny<string[]>(), null))
+                .ReturnsAsync(notifications.ToArray());
+
+
+            //Act
+            var result = await NotificationSearchServiceExtensions.GetNotificationAsync<RegistrationEmailNotification>(_notificationSearchService, searchTenant);
+
+            //Assert
+            Assert.Equal(searchTenant.Id, result.TenantIdentity.Id);
+            Assert.Equal(searchTenant.Type, result.TenantIdentity.Type);
+            Assert.Equal(searchType, result.Type);
+        }
 
         [Fact]
         public async Task SearchNotificationsAsync_GetExtendedNotificationWithBaseType()
@@ -293,7 +324,7 @@ namespace VirtoCommerce.NotificationsModule.Tests.UnitTests
             var notifications = notificationEntities.Select(n => n.ToModel(AbstractTypeFactory<Notification>.TryCreateInstance(n.Type))).ToArray();
             _notificationServiceMock.Setup(ns => ns.GetByIdsAsync(It.IsAny<string[]>(), searchCriteria.ResponseGroup))
                 .ReturnsAsync(notifications.Where(x => x.Id.EqualsInvariant(sampleNotificationEntity.Id)).ToArray());
-           
+
 
             //Act
             var result = (await _notificationSearchService.SearchNotificationsAsync(searchCriteria)).Results.FirstOrDefault();
