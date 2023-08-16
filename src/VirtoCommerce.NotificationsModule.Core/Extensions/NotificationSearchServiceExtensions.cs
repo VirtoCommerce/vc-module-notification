@@ -25,27 +25,33 @@ namespace VirtoCommerce.NotificationsModule.Core.Extensions
             {
                 throw new ArgumentNullException(nameof(service));
             }
+
             var criteria = AbstractTypeFactory<NotificationSearchCriteria>.TryCreateInstance();
             criteria.NotificationType = notificationType;
-
-            //try to get with the Tenant  
             criteria.Take = 1;
             criteria.ResponseGroup = responseGroup;
+
             if (tenant != null && !tenant.IsEmpty)
             {
                 criteria.TenantId = tenant.Id;
                 criteria.TenantType = tenant.Type;
             }
-            var searchResult = await service.SearchNotificationsAsync(criteria);
 
+            var searchResult = await service.SearchNotificationsAsync(criteria);
             var result = searchResult?.Results.FirstOrDefault(x => x.TenantIdentity == tenant);
+
             if (result == null)
             {
-                //Find first global notification (without tenant)
                 criteria.TenantId = null;
                 criteria.TenantType = null;
+
                 searchResult = await service.SearchNotificationsAsync(criteria);
                 result = searchResult?.Results.FirstOrDefault(x => x.TenantIdentity.IsEmpty);
+
+                if (result != null)
+                {
+                    result.TenantIdentity = tenant;
+                }
             }
 
             return result;
