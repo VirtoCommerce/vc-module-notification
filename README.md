@@ -15,9 +15,9 @@ The Notifications module empowers businesses to effectively manage and deliver n
 ## Key Features
 
 1. Email Templates with Scriban
-1. Extendable Model
-1. SMTP and SendGrid Suppor
-1. Async Delivery with Retry Policy
+2. Extendable Model
+3. SMTP and SendGrid Suppor
+4. Async Delivery with Retry Policy
 
 ### Email Templates with Scriban
 The module supports email templates using the powerful Scriban templating language, with Liquid support enabled. This allows for dynamic content generation and customization of email notifications, ensuring personalized and engaging communication with recipients.
