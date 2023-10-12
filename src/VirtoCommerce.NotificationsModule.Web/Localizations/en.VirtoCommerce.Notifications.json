@@ -285,8 +285,12 @@
       "description": "The customer will get a text message when their password has been reset"
     },
     "RegistrationInvitationEmailNotification": {
-      "displayName": "Signup invite notification",
-      "description": "The customer will get an email notification once they receive an invite to sign up"
+      "displayName": "Signup invite notification (with organization)",
+      "description": "The customer will get an email notification once they receive an invite to sign up to organization"
+    },
+    "RegistrationInvitationCustomerEmailNotification": {
+      "displayName": "Signup invite notification (customer)",
+      "description": "The customer will get an email notification once they receive an invite to sign up without organization"
     },
     "RemindUserNameEmailNotification": {
       "displayName": "Forgot username notification",

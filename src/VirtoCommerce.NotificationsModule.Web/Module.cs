@@ -166,6 +166,7 @@ namespace VirtoCommerce.NotificationsModule.Web
             registrar.RegisterNotification<ConfirmationEmailNotification>();
             registrar.RegisterNotification<RegistrationEmailNotification>();
             registrar.RegisterNotification<RegistrationInvitationEmailNotification>();
+            registrar.RegisterNotification<RegistrationInvitationCustomerEmailNotification>();
             registrar.RegisterNotification<RemindUserNameEmailNotification>();
             registrar.RegisterNotification<ResetPasswordSmsNotification>();
             registrar.RegisterNotification<TwoFactorEmailNotification>();

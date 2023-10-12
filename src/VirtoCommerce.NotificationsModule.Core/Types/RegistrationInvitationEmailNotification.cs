@@ -1,8 +1,6 @@
-using VirtoCommerce.NotificationsModule.Core.Model;
-
 namespace VirtoCommerce.NotificationsModule.Core.Types
 {
-    public class RegistrationInvitationEmailNotification : EmailNotification
+    public class RegistrationInvitationEmailNotification : RegistrationInvitationNotificationBase
     {
         public RegistrationInvitationEmailNotification() : base(nameof(RegistrationInvitationEmailNotification))
         {
@@ -14,8 +12,5 @@ namespace VirtoCommerce.NotificationsModule.Core.Types
         {
 
         }
-
-        public string InviteUrl { get; set; }
-        public string Message { get; set; }
     }
 }
