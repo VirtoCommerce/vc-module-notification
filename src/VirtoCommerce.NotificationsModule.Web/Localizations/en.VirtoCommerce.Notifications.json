@@ -64,7 +64,7 @@
         "placeholders": {
           "language": "Please select...",
           "recipient": "Recipient address",
-          "email-addresses-note": "Please enter email addresses",
+          "email-addresses-note": "Please enter addresses",
           "subject": "Please enter email subject",
           "layout": "Please select..."
         }
