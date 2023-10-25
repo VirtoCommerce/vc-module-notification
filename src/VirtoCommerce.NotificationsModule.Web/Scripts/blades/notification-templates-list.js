@@ -6,7 +6,7 @@ angular.module('virtoCommerce.notificationsModule')
             blade.selectedLanguage = null;
 
             if (!blade.languages) {
-                settings.getValues({ id: 'VirtoCommerce.Notifications.General.Languages' }, function (data) {
+                settings.getValues({ id: 'VirtoCommerce.Core.General.Languages' }, function (data) {
                     blade.languages = data;
                 });
             }

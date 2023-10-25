@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using VirtoCommerce.Platform.Core.Settings;
@@ -31,6 +32,7 @@ namespace VirtoCommerce.NotificationsModule.Core
         {
             public static class General
             {
+                [Obsolete("Use PlatformConstants.Settings.General.Languages", DiagnosticId = "VC0006", UrlFormat = "https://docs.virtocommerce.org/products/products-virto3-versions/")]
                 public static SettingDescriptor Languages = new SettingDescriptor
                 {
                     Name = "VirtoCommerce.Notifications.General.Languages",
@@ -45,7 +47,7 @@ namespace VirtoCommerce.NotificationsModule.Core
                 {
                     get
                     {
-                        yield return Languages;
+                        yield break;
                     }
                 }
             }

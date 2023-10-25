@@ -301,12 +301,6 @@
     "notifications:templates:read": "Просмотр шаблонов уведомлений",
     "notifications:templates:create": "Создание шаблонов уведомлений"
   },
-  "settings": {
-    "VirtoCommerce.Notifications.General.Languages": {
-      "description": "Список доступных языков для уведомлений",
-      "title": "Языки"
-    }
-  },
   "module": {
     "VirtoCommerce.Notifications": {
       "description": "Экспорт или импорт уведомлений"
