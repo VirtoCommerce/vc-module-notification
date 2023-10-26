@@ -3,10 +3,12 @@
   <id>VirtoCommerce.Notifications</id>
   <version>3.405.0</version>
   <version-tag />
-  <platformVersion>3.400.0</platformVersion>
+
+  <platformVersion>3.429.0</platformVersion>
   <dependencies>
     <dependency id="VirtoCommerce.Assets" version="3.400.0" />
   </dependencies>
+
   <title>Notifications</title>
   <description>Provides a comprehensive infrastructure for managing and delivering notifications within the Virto Commerce platform.</description>
   <authors>
