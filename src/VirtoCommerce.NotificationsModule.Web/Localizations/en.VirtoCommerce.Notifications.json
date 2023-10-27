@@ -308,12 +308,6 @@
     "notifications:templates:read": "Read template data",
     "notifications:templates:create": "Create template data"
   },
-  "settings": {
-    "VirtoCommerce.Notifications.General.Languages": {
-      "description": "List of languages available for notifications",
-      "title": "Languages"
-    }
-  },
   "module": {
     "VirtoCommerce.Notifications": {
       "description": "Export or import notifications"
