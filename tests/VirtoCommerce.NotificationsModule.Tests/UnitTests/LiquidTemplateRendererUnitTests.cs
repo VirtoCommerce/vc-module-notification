@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 using Microsoft.Extensions.Options;
 using Moq;
 using Newtonsoft.Json.Linq;
@@ -38,7 +39,7 @@ namespace VirtoCommerce.NotificationsModule.Tests.UnitTests
             _notificationLayoutSearchService.Setup(x => x.SearchAsync(It.IsAny<NotificationLayoutSearchCriteria>(), It.IsAny<bool>())).ReturnsAsync(notificationLayoutSearchResult);
 
             Func<ITemplateLoader> factory = () => new LayoutTemplateLoader(_notificationLayoutServiceMock.Object);
-            _liquidTemplateRenderer = new LiquidTemplateRenderer(Options.Create(new LiquidRenderOptions() { CustomFilterTypes = new HashSet<Type> { typeof(UrlFilters), typeof(TranslationFilter) } }), factory, _notificationLayoutSearchService.Object);
+            _liquidTemplateRenderer = new LiquidTemplateRenderer(Options.Create(new LiquidRenderOptions() { CustomFilterTypes = new HashSet<Type> { typeof(UrlFilters), typeof(TranslationFilter),typeof(ArrayFilter),typeof(StandardFilters) } }), factory, _notificationLayoutSearchService.Object);
 
             //TODO
             if (!AbstractTypeFactory<NotificationScriptObject>.AllTypeInfos.SelectMany(x => x.AllSubclasses).Contains(typeof(NotificationScriptObject)))
@@ -151,6 +152,51 @@ namespace VirtoCommerce.NotificationsModule.Tests.UnitTests
             var result = await _liquidTemplateRenderer.RenderAsync(context);
             Assert.Equal("header test_content footer", result);
         }
+
+        [Fact]
+        public async Task RenderAsync_ContextHasLayoutId_ArrayContent_LayoutRendered()
+        {
+            var layoutId = Guid.NewGuid().ToString();
+            var content = @"{% capture content %} Order Number: {{customer_order.number }}, Items Catalog Name: {{ var1 = customer_order.items | where: 'CatalogId' '==' '1' | array.first }} {{ var1.name }} {% endcapture %}";
+            
+            //assign var1 = item.series.properties | where: ‘name' ' == ' 'UnitsPerPackage' | array.first }}{ { var1.catalog_id } }
+
+            dynamic model = new
+            {
+                CustomerOrder = new CustomerOrder
+                {
+                    Number = "123456",
+                    Total = 3,
+                    Items = new[]
+                    {
+                        new LineItem{CatalogId = "1",Name = "Item1"},
+                        new LineItem{CatalogId= "2",Name = "Item2"},
+                        new LineItem{CatalogId = "1",Name = "Item3"},
+                    }
+                }                
+            };
+            
+            var layout = new NotificationLayout
+            {
+                Id = layoutId,
+                Template = "header {{content}} footer",
+            };
+
+            _notificationLayoutServiceMock
+                .Setup(x => x.GetAsync(It.Is<IList<string>>(x => x.FirstOrDefault() == layoutId), It.IsAny<string>(), It.IsAny<bool>()))
+                .ReturnsAsync(new[] { layout });
+
+            var context = new NotificationRenderContext
+            {
+                Template = content,
+                LayoutId = layoutId,
+                Model = model
+            };
+            
+            var result = await _liquidTemplateRenderer.RenderAsync(context);
+            Assert.Equal("header  Order Number: 123456, Items Catalog Name:  Item1  footer", result);
+        }
+
 
         public static IEnumerable<object[]> TranslateData
         {

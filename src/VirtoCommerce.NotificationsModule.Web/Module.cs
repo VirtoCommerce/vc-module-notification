@@ -119,6 +119,7 @@ namespace VirtoCommerce.NotificationsModule.Web
             {
                 builder.AddCustomLiquidFilterType(typeof(TranslationFilter));
                 builder.AddCustomLiquidFilterType(typeof(UrlFilters));
+                builder.AddCustomLiquidFilterType(typeof(ArrayFilter));
                 builder.SetRendererLoopLimit(Configuration["Notifications:LiquidRenderOptions:LoopLimit"].TryParse(ModuleConstants.DefaultLiquidRendererLoopLimit));
             });
         }
