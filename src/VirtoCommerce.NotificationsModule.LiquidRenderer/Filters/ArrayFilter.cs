@@ -4,21 +4,19 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using VirtoCommerce.Platform.Core.Common;
-using VirtoCommerce.Platform.Core.Extensions;
 
 namespace VirtoCommerce.NotificationsModule.LiquidRenderer.Filters
 {
-    public static partial class ArrayFilter
+    public static class ArrayFilter
     {
         /// <summary>
-        /// Filter the elements of an array by a given condition
-        /// {% assign sorted = pages | where:"propName","==","value" %}
-        /// </summary>
+        /// Filter the elements of an array by a given condition        
+        /// {% var1 = input | where: "propName" "==" "value" | array.first }} {{ var1.name }
         /// <param name="input"></param>
-        /// <param name="sort"></param>
+        /// <param name="propName"></param>
+        /// <param name="op"></param>
+        /// <param name="value"></param>
         /// <returns></returns>
         public static object Where(object input, string propName, string op, string value)
         {
@@ -102,6 +100,7 @@ namespace VirtoCommerce.NotificationsModule.LiquidRenderer.Filters
         {
             int intValue;
             double doubleValue;
+            decimal decimalValue;
             char charValue;
             bool boolValue;
             TimeSpan timespan;
@@ -111,6 +110,8 @@ namespace VirtoCommerce.NotificationsModule.LiquidRenderer.Filters
                  return intValue;
             else if (typeToParse == typeof(double) && double.TryParse(str, out doubleValue))
                 return doubleValue;
+            else if (typeToParse == typeof(decimal) && decimal.TryParse(str, out decimalValue))
+                return decimalValue;
             else if (typeToParse == typeof(TimeSpan) && TimeSpan.TryParse(str, out timespan))
                 return timespan;
             else if (typeToParse == typeof(DateTime) && DateTime.TryParse(str, out dateTime))
