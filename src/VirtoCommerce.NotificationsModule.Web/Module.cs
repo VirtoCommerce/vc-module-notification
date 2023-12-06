@@ -13,6 +13,7 @@ using VirtoCommerce.NotificationsModule.Core.Model;
 using VirtoCommerce.NotificationsModule.Core.Services;
 using VirtoCommerce.NotificationsModule.Core.Types;
 using VirtoCommerce.NotificationsModule.Data.ExportImport;
+using VirtoCommerce.NotificationsModule.Data.Handlers;
 using VirtoCommerce.NotificationsModule.Data.Model;
 using VirtoCommerce.NotificationsModule.Data.MySql;
 using VirtoCommerce.NotificationsModule.Data.PostgreSql;
@@ -26,12 +27,14 @@ using VirtoCommerce.NotificationsModule.SendGrid;
 using VirtoCommerce.NotificationsModule.Smtp;
 using VirtoCommerce.NotificationsModule.TemplateLoader.FileSystem;
 using VirtoCommerce.NotificationsModule.Twilio;
+using VirtoCommerce.Platform.Core.Bus;
 using VirtoCommerce.Platform.Core.Common;
 using VirtoCommerce.Platform.Core.ExportImport;
 using VirtoCommerce.Platform.Core.JsonConverters;
 using VirtoCommerce.Platform.Core.Modularity;
 using VirtoCommerce.Platform.Core.Notifications;
 using VirtoCommerce.Platform.Core.Security;
+using VirtoCommerce.Platform.Core.Security.Events;
 using VirtoCommerce.Platform.Core.Settings;
 
 namespace VirtoCommerce.NotificationsModule.Web
@@ -76,6 +79,8 @@ namespace VirtoCommerce.NotificationsModule.Web
             serviceCollection.AddTransient<IEmailSender, EmailNotificationMessageSender>();
             serviceCollection.AddTransient<NotificationsExportImport>();
             serviceCollection.AddTransient<NotificationScriptObject>();
+
+            serviceCollection.AddScoped<RequestPasswordResetHandler>();
 
             serviceCollection.AddTransient<INotificationLayoutService, NotificationLayoutService>();
             serviceCollection.AddTransient<INotificationLayoutSearchService, NotificationLayoutSearchService>();
@@ -161,8 +166,13 @@ namespace VirtoCommerce.NotificationsModule.Web
                 notificationDbContext.Database.Migrate();
             }
 
+            var handlerRegistrar = appBuilder.ApplicationServices.GetService<IHandlerRegistrar>();
+            handlerRegistrar.RegisterHandler<UserRequestPasswordResetEvent>((message, _) => appBuilder.ApplicationServices.CreateScope().ServiceProvider.GetService<RequestPasswordResetHandler>().Handle(message));
+
+
+            var defaultTemplatesDirectory = Path.Combine(ModuleInfo.FullPhysicalPath, "NotificationTemplates");
             var registrar = appBuilder.ApplicationServices.GetService<INotificationRegistrar>();
-            registrar.RegisterNotification<ResetPasswordEmailNotification>();
+            registrar.RegisterNotification<ResetPasswordEmailNotification>().WithTemplatesFromPath(defaultTemplatesDirectory);
             registrar.RegisterNotification<ConfirmationEmailNotification>();
             registrar.RegisterNotification<RegistrationEmailNotification>();
             registrar.RegisterNotification<RegistrationInvitationEmailNotification>();
