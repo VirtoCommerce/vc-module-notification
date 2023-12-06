@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Options;
 using VirtoCommerce.NotificationsModule.Core.Model;
@@ -7,6 +8,7 @@ using VirtoCommerce.Platform.Core.Notifications;
 
 namespace VirtoCommerce.NotificationsModule.Data.Senders
 {
+    [Obsolete("Use notification feature instead")]
     public class EmailNotificationMessageSender : IEmailSender
     {
         private readonly INotificationMessageSenderFactory _notificationMessageSenderProviderFactory;
@@ -30,10 +32,10 @@ namespace VirtoCommerce.NotificationsModule.Data.Senders
                 notificationMessage.Subject = subject;
                 notificationMessage.Body = body;
             }
-            
+
             await _notificationMessageSenderProviderFactory.GetSender(message).SendNotificationAsync(message);
         }
 
-        
+
     }
 }

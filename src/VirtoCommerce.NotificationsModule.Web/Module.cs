@@ -76,7 +76,9 @@ namespace VirtoCommerce.NotificationsModule.Web
             serviceCollection.AddTransient<INotificationMessageService, NotificationMessageService>();
             serviceCollection.AddTransient<INotificationMessageSearchService, NotificationMessageSearchService>();
             serviceCollection.AddTransient<INotificationSender, NotificationSender>();
+#pragma warning disable CS0618 // Type or member is obsolete
             serviceCollection.AddTransient<IEmailSender, EmailNotificationMessageSender>();
+#pragma warning restore CS0618 // Type or member is obsolete
             serviceCollection.AddTransient<NotificationsExportImport>();
             serviceCollection.AddTransient<NotificationScriptObject>();
 
