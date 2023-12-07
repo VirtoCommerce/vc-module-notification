@@ -12,8 +12,8 @@
     <PackageReference Include="FluentValidation" Version="10.3.4" />
     <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All" />
     <PackageReference Include="Polly" Version="7.2.1" />
-    <PackageReference Include="VirtoCommerce.Platform.Data" Version="3.449.0-alpha.12813-pt-14083" />
-    <PackageReference Include="VirtoCommerce.Platform.Hangfire" Version="3.449.0-alpha.12813-pt-14083" />
+    <PackageReference Include="VirtoCommerce.Platform.Data" Version="3.450.0" />
+    <PackageReference Include="VirtoCommerce.Platform.Hangfire" Version="3.450.0" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\VirtoCommerce.NotificationsModule.Core\VirtoCommerce.NotificationsModule.Core.csproj" />
