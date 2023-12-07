@@ -82,7 +82,7 @@ namespace VirtoCommerce.NotificationsModule.Web
             serviceCollection.AddTransient<NotificationsExportImport>();
             serviceCollection.AddTransient<NotificationScriptObject>();
 
-            serviceCollection.AddScoped<RequestPasswordResetHandler>();
+            serviceCollection.AddTransient<RequestPasswordResetHandler>();
 
             serviceCollection.AddTransient<INotificationLayoutService, NotificationLayoutService>();
             serviceCollection.AddTransient<INotificationLayoutSearchService, NotificationLayoutSearchService>();
@@ -170,7 +170,7 @@ namespace VirtoCommerce.NotificationsModule.Web
             }
 
             var handlerRegistrar = appBuilder.ApplicationServices.GetService<IHandlerRegistrar>();
-            handlerRegistrar.RegisterHandler<UserRequestPasswordResetEvent>((message, _) => appBuilder.ApplicationServices.CreateScope().ServiceProvider.GetService<RequestPasswordResetHandler>().Handle(message));
+            handlerRegistrar.RegisterHandler<UserRequestPasswordResetEvent>((message, _) => appBuilder.ApplicationServices.GetService<RequestPasswordResetHandler>().Handle(message));
 
 
             var defaultTemplatesDirectory = Path.Combine(ModuleInfo.FullPhysicalPath, "NotificationTemplates");
