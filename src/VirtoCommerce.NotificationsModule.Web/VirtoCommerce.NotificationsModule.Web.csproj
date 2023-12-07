@@ -15,6 +15,12 @@
     <None Remove="node_modules\**" />
   </ItemGroup>
   <ItemGroup>
+    <NotificationTemplates Include="NotificationTemplates\**" />
+  </ItemGroup>
+  <Target Name="CopyCustomContentOnPublish" AfterTargets="Publish">
+    <Copy SourceFiles="@(NotificationTemplates)" DestinationFiles="$(PublishDir)\..\%(Identity)" />
+  </Target>
+  <ItemGroup>
     <ProjectReference Include="..\VirtoCommerce.NotificationsModule.Core\VirtoCommerce.NotificationsModule.Core.csproj" />
     <ProjectReference Include="..\VirtoCommerce.NotificationsModule.Data.MySql\VirtoCommerce.NotificationsModule.Data.MySql.csproj" />
     <ProjectReference Include="..\VirtoCommerce.NotificationsModule.Data.PostgreSql\VirtoCommerce.NotificationsModule.Data.PostgreSql.csproj" />

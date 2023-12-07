@@ -38,7 +38,7 @@ namespace VirtoCommerce.NotificationsModule.Tests.UnitTests
             _notificationLayoutSearchService.Setup(x => x.SearchAsync(It.IsAny<NotificationLayoutSearchCriteria>(), It.IsAny<bool>())).ReturnsAsync(notificationLayoutSearchResult);
 
             Func<ITemplateLoader> factory = () => new LayoutTemplateLoader(_notificationLayoutServiceMock.Object);
-            _liquidTemplateRenderer = new LiquidTemplateRenderer(Options.Create(new LiquidRenderOptions() { CustomFilterTypes = new HashSet<Type> { typeof(UrlFilters), typeof(TranslationFilter) } }), factory, _notificationLayoutSearchService.Object);
+            _liquidTemplateRenderer = new LiquidTemplateRenderer(Options.Create(new LiquidRenderOptions() { CustomFilterTypes = new HashSet<Type> { typeof(UrlFilters), typeof(TranslationFilter), typeof(ArrayFilter) } }), factory, _notificationLayoutSearchService.Object);
 
             //TODO
             if (!AbstractTypeFactory<NotificationScriptObject>.AllTypeInfos.SelectMany(x => x.AllSubclasses).Contains(typeof(NotificationScriptObject)))
@@ -150,6 +150,43 @@ namespace VirtoCommerce.NotificationsModule.Tests.UnitTests
 
             var result = await _liquidTemplateRenderer.RenderAsync(context);
             Assert.Equal("header test_content footer", result);
+        }
+
+        [Theory]
+        [InlineData("Group", "==", "Group2", "Item2", "Item4")]
+        [InlineData("Group", "!=", "Group22", "Item1", "Item4")]
+        [InlineData("Value", ">", "2", "Item3", "Item5")]
+        [InlineData("Value", ">=", "2", "Item2", "Item5")]
+        [InlineData("Value", "<", "4", "Item1", "Item3")]
+        [InlineData("Value", "<=", "4", "Item1", "Item4")]
+        [InlineData("Group", "contains", "2", "Item2", "Item5")]
+        public async Task RenderAsync_FilterArray(string propertyName, string operationName, string propertyValue, string expectedFirstName, string expectedLastName)
+        {
+            var filter = $"'{propertyName}' '{operationName}' '{propertyValue}'";
+
+            var context = new NotificationRenderContext
+            {
+                Template = "{{ filtered = items | where: " + filter + " }}" +
+                           "{{ first_item = filtered | array.first }}" +
+                           "{{ last_item = filtered | array.last }}" +
+                           "First: {{ first_item.name }}, Last: {{ last_item.name }}",
+                Model = new
+                {
+                    Items = new[]
+                    {
+                        new { Group = "Group1", Name = "Item1", Value = 1 },
+                        new { Group = "Group2", Name = "Item2", Value = 2 },
+                        new { Group = "Group2", Name = "Item3", Value = 3 },
+                        new { Group = "Group2", Name = "Item4", Value = 4 },
+                        new { Group = "Group22", Name = "Item5", Value = 5 },
+                    }
+                },
+            };
+
+            var expectedResult = $"First: {expectedFirstName}, Last: {expectedLastName}";
+
+            var result = await _liquidTemplateRenderer.RenderAsync(context);
+            Assert.Equal(expectedResult, result);
         }
 
         public static IEnumerable<object[]> TranslateData
