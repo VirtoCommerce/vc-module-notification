@@ -5,7 +5,7 @@
   <version-tag />
   <platformVersion>3.800.0-alpha.12831-net8</platformVersion>
   <dependencies>
-    <dependency id="VirtoCommerce.Assets" version="3.800.0" />
+    <dependency id="VirtoCommerce.Assets" version="3.800.0-alpha.108-pt-14740-net8" />
   </dependencies>
   <title>Notifications</title>
   <description>Provides a comprehensive infrastructure for managing and delivering notifications within the Virto Commerce platform.</description>
