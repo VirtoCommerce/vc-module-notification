@@ -2,10 +2,11 @@ using System.Reflection;
 using EntityFrameworkCore.Triggers;
 using Microsoft.EntityFrameworkCore;
 using VirtoCommerce.NotificationsModule.Data.Model;
+using VirtoCommerce.Platform.Data.Infrastructure;
 
 namespace VirtoCommerce.NotificationsModule.Data.Repositories
 {
-    public class NotificationDbContext : DbContextWithTriggers
+    public class NotificationDbContext : DbContextBase
     {
         public NotificationDbContext(DbContextOptions<NotificationDbContext> options)
             : base(options)

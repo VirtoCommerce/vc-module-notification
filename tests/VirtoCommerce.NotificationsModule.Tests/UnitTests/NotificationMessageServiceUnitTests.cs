@@ -103,7 +103,7 @@ namespace VirtoCommerce.NotificationsModule.Tests.UnitTests
         }
 
         [Fact]
-        public void SaveNotificationMessages_SaveMessageWithValidationError()
+        public async Task SaveNotificationMessages_SaveMessageWithValidationError()
         {
             //Arrange
             var id = Guid.NewGuid().ToString();
@@ -125,7 +125,7 @@ namespace VirtoCommerce.NotificationsModule.Tests.UnitTests
             _repositoryMock.Setup(n => n.GetMessagesByIdsAsync(new[] { id })).ReturnsAsync(messageEntities.ToArray());
 
             //Act
-            Assert.ThrowsAsync<PlatformException>(async () => await _notificationMessageService.SaveNotificationMessagesAsync(messages.ToArray()));
+            await Assert.ThrowsAsync<PlatformException>(async () => await _notificationMessageService.SaveNotificationMessagesAsync(messages.ToArray()));
         }
     }
 }
