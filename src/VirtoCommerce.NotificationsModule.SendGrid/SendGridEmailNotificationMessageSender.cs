@@ -35,35 +35,11 @@ namespace VirtoCommerce.NotificationsModule.SendGrid
 
             var emailNotificationMessage = message as EmailNotificationMessage;
 
-            var fromAddress = new EmailAddress(emailNotificationMessage.From ?? _emailSendingOptions.DefaultSender);
-            var toAddress = new EmailAddress(emailNotificationMessage.To);
-
             try
             {
                 var client = new SendGridClient(_sendGridOptions.ApiKey);
-                var mailMsg = new SendGridMessage
-                {
-                    From = fromAddress,
-                    Subject = emailNotificationMessage.Subject,
-                    HtmlContent = emailNotificationMessage.Body,
-                };
 
-                mailMsg.AddTo(toAddress);
-
-                if (!emailNotificationMessage.CC.IsNullOrEmpty())
-                {
-                    foreach (var ccEmail in emailNotificationMessage.CC)
-                    {
-                        mailMsg.AddCc(ccEmail);
-                    }
-                }
-                if (!emailNotificationMessage.BCC.IsNullOrEmpty())
-                {
-                    foreach (var bccEmail in emailNotificationMessage.BCC)
-                    {
-                        mailMsg.AddBcc(bccEmail);
-                    }
-                }
+                var mailMsg = ConvertToSendGridMessage(emailNotificationMessage);
 
                 var response = await client.SendEmailAsync(mailMsg);
 
@@ -77,6 +53,38 @@ namespace VirtoCommerce.NotificationsModule.SendGrid
             {
                 throw new SentNotificationException(ex);
             }
+        }
+
+        protected virtual SendGridMessage ConvertToSendGridMessage(EmailNotificationMessage emailNotificationMessage)
+        {
+            var fromAddress = new EmailAddress(emailNotificationMessage.From ?? _emailSendingOptions.DefaultSender);
+            var toAddress = new EmailAddress(emailNotificationMessage.To);
+
+            var mailMsg = new SendGridMessage
+            {
+                From = fromAddress,
+                Subject = emailNotificationMessage.Subject,
+                HtmlContent = emailNotificationMessage.Body,
+            };
+
+            mailMsg.AddTo(toAddress);
+
+            if (!emailNotificationMessage.CC.IsNullOrEmpty())
+            {
+                foreach (var ccEmail in emailNotificationMessage.CC)
+                {
+                    mailMsg.AddCc(ccEmail);
+                }
+            }
+            if (!emailNotificationMessage.BCC.IsNullOrEmpty())
+            {
+                foreach (var bccEmail in emailNotificationMessage.BCC)
+                {
+                    mailMsg.AddBcc(bccEmail);
+                }
+            }
+
+            return mailMsg;
         }
     }
 }
