@@ -35,11 +35,11 @@ namespace VirtoCommerce.NotificationsModule.SendGrid
 
             var emailNotificationMessage = message as EmailNotificationMessage;
 
+            var mailMsg = await ToSendGridMessageAsync(emailNotificationMessage);
+
             try
             {
                 var client = new SendGridClient(_sendGridOptions.ApiKey);
-
-                var mailMsg = ConvertToSendGridMessage(emailNotificationMessage);
 
                 var response = await client.SendEmailAsync(mailMsg);
 
@@ -55,7 +55,7 @@ namespace VirtoCommerce.NotificationsModule.SendGrid
             }
         }
 
-        protected virtual SendGridMessage ConvertToSendGridMessage(EmailNotificationMessage emailNotificationMessage)
+        protected virtual Task<SendGridMessage> ToSendGridMessageAsync(EmailNotificationMessage emailNotificationMessage)
         {
             var fromAddress = new EmailAddress(emailNotificationMessage.From ?? _emailSendingOptions.DefaultSender);
             var toAddress = new EmailAddress(emailNotificationMessage.To);
@@ -76,6 +76,7 @@ namespace VirtoCommerce.NotificationsModule.SendGrid
                     mailMsg.AddCc(ccEmail);
                 }
             }
+
             if (!emailNotificationMessage.BCC.IsNullOrEmpty())
             {
                 foreach (var bccEmail in emailNotificationMessage.BCC)
@@ -84,7 +85,7 @@ namespace VirtoCommerce.NotificationsModule.SendGrid
                 }
             }
 
-            return mailMsg;
+            return Task.FromResult(mailMsg);
         }
     }
 }
