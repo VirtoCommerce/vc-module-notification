@@ -1,4 +1,3 @@
-using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -25,10 +24,6 @@ namespace VirtoCommerce.NotificationsModule.Data.Model
 
         public virtual ObservableCollection<NotificationEmailRecipientEntity> Recipients { get; set; }
             = new NullCollection<NotificationEmailRecipientEntity>();
-
-        public virtual ObservableCollection<EmailAttachmentEntity> Attachments { get; set; }
-            = new NullCollection<EmailAttachmentEntity>();
-
         #endregion
 
         public override Notification ToModel(Notification notification)
@@ -47,12 +42,6 @@ namespace VirtoCommerce.NotificationsModule.Data.Model
                         .Select(cc => cc.EmailAddress).ToArray();
                     emailNotification.BCC = Recipients.Where(r => r.RecipientType == NotificationRecipientType.Bcc)
                         .Select(bcc => bcc.EmailAddress).ToArray();
-                }
-
-                if (!Attachments.IsNullOrEmpty())
-                {
-                    emailNotification.Attachments = Attachments.Select(en =>
-                        en.ToModel(AbstractTypeFactory<EmailAttachment>.TryCreateInstance())).ToList();
                 }
             }
 
@@ -79,12 +68,6 @@ namespace VirtoCommerce.NotificationsModule.Data.Model
                     Recipients.AddRange(emailNotification.BCC.Select(bcc => AbstractTypeFactory<NotificationEmailRecipientEntity>.TryCreateInstance()
                         .FromModel(bcc, NotificationRecipientType.Bcc)));
                 }
-
-                if (emailNotification.Attachments != null)
-                {
-                    Attachments = new ObservableCollection<EmailAttachmentEntity>(emailNotification.Attachments.Select(a =>
-                        AbstractTypeFactory<EmailAttachmentEntity>.TryCreateInstance().FromModel(a)));
-                }
             }
 
             return base.FromModel(notification, pkMap);
@@ -100,11 +83,6 @@ namespace VirtoCommerce.NotificationsModule.Data.Model
                 if (!Recipients.IsNullCollection())
                 {
                     Recipients.Patch(emailNotification.Recipients, (source, target) => source.Patch(target));
-                }
-
-                if (!Attachments.IsNullCollection())
-                {
-                    Attachments.Patch(emailNotification.Attachments, (source, attachmentEntity) => source.Patch(attachmentEntity));
                 }
             }
 

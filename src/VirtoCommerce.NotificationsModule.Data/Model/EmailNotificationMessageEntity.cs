@@ -1,5 +1,7 @@
+using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
 using VirtoCommerce.NotificationsModule.Core.Model;
 using VirtoCommerce.Platform.Core.Common;
 
@@ -39,6 +41,8 @@ namespace VirtoCommerce.NotificationsModule.Data.Model
         [StringLength(1024)]
         public string BCC { get; set; }
 
+        public ObservableCollection<EmailAttachmentEntity> Attachments = new NullCollection<EmailAttachmentEntity>();
+
         public override NotificationMessage ToModel(NotificationMessage message)
         {
             if (message is EmailNotificationMessage emailNotificationMessage)
@@ -49,6 +53,9 @@ namespace VirtoCommerce.NotificationsModule.Data.Model
                 emailNotificationMessage.To = To;
                 emailNotificationMessage.CC = CC?.Split(";");
                 emailNotificationMessage.BCC = BCC?.Split(";");
+
+                emailNotificationMessage.Attachments = Attachments
+                    .Select(x => x.ToModel(AbstractTypeFactory<EmailAttachment>.TryCreateInstance())).ToList();
             }
 
             return base.ToModel(message);
@@ -72,6 +79,13 @@ namespace VirtoCommerce.NotificationsModule.Data.Model
                 {
                     BCC = string.Join(";", emailNotificationMessage.BCC);
                 }
+
+                if (emailNotificationMessage.Attachments != null)
+                {
+                    Attachments = new ObservableCollection<EmailAttachmentEntity>(
+                        emailNotificationMessage.Attachments.Select(x =>
+                            AbstractTypeFactory<EmailAttachmentEntity>.TryCreateInstance().FromModel(x)));
+                }
             }
 
             return base.FromModel(message, pkMap);
@@ -87,6 +101,13 @@ namespace VirtoCommerce.NotificationsModule.Data.Model
                 emailNotificationMessageEntity.To = To;
                 emailNotificationMessageEntity.CC = CC;
                 emailNotificationMessageEntity.BCC = BCC;
+
+                if (!Attachments.IsNullCollection())
+                {
+                    var attachmentComparer =
+                        AnonymousComparer.Create((EmailAttachmentEntity x) => x.FileName + "-" + x.Url);
+                    Attachments.Patch(emailNotificationMessageEntity.Attachments, attachmentComparer, (sourceAttachment, targetAttachment) => { });
+                }
             }
 
             base.Patch(message);
