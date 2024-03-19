@@ -81,8 +81,11 @@ namespace VirtoCommerce.NotificationsModule.Data.Repositories
             modelBuilder.Entity<EmailAttachmentEntity>().Property(x => x.CreatedBy).HasMaxLength(64);
             modelBuilder.Entity<EmailAttachmentEntity>().Property(x => x.ModifiedBy).HasMaxLength(64);
 
-            modelBuilder.Entity<EmailAttachmentEntity>().HasOne(x => x.EmailNotificationMessage).WithMany(x => x.Attachments)
-                  .HasForeignKey(x => x.NotificationMessageId).OnDelete(DeleteBehavior.Cascade);
+            modelBuilder.Entity<EmailAttachmentEntity>().HasOne(x => x.EmailNotificationMessage)
+                .WithMany(x => x.Attachments)
+                .HasForeignKey(x => x.NotificationMessageId)
+                .IsRequired()
+                .OnDelete(DeleteBehavior.Cascade);
 
             #endregion
 
