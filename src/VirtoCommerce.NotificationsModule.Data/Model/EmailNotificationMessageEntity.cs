@@ -1,3 +1,4 @@
+using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -41,7 +42,7 @@ namespace VirtoCommerce.NotificationsModule.Data.Model
         [StringLength(1024)]
         public string BCC { get; set; }
 
-        public ObservableCollection<EmailAttachmentEntity> Attachments = new NullCollection<EmailAttachmentEntity>();
+        public ObservableCollection<EmailAttachmentEntity> Attachments { get; set; } = new NullCollection<EmailAttachmentEntity>();
 
         public override NotificationMessage ToModel(NotificationMessage message)
         {
@@ -54,8 +55,11 @@ namespace VirtoCommerce.NotificationsModule.Data.Model
                 emailNotificationMessage.CC = CC?.Split(";");
                 emailNotificationMessage.BCC = BCC?.Split(";");
 
-                emailNotificationMessage.Attachments = Attachments
-                    .Select(x => x.ToModel(AbstractTypeFactory<EmailAttachment>.TryCreateInstance())).ToList();
+                if (!Attachments.IsNullOrEmpty())
+                {
+                    emailNotificationMessage.Attachments = Attachments
+                        .Select(x => x.ToModel(AbstractTypeFactory<EmailAttachment>.TryCreateInstance())).ToList();
+                }
             }
 
             return base.ToModel(message);
@@ -105,8 +109,8 @@ namespace VirtoCommerce.NotificationsModule.Data.Model
                 if (!Attachments.IsNullCollection())
                 {
                     var attachmentComparer =
-                        AnonymousComparer.Create((EmailAttachmentEntity x) => x.FileName + "-" + x.Url);
-                    Attachments.Patch(emailNotificationMessageEntity.Attachments, attachmentComparer, (sourceAttachment, targetAttachment) => { });
+                        AnonymousComparer.Create((EmailAttachmentEntity x) => x.Url, StringComparer.InvariantCultureIgnoreCase);
+                    Attachments.Patch(emailNotificationMessageEntity.Attachments, attachmentComparer, (sourceAttachment, targetAttachment) => sourceAttachment.Patch(targetAttachment));
                 }
             }
 
