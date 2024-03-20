@@ -88,6 +88,7 @@ namespace VirtoCommerce.NotificationsModule.Data.Repositories
             {
                 var existingIds = result.Select(x => x.NotificationId).ToArray();
                 await Notifications.Where(x => existingIds.Contains(x.Id)).OrderBy(x => x.Type).LoadAsync();
+                await DbContext.Set<EmailAttachmentEntity>().Where(t => ids.Contains(t.NotificationMessageId)).LoadAsync();
             }
 
             return result;
@@ -109,11 +110,6 @@ namespace VirtoCommerce.NotificationsModule.Data.Repositories
                 if (notificationResponseGroup.HasFlag(NotificationResponseGroup.WithTemplates))
                 {
                     await DbContext.Set<NotificationTemplateEntity>().Where(t => ids.Contains(t.NotificationId)).LoadAsync();
-                }
-
-                if (notificationResponseGroup.HasFlag(NotificationResponseGroup.WithAttachments))
-                {
-                    await DbContext.Set<EmailAttachmentEntity>().Where(t => ids.Contains(t.NotificationId)).LoadAsync();
                 }
 
                 if (notificationResponseGroup.HasFlag(NotificationResponseGroup.WithRecipients))
