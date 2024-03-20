@@ -43,10 +43,10 @@ namespace VirtoCommerce.NotificationsModule.Data.Model
         #region Navigation Properties
 
         /// <summary>
-        /// Id of notification
+        /// Id of notification message
         /// </summary>
-        public string NotificationId { get; set; }
-        public EmailNotificationEntity Notification { get; set; }
+        public string NotificationMessageId { get; set; }
+        public EmailNotificationMessageEntity EmailNotificationMessage { get; set; }
 
         #endregion
 

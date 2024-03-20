@@ -17,7 +17,7 @@ namespace VirtoCommerce.NotificationsModule.Data.PostgreSql.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "6.0.0")
+                .HasAnnotation("ProductVersion", "8.0.0")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
@@ -55,7 +55,8 @@ namespace VirtoCommerce.NotificationsModule.Data.PostgreSql.Migrations
                     b.Property<DateTime?>("ModifiedDate")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<string>("NotificationId")
+                    b.Property<string>("NotificationMessageId")
+                        .IsRequired()
                         .HasColumnType("character varying(128)");
 
                     b.Property<string>("Size")
@@ -68,7 +69,7 @@ namespace VirtoCommerce.NotificationsModule.Data.PostgreSql.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("NotificationId");
+                    b.HasIndex("NotificationMessageId");
 
                     b.ToTable("NotificationEmailAttachment", (string)null);
                 });
@@ -155,6 +156,8 @@ namespace VirtoCommerce.NotificationsModule.Data.PostgreSql.Migrations
                     b.ToTable("Notification", (string)null);
 
                     b.HasDiscriminator<string>("Discriminator").HasValue("NotificationEntity");
+
+                    b.UseTphMappingStrategy();
                 });
 
             modelBuilder.Entity("VirtoCommerce.NotificationsModule.Data.Model.NotificationLayoutEntity", b =>
@@ -268,6 +271,8 @@ namespace VirtoCommerce.NotificationsModule.Data.PostgreSql.Migrations
                     b.ToTable("NotificationMessage", (string)null);
 
                     b.HasDiscriminator<string>("Discriminator").HasValue("NotificationMessageEntity");
+
+                    b.UseTphMappingStrategy();
                 });
 
             modelBuilder.Entity("VirtoCommerce.NotificationsModule.Data.Model.NotificationTemplateEntity", b =>
@@ -315,6 +320,8 @@ namespace VirtoCommerce.NotificationsModule.Data.PostgreSql.Migrations
                     b.ToTable("NotificationTemplate", (string)null);
 
                     b.HasDiscriminator<string>("Discriminator").HasValue("NotificationTemplateEntity");
+
+                    b.UseTphMappingStrategy();
                 });
 
             modelBuilder.Entity("VirtoCommerce.NotificationsModule.Data.Model.EmailNotificationEntity", b =>
@@ -330,6 +337,17 @@ namespace VirtoCommerce.NotificationsModule.Data.PostgreSql.Migrations
                         .HasColumnType("character varying(128)");
 
                     b.HasDiscriminator().HasValue("EmailNotificationEntity");
+                });
+
+            modelBuilder.Entity("VirtoCommerce.NotificationsModule.Data.Model.SmsNotificationEntity", b =>
+                {
+                    b.HasBaseType("VirtoCommerce.NotificationsModule.Data.Model.NotificationEntity");
+
+                    b.Property<string>("Number")
+                        .HasMaxLength(128)
+                        .HasColumnType("character varying(128)");
+
+                    b.HasDiscriminator().HasValue("SmsNotificationEntity");
                 });
 
             modelBuilder.Entity("VirtoCommerce.NotificationsModule.Data.Model.EmailNotificationMessageEntity", b =>
@@ -362,6 +380,20 @@ namespace VirtoCommerce.NotificationsModule.Data.PostgreSql.Migrations
                     b.HasDiscriminator().HasValue("EmailNotificationMessageEntity");
                 });
 
+            modelBuilder.Entity("VirtoCommerce.NotificationsModule.Data.Model.SmsNotificationMessageEntity", b =>
+                {
+                    b.HasBaseType("VirtoCommerce.NotificationsModule.Data.Model.NotificationMessageEntity");
+
+                    b.Property<string>("Message")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Number")
+                        .HasMaxLength(128)
+                        .HasColumnType("character varying(128)");
+
+                    b.HasDiscriminator().HasValue("SmsNotificationMessageEntity");
+                });
+
             modelBuilder.Entity("VirtoCommerce.NotificationsModule.Data.Model.EmailNotificationTemplateEntity", b =>
                 {
                     b.HasBaseType("VirtoCommerce.NotificationsModule.Data.Model.NotificationTemplateEntity");
@@ -385,31 +417,6 @@ namespace VirtoCommerce.NotificationsModule.Data.PostgreSql.Migrations
                     b.HasDiscriminator().HasValue("EmailNotificationTemplateEntity");
                 });
 
-            modelBuilder.Entity("VirtoCommerce.NotificationsModule.Data.Model.SmsNotificationEntity", b =>
-                {
-                    b.HasBaseType("VirtoCommerce.NotificationsModule.Data.Model.NotificationEntity");
-
-                    b.Property<string>("Number")
-                        .HasMaxLength(128)
-                        .HasColumnType("character varying(128)");
-
-                    b.HasDiscriminator().HasValue("SmsNotificationEntity");
-                });
-
-            modelBuilder.Entity("VirtoCommerce.NotificationsModule.Data.Model.SmsNotificationMessageEntity", b =>
-                {
-                    b.HasBaseType("VirtoCommerce.NotificationsModule.Data.Model.NotificationMessageEntity");
-
-                    b.Property<string>("Message")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Number")
-                        .HasMaxLength(128)
-                        .HasColumnType("character varying(128)");
-
-                    b.HasDiscriminator().HasValue("SmsNotificationMessageEntity");
-                });
-
             modelBuilder.Entity("VirtoCommerce.NotificationsModule.Data.Model.SmsNotificationTemplateEntity", b =>
                 {
                     b.HasBaseType("VirtoCommerce.NotificationsModule.Data.Model.NotificationTemplateEntity");
@@ -422,12 +429,13 @@ namespace VirtoCommerce.NotificationsModule.Data.PostgreSql.Migrations
 
             modelBuilder.Entity("VirtoCommerce.NotificationsModule.Data.Model.EmailAttachmentEntity", b =>
                 {
-                    b.HasOne("VirtoCommerce.NotificationsModule.Data.Model.EmailNotificationEntity", "Notification")
+                    b.HasOne("VirtoCommerce.NotificationsModule.Data.Model.EmailNotificationMessageEntity", "EmailNotificationMessage")
                         .WithMany("Attachments")
-                        .HasForeignKey("NotificationId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("NotificationMessageId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.Navigation("Notification");
+                    b.Navigation("EmailNotificationMessage");
                 });
 
             modelBuilder.Entity("VirtoCommerce.NotificationsModule.Data.Model.NotificationEmailRecipientEntity", b =>
@@ -477,9 +485,12 @@ namespace VirtoCommerce.NotificationsModule.Data.PostgreSql.Migrations
 
             modelBuilder.Entity("VirtoCommerce.NotificationsModule.Data.Model.EmailNotificationEntity", b =>
                 {
-                    b.Navigation("Attachments");
-
                     b.Navigation("Recipients");
+                });
+
+            modelBuilder.Entity("VirtoCommerce.NotificationsModule.Data.Model.EmailNotificationMessageEntity", b =>
+                {
+                    b.Navigation("Attachments");
                 });
 #pragma warning restore 612, 618
         }
