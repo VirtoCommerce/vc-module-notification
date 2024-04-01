@@ -37,16 +37,16 @@ namespace VirtoCommerce.NotificationsModule.Data.PostgreSql.Migrations
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("FileName")
-                        .HasMaxLength(512)
-                        .HasColumnType("character varying(512)");
+                        .HasMaxLength(1024)
+                        .HasColumnType("character varying(1024)");
 
                     b.Property<string>("LanguageCode")
                         .HasMaxLength(10)
                         .HasColumnType("character varying(10)");
 
                     b.Property<string>("MimeType")
-                        .HasMaxLength(50)
-                        .HasColumnType("character varying(50)");
+                        .HasMaxLength(128)
+                        .HasColumnType("character varying(128)");
 
                     b.Property<string>("ModifiedBy")
                         .HasMaxLength(64)
@@ -59,13 +59,13 @@ namespace VirtoCommerce.NotificationsModule.Data.PostgreSql.Migrations
                         .IsRequired()
                         .HasColumnType("character varying(128)");
 
-                    b.Property<string>("Size")
-                        .HasMaxLength(128)
-                        .HasColumnType("character varying(128)");
+                    b.Property<long>("Size")
+                        .HasColumnType("bigint");
 
                     b.Property<string>("Url")
-                        .HasMaxLength(2048)
-                        .HasColumnType("character varying(2048)");
+                        .IsRequired()
+                        .HasMaxLength(2083)
+                        .HasColumnType("character varying(2083)");
 
                     b.HasKey("Id");
 
