@@ -37,16 +37,16 @@ namespace VirtoCommerce.NotificationsModule.Data.SqlServer.SqlServer.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("FileName")
-                        .HasMaxLength(512)
-                        .HasColumnType("nvarchar(512)");
+                        .HasMaxLength(1024)
+                        .HasColumnType("nvarchar(1024)");
 
                     b.Property<string>("LanguageCode")
                         .HasMaxLength(10)
                         .HasColumnType("nvarchar(10)");
 
                     b.Property<string>("MimeType")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
 
                     b.Property<string>("ModifiedBy")
                         .HasMaxLength(64)
@@ -56,15 +56,16 @@ namespace VirtoCommerce.NotificationsModule.Data.SqlServer.SqlServer.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("NotificationMessageId")
+                        .IsRequired()
                         .HasColumnType("nvarchar(128)");
 
-                    b.Property<string>("Size")
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
+                    b.Property<long>("Size")
+                        .HasColumnType("bigint");
 
                     b.Property<string>("Url")
-                        .HasMaxLength(2048)
-                        .HasColumnType("nvarchar(2048)");
+                        .IsRequired()
+                        .HasMaxLength(2083)
+                        .HasColumnType("nvarchar(2083)");
 
                     b.HasKey("Id");
 
@@ -431,7 +432,8 @@ namespace VirtoCommerce.NotificationsModule.Data.SqlServer.SqlServer.Migrations
                     b.HasOne("VirtoCommerce.NotificationsModule.Data.Model.EmailNotificationMessageEntity", "EmailNotificationMessage")
                         .WithMany("Attachments")
                         .HasForeignKey("NotificationMessageId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("EmailNotificationMessage");
                 });

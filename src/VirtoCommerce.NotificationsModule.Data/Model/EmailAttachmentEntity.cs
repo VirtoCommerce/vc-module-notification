@@ -13,26 +13,25 @@ namespace VirtoCommerce.NotificationsModule.Data.Model
         /// <summary>
         /// Name of Attachment
         /// </summary>
-        [StringLength(512)]
+        [StringLength(1024)]
         public string FileName { get; set; }
 
         /// <summary>
         /// Url of Attachment
         /// </summary>
-        [StringLength(2048)]
+        [Required, StringLength(2083)]
         public string Url { get; set; }
 
         /// <summary>
         /// MimeType of Attachment
         /// </summary>
-        [StringLength(50)]
+        [StringLength(128)]
         public string MimeType { get; set; }
 
         /// <summary>
         /// Size of Attachment
         /// </summary>
-        [StringLength(128)]
-        public string Size { get; set; }
+        public long Size { get; set; }
 
         /// <summary>
         /// Language of Attachment
@@ -52,7 +51,8 @@ namespace VirtoCommerce.NotificationsModule.Data.Model
 
         public virtual EmailAttachment ToModel(EmailAttachment emailAttachment)
         {
-            if (emailAttachment == null) throw new ArgumentNullException(nameof(emailAttachment));
+            ArgumentNullException.ThrowIfNull(emailAttachment);
+
             emailAttachment.FileName = FileName;
             emailAttachment.Url = Url;
             emailAttachment.MimeType = MimeType;
@@ -64,7 +64,8 @@ namespace VirtoCommerce.NotificationsModule.Data.Model
 
         public virtual EmailAttachmentEntity FromModel(EmailAttachment emailAttachment)
         {
-            if (emailAttachment == null) throw new ArgumentNullException(nameof(emailAttachment));
+            ArgumentNullException.ThrowIfNull(emailAttachment);
+
             FileName = emailAttachment.FileName;
             Url = emailAttachment.Url;
             MimeType = emailAttachment.MimeType;
