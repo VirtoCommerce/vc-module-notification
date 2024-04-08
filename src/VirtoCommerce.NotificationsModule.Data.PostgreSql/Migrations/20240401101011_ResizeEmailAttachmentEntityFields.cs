@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
@@ -22,16 +22,17 @@ namespace VirtoCommerce.NotificationsModule.Data.PostgreSql.VirtoCommerce.Notifi
                 oldMaxLength: 2048,
                 oldNullable: true);
 
-            migrationBuilder.AlterColumn<long>(
+            // Fix: Cannot be cast automatically to type bigint
+            migrationBuilder.DropColumn(
+               name: "Size",
+               table: "NotificationEmailAttachment");
+
+            migrationBuilder.AddColumn<string>(
                 name: "Size",
                 table: "NotificationEmailAttachment",
                 type: "bigint",
                 nullable: false,
-                defaultValue: 0L,
-                oldClrType: typeof(string),
-                oldType: "character varying(128)",
-                oldMaxLength: 128,
-                oldNullable: true);
+                defaultValue: 0L);
 
             migrationBuilder.AlterColumn<string>(
                 name: "MimeType",
