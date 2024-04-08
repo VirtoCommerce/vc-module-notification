@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
@@ -30,17 +30,17 @@ namespace VirtoCommerce.NotificationsModule.Data.MySql.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4")
                 .OldAnnotation("MySql:CharSet", "utf8mb4");
 
-            migrationBuilder.AlterColumn<long>(
+            // Fix: Cannot be cast automatically to type bigint
+            migrationBuilder.DropColumn(
+               name: "Size",
+               table: "NotificationEmailAttachment");
+
+            migrationBuilder.AddColumn<string>(
                 name: "Size",
                 table: "NotificationEmailAttachment",
                 type: "bigint",
                 nullable: false,
-                defaultValue: 0L,
-                oldClrType: typeof(string),
-                oldType: "varchar(128)",
-                oldMaxLength: 128,
-                oldNullable: true)
-                .OldAnnotation("MySql:CharSet", "utf8mb4");
+                defaultValue: 0L);
 
             migrationBuilder.AlterColumn<string>(
                 name: "MimeType",
