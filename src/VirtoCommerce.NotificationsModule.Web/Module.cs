@@ -27,8 +27,8 @@ using VirtoCommerce.NotificationsModule.SendGrid;
 using VirtoCommerce.NotificationsModule.Smtp;
 using VirtoCommerce.NotificationsModule.TemplateLoader.FileSystem;
 using VirtoCommerce.NotificationsModule.Twilio;
-using VirtoCommerce.Platform.Core.Bus;
 using VirtoCommerce.Platform.Core.Common;
+using VirtoCommerce.Platform.Core.Events;
 using VirtoCommerce.Platform.Core.ExportImport;
 using VirtoCommerce.Platform.Core.JsonConverters;
 using VirtoCommerce.Platform.Core.Modularity;
@@ -48,7 +48,7 @@ namespace VirtoCommerce.NotificationsModule.Web
 
         public void Initialize(IServiceCollection serviceCollection)
         {
-            serviceCollection.AddDbContext<NotificationDbContext>((provider, options) =>
+            serviceCollection.AddDbContext<NotificationDbContext>(options =>
             {
                 var databaseProvider = Configuration.GetValue("DatabaseProvider", "SqlServer");
                 var connectionString = Configuration.GetConnectionString(ModuleInfo.Id) ?? Configuration.GetConnectionString("VirtoCommerce");
@@ -169,9 +169,7 @@ namespace VirtoCommerce.NotificationsModule.Web
                 notificationDbContext.Database.Migrate();
             }
 
-            var handlerRegistrar = appBuilder.ApplicationServices.GetService<IHandlerRegistrar>();
-            handlerRegistrar.RegisterHandler<UserRequestPasswordResetEvent>((message, _) => appBuilder.ApplicationServices.GetService<RequestPasswordResetHandler>().Handle(message));
-
+            appBuilder.RegisterEventHandler<UserRequestPasswordResetEvent, RequestPasswordResetHandler>();
 
             var defaultTemplatesDirectory = Path.Combine(ModuleInfo.FullPhysicalPath, "NotificationTemplates");
             var registrar = appBuilder.ApplicationServices.GetService<INotificationRegistrar>();
