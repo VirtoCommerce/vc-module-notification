@@ -49,7 +49,7 @@ angular.module('virtoCommerce.notificationsModule')
             });
         }
 
-        function resolveType(kind) {
+        function resolveType(kind, type) {
             var foundNotification = notificationTypesResolverService.resolve(kind);
             if (foundNotification && foundNotification.knownChildrenTypes && foundNotification.knownChildrenTypes.length) {
                     return foundNotification;
@@ -58,14 +58,15 @@ angular.module('virtoCommerce.notificationsModule')
                         id: "error",
                         title: "notifications.dialogs.unknown-kind.title",
                         message: "notifications.dialogs.unknown-kind.message",
-                        messageValues: { kind: kind },
-                });
+                        messageValues: { kind: kind, type: type },
+                    });
+                return null;
             }
         }
 
         if (authService.checkPermission('notifications:access')) {
             blade.editNotification = function (item) {
-                var foundNotification = resolveType(item.kind);
+                var foundNotification = resolveType(item.kind, item.type);
                 var newBlade = {
                     id: 'editNotification',
                     title: 'notifications.blades.notification-details.title',
