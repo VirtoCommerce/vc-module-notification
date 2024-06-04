@@ -13,5 +13,6 @@ namespace VirtoCommerce.NotificationsModule.Core.Services
         NotificationBuilder Notification<TNotification>() where TNotification : Notification;
         NotificationBuilder RegisterNotification<TNotification>(Func<Notification> factory = null) where TNotification : Notification;
         NotificationBuilder OverrideNotificationType<TOldNotificationType, TNewNotificationType>(Func<Notification> factory = null) where TOldNotificationType : Notification where TNewNotificationType : Notification;
+        void UnregisterNotification<TNotification>() where TNotification : Notification;
     }
 }
