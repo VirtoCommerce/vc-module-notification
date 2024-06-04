@@ -210,7 +210,7 @@
     "dialogs": {
       "unknown-kind": {
         "title": "Error",
-        "message": "Unable to edit template of an unknown type: '{{kind}}'."
+        "message": "Unable to open '{{type}}' notification. Please contact your Site Administrator(s) for information."
       },
       "notification-details-save": {
         "title": "Save changes",
