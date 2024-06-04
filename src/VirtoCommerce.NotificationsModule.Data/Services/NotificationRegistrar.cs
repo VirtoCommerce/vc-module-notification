@@ -47,6 +47,5 @@ namespace VirtoCommerce.NotificationsModule.Data.Services
 
             return builder;
         }
-
     }
 }

@@ -174,7 +174,7 @@ namespace VirtoCommerce.NotificationsModule.Data.Services
                 entity.ToModel(result);
             }
 
-            return result ?? new UnregisteredNotification();
+            return result ?? new UnregisteredNotification(typeName);
         }
     }
 }
