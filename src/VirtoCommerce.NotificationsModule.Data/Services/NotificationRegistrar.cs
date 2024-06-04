@@ -1,10 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.Extensions.DependencyInjection;
 using VirtoCommerce.NotificationsModule.Core.Model;
 using VirtoCommerce.NotificationsModule.Core.Services;
-using VirtoCommerce.NotificationsModule.Data.Repositories;
 using VirtoCommerce.Platform.Core.Common;
 
 namespace VirtoCommerce.NotificationsModule.Data.Services
@@ -48,18 +46,6 @@ namespace VirtoCommerce.NotificationsModule.Data.Services
             typeInfo.WithFactory(() => builder.Build());
 
             return builder;
-        }
-
-        public void UnregisterNotification<TNotification>() where TNotification : Notification
-        {
-            var repositoryFactory = _serviceProvider.GetService<Func<INotificationRepository>>();
-            using var repository = repositoryFactory();
-            var notificationType = nameof(TNotification);
-            foreach (var item in repository.Notifications.Where(n => n.Type == notificationType))
-            {
-                repository.Remove(item);
-            }
-            repository.UnitOfWork.Commit();
         }
     }
 }
