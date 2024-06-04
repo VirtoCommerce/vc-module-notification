@@ -40,7 +40,7 @@ angular.module('virtoCommerce.notificationsModule')
                 return _.toArray(templatesToDisplay);
             }
 
-            function resolveType(kind) {
+            function resolveType(kind, type) {
                 var foundTemplate = notificationTemplatesResolverService.resolve(kind);
                 if (foundTemplate && foundTemplate.knownChildrenTypes && foundTemplate.knownChildrenTypes.length) {
                     return foundTemplate;
@@ -49,13 +49,14 @@ angular.module('virtoCommerce.notificationsModule')
                         id: "error",
                         title: "notifications.dialogs.unknown-kind.title",
                         message: "notifications.dialogs.unknown-kind.message",
-                        messageValues: { kind: kind },
+                        messageValues: { kind: kind, type: type },
                     });
+                    return null;
                 }
             }
 
             blade.openTemplate = function (template) {
-                var foundTemplate = resolveType(blade.currentEntity.kind);
+                var foundTemplate = resolveType(blade.currentEntity.kind, blade.currentEntity.type);
                 if (foundTemplate) {
                     var newBlade = {
                         id: foundTemplate.detailBlade.id,
