@@ -32,7 +32,6 @@ using VirtoCommerce.Platform.Core.Events;
 using VirtoCommerce.Platform.Core.ExportImport;
 using VirtoCommerce.Platform.Core.JsonConverters;
 using VirtoCommerce.Platform.Core.Modularity;
-using VirtoCommerce.Platform.Core.Notifications;
 using VirtoCommerce.Platform.Core.Security;
 using VirtoCommerce.Platform.Core.Security.Events;
 using VirtoCommerce.Platform.Core.Settings;
@@ -76,9 +75,6 @@ namespace VirtoCommerce.NotificationsModule.Web
             serviceCollection.AddTransient<INotificationMessageService, NotificationMessageService>();
             serviceCollection.AddTransient<INotificationMessageSearchService, NotificationMessageSearchService>();
             serviceCollection.AddTransient<INotificationSender, NotificationSender>();
-#pragma warning disable CS0618 // Type or member is obsolete
-            serviceCollection.AddTransient<IEmailSender, EmailNotificationMessageSender>();
-#pragma warning restore CS0618 // Type or member is obsolete
             serviceCollection.AddTransient<NotificationsExportImport>();
             serviceCollection.AddTransient<NotificationScriptObject>();
 
