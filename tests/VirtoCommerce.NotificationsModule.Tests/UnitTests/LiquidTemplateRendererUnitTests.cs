@@ -26,6 +26,7 @@ namespace VirtoCommerce.NotificationsModule.Tests.UnitTests
         private readonly Mock<INotificationLayoutService> _notificationLayoutServiceMock;
         private readonly Mock<INotificationLayoutSearchService> _notificationLayoutSearchService;
         private readonly LiquidTemplateRenderer _liquidTemplateRenderer;
+        private readonly LiquidTemplateRenderer _defaultTemplateRenderer;
 
         public LiquidTemplateRendererUnitTests()
         {
@@ -39,6 +40,8 @@ namespace VirtoCommerce.NotificationsModule.Tests.UnitTests
 
             Func<ITemplateLoader> factory = () => new LayoutTemplateLoader(_notificationLayoutServiceMock.Object);
             _liquidTemplateRenderer = new LiquidTemplateRenderer(Options.Create(new LiquidRenderOptions() { CustomFilterTypes = new HashSet<Type> { typeof(UrlFilters), typeof(TranslationFilter), typeof(ArrayFilter) } }), factory, _notificationLayoutSearchService.Object);
+
+            _defaultTemplateRenderer = new LiquidTemplateRenderer(Options.Create(new LiquidRenderOptions() { TemplateScriptLanguage = Scriban.Parsing.ScriptLang.Default, CustomFilterTypes = new HashSet<Type> { typeof(UrlFilters), typeof(TranslationFilter), typeof(ArrayFilter) } }), factory, _notificationLayoutSearchService.Object);
 
 
             //TODO
@@ -136,7 +139,7 @@ namespace VirtoCommerce.NotificationsModule.Tests.UnitTests
             var layout = new NotificationLayout
             {
                 Id = layoutId,
-                Template = "header {{content}} {{% if currency == 'en-US'}} {{}}  footer",
+                Template = "header {{content}} {{}}footer",
             };
 
             _notificationLayoutServiceMock
@@ -156,13 +159,39 @@ namespace VirtoCommerce.NotificationsModule.Tests.UnitTests
         }
 
         [Fact]
-        public async Task RenderAsync_ContextHasLayoutId_Conditions_LayoutRendered()
+        public async Task RenderAsync_ContextHasLayoutId_Conditions_LayoutRendered_Default()
         {
             var layoutId = Guid.NewGuid().ToString();
             var layout = new NotificationLayout
             {
                 Id = layoutId,
                 Template = "header {{content}} {{ if currency == 'en-US' }}en-US template{{ else }}other template{{ end }} {{}}  footer",
+            };
+            _notificationLayoutServiceMock
+                .Setup(x => x.GetAsync(It.Is<IList<string>>(x => x.FirstOrDefault() == layoutId), It.IsAny<string>(), It.IsAny<bool>()))
+                .ReturnsAsync([layout]);
+
+            var content = @"{% capture content %} {% if currency == 'en-US' %} en-US content {% else %} other content {% endif %} {% endcapture %}";
+            var context = new NotificationRenderContext
+            {
+                Template = content,
+                LayoutId = layoutId,
+                UseLayouts = true,
+                Model = new { Currency = "en-US" },
+            };
+
+            var result = await _defaultTemplateRenderer.RenderAsync(context);
+            Assert.Equal("header   en-US content   en-US template   footer", result);
+        }
+
+        [Fact]
+        public async Task RenderAsync_ContextHasLayoutId_Conditions_LayoutRendered_Liquid()
+        {
+            var layoutId = Guid.NewGuid().ToString();
+            var layout = new NotificationLayout
+            {
+                Id = layoutId,
+                Template = "header {{content}} {% if currency == 'en-US' %}en-US template{% else %}other template{% endif %} {{}}  footer",
             };
             _notificationLayoutServiceMock
                 .Setup(x => x.GetAsync(It.Is<IList<string>>(x => x.FirstOrDefault() == layoutId), It.IsAny<string>(), It.IsAny<bool>()))
