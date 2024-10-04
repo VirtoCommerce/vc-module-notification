@@ -28,27 +28,24 @@ namespace VirtoCommerce.NotificationsModule.Data.Services
         {
             var result = new NotificationMessageSearchResult();
 
-            using (var repository = _repositoryFactory())
+            using var repository = _repositoryFactory();
+            repository.DisableChangesTracking();
+
+            result.Results = new List<NotificationMessage>();
+            var query = BuildQuery(repository, criteria);
+            var sortInfos = BuildSortExpression(criteria);
+
+            result.TotalCount = await query.CountAsync();
+
+            if (criteria.Take > 0)
             {
-                //Optimize performance and CPU usage
-                repository.DisableChangesTracking();
+                var messageIds = await query.OrderBySortInfos(sortInfos).ThenBy(x => x.Id)
+                    .Select(x => x.Id)
+                    .Skip(criteria.Skip).Take(criteria.Take)
+                    .ToArrayAsync();
 
-                result.Results = new List<NotificationMessage>();
-                var query = BuildQuery(repository, criteria);
-                var sortInfos = BuildSortExpression(criteria);
-
-                result.TotalCount = await query.CountAsync();
-
-                if (criteria.Take > 0)
-                {
-                    var messageIds = await query.OrderBySortInfos(sortInfos).ThenBy(x => x.Id)
-                                                   .Select(x => x.Id)
-                                                   .Skip(criteria.Skip).Take(criteria.Take)
-                                                   .ToArrayAsync();
-
-                    var unorderedResults = await _messageService.GetNotificationsMessageByIds(messageIds);
-                    result.Results = unorderedResults.OrderBy(x => Array.IndexOf(messageIds, x.Id)).ToList();
-                }
+                var unorderedResults = await _messageService.GetNotificationsMessageByIds(messageIds);
+                result.Results = unorderedResults.OrderBy(x => Array.IndexOf(messageIds, x.Id)).ToList();
             }
 
             return result;
@@ -82,6 +79,13 @@ namespace VirtoCommerce.NotificationsModule.Data.Services
             {
                 query = query.Where(x =>
                     (x is EmailNotificationMessageEntity && ((EmailNotificationMessageEntity)x).To.Contains(criteria.Keyword))
+                    || (x is EmailNotificationMessageEntity && ((EmailNotificationMessageEntity)x).From.Contains(criteria.Keyword))
+                    || (x is EmailNotificationMessageEntity && ((EmailNotificationMessageEntity)x).Body.Contains(criteria.Keyword))
+                    || (x is EmailNotificationMessageEntity && ((EmailNotificationMessageEntity)x).Subject.Contains(criteria.Keyword))
+                    || (x is EmailNotificationMessageEntity && ((EmailNotificationMessageEntity)x).CC.Contains(criteria.Keyword))
+                    || (x is EmailNotificationMessageEntity && ((EmailNotificationMessageEntity)x).BCC.Contains(criteria.Keyword))
+                    || x.Status.Contains(criteria.Keyword)
+                    || x.LastSendError.Contains(criteria.Keyword)
                     || x.NotificationType.Contains(criteria.Keyword));
             }
 
