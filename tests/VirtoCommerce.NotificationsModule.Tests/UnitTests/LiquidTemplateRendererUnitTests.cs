@@ -139,7 +139,7 @@ namespace VirtoCommerce.NotificationsModule.Tests.UnitTests
             var layout = new NotificationLayout
             {
                 Id = layoutId,
-                Template = "header {{content}} {{}}footer",
+                Template = "header {{content}} footer",
             };
 
             _notificationLayoutServiceMock
