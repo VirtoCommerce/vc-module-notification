@@ -165,7 +165,7 @@ namespace VirtoCommerce.NotificationsModule.Tests.UnitTests
             var layout = new NotificationLayout
             {
                 Id = layoutId,
-                Template = "header {{content}} {{ if currency == 'en-US' }}en-US template{{ else }}other template{{ end }} {{}}  footer",
+                Template = "header {{content}} {{ if currency == 'en-US' }}en-US template{{ else }}other template{{ end }} footer",
             };
             _notificationLayoutServiceMock
                 .Setup(x => x.GetAsync(It.Is<IList<string>>(x => x.FirstOrDefault() == layoutId), It.IsAny<string>(), It.IsAny<bool>()))
@@ -181,7 +181,7 @@ namespace VirtoCommerce.NotificationsModule.Tests.UnitTests
             };
 
             var result = await _defaultTemplateRenderer.RenderAsync(context);
-            Assert.Equal("header   en-US content   en-US template   footer", result);
+            Assert.Equal("header   en-US content   en-US template footer", result);
         }
 
         [Fact]
@@ -191,7 +191,7 @@ namespace VirtoCommerce.NotificationsModule.Tests.UnitTests
             var layout = new NotificationLayout
             {
                 Id = layoutId,
-                Template = "header {{content}} {% if currency == 'en-US' %}en-US template{% else %}other template{% endif %} {{}}  footer",
+                Template = "header {{content}} {% if currency == 'en-US' %}en-US template{% else %}other template{% endif %} footer",
             };
             _notificationLayoutServiceMock
                 .Setup(x => x.GetAsync(It.Is<IList<string>>(x => x.FirstOrDefault() == layoutId), It.IsAny<string>(), It.IsAny<bool>()))
@@ -207,7 +207,7 @@ namespace VirtoCommerce.NotificationsModule.Tests.UnitTests
             };
 
             var result = await _liquidTemplateRenderer.RenderAsync(context);
-            Assert.Equal("header   en-US content   en-US template   footer", result);
+            Assert.Equal("header   en-US content   en-US template footer", result);
         }
 
         [Theory]
