@@ -151,7 +151,7 @@ namespace VirtoCommerce.NotificationsModule.Tests.UnitTests
             {
                 Template = content,
                 LayoutId = layoutId,
-                Model = new { Currency = "en-US" },
+                Model = new { Language = "en-US" },
             };
 
             var result = await _liquidTemplateRenderer.RenderAsync(context);
@@ -165,19 +165,19 @@ namespace VirtoCommerce.NotificationsModule.Tests.UnitTests
             var layout = new NotificationLayout
             {
                 Id = layoutId,
-                Template = "header {{content}} {{ if currency == 'en-US' }}en-US template{{ else }}other template{{ end }} footer",
+                Template = "header {{content}} {{ if language == 'en-US' }}en-US template{{ else }}other template{{ end }} footer",
             };
             _notificationLayoutServiceMock
                 .Setup(x => x.GetAsync(It.Is<IList<string>>(x => x.FirstOrDefault() == layoutId), It.IsAny<string>(), It.IsAny<bool>()))
                 .ReturnsAsync([layout]);
 
-            var content = @"{% capture content %} {% if currency == 'en-US' %} en-US content {% else %} other content {% endif %} {% endcapture %}";
+            var content = @"{% capture content %} {% if language == 'en-US' %} en-US content {% else %} other content {% endif %} {% endcapture %}";
             var context = new NotificationRenderContext
             {
                 Template = content,
                 LayoutId = layoutId,
                 UseLayouts = true,
-                Model = new { Currency = "en-US" },
+                Model = new { Language = "en-US" },
             };
 
             var result = await _defaultTemplateRenderer.RenderAsync(context);
