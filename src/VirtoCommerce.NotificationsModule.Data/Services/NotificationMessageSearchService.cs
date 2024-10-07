@@ -13,22 +13,17 @@ using VirtoCommerce.Platform.Data.Infrastructure;
 
 namespace VirtoCommerce.NotificationsModule.Data.Services
 {
-    public class NotificationMessageSearchService : INotificationMessageSearchService
+    public class NotificationMessageSearchService(
+        Func<INotificationRepository> repositoryFactory,
+        INotificationMessageService messageService)
+        : INotificationMessageSearchService
     {
-        private readonly Func<INotificationRepository> _repositoryFactory;
-        private readonly INotificationMessageService _messageService;
-
-        public NotificationMessageSearchService(Func<INotificationRepository> repositoryFactory, INotificationMessageService messageService)
-        {
-            _repositoryFactory = repositoryFactory;
-            _messageService = messageService;
-        }
-
-        public async Task<NotificationMessageSearchResult> SearchMessageAsync(NotificationMessageSearchCriteria criteria)
+        public async Task<NotificationMessageSearchResult> SearchMessageAsync(
+            NotificationMessageSearchCriteria criteria)
         {
             var result = new NotificationMessageSearchResult();
 
-            using var repository = _repositoryFactory();
+            using var repository = repositoryFactory();
             repository.DisableChangesTracking();
 
             result.Results = new List<NotificationMessage>();
@@ -44,14 +39,15 @@ namespace VirtoCommerce.NotificationsModule.Data.Services
                     .Skip(criteria.Skip).Take(criteria.Take)
                     .ToArrayAsync();
 
-                var unorderedResults = await _messageService.GetNotificationsMessageByIds(messageIds);
+                var unorderedResults = await messageService.GetNotificationsMessageByIds(messageIds);
                 result.Results = unorderedResults.OrderBy(x => Array.IndexOf(messageIds, x.Id)).ToList();
             }
 
             return result;
         }
 
-        protected virtual IQueryable<NotificationMessageEntity> BuildQuery(INotificationRepository repository, NotificationMessageSearchCriteria criteria)
+        protected virtual IQueryable<NotificationMessageEntity> BuildQuery(INotificationRepository repository,
+            NotificationMessageSearchCriteria criteria)
         {
             var query = repository.NotificationMessages;
 
@@ -82,12 +78,18 @@ namespace VirtoCommerce.NotificationsModule.Data.Services
                     x.NotificationType != null && x.NotificationType.Contains(criteria.Keyword) ||
                     x.LastSendError != null && x.LastSendError.Contains(criteria.Keyword) ||
                     (x is EmailNotificationMessageEntity && (
-                        ((EmailNotificationMessageEntity)x).To.Contains(criteria.Keyword) ||
-                        ((EmailNotificationMessageEntity)x).From.Contains(criteria.Keyword) ||
-                        ((EmailNotificationMessageEntity)x).Subject.Contains(criteria.Keyword) ||
-                        ((EmailNotificationMessageEntity)x).CC.Contains(criteria.Keyword) ||
-                        ((EmailNotificationMessageEntity)x).BCC.Contains(criteria.Keyword) ||
-                        ((EmailNotificationMessageEntity)x).Body.Contains(criteria.Keyword))));
+                        (((EmailNotificationMessageEntity)x).To != null &&
+                         ((EmailNotificationMessageEntity)x).To.Contains(criteria.Keyword)) ||
+                        (((EmailNotificationMessageEntity)x).From != null &&
+                         ((EmailNotificationMessageEntity)x).From.Contains(criteria.Keyword)) ||
+                        (((EmailNotificationMessageEntity)x).Subject != null &&
+                         ((EmailNotificationMessageEntity)x).Subject.Contains(criteria.Keyword)) ||
+                        (((EmailNotificationMessageEntity)x).CC != null &&
+                         ((EmailNotificationMessageEntity)x).CC.Contains(criteria.Keyword)) ||
+                        (((EmailNotificationMessageEntity)x).BCC != null &&
+                         ((EmailNotificationMessageEntity)x).BCC.Contains(criteria.Keyword)) ||
+                        (((EmailNotificationMessageEntity)x).Body != null &&
+                         ((EmailNotificationMessageEntity)x).Body.Contains(criteria.Keyword)))));
             }
 
             return query;
@@ -107,8 +109,8 @@ namespace VirtoCommerce.NotificationsModule.Data.Services
                     }
                 ];
             }
+
             return sortInfos;
         }
-
     }
 }
