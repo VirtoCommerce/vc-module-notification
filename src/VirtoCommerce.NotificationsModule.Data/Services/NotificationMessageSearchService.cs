@@ -78,16 +78,16 @@ namespace VirtoCommerce.NotificationsModule.Data.Services
             if (!string.IsNullOrEmpty(criteria.Keyword))
             {
                 query = query.Where(x =>
-                    (x is EmailNotificationMessageEntity &&
+                    x.Status.Contains(criteria.Keyword)
+                    || x.NotificationType.Contains(criteria.Keyword)
+                    || x.LastSendError.Contains(criteria.Keyword)
+                    || (x is EmailNotificationMessageEntity &&
                         (((EmailNotificationMessageEntity)x).To.Contains(criteria.Keyword)
                         || ((EmailNotificationMessageEntity)x).From.Contains(criteria.Keyword)
                         || ((EmailNotificationMessageEntity)x).Subject.Contains(criteria.Keyword)
                         || ((EmailNotificationMessageEntity)x).CC.Contains(criteria.Keyword)
                         || ((EmailNotificationMessageEntity)x).BCC.Contains(criteria.Keyword)
-                        || x.Status.Contains(criteria.Keyword)
-                        || x.NotificationType.Contains(criteria.Keyword))
-                        || x.LastSendError.Contains(criteria.Keyword)
-                        || ((EmailNotificationMessageEntity)x).Body.Contains(criteria.Keyword)));
+                        || ((EmailNotificationMessageEntity)x).Body.Contains(criteria.Keyword))));
             }
 
             return query;
