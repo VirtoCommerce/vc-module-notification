@@ -6,11 +6,11 @@ using MockQueryable;
 using Moq;
 using VirtoCommerce.NotificationsModule.Core.Model;
 using VirtoCommerce.NotificationsModule.Core.Model.Search;
-using VirtoCommerce.NotificationsModule.Core.Services;
 using VirtoCommerce.NotificationsModule.Data.Model;
 using VirtoCommerce.NotificationsModule.Data.Repositories;
 using VirtoCommerce.NotificationsModule.Data.Services;
 using VirtoCommerce.Platform.Core.Common;
+using VirtoCommerce.Platform.Core.Events;
 using Xunit;
 
 namespace VirtoCommerce.NotificationsModule.Tests.UnitTests;
@@ -18,22 +18,15 @@ namespace VirtoCommerce.NotificationsModule.Tests.UnitTests;
 public class NotificationMessageSearchServiceUnitTests
 {
     private readonly Mock<INotificationRepository> _repositoryMock;
-    private readonly Mock<INotificationMessageService> _messageServiceMock;
     private readonly NotificationMessageSearchService _searchService;
 
     public NotificationMessageSearchServiceUnitTests()
     {
-        _repositoryMock = new Mock<INotificationRepository>();
-        _messageServiceMock = new Mock<INotificationMessageService>();
-        _searchService = new NotificationMessageSearchService(() => _repositoryMock.Object, _messageServiceMock.Object);
+        AbstractTypeFactory<NotificationMessage>.RegisterType<EmailNotificationMessage>();
 
-        if (!AbstractTypeFactory<EmailNotificationMessage>
-                .AllTypeInfos
-                .SelectMany(x => x.AllSubclasses)
-                .Contains(typeof(EmailNotificationMessage)))
-        {
-            AbstractTypeFactory<EmailNotificationMessage>.RegisterType<EmailNotificationMessage>();
-        }
+        _repositoryMock = new Mock<INotificationRepository>();
+        var messageService = new NotificationMessageService(() => _repositoryMock.Object, new Mock<IEventPublisher>().Object);
+        _searchService = new NotificationMessageSearchService(() => _repositoryMock.Object, messageService);
     }
 
     [Fact]
@@ -42,14 +35,26 @@ public class NotificationMessageSearchServiceUnitTests
         // Arrange
         var tenantId = "tenantId1";
         var tenantType = "Store";
-        var searchCriteria = new NotificationMessageSearchCriteria { ObjectIds = new[] { tenantId }, ObjectTypes = new[] { tenantType }, Take = 10, Skip = 0 };
-        var notificationEntities = new List<NotificationMessageEntity> { new EmailNotificationMessageEntity { Id = Guid.NewGuid().ToString(), TenantId = tenantId, TenantType = tenantType } };
 
-        _repositoryMock.Setup(r => r.NotificationMessages).Returns(notificationEntities.AsQueryable().BuildMock());
-        _messageServiceMock.Setup(m => m.GetNotificationsMessageByIds(It.IsAny<string[]>()))
-            .ReturnsAsync(notificationEntities.Select(n =>
-                    n.ToModel(AbstractTypeFactory<EmailNotificationMessage>.TryCreateInstance(n.NotificationType)))
-                .ToArray());
+        var entities = new List<NotificationMessageEntity>
+        {
+            new EmailNotificationMessageEntity
+            {
+                Id = Guid.NewGuid().ToString(),
+                TenantId = tenantId,
+                TenantType = tenantType,
+            }
+        };
+
+        SetupRepository(entities);
+
+        var searchCriteria = new NotificationMessageSearchCriteria
+        {
+            ObjectIds = [tenantId],
+            ObjectTypes = [tenantType],
+            Skip = 0,
+            Take = 10,
+        };
 
         // Act
         var result = await _searchService.SearchMessageAsync(searchCriteria);
@@ -66,17 +71,21 @@ public class NotificationMessageSearchServiceUnitTests
     {
         // Arrange
         var notificationType = "RegistrationEmailNotification";
-        var searchCriteria =
-            new NotificationMessageSearchCriteria { NotificationType = notificationType, Take = 10, Skip = 0 };
 
-        var notificationEntities = new List<NotificationMessageEntity> { new EmailNotificationMessageEntity { Id = Guid.NewGuid().ToString(), NotificationType = notificationType } };
+        var entities = new List<NotificationMessageEntity>
+        {
+            new EmailNotificationMessageEntity { Id = Guid.NewGuid().ToString(), NotificationType = notificationType },
+        };
 
-        _repositoryMock.Setup(r => r.NotificationMessages)
-            .Returns(notificationEntities.AsQueryable().BuildMock());
-        _messageServiceMock.Setup(m => m.GetNotificationsMessageByIds(It.IsAny<string[]>()))
-            .ReturnsAsync(notificationEntities.Select(n =>
-                    n.ToModel(AbstractTypeFactory<EmailNotificationMessage>.TryCreateInstance(n.NotificationType)))
-                .ToArray());
+        SetupRepository(entities);
+
+
+        var searchCriteria = new NotificationMessageSearchCriteria
+        {
+            NotificationType = notificationType,
+            Skip = 0,
+            Take = 10,
+        };
         // Act
         var result = await _searchService.SearchMessageAsync(searchCriteria);
 
@@ -92,9 +101,7 @@ public class NotificationMessageSearchServiceUnitTests
     public async Task SearchMessageAsync_ShouldFilterByKeyword(string keyword)
     {
         // Arrange
-        var searchCriteria = new NotificationMessageSearchCriteria { Keyword = keyword, Take = 10, Skip = 0 };
-
-        var notificationEntities = new List<NotificationMessageEntity>
+        var entities = new List<NotificationMessageEntity>
         {
             new EmailNotificationMessageEntity
             {
@@ -105,16 +112,19 @@ public class NotificationMessageSearchServiceUnitTests
                 To = keyword,
                 CC = keyword,
                 BCC = keyword,
-                LastSendError = keyword
-            }
+                LastSendError = keyword,
+            },
         };
 
-        _repositoryMock.Setup(r => r.NotificationMessages)
-            .Returns(notificationEntities.AsQueryable().BuildMock());
-        _messageServiceMock.Setup(m => m.GetNotificationsMessageByIds(It.IsAny<string[]>()))
-            .ReturnsAsync(notificationEntities.Select(n =>
-                    n.ToModel(AbstractTypeFactory<EmailNotificationMessage>.TryCreateInstance(n.NotificationType)))
-                .ToArray());
+        SetupRepository(entities);
+
+        var searchCriteria = new NotificationMessageSearchCriteria
+        {
+            Keyword = keyword,
+            Skip = 0,
+            Take = 10,
+        };
+
         // Act
         var result = await _searchService.SearchMessageAsync(searchCriteria);
 
@@ -135,21 +145,21 @@ public class NotificationMessageSearchServiceUnitTests
     public async Task SearchMessageAsync_ShouldSortByCreatedDateDescending()
     {
         // Arrange
-        var searchCriteria = new NotificationMessageSearchCriteria
+        var entities = new List<NotificationMessageEntity>
         {
-            Sort = $"{nameof(NotificationMessageEntity.CreatedDate)}:desc", // Setting Sort instead of SortInfos
-            Take = 10,
-            Skip = 0
+            new EmailNotificationMessageEntity { Id = Guid.NewGuid().ToString(), CreatedDate = new DateTime(2023,1,1) },
+            new EmailNotificationMessageEntity { Id = Guid.NewGuid().ToString(), CreatedDate = new DateTime(2024,1,1) },
         };
 
-        var notificationEntities = new List<NotificationMessageEntity> { new EmailNotificationMessageEntity { Id = Guid.NewGuid().ToString(), CreatedDate = DateTime.UtcNow.AddDays(-1) }, new EmailNotificationMessageEntity { Id = Guid.NewGuid().ToString(), CreatedDate = DateTime.UtcNow } };
+        SetupRepository(entities);
 
-        _repositoryMock.Setup(r => r.NotificationMessages)
-            .Returns(notificationEntities.AsQueryable().BuildMock());
-        _messageServiceMock.Setup(m => m.GetNotificationsMessageByIds(It.IsAny<string[]>()))
-            .ReturnsAsync(notificationEntities.Select(n =>
-                    n.ToModel(AbstractTypeFactory<EmailNotificationMessage>.TryCreateInstance(n.NotificationType)))
-                .ToArray());
+        var searchCriteria = new NotificationMessageSearchCriteria
+        {
+            Sort = $"{nameof(NotificationMessageEntity.CreatedDate)}:desc",
+            Skip = 0,
+            Take = 10,
+        };
+
         // Act
         var result = await _searchService.SearchMessageAsync(searchCriteria);
 
@@ -163,13 +173,21 @@ public class NotificationMessageSearchServiceUnitTests
     public async Task SearchMessageAsync_ShouldRespectSkipAndTake()
     {
         // Arrange
-        var searchCriteria = new NotificationMessageSearchCriteria { Take = 1, Skip = 1 };
+        var entities = new List<NotificationMessageEntity>
+        {
+            new EmailNotificationMessageEntity { Id = "1" },
+            new EmailNotificationMessageEntity { Id = "2" },
+            new EmailNotificationMessageEntity { Id = "3" },
+        };
 
-        var notificationEntities = new List<NotificationMessageEntity> { new EmailNotificationMessageEntity { Id = Guid.NewGuid().ToString() }, new EmailNotificationMessageEntity { Id = Guid.NewGuid().ToString() } };
+        SetupRepository(entities);
 
-        _repositoryMock.Setup(r => r.NotificationMessages).Returns(notificationEntities.AsQueryable().BuildMock());
-        _messageServiceMock.Setup(m => m.GetNotificationsMessageByIds(It.IsAny<string[]>()))
-            .ReturnsAsync(notificationEntities.Skip(1).Take(1).Select(n => n.ToModel(AbstractTypeFactory<EmailNotificationMessage>.TryCreateInstance(n.NotificationType))).ToArray());
+        var searchCriteria = new NotificationMessageSearchCriteria
+        {
+            Sort = nameof(NotificationMessageEntity.Id),
+            Skip = 1,
+            Take = 1,
+        };
 
         // Act
         var result = await _searchService.SearchMessageAsync(searchCriteria);
@@ -177,6 +195,17 @@ public class NotificationMessageSearchServiceUnitTests
         // Assert
         Assert.NotNull(result);
         Assert.Single(result.Results);
-        Assert.Equal(notificationEntities[1].Id, result.Results.First().Id);
+        Assert.Equal("2", result.Results.Single().Id);
+    }
+
+    private void SetupRepository(List<NotificationMessageEntity> entities)
+    {
+        _repositoryMock
+            .Setup(x => x.NotificationMessages)
+            .Returns(entities.AsQueryable().BuildMock());
+
+        _repositoryMock
+            .Setup(x => x.GetMessagesByIdsAsync(It.IsAny<IList<string>>()))
+            .ReturnsAsync((IList<string> ids) => entities.Where(x => ids.Contains(x.Id)).ToList());
     }
 }
