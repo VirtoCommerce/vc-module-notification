@@ -21,32 +21,44 @@ namespace VirtoCommerce.NotificationsModule.Data.Services
         public async Task<NotificationMessageSearchResult> SearchMessageAsync(
             NotificationMessageSearchCriteria criteria)
         {
-            var result = new NotificationMessageSearchResult();
+            var result = AbstractTypeFactory<NotificationMessageSearchResult>.TryCreateInstance();
 
             using var repository = repositoryFactory();
             repository.DisableChangesTracking();
 
             result.Results = new List<NotificationMessage>();
             var query = BuildQuery(repository, criteria);
-            var sortInfos = BuildSortExpression(criteria);
-
-            result.TotalCount = await query.CountAsync();
+            var needExecuteCount = criteria.Take == 0;
 
             if (criteria.Take > 0)
             {
-                var messageIds = await query.OrderBySortInfos(sortInfos).ThenBy(x => x.Id)
+                var messageIds = await query
+                    .OrderBySortInfos(BuildSortExpression(criteria)).ThenBy(x => x.Id)
                     .Select(x => x.Id)
                     .Skip(criteria.Skip).Take(criteria.Take)
                     .ToArrayAsync();
 
                 var unorderedResults = await messageService.GetNotificationsMessageByIds(messageIds);
                 result.Results = unorderedResults.OrderBy(x => Array.IndexOf(messageIds, x.Id)).ToList();
+                result.TotalCount = messageIds.Length;
+
+                if (criteria.Skip > 0 || result.TotalCount == criteria.Take)
+                {
+                    needExecuteCount = true;
+                }
             }
+
+            if (needExecuteCount)
+            {
+                result.TotalCount = await query.CountAsync();
+            }
+
 
             return result;
         }
 
-        protected virtual IQueryable<NotificationMessageEntity> BuildQuery(INotificationRepository repository,
+        protected virtual IQueryable<NotificationMessageEntity> BuildQuery(
+            INotificationRepository repository,
             NotificationMessageSearchCriteria criteria)
         {
             var query = repository.NotificationMessages;
@@ -98,6 +110,7 @@ namespace VirtoCommerce.NotificationsModule.Data.Services
         protected virtual IList<SortInfo> BuildSortExpression(NotificationMessageSearchCriteria criteria)
         {
             var sortInfos = criteria.SortInfos;
+
             if (sortInfos.IsNullOrEmpty())
             {
                 sortInfos =

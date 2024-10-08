@@ -33,8 +33,8 @@ public class NotificationMessageSearchServiceUnitTests
     public async Task SearchMessageAsync_ShouldFilterByTenantIdAndType()
     {
         // Arrange
-        var tenantId = "tenantId1";
-        var tenantType = "Store";
+        const string tenantId = "tenantId1";
+        const string tenantType = "Store";
 
         var entities = new List<NotificationMessageEntity>
         {
@@ -49,7 +49,7 @@ public class NotificationMessageSearchServiceUnitTests
                 Id = Guid.NewGuid().ToString(),
                 TenantId = Guid.NewGuid().ToString(),
                 TenantType = Guid.NewGuid().ToString(),
-            }
+            },
         };
 
         SetupRepository(entities);
@@ -67,29 +67,31 @@ public class NotificationMessageSearchServiceUnitTests
 
         // Assert
         Assert.NotNull(result);
+        Assert.Equal(1, result.TotalCount);
         Assert.Single(result.Results);
-        Assert.Equal(tenantId, result.Results.First().TenantIdentity.Id);
-        Assert.Equal(tenantType, result.Results.First().TenantIdentity.Type);
+        var firstResult = result.Results.First();
+        Assert.Equal(tenantId, firstResult.TenantIdentity.Id);
+        Assert.Equal(tenantType, firstResult.TenantIdentity.Type);
     }
 
     [Fact]
     public async Task SearchMessageAsync_ShouldFilterByNotificationType()
     {
         // Arrange
-        var notificationType = "RegistrationEmailNotification";
+        const string notificationType = "RegistrationEmailNotification";
 
         var entities = new List<NotificationMessageEntity>
         {
             new EmailNotificationMessageEntity {
                 Id = Guid.NewGuid().ToString(),
-                NotificationType = notificationType
+                NotificationType = notificationType,
             },
             new EmailNotificationMessageEntity
             {
                 Id = Guid.NewGuid().ToString(),
                 TenantId = Guid.NewGuid().ToString(),
                 TenantType = Guid.NewGuid().ToString(),
-            }
+            },
         };
 
         SetupRepository(entities);
@@ -106,29 +108,32 @@ public class NotificationMessageSearchServiceUnitTests
 
         // Assert
         Assert.NotNull(result);
+        Assert.Equal(1, result.TotalCount);
         Assert.Single(result.Results);
-        Assert.Equal(notificationType, result.Results.First().NotificationType);
+        var firstResult = result.Results.First();
+        Assert.Equal(notificationType, firstResult.NotificationType);
     }
 
     [Theory]
-    [InlineData("keyword", nameof(EmailNotificationMessageEntity.Subject))]
-    [InlineData("keyword", nameof(EmailNotificationMessageEntity.Body))]
-    [InlineData("keyword", nameof(EmailNotificationMessageEntity.From))]
-    [InlineData("keyword", nameof(EmailNotificationMessageEntity.To))]
-    [InlineData("keyword", nameof(EmailNotificationMessageEntity.CC))]
-    [InlineData("keyword", nameof(EmailNotificationMessageEntity.BCC))]
-    [InlineData("keyword", nameof(EmailNotificationMessageEntity.LastSendError))]
-    public async Task SearchMessageAsync_ShouldFilterByKeyword(string keyword, string field)
+    [InlineData(nameof(EmailNotificationMessageEntity.Subject))]
+    [InlineData(nameof(EmailNotificationMessageEntity.Body))]
+    [InlineData(nameof(EmailNotificationMessageEntity.From))]
+    [InlineData(nameof(EmailNotificationMessageEntity.To))]
+    [InlineData(nameof(EmailNotificationMessageEntity.CC))]
+    [InlineData(nameof(EmailNotificationMessageEntity.BCC))]
+    [InlineData(nameof(EmailNotificationMessageEntity.LastSendError))]
+    public async Task SearchMessageAsync_ShouldFilterByKeyword(string propertyName)
     {
         // Arrange
-        var entity = new EmailNotificationMessageEntity() { Id = Guid.NewGuid().ToString() };
-        SetProperty(entity, field, keyword);
+        var keyword = Guid.NewGuid().ToString();
+        var entity = new EmailNotificationMessageEntity { Id = Guid.NewGuid().ToString() };
+        SetProperty(entity, propertyName, $"start_{keyword}_end");
 
         var entities = new List<NotificationMessageEntity>
         {
             entity,
-            new EmailNotificationMessageEntity() { Id = Guid.NewGuid().ToString() },
-            new EmailNotificationMessageEntity() { Id = Guid.NewGuid().ToString() },
+            new EmailNotificationMessageEntity { Id = Guid.NewGuid().ToString() },
+            new EmailNotificationMessageEntity { Id = Guid.NewGuid().ToString() },
         };
 
         SetupRepository(entities);
@@ -144,11 +149,13 @@ public class NotificationMessageSearchServiceUnitTests
         var result = await _searchService.SearchMessageAsync(searchCriteria);
 
         // Assert
+        Assert.Equal(1, result.TotalCount);
+        Assert.Single(result.Results);
         var firstResult = (EmailNotificationMessage)result.Results.First();
         Assert.NotNull(result);
         Assert.Single(result.Results);
 
-        var fieldValue = firstResult.GetType().GetProperty(field)?.GetValue(firstResult, null);
+        var fieldValue = firstResult.GetType().GetProperty(propertyName)?.GetValue(firstResult, null);
         switch (fieldValue)
         {
             case string stringValue:
@@ -158,7 +165,7 @@ public class NotificationMessageSearchServiceUnitTests
                 Assert.Contains(stringArray, item => item.Contains(keyword));
                 break;
             default:
-                Assert.Fail($"Unsupported property type for field: {field}");
+                Assert.Fail($"Unsupported property type for field: {propertyName}");
                 break;
         }
     }
@@ -237,9 +244,10 @@ public class NotificationMessageSearchServiceUnitTests
             .ReturnsAsync((IList<string> ids) => entities.Where(x => ids.Contains(x.Id)).ToList());
     }
 
-    private void SetProperty(object entity, string propertyName, object value)
+    private static void SetProperty(object entity, string propertyName, object value)
     {
         var propertyInfo = entity.GetType().GetProperty(propertyName);
+
         if (propertyInfo != null && propertyInfo.CanWrite)
         {
             propertyInfo.SetValue(entity, value);
