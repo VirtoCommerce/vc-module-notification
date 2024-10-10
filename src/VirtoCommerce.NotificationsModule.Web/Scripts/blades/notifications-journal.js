@@ -30,6 +30,8 @@ angular.module('virtoCommerce.notificationsModule')
             }
 
             blade.refresh = function () {
+                blade.isLoading = true;
+
                 var searchCriteria = getSearchCriteria();
                 notifications.getNotificationJournalList(searchCriteria, function (data) {
                     blade.currentEntities = data.results;

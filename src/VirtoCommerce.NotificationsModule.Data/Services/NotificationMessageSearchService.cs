@@ -13,48 +13,53 @@ using VirtoCommerce.Platform.Data.Infrastructure;
 
 namespace VirtoCommerce.NotificationsModule.Data.Services
 {
-    public class NotificationMessageSearchService : INotificationMessageSearchService
+    public class NotificationMessageSearchService(
+        Func<INotificationRepository> repositoryFactory,
+        INotificationMessageService messageService)
+        : INotificationMessageSearchService
     {
-        private readonly Func<INotificationRepository> _repositoryFactory;
-        private readonly INotificationMessageService _messageService;
-
-        public NotificationMessageSearchService(Func<INotificationRepository> repositoryFactory, INotificationMessageService messageService)
+        public async Task<NotificationMessageSearchResult> SearchMessageAsync(
+            NotificationMessageSearchCriteria criteria)
         {
-            _repositoryFactory = repositoryFactory;
-            _messageService = messageService;
-        }
+            var result = AbstractTypeFactory<NotificationMessageSearchResult>.TryCreateInstance();
 
-        public async Task<NotificationMessageSearchResult> SearchMessageAsync(NotificationMessageSearchCriteria criteria)
-        {
-            var result = new NotificationMessageSearchResult();
+            using var repository = repositoryFactory();
+            repository.DisableChangesTracking();
 
-            using (var repository = _repositoryFactory())
+            result.Results = new List<NotificationMessage>();
+            var query = BuildQuery(repository, criteria);
+            var needExecuteCount = criteria.Take == 0;
+
+            if (criteria.Take > 0)
             {
-                //Optimize performance and CPU usage
-                repository.DisableChangesTracking();
+                var messageIds = await query
+                    .OrderBySortInfos(BuildSortExpression(criteria)).ThenBy(x => x.Id)
+                    .Select(x => x.Id)
+                    .Skip(criteria.Skip).Take(criteria.Take)
+                    .ToArrayAsync();
 
-                result.Results = new List<NotificationMessage>();
-                var query = BuildQuery(repository, criteria);
-                var sortInfos = BuildSortExpression(criteria);
+                var unorderedResults = await messageService.GetNotificationsMessageByIds(messageIds);
+                result.Results = unorderedResults.OrderBy(x => Array.IndexOf(messageIds, x.Id)).ToList();
+                result.TotalCount = messageIds.Length;
 
-                result.TotalCount = await query.CountAsync();
-
-                if (criteria.Take > 0)
+                if (criteria.Skip > 0 || result.TotalCount == criteria.Take)
                 {
-                    var messageIds = await query.OrderBySortInfos(sortInfos).ThenBy(x => x.Id)
-                                                   .Select(x => x.Id)
-                                                   .Skip(criteria.Skip).Take(criteria.Take)
-                                                   .ToArrayAsync();
-
-                    var unorderedResults = await _messageService.GetNotificationsMessageByIds(messageIds);
-                    result.Results = unorderedResults.OrderBy(x => Array.IndexOf(messageIds, x.Id)).ToList();
+                    needExecuteCount = true;
                 }
             }
+
+            if (needExecuteCount)
+            {
+                result.TotalCount = await query.CountAsync();
+            }
+
 
             return result;
         }
 
-        protected virtual IQueryable<NotificationMessageEntity> BuildQuery(INotificationRepository repository, NotificationMessageSearchCriteria criteria)
+        protected virtual IQueryable<NotificationMessageEntity> BuildQuery(
+            INotificationRepository repository,
+            NotificationMessageSearchCriteria criteria)
         {
             var query = repository.NotificationMessages;
 
@@ -81,8 +86,22 @@ namespace VirtoCommerce.NotificationsModule.Data.Services
             if (!string.IsNullOrEmpty(criteria.Keyword))
             {
                 query = query.Where(x =>
-                    (x is EmailNotificationMessageEntity && ((EmailNotificationMessageEntity)x).To.Contains(criteria.Keyword))
-                    || x.NotificationType.Contains(criteria.Keyword));
+                    x.Status != null && x.Status.Contains(criteria.Keyword) ||
+                    x.NotificationType != null && x.NotificationType.Contains(criteria.Keyword) ||
+                    x.LastSendError != null && x.LastSendError.Contains(criteria.Keyword) ||
+                    (x is EmailNotificationMessageEntity && (
+                        (((EmailNotificationMessageEntity)x).To != null &&
+                         ((EmailNotificationMessageEntity)x).To.Contains(criteria.Keyword)) ||
+                        (((EmailNotificationMessageEntity)x).From != null &&
+                         ((EmailNotificationMessageEntity)x).From.Contains(criteria.Keyword)) ||
+                        (((EmailNotificationMessageEntity)x).Subject != null &&
+                         ((EmailNotificationMessageEntity)x).Subject.Contains(criteria.Keyword)) ||
+                        (((EmailNotificationMessageEntity)x).CC != null &&
+                         ((EmailNotificationMessageEntity)x).CC.Contains(criteria.Keyword)) ||
+                        (((EmailNotificationMessageEntity)x).BCC != null &&
+                         ((EmailNotificationMessageEntity)x).BCC.Contains(criteria.Keyword)) ||
+                        (((EmailNotificationMessageEntity)x).Body != null &&
+                         ((EmailNotificationMessageEntity)x).Body.Contains(criteria.Keyword)))));
             }
 
             return query;
@@ -91,19 +110,20 @@ namespace VirtoCommerce.NotificationsModule.Data.Services
         protected virtual IList<SortInfo> BuildSortExpression(NotificationMessageSearchCriteria criteria)
         {
             var sortInfos = criteria.SortInfos;
+
             if (sortInfos.IsNullOrEmpty())
             {
-                sortInfos = new[]
-                {
+                sortInfos =
+                [
                     new SortInfo
                     {
                         SortColumn = nameof(NotificationMessageEntity.CreatedDate),
                         SortDirection = SortDirection.Descending
                     }
-                };
+                ];
             }
+
             return sortInfos;
         }
-
     }
 }
