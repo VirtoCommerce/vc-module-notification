@@ -1,0 +1,316 @@
+{
+  "notifications": {
+    "blades": {
+      "notification-journal-details": {
+        "title": "通知の詳細",
+        "subtitle": "{{ displayName }}: 通知の種類",
+        "labels": {
+          "id": "メッセージID:",
+          "notification-info": "通知情報",
+          "display-name": "表示名",
+          "source": "ソース",
+          "sending-gateway": "送信ゲートウェイ",
+          "active": "アクティブ",
+          "not-active": "非アクティブ",
+          "created": "作成日時:",
+          "sent-success": "正常に送信されました",
+          "not-sent": "未送信",
+          "sent": "送信済み",
+          "sent-date": "送信日",
+          "sender": "送信者:",
+          "recipient": "受信者:",
+          "bcc": "BCC",
+          "cc": "CC",
+          "sending-attempts-count": "送信試行回数",
+          "last-fail-attempt-date": "最後の失敗した試行日",
+          "last-fail-attempt-message": "エラー:",
+          "subject": "件名:",
+          "body": "本文:"
+        }
+      },
+      "notifications-edit-template": {
+        "title": "{{ displayName }}: テンプレート",
+        "subtitle": "通知テンプレートを編集",
+        "title-new": "{{ displayName }}: テンプレートを作成",
+        "labels": {
+          "note": "これは通知オプションのリストです。このコードをコピーして、テンプレートにオプション値を挿入します",
+          "parameter-name": "オプション名",
+          "parameter-description": "オプションの説明",
+          "paremeter-code": "テンプレート内のオプションコード（このコードをコピーして、テンプレートの任意の部分に挿入します）",
+          "language": "言語",
+          "blank-note": "このフィールドを空白のままにして、デフォルト値を使用します",
+          "from": "送信者",
+          "to": "受信者",
+          "cc": "CC",
+          "bcc": "BCC",
+          "subject": "件名",
+          "body": "本文",
+          "template": "テンプレート",
+          "sample": "サンプルデータJSON",
+          "preview-data": "プレビューデータ",
+          "preview-data-comment": "テンプレートのコンテキストデータ（JSON）",
+          "note-caption": "重要!",
+          "note-text": "このテンプレートには事前定義されたソースがあります。通知を保存すると、このバージョンが事前定義されたものに置き換わります。元のテンプレートを復元するには、適切なボタンを使用します",
+          "layout": "レイアウト",
+          "layout-blank-note": "このフィールドを空白のままにして、選択したデフォルトレイアウトを使用します"
+        },
+        "descriptions": {
+          "to": "メール受信者のアドレス",
+          "cc": "CC受信者のアドレス",
+          "bcc": "BCC受信者のアドレス",
+          "from": "送信者のアドレス",
+          "subject": "メール通知の件名",
+          "sample": "完全なプレビューでサンプル通知オブジェクトとして使用されます"
+        },
+        "placeholders": {
+          "language": "選択してください...",
+          "recipient": "受信者のアドレス",
+          "email-addresses-note": "アドレスを入力してください",
+          "subject": "メールの件名を入力してください",
+          "layout": "選択してください..."
+        }
+      },
+      "notification-templates-list": {
+        "title": "通知テンプレート",
+        "labels": {
+          "subject": "件名",
+          "body": "本文",
+          "language": "言語",
+          "created": "作成日",
+          "modified": "修正日",
+          "predefined": "事前定義",
+          "edited": "編集済み"
+        }
+      },
+      "notification-layouts-list": {
+        "title": "通知レイアウト",
+        "subtitle": "通知レイアウトを管理",
+        "labels": {
+          "no-data": "登録されたレイアウトはありません",
+          "name": "名前",
+          "template": "テンプレート",
+          "default": "デフォルト"
+        }
+      },
+      "notification-layout-details": {
+        "title-new": "通知レイアウトを作成",
+        "subtitle": "レイアウトを編集",
+        "labels": {
+          "name": "名前",
+          "template": "テンプレート",
+          "default": "デフォルト"
+        },
+        "placeholders": {
+          "name": "名前を入力してください..."
+        }
+      },
+      "notifications-test-resolve": {
+        "title": "通知のプレビュー",
+        "subtitle": "{{type}}のテストデータを入力してください",
+        "labels": {
+          "test": "テスト",
+          "enter-test-data": "テストデータを入力してください"
+        }
+      },
+      "notifications-test-send": {
+        "title": "通知を送信",
+        "subtitle": "{{type}}のテストデータを入力してください",
+        "labels": {
+          "send": "送信",
+          "enter-test-data": "テストデータを入力してください"
+        }
+      },
+      "notifications-journal": {
+        "title": "通知活動フィード",
+        "subtitle": "このセクションには、システムに記録されたすべての通知のリストが含まれています",
+        "subtitle-search": "\"{{keyword}}\"の検索結果",
+        "labels": {
+          "display-name": "表示名",
+          "notification": "通知",
+          "created": "作成日",
+          "status": "ステータス",
+          "recipient": "受信者",
+          "sent-date": "送信日",
+          "channel": "チャネル",
+          "error": "エラー",
+          "processing": "処理中",
+          "success": "成功",
+          "no-notifications": "まだ通知はありません",
+          "unnamed-filter": "名前のないフィルター",
+          "filter-new": "<strong>新しいフィルターを追加</strong>",
+          "filter-only-pending": "保留中のみ",
+          "filter-with-errors": "エラーあり",
+          "detail": "詳細を表示",
+          "sendAttemptCount": "送信試行回数",
+          "resend-messages": "メッセージを再送信"
+        },
+        "placeholders": {
+          "select-filter": "フィルターを選択"
+        }
+      },
+      "notifications-list": {
+        "title": "通知リスト",
+        "subtitle": "このセクションには、システムに登録されたすべての通知のリストが含まれています",
+        "labels": {
+          "no-notifications": "まだ登録された通知はありません",
+          "display-name": "表示名",
+          "type": "タイプ",
+          "active": "アクティブ"
+        }
+      },
+      "notification-details": {
+        "title": "{{ displayName }}: 詳細",
+        "labels": {
+          "is-active": "アクティブ",
+          "name": "通知名",
+          "number": "電話番号"
+        },
+        "placeholders": {
+          "number": "テキストメッセージの電話番号"
+        },
+        "descriptions": {
+          "number": "テキストメッセージ（SMS）通知を受け取る電話番号"
+        }
+      },
+      "filter-detail": {
+        "subtitle": "フィルターを編集",
+        "new-title": "新しいフィルター",
+        "new-subtitle": "新しいフィルターを作成",
+        "labels": {
+          "criteria": "検索フレーズ",
+          "name": "フィルター名"
+        },
+        "placeholders": {
+          "criteria": "検索フレーズを入力してください",
+          "name": "このフィルターに名前を付けてください"
+        }
+      },
+      "notifications-template-render": {
+        "title": "プレビューフォーム",
+        "subtitle": "このフォームはテンプレートをレンダリングします"
+      }
+    },
+    "widgets": {
+      "notificationsTemplatesWidget": {
+        "title": "テンプレート",
+        "blade-title": "{{displayName}}: テンプレートリスト",
+        "blade-subtitle": "通知テンプレートを管理"
+      },
+      "notificationsLogWidget": {
+        "title": "通知ログ",
+        "blade-title": "通知に関するデータを保存するログ",
+        "blade-subtitle": "通知ログを表示"
+      },
+      "notificationsAttachmentsWidget": {
+        "title": "添付ファイル（近日公開）",
+        "blade-title": "添付ファイル",
+        "blade-subtitle": "添付ファイル"
+      }
+    },
+    "dialogs": {
+      "unknown-kind": {
+        "title": "エラー",
+        "message": "'{{type}}'通知を開けません。サイト管理者にお問い合わせください"
+      },
+      "notification-details-save": {
+        "title": "変更を保存",
+        "message": "通知テンプレートが変更されました。変更を保存しますか？"
+      },
+      "notification-template-delete": {
+        "title": "削除を確認",
+        "message": "選択したテンプレートを削除してもよろしいですか？"
+      },
+      "notification-template-delete-notification": {
+        "title": "テンプレートを削除できません",
+        "message": "デフォルトまたは事前定義されたテンプレートを削除することはできません。そのようなテンプレートの選択を解除して、再試行してください"
+      },
+      "notification-template-reset-confirmation": {
+        "title": "テンプレートのリセットを確認",
+        "warning": "警告: この変更は永久的であり、元に戻すことはできません。この変更を適用すると、データが失われる可能性があります",
+        "message": "{{count}} テンプレートが以下の言語で削除されます:",
+        "instruction": "削除するには「yes」と入力してください:"
+      },
+      "notification-share-preview-confirmation": {
+        "title": "通知プレビューの共有を確認",
+        "message": "このプレビュー通知を指定されたメールアドレスに送信しますか？"
+      },
+      "share-success": {
+        "title": "プレビューを共有",
+        "message": "通知プレビューを含むテストメッセージが正常に送信されました"
+      },
+      "share-error": {
+        "title": "エラー"
+      },
+      "notification-layout-delete": {
+        "title": "削除を確認",
+        "message": "選択したレイアウトを削除してもよろしいですか？"
+      }
+    },
+    "commands": {
+      "restore": "復元",
+      "share-preview": "共有"
+    }
+  },
+  "notificationTypes": {
+    "UnregisteredNotification": {
+      "displayName": "未登録の通知",
+      "description": "元の通知タイプ: {{type}}"
+    },
+    "RegistrationEmailNotification": {
+      "displayName": "サインアップ通知",
+      "description": "顧客は登録後にメール通知を受け取ります"
+    },
+    "ResetPasswordEmailNotification": {
+      "displayName": "パスワードリセット通知",
+      "description": "顧客はパスワードリセット要求時にメール通知を受け取ります"
+    },
+    "TwoFactorEmailNotification": {
+      "displayName": "二要素認証",
+      "description": "この通知には二要素認証用のセキュリティトークンが含まれています"
+    },
+    "TwoFactorSmsNotification": {
+      "displayName": "二要素認証",
+      "description": "この通知には二要素認証用のセキュリティトークンが含まれています"
+    },
+    "ConfirmationEmailNotification": {
+      "displayName": "メール確認",
+      "description": "このメール通知は新しく登録されたユーザーのメールを確認します"
+    },
+    "ChangePhoneNumberSmsNotification": {
+      "displayName": "電話番号変更通知",
+      "description": "顧客は電話番号が変更されたときにテキストメッセージを受け取ります"
+    },
+    "ResetPasswordSmsNotification": {
+      "displayName": "パスワードリセットテキスト通知",
+      "description": "顧客はパスワードがリセットされたときにテキストメッセージを受け取ります"
+    },
+    "RegistrationInvitationEmailNotification": {
+      "displayName": "サインアップ招待通知（組織あり）",
+      "description": "顧客は組織にサインアップするための招待を受け取ったときにメール通知を受け取ります"
+    },
+    "RegistrationInvitationCustomerEmailNotification": {
+      "displayName": "サインアップ招待通知（顧客）",
+      "description": "顧客は組織なしでサインアップするための招待を受け取ったときにメール通知を受け取ります"
+    },
+    "RemindUserNameEmailNotification": {
+      "displayName": "ユーザー名を忘れた通知",
+      "description": "顧客は「ユーザー名を忘れた」をクリックした後にメール通知を受け取ります"
+    }
+  },
+  "permissions": {
+    "notifications:read": "通知データを読む",
+    "notifications:create": "通知データを作成",
+    "notifications:update": "通知データを更新",
+    "notifications:delete": "通知データを削除",
+    "notifications:access": "通知データにアクセス",
+    "notifications:export": "通知データをエクスポート",
+    "notifications:import": "通知データをインポート",
+    "notifications:templates:read": "テンプレートデータを読む",
+    "notifications:templates:create": "テンプレートデータを作成"
+  },
+  "module": {
+    "VirtoCommerce.Notifications": {
+      "description": "通知をエクスポートまたはインポート"
+    }
+  }
+}

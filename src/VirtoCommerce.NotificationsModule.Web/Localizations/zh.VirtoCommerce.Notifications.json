@@ -1,0 +1,316 @@
+{
+  "notifications": {
+    "blades": {
+      "notification-journal-details": {
+        "title": "通知详情",
+        "subtitle": "{{ displayName }}: 通知类型",
+        "labels": {
+          "id": "消息ID:",
+          "notification-info": "通知信息",
+          "display-name": "显示名称",
+          "source": "来源",
+          "sending-gateway": "发送网关",
+          "active": "激活",
+          "not-active": "未激活",
+          "created": "创建于:",
+          "sent-success": "发送成功",
+          "not-sent": "未发送",
+          "sent": "已发送",
+          "sent-date": "发送日期",
+          "sender": "发件人:",
+          "recipient": "收件人:",
+          "bcc": "密件抄送",
+          "cc": "抄送",
+          "sending-attempts-count": "发送尝试次数",
+          "last-fail-attempt-date": "最后失败尝试日期",
+          "last-fail-attempt-message": "错误:",
+          "subject": "主题:",
+          "body": "正文:"
+        }
+      },
+      "notifications-edit-template": {
+        "title": "{{ displayName }}: 模板",
+        "subtitle": "编辑通知模板",
+        "title-new": "{{ displayName }}: 创建模板",
+        "labels": {
+          "note": "这是通知选项的列表。复制并粘贴此代码以将选项值插入到您的模板中",
+          "parameter-name": "选项名称",
+          "parameter-description": "选项描述",
+          "paremeter-code": "模板中的选项代码（复制此代码并插入到模板的任何部分）",
+          "language": "语言",
+          "blank-note": "将此字段留空以使用默认值",
+          "from": "发件人",
+          "to": "收件人",
+          "cc": "抄送",
+          "bcc": "密件抄送",
+          "subject": "主题",
+          "body": "正文",
+          "template": "模板",
+          "sample": "示例数据JSON",
+          "preview-data": "预览数据",
+          "preview-data-comment": "模板上下文数据（JSON）",
+          "note-caption": "重要!",
+          "note-text": "此模板具有预定义的源。一旦您保存通知，此版本将替换预定义的版本。您可以使用适当的按钮恢复原始模板",
+          "layout": "布局",
+          "layout-blank-note": "将此字段留空以使用所选的默认布局"
+        },
+        "descriptions": {
+          "to": "电子邮件收件人地址",
+          "cc": "抄送收件人地址",
+          "bcc": "密件抄送收件人地址",
+          "from": "发件人地址",
+          "subject": "电子邮件通知的主题",
+          "sample": "在完整预览中用作示例通知对象"
+        },
+        "placeholders": {
+          "language": "请选择...",
+          "recipient": "收件人地址",
+          "email-addresses-note": "请输入地址",
+          "subject": "请输入电子邮件主题",
+          "layout": "请选择..."
+        }
+      },
+      "notification-templates-list": {
+        "title": "通知模板",
+        "labels": {
+          "subject": "主题",
+          "body": "正文",
+          "language": "语言",
+          "created": "创建于",
+          "modified": "修改于",
+          "predefined": "预定义",
+          "edited": "已编辑"
+        }
+      },
+      "notification-layouts-list": {
+        "title": "通知布局",
+        "subtitle": "管理通知布局",
+        "labels": {
+          "no-data": "尚未注册布局",
+          "name": "名称",
+          "template": "模板",
+          "default": "默认"
+        }
+      },
+      "notification-layout-details": {
+        "title-new": "创建通知布局",
+        "subtitle": "编辑布局",
+        "labels": {
+          "name": "名称",
+          "template": "模板",
+          "default": "默认"
+        },
+        "placeholders": {
+          "name": "请输入名称..."
+        }
+      },
+      "notifications-test-resolve": {
+        "title": "通知预览",
+        "subtitle": "输入{{type}}的测试数据",
+        "labels": {
+          "test": "测试",
+          "enter-test-data": "输入测试数据"
+        }
+      },
+      "notifications-test-send": {
+        "title": "发送通知",
+        "subtitle": "输入{{type}}的测试数据",
+        "labels": {
+          "send": "发送",
+          "enter-test-data": "输入测试数据"
+        }
+      },
+      "notifications-journal": {
+        "title": "通知活动记录",
+        "subtitle": "此部分包含系统中记录的所有通知列表",
+        "subtitle-search": "搜索结果为 \"{{keyword}}\"",
+        "labels": {
+          "display-name": "显示名称",
+          "notification": "通知",
+          "created": "创建于",
+          "status": "状态",
+          "recipient": "收件人",
+          "sent-date": "发送日期",
+          "channel": "渠道",
+          "error": "错误",
+          "processing": "处理中",
+          "success": "成功",
+          "no-notifications": "尚无通知",
+          "unnamed-filter": "未命名过滤器",
+          "filter-new": "<strong>添加新过滤器</strong>",
+          "filter-only-pending": "仅待处理",
+          "filter-with-errors": "有错误",
+          "detail": "显示详细信息",
+          "sendAttemptCount": "发送尝试次数",
+          "resend-messages": "重新发送消息"
+        },
+        "placeholders": {
+          "select-filter": "选择过滤器"
+        }
+      },
+      "notifications-list": {
+        "title": "通知列表",
+        "subtitle": "此部分包含系统中注册的所有通知列表",
+        "labels": {
+          "no-notifications": "尚无注册通知",
+          "display-name": "显示名称",
+          "type": "类型",
+          "active": "激活"
+        }
+      },
+      "notification-details": {
+        "title": "{{ displayName }}: 详情",
+        "labels": {
+          "is-active": "激活",
+          "name": "通知名称",
+          "number": "电话号码"
+        },
+        "placeholders": {
+          "number": "短信电话号码"
+        },
+        "descriptions": {
+          "number": "将接收短信通知的电话号码"
+        }
+      },
+      "filter-detail": {
+        "subtitle": "编辑过滤器",
+        "new-title": "新过滤器",
+        "new-subtitle": "创建新过滤器",
+        "labels": {
+          "criteria": "搜索短语",
+          "name": "过滤器名称"
+        },
+        "placeholders": {
+          "criteria": "请输入搜索短语",
+          "name": "请为此过滤器命名"
+        }
+      },
+      "notifications-template-render": {
+        "title": "预览表单",
+        "subtitle": "此表单呈现模板"
+      }
+    },
+    "widgets": {
+      "notificationsTemplatesWidget": {
+        "title": "模板",
+        "blade-title": "{{displayName}}: 模板列表",
+        "blade-subtitle": "管理通知模板"
+      },
+      "notificationsLogWidget": {
+        "title": "通知日志",
+        "blade-title": "存储通知数据的日志",
+        "blade-subtitle": "查看通知日志"
+      },
+      "notificationsAttachmentsWidget": {
+        "title": "附件（即将推出）",
+        "blade-title": "附件",
+        "blade-subtitle": "附件"
+      }
+    },
+    "dialogs": {
+      "unknown-kind": {
+        "title": "错误",
+        "message": "无法打开'{{type}}'通知。请联系您的网站管理员以获取信息"
+      },
+      "notification-details-save": {
+        "title": "保存更改",
+        "message": "通知模板已被修改。您要保存更改吗？"
+      },
+      "notification-template-delete": {
+        "title": "确认删除",
+        "message": "您确定要删除选定的模板吗？"
+      },
+      "notification-template-delete-notification": {
+        "title": "无法删除模板",
+        "message": "您无法删除默认或预定义的模板。请取消选择此类模板并重试"
+      },
+      "notification-template-reset-confirmation": {
+        "title": "确认重置模板",
+        "warning": "警告: 此更改是永久性的，无法撤消。应用此更改可能会导致数据丢失",
+        "message": "{{count}} 个模板将被删除，适用于以下语言:",
+        "instruction": "输入yes以删除:"
+      },
+      "notification-share-preview-confirmation": {
+        "title": "确认共享通知预览",
+        "message": "您想将此预览通知发送到指定的电子邮件地址吗？"
+      },
+      "share-success": {
+        "title": "共享预览",
+        "message": "包含通知预览的测试消息已成功发送"
+      },
+      "share-error": {
+        "title": "错误"
+      },
+      "notification-layout-delete": {
+        "title": "确认删除",
+        "message": "您确定要删除选定的布局吗？"
+      }
+    },
+    "commands": {
+      "restore": "恢复",
+      "share-preview": "共享"
+    }
+  },
+  "notificationTypes": {
+    "UnregisteredNotification": {
+      "displayName": "未注册的通知",
+      "description": "原始通知类型: {{type}}"
+    },
+    "RegistrationEmailNotification": {
+      "displayName": "注册通知",
+      "description": "客户注册后会收到电子邮件通知"
+    },
+    "ResetPasswordEmailNotification": {
+      "displayName": "重置密码通知",
+      "description": "客户在请求重置密码时会收到电子邮件通知"
+    },
+    "TwoFactorEmailNotification": {
+      "displayName": "双因素认证",
+      "description": "此通知包含用于双因素认证的安全令牌"
+    },
+    "TwoFactorSmsNotification": {
+      "displayName": "双因素认证",
+      "description": "此通知包含用于双因素认证的安全令牌"
+    },
+    "ConfirmationEmailNotification": {
+      "displayName": "电子邮件确认",
+      "description": "此电子邮件通知确认新注册用户的电子邮件"
+    },
+    "ChangePhoneNumberSmsNotification": {
+      "displayName": "电话号码变更通知",
+      "description": "客户在其电话号码更改时会收到短信"
+    },
+    "ResetPasswordSmsNotification": {
+      "displayName": "重置密码短信通知",
+      "description": "客户在其密码被重置时会收到短信"
+    },
+    "RegistrationInvitationEmailNotification": {
+      "displayName": "注册邀请通知（有组织）",
+      "description": "客户在收到注册组织的邀请时会收到电子邮件通知"
+    },
+    "RegistrationInvitationCustomerEmailNotification": {
+      "displayName": "注册邀请通知（客户）",
+      "description": "客户在收到无组织的注册邀请时会收到电子邮件通知"
+    },
+    "RemindUserNameEmailNotification": {
+      "displayName": "忘记用户名通知",
+      "description": "客户在点击“忘记我的用户名”后会收到电子邮件通知"
+    }
+  },
+  "permissions": {
+    "notifications:read": "读取通知数据",
+    "notifications:create": "创建通知数据",
+    "notifications:update": "更新通知数据",
+    "notifications:delete": "删除通知数据",
+    "notifications:access": "访问通知数据",
+    "notifications:export": "导出通知数据",
+    "notifications:import": "导入通知数据",
+    "notifications:templates:read": "读取模板数据",
+    "notifications:templates:create": "创建模板数据"
+  },
+  "module": {
+    "VirtoCommerce.Notifications": {
+      "description": "导出或导入通知"
+    }
+  }
+}
