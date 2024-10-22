@@ -181,8 +181,8 @@
           "name": "Filtername"
         },
         "placeholders": {
-          "criteria": "Bitte Suchphrase eingeben",
-          "name": "Bitte geben Sie diesem Filter einen Namen"
+          "criteria": "Suchphrase eingeben",
+          "name": "Diesen Filter benennen"
         }
       },
       "notifications-template-render": {
@@ -197,9 +197,9 @@
         "blade-subtitle": "Benachrichtigungsvorlagen verwalten"
       },
       "notificationsLogWidget": {
-        "title": "Benachrichtigungsprotokoll",
+        "title": "Nachrichten-Protokoll",
         "blade-title": "Protokoll speichert Daten zu Benachrichtigungen",
-        "blade-subtitle": "Benachrichtigungsprotokoll anzeigen"
+        "blade-subtitle": "Nachrichten-Protokoll anzeigen"
       },
       "notificationsAttachmentsWidget": {
         "title": "Anhänge (demnächst)",

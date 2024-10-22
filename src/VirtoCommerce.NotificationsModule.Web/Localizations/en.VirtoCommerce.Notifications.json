@@ -181,8 +181,8 @@
           "name": "Filter name"
         },
         "placeholders": {
-          "criteria": "Please enter search phrase",
-          "name": "Please give this filter a name"
+          "criteria": "Enter search phrase",
+          "name": "Name this filter"
         }
       },
       "notifications-template-render": {
