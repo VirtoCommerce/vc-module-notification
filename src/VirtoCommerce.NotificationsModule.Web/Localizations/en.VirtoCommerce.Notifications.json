@@ -2,7 +2,7 @@
   "notifications": {
     "blades": {
       "notification-journal-details": {
-        "title": "Notification Details",
+        "title": "Notification details",
         "subtitle": "{{ displayName }}: Notification type",
         "labels": {
           "id": "Message ID:",
@@ -33,7 +33,7 @@
         "subtitle": "Edit notification template",
         "title-new": "{{ displayName }}: Create template",
         "labels": {
-          "note": "This is a list of notification optons. Copy and paste this code to insert the option values to your template.",
+          "note": "This is a list of notification options. Copy and paste this code to insert the option values to your template",
           "parameter-name": "Option name",
           "parameter-description": "Option description",
           "paremeter-code": "Option code in the template (copy this code and insert it to any part of your template)",
@@ -50,7 +50,7 @@
           "preview-data": "Preview Data",
           "preview-data-comment": "Template context data (JSON)",
           "note-caption": "Important!",
-          "note-text": "This template has a predefined source. Once you save your notification, this version will replace the predefined one. You can restore the original template using the appropriate button.",
+          "note-text": "This template has a predefined source. Once you save your notification, this version will replace the predefined one. You can restore the original template using the appropriate button",
           "layout": "Layout",
           "layout-blank-note": "Leave this field blank to use selected default layout"
         },
@@ -125,7 +125,7 @@
         "subtitle": "This section contains the list of all notifications recorded in the system",
         "subtitle-search": "Search results for \"{{keyword}}\"",
         "labels": {
-          "display-name": "Display Name",
+          "display-name": "Display name",
           "notification": "Notification",
           "created": "Created",
           "status": "Status",
@@ -145,7 +145,7 @@
           "resend-messages": "Resend messages"
         },
         "placeholders": {
-          "select-filter": "Please select a filter"
+          "select-filter": "Select a filter"
         }
       },
       "notifications-list": {
@@ -153,7 +153,7 @@
         "subtitle": "This section contains the list of all notifications registered in the system",
         "labels": {
           "no-notifications": "No registered notifications yet",
-          "display-name": "Display Name",
+          "display-name": "Display name",
           "type": "Type",
           "active": "Active"
         }
@@ -202,7 +202,7 @@
         "blade-subtitle": "View notification log"
       },
       "notificationsAttachmentsWidget": {
-        "title": "Attachments (Coming Soon)",
+        "title": "Attachments (coming soon)",
         "blade-title": "Attachments",
         "blade-subtitle": "Attachments"
       }
@@ -210,23 +210,23 @@
     "dialogs": {
       "unknown-kind": {
         "title": "Error",
-        "message": "Unable to open '{{type}}' notification. Please contact your Site Administrator(s) for information."
+        "message": "Unable to open '{{type}}' notification. Please contact your site administrator(s) for information"
       },
       "notification-details-save": {
         "title": "Save changes",
         "message": "The notification template has been modified. Do you want to save changes?"
       },
       "notification-template-delete": {
-        "title": "Confirm Delete",
+        "title": "Confirm delete",
         "message": "Are you sure you want to delete the selected templates?"
       },
       "notification-template-delete-notification": {
         "title": "Unable to delete template",
-        "message": "You cannot delete default or predefined templates. Please deselect such templates and try again."
+        "message": "You cannot delete default or predefined templates. Please deselect such templates and try again"
       },
       "notification-template-reset-confirmation": {
-        "title": "Confirm Reset Template",
-        "warning": "WARNING: This change is permanent and cannot be undone. Applying this change may result in a data loss.",
+        "title": "Confirm reset template",
+        "warning": "WARNING: This change is permanent and cannot be undone. Applying this change may result in a data loss",
         "message": "{{count}} template(s) for the following languages will be deleted:",
         "instruction": "Type yes to delete:"
       },
@@ -242,8 +242,8 @@
         "title": "Error"
       },
       "notification-layout-delete": {
-        "title": "Confirm Delete",
-        "message": "Are you sure you want to delete selected layouts?"
+        "title": "Confirm delete",
+        "message": "Are you sure you want to delete the selected layouts?"
       }
     },
     "commands": {
@@ -258,11 +258,11 @@
     },
     "RegistrationEmailNotification": {
       "displayName": "Signup notification",
-      "description": "The customer will get an email notification once they have registered"
+      "description": "The customer gets an email notification once they have registered"
     },
     "ResetPasswordEmailNotification": {
       "displayName": "Reset password notification",
-      "description": "The customer will get an email notification upon a reset password request"
+      "description": "The customer gets an email notification upon a reset password request"
     },
     "TwoFactorEmailNotification": {
       "displayName": "Two factor authentication",
@@ -274,27 +274,27 @@
     },
     "ConfirmationEmailNotification": {
       "displayName": "Email confirmation",
-      "description": "This email notification confirms the newly registered user's email"
+      "description": "This email notification confirms the newly registered user email"
     },
     "ChangePhoneNumberSmsNotification": {
       "displayName": "Phone number change notification",
-      "description": "The customer will get a text message once their phone number has been changed"
+      "description": "The customer gets a text message when their phone number is changed"
     },
     "ResetPasswordSmsNotification": {
       "displayName": "Reset password text notification",
-      "description": "The customer will get a text message when their password has been reset"
+      "description": "The customer gets a text message when their password has been reset"
     },
     "RegistrationInvitationEmailNotification": {
       "displayName": "Signup invite notification (with organization)",
-      "description": "The customer will get an email notification once they receive an invite to sign up to organization"
+      "description": "The customer gets an email notification once they receive an invite to sign up to organization"
     },
     "RegistrationInvitationCustomerEmailNotification": {
       "displayName": "Signup invite notification (customer)",
-      "description": "The customer will get an email notification once they receive an invite to sign up without organization"
+      "description": "The customer gets an email notification once they receive an invite to sign up without organization"
     },
     "RemindUserNameEmailNotification": {
       "displayName": "Forgot username notification",
-      "description": "The customer will get an email notification after they click Forgot My Username"
+      "description": "The customer gets an email notification after they click Forgot My Username"
     }
   },
   "permissions": {

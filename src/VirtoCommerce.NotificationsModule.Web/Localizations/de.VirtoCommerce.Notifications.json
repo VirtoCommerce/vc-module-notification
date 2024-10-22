@@ -1,118 +1,316 @@
 {
-    "notifications": {
-        "blades": {
-            "notification-journal-details": {
-                "title": "Einzelheiten der Anmeldung",
-                "labels": {
-                    "notification-info": "Benachrichtigung Info",
-                    "display-name": "Anzeigename",
-                    "source": "Quelle",
-                    "sending-gateway": "Senden Gateway",
-                    "active": "Aktiv",
-                    "not-active": "Nicht aktiv",
-                    "start-sending-date": "Startdatum senden",
-                    "sent-success": "Gesendet Erfolg",
-                    "not-sent": "Nicht gesendet",
-                    "sent": "Gesendet",
-                    "sent-date": "Sendedatum",
-                    "sender": "Absender",
-                    "recipient": "Empfänger",
-                    "sending-attempts-count": "Senden versucht count",
-                    "last-fail-attempt-date": "Letzte fehlschlagen versuchen, Datum",
-                    "last-fail-attempt-message": "Letzte Scheitern einer Nachricht"
-                }
-            },
-            "notifications-edit-template": {
-                "title": "{{ displayName }} - vorlage",
-                "title-new": "Benachrichtigung Vorlage erstellen",
-                "labels": {
-                    "note": "Dies ist eine Liste der Benachrichtigungsparameter. Sie können diesen Code einfügen und der Wert der Parameter wird in Ihre Vorlage eingefügt",
-                    "parameter-name": "Parameter name",
-                    "parameter-description": "Parameter Beschreibung",
-                    "paremeter-code": "Paremeter Code im Template (kopieren Sie diesen Code, und fügen Sie überall in Ihrer Vorlage)",
-                    "language": "Sprache",
-                    "blank-note": "Leer lassen Standardwert verwendet",
-                    "sender": "Absender",
-                    "recipient": "Empfänger",
-                    "subject": "Betreff",
-                    "body": "Körper",
-                    "template": "Vorlage",
-                    "preview-data": "Vorschau der Daten"
-                },
-                "placeholders": {
-                    "language": "Wählen Sie aus..."
-                }
-            },
-            "notification-templates-list": {
-                "title": "Benachrichtigungsvorlagen",
-                "labels": {
-                    "subject": "Betreff",
-                    "body": "Körper",
-                    "language": "Sprache"
-                }
-            },
-            "notifications-test-resolve": {
-                "title": "Vorschau der Mitteilung",
-                "subtitle": "Prüfdaten für {{Typ}} eingeben",
-                "labels": {
-                    "test": "Test",
-                    "enter-test-data": "Test Daten eingeben"
-                }
-            },
-            "notifications-test-send": {
-                "title": "Benachrichtigung senden",
-                "subtitle": "Prüfdaten für {{Typ}} eingeben",
-                "labels": {
-                    "send": "Senden",
-                    "enter-test-data": "Test Daten eingeben"
-                }
-            },
-            "notifications-journal": {
-                "title": "Journal senden",
-                "subtitle": "Marketing Service",
-              "labels": {
-                "display-name": "Anzeigename",
-                "recipient": "Empfänger",
-                "sent-date": "Sendedatum",
-                "channel": "Kanal",
-                "error": "Fehler",
-                "processing": "Verarbeitung",
-                "success": "Erfolg",
-                "no-notifications": "Keine Benachrichtigungen noch",
-                "resend-messages": "Nachrichten erneut senden"
-              }
-            },
-            "notifications-list": {
-                "title": "Benachrichtigungen",
-                "subtitle": "Marketing Service",
-                "labels": {
-                    "no-notifications": "Benachrichtigungen noch nicht registriert"
-                }
-            },
-            "notifications-details": {
-                "title": "{{displayName}} - detail",
-                "labels": {
-                    "is-active": "Ist aktiv",
-                    "name": "Name der Benachrichtigung"
-                }
-            }
-        },
-        "widgets": {
-            "notificationsTemplatesWidget": {
-                "title": "Vorlagen",
-                "blade-title": "{{displayName}} - Benachrichtigungsvorlagen",
-                "blade-subtitle": "Vorlagen"
-            },
-            "notificationsLogWidget": {
-                "title": "Sende Protokoll",
-                "blade-title": "Sende Protokoll",
-                "blade-subtitle": "Sende Protokoll"
-            },
-            "notificationsAttachmentsWidget": {
-                "title": "Anlagen",
-                "blade-title": "Anlagen",
-                "blade-subtitle": "Anlagen"
-            }
+  "notifications": {
+    "blades": {
+      "notification-journal-details": {
+        "title": "Benachrichtigungsdetails",
+        "subtitle": "{{ displayName }}: Benachrichtigungstyp",
+        "labels": {
+          "id": "Nachrichten-ID:",
+          "notification-info": "Benachrichtigungsinfo",
+          "display-name": "Anzeigename",
+          "source": "Quelle",
+          "sending-gateway": "Versandgateway",
+          "active": "Aktiv",
+          "not-active": "Inaktiv",
+          "created": "Erstellt am:",
+          "sent-success": "Erfolgreich gesendet",
+          "not-sent": "Nicht gesendet",
+          "sent": "Gesendet",
+          "sent-date": "Versanddatum",
+          "sender": "Von:",
+          "recipient": "An:",
+          "bcc": "BCC",
+          "cc": "CC",
+          "sending-attempts-count": "Anzahl der Versandversuche",
+          "last-fail-attempt-date": "Datum des letzten fehlgeschlagenen Versuchs",
+          "last-fail-attempt-message": "Fehler:",
+          "subject": "Betreff:",
+          "body": "Inhalt:"
         }
+      },
+      "notifications-edit-template": {
+        "title": "{{ displayName }}: Vorlage",
+        "subtitle": "Benachrichtigungsvorlage bearbeiten",
+        "title-new": "{{ displayName }}: Vorlage erstellen",
+        "labels": {
+          "note": "Dies ist eine Liste von Benachrichtigungsoptionen. Kopieren Sie diesen Code und fügen Sie ihn in Ihre Vorlage ein, um die Optionswerte einzufügen.",
+          "parameter-name": "Optionsname",
+          "parameter-description": "Optionsbeschreibung",
+          "paremeter-code": "Optionscode in der Vorlage (kopieren Sie diesen Code und fügen Sie ihn an einer beliebigen Stelle Ihrer Vorlage ein)",
+          "language": "Sprache",
+          "blank-note": "Lassen Sie dieses Feld leer, um den Standardwert zu verwenden",
+          "from": "Von",
+          "to": "An",
+          "cc": "CC",
+          "bcc": "BCC",
+          "subject": "Betreff",
+          "body": "Inhalt",
+          "template": "Vorlage",
+          "sample": "Beispieldaten-JSON",
+          "preview-data": "Vorschau-Daten",
+          "preview-data-comment": "Vorlagenkontextdaten (JSON)",
+          "note-caption": "Wichtig!",
+          "note-text": "Diese Vorlage hat eine vordefinierte Quelle. Sobald Sie Ihre Benachrichtigung speichern, wird diese Version die vordefinierte ersetzen. Sie können die ursprüngliche Vorlage mit der entsprechenden Schaltfläche wiederherstellen.",
+          "layout": "Layout",
+          "layout-blank-note": "Lassen Sie dieses Feld leer, um das ausgewählte Standardlayout zu verwenden"
+        },
+        "descriptions": {
+          "to": "E-Mail-Empfängeradresse",
+          "cc": "CC-Empfängeradressen",
+          "bcc": "BCC-Empfängeradresse",
+          "from": "Absenderadresse",
+          "subject": "Betreff der E-Mail-Benachrichtigung",
+          "sample": "Wird in der vollständigen Vorschau als Beispielbenachrichtigungsobjekt verwendet"
+        },
+        "placeholders": {
+          "language": "Bitte auswählen...",
+          "recipient": "Empfängeradresse",
+          "email-addresses-note": "Bitte Adressen eingeben",
+          "subject": "Bitte E-Mail-Betreff eingeben",
+          "layout": "Bitte auswählen..."
+        }
+      },
+      "notification-templates-list": {
+        "title": "Benachrichtigungsvorlagen",
+        "labels": {
+          "subject": "Betreff",
+          "body": "Inhalt",
+          "language": "Sprache",
+          "created": "Erstellt",
+          "modified": "Bearbeitet",
+          "predefined": "Vordefiniert",
+          "edited": "Bearbeitet"
+        }
+      },
+      "notification-layouts-list": {
+        "title": "Benachrichtigungslayouts",
+        "subtitle": "Benachrichtigungslayouts verwalten",
+        "labels": {
+          "no-data": "Noch keine registrierten Layouts",
+          "name": "Name",
+          "template": "Vorlage",
+          "default": "Standard"
+        }
+      },
+      "notification-layout-details": {
+        "title-new": "Benachrichtigungslayout erstellen",
+        "subtitle": "Layout bearbeiten",
+        "labels": {
+          "name": "Name",
+          "template": "Vorlage",
+          "default": "Standard"
+        },
+        "placeholders": {
+          "name": "Name eingeben..."
+        }
+      },
+      "notifications-test-resolve": {
+        "title": "Vorschau-Benachrichtigung",
+        "subtitle": "Testdaten für {{type}} eingeben",
+        "labels": {
+          "test": "Test",
+          "enter-test-data": "Testdaten eingeben"
+        }
+      },
+      "notifications-test-send": {
+        "title": "Benachrichtigung senden",
+        "subtitle": "Testdaten für {{type}} eingeben",
+        "labels": {
+          "send": "Senden",
+          "enter-test-data": "Testdaten eingeben"
+        }
+      },
+      "notifications-journal": {
+        "title": "Benachrichtigungsaktivitätsprotokoll",
+        "subtitle": "Dieser Abschnitt enthält die Liste aller im System aufgezeichneten Benachrichtigungen",
+        "subtitle-search": "Suchergebnisse für \"{{keyword}}\"",
+        "labels": {
+          "display-name": "Anzeigename",
+          "notification": "Benachrichtigung",
+          "created": "Erstellt",
+          "status": "Status",
+          "recipient": "Empfänger",
+          "sent-date": "Versanddatum",
+          "channel": "Kanal",
+          "error": "Fehler",
+          "processing": "Wird verarbeitet",
+          "success": "Erfolg",
+          "no-notifications": "Noch keine Benachrichtigungen",
+          "unnamed-filter": "Unbenannter Filter",
+          "filter-new": "<strong>Neuen Filter hinzufügen</strong>",
+          "filter-only-pending": "Nur ausstehende",
+          "filter-with-errors": "Mit Fehlern",
+          "detail": "Details anzeigen",
+          "sendAttemptCount": "Anzahl der Versandversuche",
+          "resend-messages": "Nachrichten erneut senden"
+        },
+        "placeholders": {
+          "select-filter": "Filter auswählen"
+        }
+      },
+      "notifications-list": {
+        "title": "Benachrichtigungsliste",
+        "subtitle": "Dieser Abschnitt enthält die Liste aller im System registrierten Benachrichtigungen",
+        "labels": {
+          "no-notifications": "Noch keine registrierten Benachrichtigungen",
+          "display-name": "Anzeigename",
+          "type": "Typ",
+          "active": "Aktiv"
+        }
+      },
+      "notification-details": {
+        "title": "{{ displayName }}: Details",
+        "labels": {
+          "is-active": "Aktiv",
+          "name": "Benachrichtigungsname",
+          "number": "Telefonnummer"
+        },
+        "placeholders": {
+          "number": "Telefonnummer für Textnachricht"
+        },
+        "descriptions": {
+          "number": "Telefonnummer, die die Textnachricht (SMS) Benachrichtigung erhält"
+        }
+      },
+      "filter-detail": {
+        "subtitle": "Filter bearbeiten",
+        "new-title": "Neuer Filter",
+        "new-subtitle": "Neuen Filter erstellen",
+        "labels": {
+          "criteria": "Suchphrase",
+          "name": "Filtername"
+        },
+        "placeholders": {
+          "criteria": "Bitte Suchphrase eingeben",
+          "name": "Bitte geben Sie diesem Filter einen Namen"
+        }
+      },
+      "notifications-template-render": {
+        "title": "Vorschau-Formular",
+        "subtitle": "Dieses Formular rendert eine Vorlage"
+      }
+    },
+    "widgets": {
+      "notificationsTemplatesWidget": {
+        "title": "Vorlagen",
+        "blade-title": "{{displayName}}: Vorlagenliste",
+        "blade-subtitle": "Benachrichtigungsvorlagen verwalten"
+      },
+      "notificationsLogWidget": {
+        "title": "Benachrichtigungsprotokoll",
+        "blade-title": "Protokoll speichert Daten zu Benachrichtigungen",
+        "blade-subtitle": "Benachrichtigungsprotokoll anzeigen"
+      },
+      "notificationsAttachmentsWidget": {
+        "title": "Anhänge (demnächst)",
+        "blade-title": "Anhänge",
+        "blade-subtitle": "Anhänge"
+      }
+    },
+    "dialogs": {
+      "unknown-kind": {
+        "title": "Fehler",
+        "message": "Kann die Benachrichtigung '{{type}}' nicht öffnen. Bitte wenden Sie sich an Ihren Site-Administrator für Informationen."
+      },
+      "notification-details-save": {
+        "title": "Änderungen speichern",
+        "message": "Die Benachrichtigungsvorlage wurde geändert. Möchten Sie die Änderungen speichern?"
+      },
+      "notification-template-delete": {
+        "title": "Löschen bestätigen",
+        "message": "Sind Sie sicher, dass Sie die ausgewählten Vorlagen löschen möchten?"
+      },
+      "notification-template-delete-notification": {
+        "title": "Vorlage kann nicht gelöscht werden",
+        "message": "Sie können Standard- oder vordefinierte Vorlagen nicht löschen. Bitte deaktivieren Sie solche Vorlagen und versuchen Sie es erneut"
+      },
+      "notification-template-reset-confirmation": {
+        "title": "Vorlage zurücksetzen bestätigen",
+        "warning": "WARNUNG: Diese Änderung ist dauerhaft und kann nicht rückgängig gemacht werden. Das Anwenden dieser Änderung kann zu Datenverlust führen",
+        "message": "{{count}} Vorlage(n) für die folgenden Sprachen werden gelöscht:",
+        "instruction": "Geben Sie 'yes' ein, um zu löschen:"
+      },
+      "notification-share-preview-confirmation": {
+        "title": "Vorschau-Benachrichtigung teilen bestätigen",
+        "message": "Möchten Sie diese Vorschau-Benachrichtigung an die angegebene E-Mail-Adresse senden?"
+      },
+      "share-success": {
+        "title": "Vorschau teilen",
+        "message": "Testnachricht mit der Benachrichtigungsvorschau wurde erfolgreich gesendet"
+      },
+      "share-error": {
+        "title": "Fehler"
+      },
+      "notification-layout-delete": {
+        "title": "Löschen bestätigen",
+        "message": "Sind Sie sicher, dass Sie die ausgewählten Layouts löschen möchten?"
+      }
+    },
+    "commands": {
+      "restore": "Wiederherstellen",
+      "share-preview": "Teilen"
     }
+  },
+  "notificationTypes": {
+    "UnregisteredNotification": {
+      "displayName": "Unregistrierte Benachrichtigung",
+      "description": "Ursprünglicher Benachrichtigungstyp: {{type}}"
+    },
+    "RegistrationEmailNotification": {
+      "displayName": "Anmeldebenachrichtigung",
+      "description": "Der Kunde erhält eine E-Mail-Benachrichtigung, sobald er sich registriert hat"
+    },
+    "ResetPasswordEmailNotification": {
+      "displayName": "Passwort zurücksetzen Benachrichtigung",
+      "description": "Der Kunde erhält eine E-Mail-Benachrichtigung bei einer Passwortzurücksetzanforderung"
+    },
+    "TwoFactorEmailNotification": {
+      "displayName": "Zwei-Faktor-Authentifizierung",
+      "description": "Diese Benachrichtigung enthält ein Sicherheitstoken für die Zwei-Faktor-Authentifizierung"
+    },
+    "TwoFactorSmsNotification": {
+      "displayName": "Zwei-Faktor-Authentifizierung",
+      "description": "Diese Benachrichtigung enthält ein Sicherheitstoken für die Zwei-Faktor-Authentifizierung"
+    },
+    "ConfirmationEmailNotification": {
+      "displayName": "E-Mail-Bestätigung",
+      "description": "Diese E-Mail-Benachrichtigung bestätigt die neu registrierte Benutzer-E-Mail"
+    },
+    "ChangePhoneNumberSmsNotification": {
+      "displayName": "Benachrichtigung zur Telefonnummernänderung",
+      "description": "Der Kunde erhält eine SMS, wenn seine Telefonnummer geändert wird"
+    },
+    "ResetPasswordSmsNotification": {
+      "displayName": "Passwort zurücksetzen SMS-Benachrichtigung",
+      "description": "Der Kunde erhält eine SMS, wenn sein Passwort zurückgesetzt wurde"
+    },
+    "RegistrationInvitationEmailNotification": {
+      "displayName": "Anmeldeeinladungsbenachrichtigung (mit Organisation)",
+      "description": "Der Kunde erhält eine E-Mail-Benachrichtigung, sobald er eine Einladung zur Anmeldung bei der Organisation erhält"
+    },
+    "RegistrationInvitationCustomerEmailNotification": {
+      "displayName": "Anmeldeeinladungsbenachrichtigung (Kunde)",
+      "description": "Der Kunde erhält eine E-Mail-Benachrichtigung, sobald er eine Einladung zur Anmeldung ohne Organisation erhält"
+    },
+    "RemindUserNameEmailNotification": {
+      "displayName": "Benachrichtigung zur Erinnerung an den Benutzernamen",
+      "description": "Der Kunde erhält eine E-Mail-Benachrichtigung, nachdem er auf 'Benutzernamen vergessen' geklickt hat"
+    }
+  },
+  "permissions": {
+    "notifications:read": "Benachrichtigungsdaten lesen",
+    "notifications:create": "Benachrichtigungsdaten erstellen",
+    "notifications:update": "Benachrichtigungsdaten aktualisieren",
+    "notifications:delete": "Benachrichtigungsdaten löschen",
+    "notifications:access": "Zugriff auf Benachrichtigungsdaten",
+    "notifications:export": "Benachrichtigungsdaten exportieren",
+    "notifications:import": "Benachrichtigungsdaten importieren",
+    "notifications:templates:read": "Vorlagendaten lesen",
+    "notifications:templates:create": "Vorlagendaten erstellen"
+  },
+  "module": {
+    "VirtoCommerce.Notifications": {
+      "description": "Benachrichtigungen exportieren oder importieren"
+    }
+  }
 }

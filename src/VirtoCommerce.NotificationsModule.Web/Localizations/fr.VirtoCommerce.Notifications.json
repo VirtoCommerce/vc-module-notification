@@ -1,0 +1,316 @@
+{
+  "notifications": {
+    "blades": {
+      "notification-journal-details": {
+        "title": "Détails de la notification",
+        "subtitle": "{{ displayName }}: Type de notification",
+        "labels": {
+          "id": "ID du message :",
+          "notification-info": "Informations sur la notification",
+          "display-name": "Nom d'affichage",
+          "source": "Source",
+          "sending-gateway": "Passerelle d'envoi",
+          "active": "Actif",
+          "not-active": "Inactif",
+          "created": "Créé le :",
+          "sent-success": "Envoyé avec succès",
+          "not-sent": "Non envoyé",
+          "sent": "Envoyé",
+          "sent-date": "Date d'envoi",
+          "sender": "De :",
+          "recipient": "À :",
+          "bcc": "BCC",
+          "cc": "CC",
+          "sending-attempts-count": "Nombre de tentatives d'envoi",
+          "last-fail-attempt-date": "Date de la dernière tentative échouée",
+          "last-fail-attempt-message": "Erreurs :",
+          "subject": "Objet :",
+          "body": "Corps :"
+        }
+      },
+      "notifications-edit-template": {
+        "title": "{{ displayName }}: Modèle",
+        "subtitle": "Modifier le modèle de notification",
+        "title-new": "{{ displayName }}: Créer un modèle",
+        "labels": {
+          "note": "Ceci est une liste d'options de notification. Copiez et collez ce code pour insérer les valeurs d'option dans votre modèle",
+          "parameter-name": "Nom de l'option",
+          "parameter-description": "Description de l'option",
+          "paremeter-code": "Code de l'option dans le modèle (copiez ce code et insérez-le dans n'importe quelle partie de votre modèle)",
+          "language": "Langue",
+          "blank-note": "Laissez ce champ vide pour utiliser votre valeur par défaut",
+          "from": "De",
+          "to": "À",
+          "cc": "CC",
+          "bcc": "BCC",
+          "subject": "Objet",
+          "body": "Corps",
+          "template": "Modèle",
+          "sample": "Données d'exemple JSON",
+          "preview-data": "Données de prévisualisation",
+          "preview-data-comment": "Données de contexte du modèle (JSON)",
+          "note-caption": "Important !",
+          "note-text": "Ce modèle a une source prédéfinie. Une fois que vous avez enregistré votre notification, cette version remplacera la version prédéfinie. Vous pouvez restaurer le modèle d'origine en utilisant le bouton approprié",
+          "layout": "Mise en page",
+          "layout-blank-note": "Laissez ce champ vide pour utiliser la mise en page par défaut sélectionnée"
+        },
+        "descriptions": {
+          "to": "Adresse e-mail du destinataire",
+          "cc": "Adresses e-mail des destinataires en CC",
+          "bcc": "Adresse e-mail du destinataire en BCC",
+          "from": "Adresse de l'expéditeur",
+          "subject": "Objet de la notification par e-mail",
+          "sample": "Utilisé dans la prévisualisation complète comme objet de notification d'exemple"
+        },
+        "placeholders": {
+          "language": "Veuillez sélectionner...",
+          "recipient": "Adresse du destinataire",
+          "email-addresses-note": "Veuillez entrer des adresses",
+          "subject": "Veuillez entrer l'objet de l'e-mail",
+          "layout": "Veuillez sélectionner..."
+        }
+      },
+      "notification-templates-list": {
+        "title": "Modèles de notification",
+        "labels": {
+          "subject": "Objet",
+          "body": "Corps",
+          "language": "Langue",
+          "created": "Créé",
+          "modified": "Modifié",
+          "predefined": "Prédéfini",
+          "edited": "Édité"
+        }
+      },
+      "notification-layouts-list": {
+        "title": "Mises en page de notification",
+        "subtitle": "Gérer les mises en page de notification",
+        "labels": {
+          "no-data": "Aucune mise en page enregistrée pour le moment",
+          "name": "Nom",
+          "template": "Modèle",
+          "default": "Par défaut"
+        }
+      },
+      "notification-layout-details": {
+        "title-new": "Créer une mise en page de notification",
+        "subtitle": "Modifier la mise en page",
+        "labels": {
+          "name": "Nom",
+          "template": "Modèle",
+          "default": "Par défaut"
+        },
+        "placeholders": {
+          "name": "Entrez le nom..."
+        }
+      },
+      "notifications-test-resolve": {
+        "title": "Prévisualiser la notification",
+        "subtitle": "Entrez des données de test pour {{type}}",
+        "labels": {
+          "test": "Test",
+          "enter-test-data": "Entrez des données de test"
+        }
+      },
+      "notifications-test-send": {
+        "title": "Envoyer la notification",
+        "subtitle": "Entrez des données de test pour {{type}}",
+        "labels": {
+          "send": "Envoyer",
+          "enter-test-data": "Entrez des données de test"
+        }
+      },
+      "notifications-journal": {
+        "title": "Fil d'activité des notifications",
+        "subtitle": "Cette section contient la liste de toutes les notifications enregistrées dans le système",
+        "subtitle-search": "Résultats de recherche pour \"{{keyword}}\"",
+        "labels": {
+          "display-name": "Nom d'affichage",
+          "notification": "Notification",
+          "created": "Créé",
+          "status": "Statut",
+          "recipient": "Destinataire",
+          "sent-date": "Date d'envoi",
+          "channel": "Canal",
+          "error": "Erreur",
+          "processing": "Traitement",
+          "success": "Succès",
+          "no-notifications": "Aucune notification pour le moment",
+          "unnamed-filter": "Filtre sans nom",
+          "filter-new": "<strong>Ajouter un nouveau filtre</strong>",
+          "filter-only-pending": "Seulement en attente",
+          "filter-with-errors": "Avec erreurs",
+          "detail": "Afficher les détails",
+          "sendAttemptCount": "Nombre de tentatives d'envoi",
+          "resend-messages": "Renvoyer les messages"
+        },
+        "placeholders": {
+          "select-filter": "Sélectionner un filtre"
+        }
+      },
+      "notifications-list": {
+        "title": "Liste des notifications",
+        "subtitle": "Cette section contient la liste de toutes les notifications enregistrées dans le système",
+        "labels": {
+          "no-notifications": "Aucune notification enregistrée pour le moment",
+          "display-name": "Nom d'affichage",
+          "type": "Type",
+          "active": "Actif"
+        }
+      },
+      "notification-details": {
+        "title": "{{ displayName }}: Détails",
+        "labels": {
+          "is-active": "Actif",
+          "name": "Nom de la notification",
+          "number": "Numéro de téléphone"
+        },
+        "placeholders": {
+          "number": "Numéro de téléphone pour les messages texte"
+        },
+        "descriptions": {
+          "number": "Numéro de téléphone qui recevra la notification par message texte (SMS)"
+        }
+      },
+      "filter-detail": {
+        "subtitle": "Modifier le filtre",
+        "new-title": "Nouveau filtre",
+        "new-subtitle": "Créer un nouveau filtre",
+        "labels": {
+          "criteria": "Phrase de recherche",
+          "name": "Nom du filtre"
+        },
+        "placeholders": {
+          "criteria": "Veuillez entrer la phrase de recherche",
+          "name": "Veuillez donner un nom à ce filtre"
+        }
+      },
+      "notifications-template-render": {
+        "title": "Formulaire de prévisualisation",
+        "subtitle": "Ce formulaire rend un modèle"
+      }
+    },
+    "widgets": {
+      "notificationsTemplatesWidget": {
+        "title": "Modèles",
+        "blade-title": "{{displayName}}: Liste des modèles",
+        "blade-subtitle": "Gérer les modèles de notification"
+      },
+      "notificationsLogWidget": {
+        "title": "Journal des notifications",
+        "blade-title": "Journal stockant les données sur les notifications",
+        "blade-subtitle": "Voir le journal des notifications"
+      },
+      "notificationsAttachmentsWidget": {
+        "title": "Pièces jointes (à venir)",
+        "blade-title": "Pièces jointes",
+        "blade-subtitle": "Pièces jointes"
+      }
+    },
+    "dialogs": {
+      "unknown-kind": {
+        "title": "Erreur",
+        "message": "Impossible d'ouvrir la notification '{{type}}'. Veuillez contacter votre administrateur de site pour plus d'informations"
+      },
+      "notification-details-save": {
+        "title": "Enregistrer les modifications",
+        "message": "Le modèle de notification a été modifié. Voulez-vous enregistrer les modifications ?"
+      },
+      "notification-template-delete": {
+        "title": "Confirmer la suppression",
+        "message": "Êtes-vous sûr de vouloir supprimer les modèles sélectionnés ?"
+      },
+      "notification-template-delete-notification": {
+        "title": "Impossible de supprimer le modèle",
+        "message": "Vous ne pouvez pas supprimer les modèles par défaut ou prédéfinis. Veuillez désélectionner ces modèles et réessayer"
+      },
+      "notification-template-reset-confirmation": {
+        "title": "Confirmer la réinitialisation du modèle",
+        "warning": "AVERTISSEMENT : Ce changement est permanent et ne peut pas être annulé. L'application de ce changement peut entraîner une perte de données",
+        "message": "{{count}} modèle(s) pour les langues suivantes seront supprimés:",
+        "instruction": "Tapez 'yes' pour supprimer:"
+      },
+      "notification-share-preview-confirmation": {
+        "title": "Confirmer le partage de l'aperçu de la notification",
+        "message": "Souhaitez-vous envoyer cet aperçu de notification à l'adresse e-mail spécifiée?"
+      },
+      "share-success": {
+        "title": "Partager l'aperçu",
+        "message": "Le message de test avec l'aperçu de la notification a été envoyé avec succès"
+      },
+      "share-error": {
+        "title": "Erreur"
+      },
+      "notification-layout-delete": {
+        "title": "Confirmer la suppression",
+        "message": "Êtes-vous sûr de vouloir supprimer les mises en page sélectionnées?"
+      }
+    },
+    "commands": {
+      "restore": "Restaurer",
+      "share-preview": "Partager"
+    }
+  },
+  "notificationTypes": {
+    "UnregisteredNotification": {
+      "displayName": "Notification non enregistrée",
+      "description": "Type de notification d'origine : {{type}}"
+    },
+    "RegistrationEmailNotification": {
+      "displayName": "Notification d'inscription",
+      "description": "Le client reçoit une notification par e-mail une fois qu'il s'est inscrit"
+    },
+    "ResetPasswordEmailNotification": {
+      "displayName": "Notification de réinitialisation de mot de passe",
+      "description": "Le client reçoit une notification par e-mail lors d'une demande de réinitialisation de mot de passe"
+    },
+    "TwoFactorEmailNotification": {
+      "displayName": "Authentification à deux facteurs",
+      "description": "Cette notification contient un jeton de sécurité pour l'authentification à deux facteurs"
+    },
+    "TwoFactorSmsNotification": {
+      "displayName": "Authentification à deux facteurs",
+      "description": "Cette notification contient un jeton de sécurité pour l'authentification à deux facteurs"
+    },
+    "ConfirmationEmailNotification": {
+      "displayName": "Confirmation par e-mail",
+      "description": "Cette notification par e-mail confirme l'adresse e-mail du nouvel utilisateur enregistré"
+    },
+    "ChangePhoneNumberSmsNotification": {
+      "displayName": "Notification de changement de numéro de téléphone",
+      "description": "Le client reçoit un message texte lorsque son numéro de téléphone est changé"
+    },
+    "ResetPasswordSmsNotification": {
+      "displayName": "Notification de réinitialisation de mot de passe par SMS",
+      "description": "Le client reçoit un message texte lorsque son mot de passe a été réinitialisé"
+    },
+    "RegistrationInvitationEmailNotification": {
+      "displayName": "Notification d'invitation à s'inscrire (avec organisation)",
+      "description": "Le client reçoit une notification par e-mail une fois qu'il reçoit une invitation à s'inscrire à l'organisation"
+    },
+    "RegistrationInvitationCustomerEmailNotification": {
+      "displayName": "Notification d'invitation à s'inscrire (client)",
+      "description": "Le client reçoit une notification par e-mail une fois qu'il reçoit une invitation à s'inscrire sans organisation"
+    },
+    "RemindUserNameEmailNotification": {
+      "displayName": "Notification de rappel de nom d'utilisateur",
+      "description": "Le client reçoit une notification par e-mail après avoir cliqué sur 'Nom d'utilisateur oublié'"
+    }
+  },
+  "permissions": {
+    "notifications:read": "Lire les données de notification",
+    "notifications:create": "Créer des données de notification",
+    "notifications:update": "Mettre à jour les données de notification",
+    "notifications:delete": "Supprimer les données de notification",
+    "notifications:access": "Accéder aux données de notification",
+    "notifications:export": "Exporter les données de notification",
+    "notifications:import": "Importer les données de notification",
+    "notifications:templates:read": "Lire les données de modèle",
+    "notifications:templates:create": "Créer des données de modèle"
+  },
+  "module": {
+    "VirtoCommerce.Notifications": {
+      "description": "Exporter ou importer des notifications"
+    }
+  }
+}
