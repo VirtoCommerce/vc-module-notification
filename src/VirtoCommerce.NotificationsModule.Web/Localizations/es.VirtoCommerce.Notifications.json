@@ -1,0 +1,316 @@
+{
+  "notifications": {
+    "blades": {
+      "notification-journal-details": {
+        "title": "Detalles de la notificación",
+        "subtitle": "{{ displayName }}: Tipo de notificación",
+        "labels": {
+          "id": "ID del mensaje:",
+          "notification-info": "Información de la notificación",
+          "display-name": "Nombre para mostrar",
+          "source": "Fuente",
+          "sending-gateway": "Puerta de enlace de envío",
+          "active": "Activo",
+          "not-active": "Inactivo",
+          "created": "Creado en:",
+          "sent-success": "Enviado con éxito",
+          "not-sent": "No enviado",
+          "sent": "Enviado",
+          "sent-date": "Fecha de envío",
+          "sender": "De:",
+          "recipient": "Para:",
+          "bcc": "BCC",
+          "cc": "CC",
+          "sending-attempts-count": "Cantidad de intentos de envío",
+          "last-fail-attempt-date": "Fecha del último intento fallido",
+          "last-fail-attempt-message": "Errores:",
+          "subject": "Asunto:",
+          "body": "Cuerpo:"
+        }
+      },
+      "notifications-edit-template": {
+        "title": "{{ displayName }}: Plantilla",
+        "subtitle": "Editar plantilla de notificación",
+        "title-new": "{{ displayName }}: Crear plantilla",
+        "labels": {
+          "note": "Esta es una lista de opciones de notificación. Copie y pegue este código para insertar los valores de opción en su plantilla",
+          "parameter-name": "Nombre de la opción",
+          "parameter-description": "Descripción de la opción",
+          "paremeter-code": "Código de la opción en la plantilla (copia este código e insértalo en cualquier parte de tu plantilla)",
+          "language": "Idioma",
+          "blank-note": "Deje este campo en blanco para usar su valor predeterminado",
+          "from": "De",
+          "to": "Para",
+          "cc": "CC",
+          "bcc": "BCC",
+          "subject": "Asunto",
+          "body": "Cuerpo",
+          "template": "Plantilla",
+          "sample": "Datos de ejemplo JSON",
+          "preview-data": "Datos de vista previa",
+          "preview-data-comment": "Datos de contexto de la plantilla (JSON)",
+          "note-caption": "¡Importante!",
+          "note-text": "Esta plantilla tiene una fuente predefinida. Una vez que guarde su notificación, esta versión reemplazará la predefinida. Puede restaurar la plantilla original utilizando el botón correspondiente",
+          "layout": "Diseño",
+          "layout-blank-note": "Deje este campo en blanco para usar el diseño predeterminado seleccionado"
+        },
+        "descriptions": {
+          "to": "Dirección de correo electrónico del destinatario",
+          "cc": "Direcciones de los destinatarios en CC",
+          "bcc": "Dirección del destinatario en BCC",
+          "from": "Dirección del remitente",
+          "subject": "Asunto de la notificación por correo electrónico",
+          "sample": "Utilizado en la vista previa completa como objeto de notificación de ejemplo"
+        },
+        "placeholders": {
+          "language": "Por favor seleccione...",
+          "recipient": "Dirección del destinatario",
+          "email-addresses-note": "Por favor ingrese direcciones",
+          "subject": "Por favor ingrese el asunto del correo electrónico",
+          "layout": "Por favor seleccione..."
+        }
+      },
+      "notification-templates-list": {
+        "title": "Plantillas de notificación",
+        "labels": {
+          "subject": "Asunto",
+          "body": "Cuerpo",
+          "language": "Idioma",
+          "created": "Creado",
+          "modified": "Modificado",
+          "predefined": "Predefinido",
+          "edited": "Editado"
+        }
+      },
+      "notification-layouts-list": {
+        "title": "Diseños de notificación",
+        "subtitle": "Gestionar diseños de notificación",
+        "labels": {
+          "no-data": "Aún no hay diseños registrados",
+          "name": "Nombre",
+          "template": "Plantilla",
+          "default": "Predeterminado"
+        }
+      },
+      "notification-layout-details": {
+        "title-new": "Crear diseño de notificación",
+        "subtitle": "Editar diseño",
+        "labels": {
+          "name": "Nombre",
+          "template": "Plantilla",
+          "default": "Predeterminado"
+        },
+        "placeholders": {
+          "name": "Ingrese el nombre..."
+        }
+      },
+      "notifications-test-resolve": {
+        "title": "Vista previa de la notificación",
+        "subtitle": "Ingrese datos de prueba para {{type}}",
+        "labels": {
+          "test": "Prueba",
+          "enter-test-data": "Ingrese datos de prueba"
+        }
+      },
+      "notifications-test-send": {
+        "title": "Enviar notificación",
+        "subtitle": "Ingrese datos de prueba para {{type}}",
+        "labels": {
+          "send": "Enviar",
+          "enter-test-data": "Ingrese datos de prueba"
+        }
+      },
+      "notifications-journal": {
+        "title": "Registro de actividad de notificaciones",
+        "subtitle": "Esta sección contiene la lista de todas las notificaciones registradas en el sistema",
+        "subtitle-search": "Resultados de búsqueda para \"{{keyword}}\"",
+        "labels": {
+          "display-name": "Nombre para mostrar",
+          "notification": "Notificación",
+          "created": "Creado",
+          "status": "Status",
+          "recipient": "Destinatario",
+          "sent-date": "Fecha de envío",
+          "channel": "Canal",
+          "error": "Error",
+          "processing": "Procesando",
+          "success": "Éxito",
+          "no-notifications": "Aún no hay notificaciones",
+          "unnamed-filter": "Filtro sin nombre",
+          "filter-new": "<strong>Agregar nuevo filtro</strong>",
+          "filter-only-pending": "Solo pendientes",
+          "filter-with-errors": "Con errores",
+          "detail": "Mostrar detalles",
+          "sendAttemptCount": "Cantidad de intentos de envío",
+          "resend-messages": "Reenviar mensajes"
+        },
+        "placeholders": {
+          "select-filter": "Seleccionar un filtro"
+        }
+      },
+      "notifications-list": {
+        "title": "Lista de notificaciones",
+        "subtitle": "Esta sección contiene la lista de todas las notificaciones registradas en el sistema",
+        "labels": {
+          "no-notifications": "Aún no hay notificaciones registradas",
+          "display-name": "Nombre para mostrar",
+          "type": "Tipo",
+          "active": "Activo"
+        }
+      },
+      "notification-details": {
+        "title": "{{ displayName }}: Detalles",
+        "labels": {
+          "is-active": "Activo",
+          "name": "Nombre de la notificación",
+          "number": "Número de teléfono"
+        },
+        "placeholders": {
+          "number": "Número de teléfono para el mensaje de texto"
+        },
+        "descriptions": {
+          "number": "Número de teléfono que recibirá la notificación (SMS)"
+        }
+      },
+      "filter-detail": {
+        "subtitle": "Editar filtro",
+        "new-title": "Nuevo filtro",
+        "new-subtitle": "Crear nuevo filtro",
+        "labels": {
+          "criteria": "Frase de búsqueda",
+          "name": "Nombre del filtro"
+        },
+        "placeholders": {
+          "criteria": "Por favor ingrese la frase de búsqueda",
+          "name": "Por favor asigne un nombre a este filtro"
+        }
+      },
+      "notifications-template-render": {
+        "title": "Formulario de vista previa",
+        "subtitle": "Este formulario renderiza una plantilla"
+      }
+    },
+    "widgets": {
+      "notificationsTemplatesWidget": {
+        "title": "Plantillas",
+        "blade-title": "{{displayName}}: Lista de plantillas",
+        "blade-subtitle": "Gestionar plantillas de notificación"
+      },
+      "notificationsLogWidget": {
+        "title": "Registro de notificaciones",
+        "blade-title": "Registro de datos sobre notificaciones",
+        "blade-subtitle": "Ver registro de notificaciones"
+      },
+      "notificationsAttachmentsWidget": {
+        "title": "Adjuntos (próximamente)",
+        "blade-title": "Adjuntos",
+        "blade-subtitle": "Adjuntos"
+      }
+    },
+    "dialogs": {
+      "unknown-kind": {
+        "title": "Error",
+        "message": "No se pudo abrir la notificación '{{type}}'. Por favor, contacte a su administrador del sitio para obtener información"
+      },
+      "notification-details-save": {
+        "title": "Guardar cambios",
+        "message": "La plantilla de notificación ha sido modificada. ¿Desea guardar los cambios?"
+      },
+      "notification-template-delete": {
+        "title": "Confirmar eliminación",
+        "message": "¿Está seguro de que desea eliminar las plantillas seleccionadas?"
+      },
+      "notification-template-delete-notification": {
+        "title": "No se pudo eliminar la plantilla",
+        "message": "No puede eliminar plantillas predeterminadas o predefinidas. Por favor, deseleccione esas plantillas e intente nuevamente"
+      },
+      "notification-template-reset-confirmation": {
+        "title": "Confirmar restablecimiento de plantilla",
+        "warning": "ADVERTENCIA: Este cambio es permanente y no se puede deshacer. Aplicar este cambio puede resultar en pérdida de datos",
+        "message": "{{count}} plantilla(s) para los siguientes idiomas serán eliminadas:",
+        "instruction": "Escriba 'yes' para eliminar:"
+      },
+      "notification-share-preview-confirmation": {
+        "title": "Confirmar compartir vista previa de la notificación",
+        "message": "¿Le gustaría enviar esta notificación de vista previa a la dirección de correo electrónico especificada?"
+      },
+      "share-success": {
+        "title": "Compartir vista previa",
+        "message": "El mensaje de prueba con la vista previa de la notificación fue enviado con éxito"
+      },
+      "share-error": {
+        "title": "Error"
+      },
+      "notification-layout-delete": {
+        "title": "Confirmar eliminación",
+        "message": "¿Está seguro de que desea eliminar los diseños seleccionados?"
+      }
+    },
+    "commands": {
+      "restore": "Restaurar",
+      "share-preview": "Compartir"
+    }
+  },
+  "notificationTypes": {
+    "UnregisteredNotification": {
+      "displayName": "Notificación no registrada",
+      "description": "Tipo de notificación original: {{type}}"
+    },
+    "RegistrationEmailNotification": {
+      "displayName": "Notificación de registro",
+      "description": "El cliente recibe una notificación por correo electrónico una vez que se ha registrado"
+    },
+    "ResetPasswordEmailNotification": {
+      "displayName": "Notificación de restablecimiento de contraseña",
+      "description": "El cliente recibe una notificación por correo electrónico al solicitar un restablecimiento de contraseña"
+    },
+    "TwoFactorEmailNotification": {
+      "displayName": "Autenticación de dos factores",
+      "description": "Esta notificación contiene un token de seguridad para la autenticación de dos factores"
+    },
+    "TwoFactorSmsNotification": {
+      "displayName": "Autenticación de dos factores",
+      "description": "Esta notificación contiene un token de seguridad para la autenticación de dos factores"
+    },
+    "ConfirmationEmailNotification": {
+      "displayName": "Confirmación de correo electrónico",
+      "description": "Esta notificación por correo electrónico confirma el correo electrónico del nuevo usuario registrado"
+    },
+    "ChangePhoneNumberSmsNotification": {
+      "displayName": "Notificación de cambio de número de teléfono",
+      "description": "El cliente recibe un mensaje de texto cuando su número de teléfono es cambiado"
+    },
+    "ResetPasswordSmsNotification": {
+      "displayName": "Notificación de restablecimiento de contraseña por SMS",
+      "description": "El cliente recibe un mensaje de texto cuando su contraseña ha sido restablecida"
+    },
+    "RegistrationInvitationEmailNotification": {
+      "displayName": "Notificación de invitación a registrarse (con organización)",
+      "description": "El cliente recibe una notificación por correo electrónico una vez que recibe una invitación para registrarse en la organización"
+    },
+    "RegistrationInvitationCustomerEmailNotification": {
+      "displayName": "Notificación de invitación a registrarse (cliente)",
+      "description": "El cliente recibe una notificación por correo electrónico una vez que recibe una invitación para registrarse sin organización"
+    },
+    "RemindUserNameEmailNotification": {
+      "displayName": "Notificación de nombre de usuario olvidado",
+      "description": "El cliente recibe una notificación por correo electrónico después de hacer clic en 'Olvidé mi nombre de usuario'"
+    }
+  },
+  "permissions": {
+    "notifications:read": "Leer datos de notificación",
+    "notifications:create": "Crear datos de notificación",
+    "notifications:update": "Actualizar datos de notificación",
+    "notifications:delete": "Eliminar datos de notificación",
+    "notifications:access": "Acceder a datos de notificación",
+    "notifications:export": "Exportar datos de notificación",
+    "notifications:import": "Importar datos de notificación",
+    "notifications:templates:read": "Leer datos de plantilla",
+    "notifications:templates:create": "Crear datos de plantilla"
+  },
+  "module": {
+    "VirtoCommerce.Notifications": {
+      "description": "Exportar o importar notificaciones"
+    }
+  }
+}
