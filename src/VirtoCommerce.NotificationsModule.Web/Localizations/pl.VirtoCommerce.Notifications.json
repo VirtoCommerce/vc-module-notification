@@ -1,0 +1,316 @@
+{
+  "notifications": {
+    "blades": {
+      "notification-journal-details": {
+        "title": "Szczegóły powiadomienia",
+        "subtitle": "{{ displayName }}: Typ powiadomienia",
+        "labels": {
+          "id": "ID wiadomości:",
+          "notification-info": "Informacje o powiadomieniu",
+          "display-name": "Nazwa wyświetlana",
+          "source": "Źródło",
+          "sending-gateway": "Brama wysyłania",
+          "active": "Aktywne",
+          "not-active": "Nieaktywne",
+          "created": "Utworzono:",
+          "sent-success": "Wysłano pomyślnie",
+          "not-sent": "Nie wysłano",
+          "sent": "Wysłano",
+          "sent-date": "Data wysyłki",
+          "sender": "Od:",
+          "recipient": "Do:",
+          "bcc": "BCC",
+          "cc": "CC",
+          "sending-attempts-count": "Liczba prób wysyłki",
+          "last-fail-attempt-date": "Data ostatniej nieudanej próby",
+          "last-fail-attempt-message": "Błędy:",
+          "subject": "Temat:",
+          "body": "Treść:"
+        }
+      },
+      "notifications-edit-template": {
+        "title": "{{ displayName }}: Szablon",
+        "subtitle": "Edytuj szablon powiadomienia",
+        "title-new": "{{ displayName }}: Utwórz szablon",
+        "labels": {
+          "note": "To jest lista opcji powiadomienia. Skopiuj i wklej ten kod, aby wstawić wartości opcji do swojego szablonu",
+          "parameter-name": "Nazwa opcji",
+          "parameter-description": "Opis opcji",
+          "paremeter-code": "Kod opcji w szablonie (skopiuj ten kod i wstaw go w dowolne miejsce swojego szablonu)",
+          "language": "Język",
+          "blank-note": "Pozostaw to pole puste, aby użyć wartości domyślnej",
+          "from": "Od",
+          "to": "Do",
+          "cc": "CC",
+          "bcc": "BCC",
+          "subject": "Temat",
+          "body": "Treść",
+          "template": "Szablon",
+          "sample": "Przykładowe dane JSON",
+          "preview-data": "Dane podglądu",
+          "preview-data-comment": "Dane kontekstowe szablonu (JSON)",
+          "note-caption": "Ważne!",
+          "note-text": "Ten szablon ma zdefiniowane źródło. Po zapisaniu powiadomienia ta wersja zastąpi wersję domyślną. Możesz przywrócić oryginalny szablon, używając odpowiedniego przycisku",
+          "layout": "Układ",
+          "layout-blank-note": "Pozostaw to pole puste, aby użyć wybranego domyślnego układu"
+        },
+        "descriptions": {
+          "to": "Adres e-mail odbiorcy",
+          "cc": "Adresy odbiorców w CC",
+          "bcc": "Adres odbiorcy w BCC",
+          "from": "Adres nadawcy",
+          "subject": "Temat powiadomienia e-mail",
+          "sample": "Używane w pełnym podglądzie jako przykładowy obiekt powiadomienia"
+        },
+        "placeholders": {
+          "language": "Proszę wybrać...",
+          "recipient": "Adres odbiorcy",
+          "email-addresses-note": "Proszę wprowadzić adresy",
+          "subject": "Proszę wprowadzić temat e-mail",
+          "layout": "Proszę wybrać..."
+        }
+      },
+      "notification-templates-list": {
+        "title": "Szablony powiadomień",
+        "labels": {
+          "subject": "Temat",
+          "body": "Treść",
+          "language": "Język",
+          "created": "Utworzono",
+          "modified": "Zmodyfikowano",
+          "predefined": "Zdefiniowane",
+          "edited": "Edytowane"
+        }
+      },
+      "notification-layouts-list": {
+        "title": "Układy powiadomień",
+        "subtitle": "Zarządzaj układami powiadomień",
+        "labels": {
+          "no-data": "Brak zarejestrowanych układów",
+          "name": "Nazwa",
+          "template": "Szablon",
+          "default": "Domyślny"
+        }
+      },
+      "notification-layout-details": {
+        "title-new": "Utwórz układ powiadomienia",
+        "subtitle": "Edytuj układ",
+        "labels": {
+          "name": "Nazwa",
+          "template": "Szablon",
+          "default": "Domyślny"
+        },
+        "placeholders": {
+          "name": "Wprowadź nazwę..."
+        }
+      },
+      "notifications-test-resolve": {
+        "title": "Podgląd powiadomienia",
+        "subtitle": "Wprowadź dane testowe dla {{type}}",
+        "labels": {
+          "test": "Test",
+          "enter-test-data": "Wprowadź dane testowe"
+        }
+      },
+      "notifications-test-send": {
+        "title": "Wyślij powiadomienie",
+        "subtitle": "Wprowadź dane testowe dla {{type}}",
+        "labels": {
+          "send": "Wyślij",
+          "enter-test-data": "Wprowadź dane testowe"
+        }
+      },
+      "notifications-journal": {
+        "title": "Dziennik aktywności powiadomień",
+        "subtitle": "Ta sekcja zawiera listę wszystkich powiadomień zarejestrowanych w systemie",
+        "subtitle-search": "Wyniki wyszukiwania dla \"{{keyword}}\"",
+        "labels": {
+          "display-name": "Nazwa wyświetlana",
+          "notification": "Powiadomienie",
+          "created": "Utworzono",
+          "status": "Status",
+          "recipient": "Odbiorca",
+          "sent-date": "Data wysyłki",
+          "channel": "Kanał",
+          "error": "Błąd",
+          "processing": "W trakcie przetwarzania",
+          "success": "Sukces",
+          "no-notifications": "Brak powiadomień",
+          "unnamed-filter": "Nienazwany filtr",
+          "filter-new": "<strong>Dodaj nowy filtr</strong>",
+          "filter-only-pending": "Tylko oczekujące",
+          "filter-with-errors": "Z błędami",
+          "detail": "Pokaż szczegóły",
+          "sendAttemptCount": "Liczba prób wysyłki",
+          "resend-messages": "Wyślij ponownie wiadomości"
+        },
+        "placeholders": {
+          "select-filter": "Wybierz filtr"
+        }
+      },
+      "notifications-list": {
+        "title": "Lista powiadomień",
+        "subtitle": "Ta sekcja zawiera listę wszystkich powiadomień zarejestrowanych w systemie",
+        "labels": {
+          "no-notifications": "Brak zarejestrowanych powiadomień",
+          "display-name": "Nazwa wyświetlana",
+          "type": "Typ",
+          "active": "Aktywne"
+        }
+      },
+      "notification-details": {
+        "title": "{{ displayName }}: Szczegóły",
+        "labels": {
+          "is-active": "Aktywne",
+          "name": "Nazwa powiadomienia",
+          "number": "Numer telefonu"
+        },
+        "placeholders": {
+          "number": "Numer telefonu do wiadomości tekstowej"
+        },
+        "descriptions": {
+          "number": "Numer telefonu, który otrzyma powiadomienie SMS"
+        }
+      },
+      "filter-detail": {
+        "subtitle": "Edytuj filtr",
+        "new-title": "Nowy filtr",
+        "new-subtitle": "Utwórz nowy filtr",
+        "labels": {
+          "criteria": "Fraza wyszukiwania",
+          "name": "Nazwa filtra"
+        },
+        "placeholders": {
+          "criteria": "Wprowadź frazę wyszukiwania",
+          "name": "Podaj nazwę tego filtra"
+        }
+      },
+      "notifications-template-render": {
+        "title": "Formularz podglądu",
+        "subtitle": "Ten formularz renderuje szablon"
+      }
+    },
+    "widgets": {
+      "notificationsTemplatesWidget": {
+        "title": "Szablony",
+        "blade-title": "{{displayName}}: Lista szablonów",
+        "blade-subtitle": "Zarządzaj szablonami powiadomień"
+      },
+      "notificationsLogWidget": {
+        "title": "Dziennik powiadomień",
+        "blade-title": "Dziennik przechowujący dane o powiadomieniach",
+        "blade-subtitle": "Wyświetl dziennik powiadomień"
+      },
+      "notificationsAttachmentsWidget": {
+        "title": "Załączniki (wkrótce)",
+        "blade-title": "Załączniki",
+        "blade-subtitle": "Załączniki"
+      }
+    },
+    "dialogs": {
+      "unknown-kind": {
+        "title": "Błąd",
+        "message": "Nie można otworzyć powiadomienia '{{type}}'. Skontaktuj się z administratorem witryny w celu uzyskania informacji"
+      },
+      "notification-details-save": {
+        "title": "Zapisz zmiany",
+        "message": "Szablon powiadomienia został zmodyfikowany. Czy chcesz zapisać zmiany?"
+      },
+      "notification-template-delete": {
+        "title": "Potwierdź usunięcie",
+        "message": "Czy na pewno chcesz usunąć wybrane szablony?"
+      },
+      "notification-template-delete-notification": {
+        "title": "Nie można usunąć szablonu",
+        "message": "Nie możesz usunąć szablonów domyślnych lub predefiniowanych. Proszę odznaczyć takie szablony i spróbować ponownie"
+      },
+      "notification-template-reset-confirmation": {
+        "title": "Potwierdź resetowanie szablonu",
+        "warning": "OSTRZEŻENIE: Ta zmiana jest trwała i nie może być cofnięta. Zastosowanie tej zmiany może spowodować utratę danych",
+        "message": "{{count}} szablon(y) dla następujących języków zostaną usunięte:",
+        "instruction": "Wpisz 'yes', aby usunąć:"
+      },
+      "notification-share-preview-confirmation": {
+        "title": "Potwierdź udostępnienie podglądu powiadomienia",
+        "message": "Czy chcesz wysłać to powiadomienie podglądu na podany adres e-mail?"
+      },
+      "share-success": {
+        "title": "Udostępnij podgląd",
+        "message": "Wiadomość testowa z podglądem powiadomienia została wysłana pomyślnie"
+      },
+      "share-error": {
+        "title": "Błąd"
+      },
+      "notification-layout-delete": {
+        "title": "Potwierdź usunięcie",
+        "message": "Czy na pewno chcesz usunąć wybrane układy?"
+      }
+    },
+    "commands": {
+      "restore": "Przywróć",
+      "share-preview": "Udostępnij"
+    }
+  },
+  "notificationTypes": {
+    "UnregisteredNotification": {
+      "displayName": "Nie zarejestrowane powiadomienie",
+      "description": "Oryginalny typ powiadomienia: {{type}}"
+    },
+    "RegistrationEmailNotification": {
+      "displayName": "Powiadomienie o rejestracji",
+      "description": "Klient otrzymuje powiadomienie e-mail po rejestracji"
+    },
+    "ResetPasswordEmailNotification": {
+      "displayName": "Powiadomienie o resetowaniu hasła",
+      "description": "Klient otrzymuje powiadomienie e-mail po żądaniu resetowania hasła"
+    },
+    "TwoFactorEmailNotification": {
+      "displayName": "Autoryzacja dwuetapowa",
+      "description": "To powiadomienie zawiera token bezpieczeństwa do autoryzacji dwuetapowej"
+    },
+    "TwoFactorSmsNotification": {
+      "displayName": "Autoryzacja dwuetapowa",
+      "description": "To powiadomienie zawiera token bezpieczeństwa do autoryzacji dwuetapowej"
+    },
+    "ConfirmationEmailNotification": {
+      "displayName": "Potwierdzenie e-mail",
+      "description": "To powiadomienie e-mail potwierdza e-mail nowo zarejestrowanego użytkownika"
+    },
+    "ChangePhoneNumberSmsNotification": {
+      "displayName": "Powiadomienie o zmianie numeru telefonu",
+      "description": "Klient otrzymuje wiadomość tekstową, gdy jego numer telefonu zostaje zmieniony"
+    },
+    "ResetPasswordSmsNotification": {
+      "displayName": "Powiadomienie o resetowaniu hasła przez SMS",
+      "description": "Klient otrzymuje wiadomość tekstową, gdy jego hasło zostało zresetowane"
+    },
+    "RegistrationInvitationEmailNotification": {
+      "displayName": "Powiadomienie o zaproszeniu do rejestracji (z organizacją)",
+      "description": "Klient otrzymuje powiadomienie e-mail, gdy otrzymuje zaproszenie do rejestracji w organizacji"
+    },
+    "RegistrationInvitationCustomerEmailNotification": {
+      "displayName": "Powiadomienie o zaproszeniu do rejestracji (klient)",
+      "description": "Klient otrzymuje powiadomienie e-mail, gdy otrzymuje zaproszenie do rejestracji bez organizacji"
+    },
+    "RemindUserNameEmailNotification": {
+      "displayName": "Powiadomienie o zapomnianej nazwie użytkownika",
+      "description": "Klient otrzymuje powiadomienie e-mail po kliknięciu 'Zapomniałem nazwę użytkownika'"
+    }
+  },
+  "permissions": {
+    "notifications:read": "Czytaj dane powiadomień",
+    "notifications:create": "Twórz dane powiadomień",
+    "notifications:update": "Aktualizuj dane powiadomień",
+    "notifications:delete": "Usuń dane powiadomień",
+    "notifications:access": "Uzyskaj dostęp do danych powiadomień",
+    "notifications:export": "Eksportuj dane powiadomień",
+    "notifications:import": "Importuj dane powiadomień",
+    "notifications:templates:read": "Czytaj dane szablonów",
+    "notifications:templates:create": "Twórz dane szablonów"
+  },
+  "module": {
+    "VirtoCommerce.Notifications": {
+      "description": "Eksportuj lub importuj powiadomienia"
+    }
+  }
+}

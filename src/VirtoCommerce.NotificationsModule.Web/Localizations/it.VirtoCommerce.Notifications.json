@@ -1,0 +1,316 @@
+{
+  "notifications": {
+    "blades": {
+      "notification-journal-details": {
+        "title": "Dettagli della notifica",
+        "subtitle": "{{ displayName }}: Tipo di notifica",
+        "labels": {
+          "id": "ID messaggio:",
+          "notification-info": "Informazioni sulla notifica",
+          "display-name": "Nome visualizzato",
+          "source": "Fonte",
+          "sending-gateway": "Gateway di invio",
+          "active": "Attivo",
+          "not-active": "Inattivo",
+          "created": "Creato il:",
+          "sent-success": "Inviato con successo",
+          "not-sent": "Non inviato",
+          "sent": "Inviato",
+          "sent-date": "Data di invio",
+          "sender": "Da:",
+          "recipient": "A:",
+          "bcc": "BCC",
+          "cc": "CC",
+          "sending-attempts-count": "Conteggio tentativi di invio",
+          "last-fail-attempt-date": "Data dell'ultimo tentativo fallito",
+          "last-fail-attempt-message": "Errori:",
+          "subject": "Oggetto:",
+          "body": "Corpo:"
+        }
+      },
+      "notifications-edit-template": {
+        "title": "{{ displayName }}: Modello",
+        "subtitle": "Modifica modello di notifica",
+        "title-new": "{{ displayName }}: Crea modello",
+        "labels": {
+          "note": "Questa è un elenco di opzioni di notifica. Copia e incolla questo codice per inserire i valori delle opzioni nel tuo modello",
+          "parameter-name": "Nome dell'opzione",
+          "parameter-description": "Descrizione dell'opzione",
+          "paremeter-code": "Codice dell'opzione nel modello (copia questo codice e inseriscilo in qualsiasi parte del tuo modello)",
+          "language": "Lingua",
+          "blank-note": "Lascia questo campo vuoto per utilizzare il valore predefinito",
+          "from": "Da",
+          "to": "A",
+          "cc": "CC",
+          "bcc": "BCC",
+          "subject": "Oggetto",
+          "body": "Corpo",
+          "template": "Modello",
+          "sample": "Dati di esempio JSON",
+          "preview-data": "Dati di anteprima",
+          "preview-data-comment": "Dati di contesto del modello (JSON)",
+          "note-caption": "Importante!",
+          "note-text": "Questo modello ha una fonte predefinita. Una volta salvata la tua notifica, questa versione sostituirà quella predefinita. Puoi ripristinare il modello originale utilizzando il pulsante appropriato",
+          "layout": "Layout",
+          "layout-blank-note": "Lascia questo campo vuoto per utilizzare il layout predefinito selezionato"
+        },
+        "descriptions": {
+          "to": "Indirizzo e-mail del destinatario",
+          "cc": "Indirizzi dei destinatari in CC",
+          "bcc": "Indirizzo del destinatario in BCC",
+          "from": "Indirizzo del mittente",
+          "subject": "Oggetto della notifica via e-mail",
+          "sample": "Utilizzato nella visualizzazione completa come oggetto di notifica di esempio"
+        },
+        "placeholders": {
+          "language": "Seleziona...",
+          "recipient": "Indirizzo del destinatario",
+          "email-addresses-note": "Inserisci indirizzi",
+          "subject": "Inserisci oggetto e-mail",
+          "layout": "Seleziona..."
+        }
+      },
+      "notification-templates-list": {
+        "title": "Modelli di notifica",
+        "labels": {
+          "subject": "Oggetto",
+          "body": "Corpo",
+          "language": "Lingua",
+          "created": "Creato",
+          "modified": "Modificato",
+          "predefined": "Predefinito",
+          "edited": "Modificato"
+        }
+      },
+      "notification-layouts-list": {
+        "title": "Layouts di notifica",
+        "subtitle": "Gestisci layouts di notifica",
+        "labels": {
+          "no-data": "Nessun layout registrato",
+          "name": "Nome",
+          "template": "Modello",
+          "default": "Predefinito"
+        }
+      },
+      "notification-layout-details": {
+        "title-new": "Crea layout di notifica",
+        "subtitle": "Modifica layout",
+        "labels": {
+          "name": "Nome",
+          "template": "Modello",
+          "default": "Predefinito"
+        },
+        "placeholders": {
+          "name": "Inserisci nome..."
+        }
+      },
+      "notifications-test-resolve": {
+        "title": "Anteprima notifica",
+        "subtitle": "Inserisci dati di test per {{type}}",
+        "labels": {
+          "test": "Test",
+          "enter-test-data": "Inserisci dati di test"
+        }
+      },
+      "notifications-test-send": {
+        "title": "Invia notifica",
+        "subtitle": "Inserisci dati di test per {{type}}",
+        "labels": {
+          "send": "Invia",
+          "enter-test-data": "Inserisci dati di test"
+        }
+      },
+      "notifications-journal": {
+        "title": "Feed attività notifiche",
+        "subtitle": "Questa sezione contiene l'elenco di tutte le notifiche registrate nel sistema",
+        "subtitle-search": "Risultati di ricerca per \"{{keyword}}\"",
+        "labels": {
+          "display-name": "Nome visualizzato",
+          "notification": "Notifica",
+          "created": "Creato",
+          "status": "Stato",
+          "recipient": "Destinatario",
+          "sent-date": "Data di invio",
+          "channel": "Canale",
+          "error": "Errore",
+          "processing": "In elaborazione",
+          "success": "Successo",
+          "no-notifications": "Nessuna notifica ancora",
+          "unnamed-filter": "Filtro senza nome",
+          "filter-new": "<strong>Aggiungi nuovo filtro</strong>",
+          "filter-only-pending": "Solo in attesa",
+          "filter-with-errors": "Con errori",
+          "detail": "Mostra dettagli",
+          "sendAttemptCount": "Conteggio tentativi di invio",
+          "resend-messages": "Reinvia messaggi"
+        },
+        "placeholders": {
+          "select-filter": "Seleziona un filtro"
+        }
+      },
+      "notifications-list": {
+        "title": "Elenco notifiche",
+        "subtitle": "Questa sezione contiene l'elenco di tutte le notifiche registrate nel sistema",
+        "labels": {
+          "no-notifications": "Nessuna notifica registrata",
+          "display-name": "Nome visualizzato",
+          "type": "Tipo",
+          "active": "Attivo"
+        }
+      },
+      "notification-details": {
+        "title": "{{ displayName }}: Dettagli",
+        "labels": {
+          "is-active": "Attivo",
+          "name": "Nome della notifica",
+          "number": "Numero di telefono"
+        },
+        "placeholders": {
+          "number": "Numero di telefono per il messaggio di testo"
+        },
+        "descriptions": {
+          "number": "Numero di telefono che riceverà la notifica (SMS)"
+        }
+      },
+      "filter-detail": {
+        "subtitle": "Modifica filtro",
+        "new-title": "Nuovo filtro",
+        "new-subtitle": "Crea nuovo filtro",
+        "labels": {
+          "criteria": "Frase di ricerca",
+          "name": "Nome del filtro"
+        },
+        "placeholders": {
+          "criteria": "Inserisci frase di ricerca",
+          "name": "Dai un nome a questo filtro"
+        }
+      },
+      "notifications-template-render": {
+        "title": "Modulo di anteprima",
+        "subtitle": "Questo modulo rende un modello"
+      }
+    },
+    "widgets": {
+      "notificationsTemplatesWidget": {
+        "title": "Modelli",
+        "blade-title": "{{displayName}}: Elenco modelli",
+        "blade-subtitle": "Gestisci modelli di notifica"
+      },
+      "notificationsLogWidget": {
+        "title": "Registro notifiche",
+        "blade-title": "Registro che memorizza dati sulle notifiche",
+        "blade-subtitle": "Visualizza registro notifiche"
+      },
+      "notificationsAttachmentsWidget": {
+        "title": "Allegati (in arrivo)",
+        "blade-title": "Allegati",
+        "blade-subtitle": "Allegati"
+      }
+    },
+    "dialogs": {
+      "unknown-kind": {
+        "title": "Errore",
+        "message": "Impossibile aprire la notifica '{{type}}'. Contatta il tuo amministratore del sito per informazioni"
+      },
+      "notification-details-save": {
+        "title": "Salva modifiche",
+        "message": "Il modello di notifica è stato modificato. Vuoi salvare le modifiche"
+      },
+      "notification-template-delete": {
+        "title": "Conferma eliminazione",
+        "message": "Sei sicuro di voler eliminare i modelli selezionati"
+      },
+      "notification-template-delete-notification": {
+        "title": "Impossibile eliminare il modello",
+        "message": "Non puoi eliminare modelli predefiniti o standard. Deseleziona tali modelli e riprova"
+      },
+      "notification-template-reset-confirmation": {
+        "title": "Conferma ripristino modello",
+        "warning": "ATTENZIONE: Questa modifica è permanente e non può essere annullata. Applicare questa modifica può comportare una perdita di dati",
+        "message": "{{count}} modello(i) per le seguenti lingue saranno eliminati:",
+        "instruction": "Digita 'yes' per eliminare:"
+      },
+      "notification-share-preview-confirmation": {
+        "title": "Conferma condivisione anteprima notifica",
+        "message": "Vuoi inviare questa notifica di anteprima all'indirizzo e-mail specificato"
+      },
+      "share-success": {
+        "title": "Condividi anteprima",
+        "message": "Messaggio di test con l'anteprima della notifica inviato con successo"
+      },
+      "share-error": {
+        "title": "Errore"
+      },
+      "notification-layout-delete": {
+        "title": "Conferma eliminazione",
+        "message": "Sei sicuro di voler eliminare i layout selezionati"
+      }
+    },
+    "commands": {
+      "restore": "Ripristina",
+      "share-preview": "Condividi"
+    }
+  },
+  "notificationTypes": {
+    "UnregisteredNotification": {
+      "displayName": "Notificazione non registrata",
+      "description": "Tipo di notifica originale: {{type}}"
+    },
+    "RegistrationEmailNotification": {
+      "displayName": "Notificazione di registrazione",
+      "description": "Il cliente riceve una notifica via e-mail una volta registrato"
+    },
+    "ResetPasswordEmailNotification": {
+      "displayName": "Notificazione di ripristino password",
+      "description": "Il cliente riceve una notifica via e-mail su richiesta di ripristino password"
+    },
+    "TwoFactorEmailNotification": {
+      "displayName": "Autenticazione a due fattori",
+      "description": "Questa notifica contiene un token di sicurezza per l'autenticazione a due fattori"
+    },
+    "TwoFactorSmsNotification": {
+      "displayName": "Autenticazione a due fattori",
+      "description": "Questa notifica contiene un token di sicurezza per l'autenticazione a due fattori"
+    },
+    "ConfirmationEmailNotification": {
+      "displayName": "Conferma e-mail",
+      "description": "Questa notifica via e-mail conferma l'e-mail del nuovo utente registrato"
+    },
+    "ChangePhoneNumberSmsNotification": {
+      "displayName": "Notificazione di cambio numero di telefono",
+      "description": "Il cliente riceve un messaggio di testo quando il suo numero di telefono viene cambiato"
+    },
+    "ResetPasswordSmsNotification": {
+      "displayName": "Notificazione di ripristino password via SMS",
+      "description": "Il cliente riceve un messaggio di testo quando la sua password è stata ripristinata"
+    },
+    "RegistrationInvitationEmailNotification": {
+      "displayName": "Notificazione di invito alla registrazione (con organizzazione)",
+      "description": "Il cliente riceve una notifica via e-mail una volta ricevuto un invito a registrarsi all'organizzazione"
+    },
+    "RegistrationInvitationCustomerEmailNotification": {
+      "displayName": "Notificazione di invito alla registrazione (cliente)",
+      "description": "Il cliente riceve una notifica via e-mail una volta ricevuto un invito a registrarsi senza organizzazione"
+    },
+    "RemindUserNameEmailNotification": {
+      "displayName": "Notificazione di nome utente dimenticato",
+      "description": "Il cliente riceve una notifica via e-mail dopo aver cliccato su 'Ho dimenticato il nome utente'"
+    }
+  },
+  "permissions": {
+    "notifications:read": "Leggi dati di notifica",
+    "notifications:create": "Crea dati di notifica",
+    "notifications:update": "Aggiorna dati di notifica",
+    "notifications:delete": "Elimina dati di notifica",
+    "notifications:access": "Accedi ai dati di notifica",
+    "notifications:export": "Esporta dati di notifica",
+    "notifications:import": "Importa dati di notifica",
+    "notifications:templates:read": "Leggi dati di modello",
+    "notifications:templates:create": "Crea dati di modello"
+  },
+  "module": {
+    "VirtoCommerce.Notifications": {
+      "description": "Esporta o importa notifiche"
+    }
+  }
+}
