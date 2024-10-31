@@ -56,7 +56,7 @@ angular.module(moduleTemplateName, ['textAngular'])
             var menuItem = {
                 path: 'browse/notificationsModule',
                 icon: 'fa fa-envelope',
-                title: 'Notifications',
+                title: 'notifications.main-menu-title',
                 priority: 7,
                 action: function () { $state.go('workspace.notificationsModule'); },
                 permission: 'notifications:access'
