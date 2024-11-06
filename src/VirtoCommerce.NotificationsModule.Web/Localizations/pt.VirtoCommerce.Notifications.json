@@ -1,5 +1,6 @@
 {
   "notifications": {
+    "main-menu-title": "Notificações",
     "blades": {
       "notification-journal-details": {
         "title": "Detalhes da notificação",
