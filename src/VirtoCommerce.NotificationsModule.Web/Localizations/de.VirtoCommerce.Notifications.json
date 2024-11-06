@@ -1,7 +1,7 @@
 {
   "notifications": {
     "blades": {
-      "Notification": "Benachrichtigungs",
+      "Notification": "Benachrichtigungen",
       "notification-journal-details": {
         "title": "Benachrichtigungsdetails",
         "subtitle": "{{ displayName }}: Benachrichtigungstyp",
