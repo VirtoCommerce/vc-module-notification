@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using VirtoCommerce.NotificationsModule.Data.Repositories;
 
@@ -16,8 +17,10 @@ namespace VirtoCommerce.NotificationsModule.Data.MySql.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.0")
+                .HasAnnotation("ProductVersion", "8.0.8")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
+
+            MySqlModelBuilderExtensions.AutoIncrementColumns(modelBuilder);
 
             modelBuilder.Entity("VirtoCommerce.NotificationsModule.Data.Model.EmailAttachmentEntity", b =>
                 {
@@ -152,7 +155,7 @@ namespace VirtoCommerce.NotificationsModule.Data.MySql.Migrations
 
                     b.ToTable("Notification", (string)null);
 
-                    b.HasDiscriminator<string>("Discriminator").HasValue("NotificationEntity");
+                    b.HasDiscriminator().HasValue("NotificationEntity");
 
                     b.UseTphMappingStrategy();
                 });
@@ -267,7 +270,7 @@ namespace VirtoCommerce.NotificationsModule.Data.MySql.Migrations
 
                     b.ToTable("NotificationMessage", (string)null);
 
-                    b.HasDiscriminator<string>("Discriminator").HasValue("NotificationMessageEntity");
+                    b.HasDiscriminator().HasValue("NotificationMessageEntity");
 
                     b.UseTphMappingStrategy();
                 });
@@ -316,7 +319,7 @@ namespace VirtoCommerce.NotificationsModule.Data.MySql.Migrations
 
                     b.ToTable("NotificationTemplate", (string)null);
 
-                    b.HasDiscriminator<string>("Discriminator").HasValue("NotificationTemplateEntity");
+                    b.HasDiscriminator().HasValue("NotificationTemplateEntity");
 
                     b.UseTphMappingStrategy();
                 });
@@ -326,6 +329,10 @@ namespace VirtoCommerce.NotificationsModule.Data.MySql.Migrations
                     b.HasBaseType("VirtoCommerce.NotificationsModule.Data.Model.NotificationEntity");
 
                     b.Property<string>("From")
+                        .HasMaxLength(128)
+                        .HasColumnType("varchar(128)");
+
+                    b.Property<string>("ReplyTo")
                         .HasMaxLength(128)
                         .HasColumnType("varchar(128)");
 
@@ -363,6 +370,10 @@ namespace VirtoCommerce.NotificationsModule.Data.MySql.Migrations
                         .HasColumnType("varchar(1024)");
 
                     b.Property<string>("From")
+                        .HasMaxLength(128)
+                        .HasColumnType("varchar(128)");
+
+                    b.Property<string>("ReplyTo")
                         .HasMaxLength(128)
                         .HasColumnType("varchar(128)");
 

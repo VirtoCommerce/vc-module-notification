@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
 
 namespace VirtoCommerce.NotificationsModule.Core.Model
@@ -35,6 +34,11 @@ namespace VirtoCommerce.NotificationsModule.Core.Model
         /// Array of BCC recipients
         /// </summary>
         public string[] BCC { get; set; }
+
+        /// <summary>
+        /// Allows to specify a Reply-To address
+        /// </summary>
+        public string ReplyTo { get; set; }
 
         /// <summary>
         /// Subject of Notification

@@ -1,78 +1,108 @@
 <div class="blade-content __medium-wide">
-    <div class="blade-inner">
-        <div class="inner-block">
-            <form class="form" name="detailForm">
-                <div class="form-group clearfix" ng-init="setForm(detailForm)">
-                    <div class="column">
-                        <div class="form-group">
-                            <div class="form-input">
-                                <label class="form-label __switch">
-                                    <input type="checkbox" ng-model="blade.currentEntity.isActive">
-                                    <span class="switch"></span>
-                                </label>
-                            </div>
-                            <label class="form-label">{{'notifications.blades.notification-details.labels.is-active' | translate}}</label>
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">{{ 'notifications.blades.notification-details.labels.name' | translate }}</label>
-                            <div class="form-input">
-                                <input ng-value="'notificationTypes.' + blade.currentEntity.type + '.displayName' | translate"  ng-disabled="blade.currentEntity.type" focus-on required placeholder="{{ 'notifications.blades.notification-details.placeholders.notificationType' | translate }}">
-                            </div>
-                        </div>
-                        <div class="form-group" ng-hide="true">
-                            <label class="form-label" style="margin:0">{{'notifications.blades.notifications-edit-template.labels.from' | translate}}</label>
-                            <div class="form-group" style="margin-top:0">
-                                <div class="form-input">
-                                    <input type="email" focus-on="" class="form-control" ng-model="blade.currentEntity.from" placeholder="{{ 'notifications.blades.notifications-edit-template.placeholders.email-addresses-note' | translate }}"/>
-                                </div>
-                                <div class="table-descr">
-                                    {{ 'notifications.blades.notifications-edit-template.labels.blank-note' | translate }}
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group" ng-hide="true">
-                            <label class="form-label" style="margin:0">{{'notifications.blades.notifications-edit-template.labels.to' | translate}}</label>
-                            <div class="form-group" style="margin-top:0">
-                                <div class="form-input">
-                                    <input type="email" focus-on="" class="form-control" ng-model="blade.currentEntity.to" placeholder="{{ 'notifications.blades.notifications-edit-template.placeholders.recipient' | translate }}"/>
-                                </div>
-                                <div class="table-descr">
-                                    {{ 'notifications.blades.notifications-edit-template.descriptions.to' | translate }}
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label" style="margin:0">{{'notifications.blades.notifications-edit-template.labels.cc' | translate}}</label>
-                            <div class="form-group" style="margin-top:0">
-                                <tags-input ng-model="blade.currentEntity.cc"
-                                            display-property="value"
-                                            placeholder="{{ 'notifications.blades.notifications-edit-template.placeholders.email-addresses-note' | translate }}"
-                                            allowed-tags-pattern="^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$">
-                                </tags-input>
-                                <div class="table-descr">
-                                    {{ 'notifications.blades.notifications-edit-template.labels.blank-note' | translate }}
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label" style="margin:0">{{'notifications.blades.notifications-edit-template.labels.bcc' | translate}}</label>
-                            <div class="form-group" style="margin-top:0">
-                                <tags-input ng-model="blade.currentEntity.bcc"
-                                            display-property="value"
-                                            placeholder="{{ 'notifications.blades.notifications-edit-template.placeholders.email-addresses-note' | translate }}"
-                                            allowed-tags-pattern="^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$">
-                                </tags-input>
-                                <div class="table-descr">
-                                    {{ 'notifications.blades.notifications-edit-template.labels.blank-note' | translate }}
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <va-widget-container group="notificationsDetail" blade="blade" data="blade.currentEntity" gridster-opts="{width: 526}"></va-widget-container>
-                        </div>
-                    </div>
+  <div class="blade-inner">
+    <div class="inner-block">
+      <form class="form" name="detailForm">
+        <div class="form-group clearfix" ng-init="setForm(detailForm)">
+          <div class="column">
+            <div class="form-group">
+              <div class="form-input">
+                <label class="form-label __switch">
+                  <input type="checkbox" ng-model="blade.currentEntity.isActive">
+                  <span class="switch"></span>
+                </label>
+              </div>
+              <label class="form-label">{{'notifications.blades.notification-details.labels.is-active' | translate}}</label>
+            </div>
+            <div class="form-group">
+              <label class="form-label">{{ 'notifications.blades.notification-details.labels.name' | translate }}</label>
+              <div class="form-input">
+                <input ng-value="'notificationTypes.' + blade.currentEntity.type + '.displayName' | translate" ng-disabled="blade.currentEntity.type" focus-on required placeholder="{{ 'notifications.blades.notification-details.placeholders.notificationType' | translate }}">
+              </div>
+            </div>
+            <div class="form-group" ng-hide="true">
+              <label class="form-label" style="margin:0">{{'notifications.blades.notifications-edit-template.labels.from' | translate}}</label>
+              <div class="form-group" style="margin-top:0">
+                <div class="form-input">
+                  <input type="email" focus-on="" class="form-control" ng-model="blade.currentEntity.from" placeholder="{{ 'notifications.blades.notifications-edit-template.placeholders.email-addresses-note' | translate }}" />
                 </div>
-            </form>
+                <div class="table-descr">
+                  {{ 'notifications.blades.notifications-edit-template.labels.blank-note' | translate }}
+                </div>
+              </div>
+            </div>
+            <div class="form-group" ng-hide="true">
+              <label class="form-label" style="margin:0">{{'notifications.blades.notifications-edit-template.labels.to' | translate}}</label>
+              <div class="form-group" style="margin-top:0">
+                <div class="form-input">
+                  <input type="email" focus-on="" class="form-control" ng-model="blade.currentEntity.to" placeholder="{{ 'notifications.blades.notifications-edit-template.placeholders.recipient' | translate }}" />
+                </div>
+                <div class="table-descr">
+                  {{ 'notifications.blades.notifications-edit-template.descriptions.to' | translate }}
+                </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-label" style="margin:0">
+                {{'notifications.blades.notifications-edit-template.labels.cc' | translate}}
+                <i class="form-ico fa fa-question-circle __link __lightblue" ng-click="blade.setting.cc_descrVisible=!blade.setting.cc_descrVisible"></i>
+              </label>
+              <div class="form-group" style="margin-top:0">
+                <tags-input ng-model="blade.currentEntity.cc"
+                            display-property="value"
+                            placeholder="{{ 'notifications.blades.notifications-edit-template.placeholders.email-addresses-note' | translate }}"
+                            allowed-tags-pattern="^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$">
+                </tags-input>
+                <div ng-if="blade.setting.cc_descrVisible">
+                  <div class="table-descr">
+                    {{ 'notifications.blades.notifications-edit-template.labels.blank-note' | translate }}
+                  </div>
+                  <a href="" ng-click="blade.setting.cc_descrVisible = false;">Hide</a>
+                </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-label" style="margin:0">
+                {{'notifications.blades.notifications-edit-template.labels.bcc' | translate}}
+                <i class="form-ico fa fa-question-circle __link __lightblue" ng-click="blade.setting.bcc_descrVisible=!blade.setting.bcc_descrVisible"></i>
+              </label>
+              <div class="form-group" style="margin-top:0">
+                <tags-input ng-model="blade.currentEntity.bcc"
+                            display-property="value"
+                            placeholder="{{ 'notifications.blades.notifications-edit-template.placeholders.email-addresses-note' | translate }}"
+                            allowed-tags-pattern="^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$">
+                </tags-input>
+                <div ng-if="blade.setting.bcc_descrVisible">
+                  <div class="table-descr">
+                    {{ 'notifications.blades.notifications-edit-template.labels.blank-note' | translate }}
+                  </div>
+                  <a href="" ng-click="blade.setting.bcc_descrVisible = false;">Hide</a>
+                </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-label" style="margin:0">
+                {{'notifications.blades.notifications-edit-template.labels.reply-to' | translate}}
+                <i class="form-ico fa fa-question-circle __link __lightblue" ng-click="blade.setting.repltyto_descrVisible=!blade.setting.repltyto_descrVisible"></i>
+
+              </label>
+              <div class="form-group" style="margin-top:0">
+                <div class="form-input">
+                  <input type="email" focus-on="" class="form-control" ng-model="blade.currentEntity.replyTo" placeholder="{{ 'notifications.blades.notifications-edit-template.placeholders.reply-to' | translate }}" />
+                </div>
+                <div ng-if="blade.setting.repltyto_descrVisible">
+                  <div class="table-descr">
+                    {{ 'notifications.blades.notifications-edit-template.labels.blank-note' | translate }}
+                  </div>
+                  <a href="" ng-click="blade.setting.repltyto_descrVisible = false;">Hide</a>
+                </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <va-widget-container group="notificationsDetail" blade="blade" data="blade.currentEntity" gridster-opts="{width: 526}"></va-widget-container>
+            </div>
+          </div>
         </div>
+      </form>
     </div>
+  </div>
 </div>

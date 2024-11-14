@@ -36,14 +36,32 @@ public class SmtpEmailNotificationMessageSender : INotificationMessageSender
         {
             using var mailMsg = new MimeMessage();
 
-            mailMsg.From.Add(new MailboxAddress(name: null, emailNotificationMessage.From ?? _emailSendingOptions.DefaultSender));
-            mailMsg.To.Add(new MailboxAddress(name: null, emailNotificationMessage.To));
+            mailMsg.From.Add(MailboxAddress.Parse(emailNotificationMessage.From ?? _emailSendingOptions.DefaultSender));
+            mailMsg.To.Add(MailboxAddress.Parse(emailNotificationMessage.To));
+
+            if (!string.IsNullOrEmpty(emailNotificationMessage.ReplyTo))
+            {
+                if (MailboxAddress.TryParse(emailNotificationMessage.ReplyTo, out var address))
+                {
+                    mailMsg.ReplyTo.Add(address);
+                }
+            }
+            else if (!string.IsNullOrEmpty(_emailSendingOptions.DefaultReplyTo))
+            {
+                if (MailboxAddress.TryParse(_emailSendingOptions.DefaultReplyTo, out var address))
+                {
+                    mailMsg.ReplyTo.Add(address);
+                }
+            }
 
             if (!emailNotificationMessage.CC.IsNullOrEmpty())
             {
                 foreach (var ccEmail in emailNotificationMessage.CC)
                 {
-                    mailMsg.Cc.Add(new MailboxAddress(name: null, ccEmail));
+                    if (MailboxAddress.TryParse(ccEmail, out var address))
+                    {
+                        mailMsg.Cc.Add(address);
+                    }
                 }
             }
 
@@ -51,7 +69,10 @@ public class SmtpEmailNotificationMessageSender : INotificationMessageSender
             {
                 foreach (var bccEmail in emailNotificationMessage.BCC)
                 {
-                    mailMsg.Bcc.Add(new MailboxAddress(name: null, bccEmail));
+                    if (MailboxAddress.TryParse(bccEmail, out var address))
+                    {
+                        mailMsg.Bcc.Add(address);
+                    }
                 }
             }
 

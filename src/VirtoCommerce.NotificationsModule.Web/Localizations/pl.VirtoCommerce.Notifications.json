@@ -22,6 +22,7 @@
           "recipient": "Do:",
           "bcc": "BCC",
           "cc": "CC",
+          "reply-to": "Reply-to",
           "sending-attempts-count": "Liczba prób wysyłki",
           "last-fail-attempt-date": "Data ostatniej nieudanej próby",
           "last-fail-attempt-message": "Błędy:",
@@ -44,6 +45,7 @@
           "to": "Do",
           "cc": "CC",
           "bcc": "BCC",
+          "reply-to": "Reply-to",
           "subject": "Temat",
           "body": "Treść",
           "template": "Szablon",
@@ -59,6 +61,7 @@
           "to": "Adres e-mail odbiorcy",
           "cc": "Adresy odbiorców w CC",
           "bcc": "Adres odbiorcy w BCC",
+          "reply-to": "Reply-to",
           "from": "Adres nadawcy",
           "subject": "Temat powiadomienia e-mail",
           "sample": "Używane w pełnym podglądzie jako przykładowy obiekt powiadomienia"
