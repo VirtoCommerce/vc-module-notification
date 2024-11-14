@@ -39,19 +39,15 @@ public class SmtpEmailNotificationMessageSender : INotificationMessageSender
             mailMsg.From.Add(MailboxAddress.Parse(emailNotificationMessage.From ?? _emailSendingOptions.DefaultSender));
             mailMsg.To.Add(MailboxAddress.Parse(emailNotificationMessage.To));
 
-            if (!string.IsNullOrEmpty(emailNotificationMessage.ReplyTo))
+            if (!string.IsNullOrEmpty(emailNotificationMessage.ReplyTo) &&
+                MailboxAddress.TryParse(emailNotificationMessage.ReplyTo, out var replyToAddress))
             {
-                if (MailboxAddress.TryParse(emailNotificationMessage.ReplyTo, out var address))
-                {
-                    mailMsg.ReplyTo.Add(address);
-                }
+                mailMsg.ReplyTo.Add(replyToAddress);
             }
-            else if (!string.IsNullOrEmpty(_emailSendingOptions.DefaultReplyTo))
+            else if (!string.IsNullOrEmpty(_emailSendingOptions.DefaultReplyTo) &&
+                MailboxAddress.TryParse(_emailSendingOptions.DefaultReplyTo, out var defaultReplyToAddress))
             {
-                if (MailboxAddress.TryParse(_emailSendingOptions.DefaultReplyTo, out var address))
-                {
-                    mailMsg.ReplyTo.Add(address);
-                }
+                mailMsg.ReplyTo.Add(defaultReplyToAddress);
             }
 
             if (!emailNotificationMessage.CC.IsNullOrEmpty())
