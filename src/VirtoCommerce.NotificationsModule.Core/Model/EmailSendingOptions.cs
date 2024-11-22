@@ -13,6 +13,9 @@ namespace VirtoCommerce.NotificationsModule.Core.Model
         [EmailAddress]
         public string DefaultSender { get; set; }
 
+        [EmailAddress]
+        public string DefaultReplyTo { get; set; }
+
         /// <summary>
         /// Gateway for sending email notifications
         /// </summary>

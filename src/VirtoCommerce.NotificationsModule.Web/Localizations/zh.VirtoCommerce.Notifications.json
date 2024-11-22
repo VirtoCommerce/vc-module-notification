@@ -22,6 +22,7 @@
           "recipient": "收件人:",
           "bcc": "密件抄送",
           "cc": "抄送",
+          "reply-to": "Reply-to",
           "sending-attempts-count": "发送尝试次数",
           "last-fail-attempt-date": "最后失败尝试日期",
           "last-fail-attempt-message": "错误:",
@@ -44,6 +45,7 @@
           "to": "收件人",
           "cc": "抄送",
           "bcc": "密件抄送",
+          "reply-to": "Reply-to",
           "subject": "主题",
           "body": "正文",
           "template": "模板",
@@ -59,6 +61,7 @@
           "to": "电子邮件收件人地址",
           "cc": "抄送收件人地址",
           "bcc": "密件抄送收件人地址",
+          "reply-to": "Reply-to",
           "from": "发件人地址",
           "subject": "电子邮件通知的主题",
           "sample": "在完整预览中用作示例通知对象"

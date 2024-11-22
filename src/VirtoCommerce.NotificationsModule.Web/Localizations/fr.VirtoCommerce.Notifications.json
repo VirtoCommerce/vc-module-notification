@@ -22,6 +22,7 @@
           "recipient": "À :",
           "bcc": "BCC",
           "cc": "CC",
+          "reply-to": "Reply-to",
           "sending-attempts-count": "Nombre de tentatives d'envoi",
           "last-fail-attempt-date": "Date de la dernière tentative échouée",
           "last-fail-attempt-message": "Erreurs :",
@@ -44,6 +45,7 @@
           "to": "À",
           "cc": "CC",
           "bcc": "BCC",
+          "reply-to": "Reply-to",
           "subject": "Objet",
           "body": "Corps",
           "template": "Modèle",
@@ -59,6 +61,7 @@
           "to": "Adresse e-mail du destinataire",
           "cc": "Adresses e-mail des destinataires en CC",
           "bcc": "Adresse e-mail du destinataire en BCC",
+          "reply-to": "Reply-to",
           "from": "Adresse de l'expéditeur",
           "subject": "Objet de la notification par e-mail",
           "sample": "Utilisé dans la prévisualisation complète comme objet de notification d'exemple"

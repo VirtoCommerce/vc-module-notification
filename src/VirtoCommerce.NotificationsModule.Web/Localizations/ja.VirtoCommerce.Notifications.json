@@ -22,6 +22,7 @@
           "recipient": "受信者:",
           "bcc": "BCC",
           "cc": "CC",
+          "reply-to": "Reply-to",
           "sending-attempts-count": "送信試行回数",
           "last-fail-attempt-date": "最後の失敗した試行日",
           "last-fail-attempt-message": "エラー:",
@@ -44,6 +45,7 @@
           "to": "受信者",
           "cc": "CC",
           "bcc": "BCC",
+          "reply-to": "Reply-to",
           "subject": "件名",
           "body": "本文",
           "template": "テンプレート",
@@ -59,6 +61,7 @@
           "to": "メール受信者のアドレス",
           "cc": "CC受信者のアドレス",
           "bcc": "BCC受信者のアドレス",
+          "reply-to": "Reply-to",
           "from": "送信者のアドレス",
           "subject": "メール通知の件名",
           "sample": "完全なプレビューでサンプル通知オブジェクトとして使用されます"

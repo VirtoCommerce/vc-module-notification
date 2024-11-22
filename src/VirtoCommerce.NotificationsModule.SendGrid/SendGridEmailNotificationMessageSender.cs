@@ -67,6 +67,12 @@ namespace VirtoCommerce.NotificationsModule.SendGrid
                 HtmlContent = emailNotificationMessage.Body,
             };
 
+            var replyTo = emailNotificationMessage.ReplyTo ?? _emailSendingOptions.DefaultReplyTo;
+            if(!string.IsNullOrEmpty(replyTo))
+            {
+                mailMsg.ReplyTo = new EmailAddress(replyTo);
+            }    
+
             mailMsg.AddTo(toAddress);
 
             if (!emailNotificationMessage.CC.IsNullOrEmpty())

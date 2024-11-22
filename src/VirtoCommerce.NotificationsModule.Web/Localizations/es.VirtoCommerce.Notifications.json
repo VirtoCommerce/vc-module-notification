@@ -22,6 +22,7 @@
           "recipient": "Para:",
           "bcc": "BCC",
           "cc": "CC",
+          "reply-to": "Reply-to",
           "sending-attempts-count": "Cantidad de intentos de envío",
           "last-fail-attempt-date": "Fecha del último intento fallido",
           "last-fail-attempt-message": "Errores:",
@@ -44,6 +45,7 @@
           "to": "Para",
           "cc": "CC",
           "bcc": "BCC",
+          "reply-to": "Reply-to",
           "subject": "Asunto",
           "body": "Cuerpo",
           "template": "Plantilla",
@@ -59,6 +61,7 @@
           "to": "Dirección de correo electrónico del destinatario",
           "cc": "Direcciones de los destinatarios en CC",
           "bcc": "Dirección del destinatario en BCC",
+          "reply-to": "Reply-to",
           "from": "Dirección del remitente",
           "subject": "Asunto de la notificación por correo electrónico",
           "sample": "Utilizado en la vista previa completa como objeto de notificación de ejemplo"

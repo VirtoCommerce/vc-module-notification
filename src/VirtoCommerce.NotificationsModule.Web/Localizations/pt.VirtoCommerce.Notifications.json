@@ -22,6 +22,7 @@
           "recipient": "Para:",
           "bcc": "BCC",
           "cc": "CC",
+          "reply-to": "Reply-to",
           "sending-attempts-count": "Contagem de tentativas de envio",
           "last-fail-attempt-date": "Data da última tentativa falhada",
           "last-fail-attempt-message": "Erros:",
@@ -44,6 +45,7 @@
           "to": "Para",
           "cc": "CC",
           "bcc": "BCC",
+          "reply-to": "Reply-to",
           "subject": "Assunto",
           "body": "Corpo",
           "template": "Modelo",
@@ -59,6 +61,7 @@
           "to": "Endereço de e-mail do destinatário",
           "cc": "Endereços dos destinatários em CC",
           "bcc": "Endereço do destinatário em BCC",
+          "reply-to": "Reply-to",
           "from": "Endereço do remetente",
           "subject": "Assunto da notificação por e-mail",
           "sample": "Usado na pré-visualização completa como um objeto de notificação de exemplo"

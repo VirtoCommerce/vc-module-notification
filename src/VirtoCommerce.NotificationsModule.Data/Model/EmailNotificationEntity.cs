@@ -20,6 +20,12 @@ namespace VirtoCommerce.NotificationsModule.Data.Model
         [StringLength(128)]
         public string To { get; set; }
 
+        /// <summary>
+        /// Address should be used to reply to the message.
+        /// </summary>
+        [StringLength(128)]
+        public string ReplyTo { get; set; }
+
         #region Navigation Properties
 
         public virtual ObservableCollection<NotificationEmailRecipientEntity> Recipients { get; set; }
@@ -36,6 +42,8 @@ namespace VirtoCommerce.NotificationsModule.Data.Model
             {
                 emailNotification.From = From;
                 emailNotification.To = To;
+                emailNotification.ReplyTo = ReplyTo;
+
                 if (!Recipients.IsNullOrEmpty())
                 {
                     emailNotification.CC = Recipients.Where(r => r.RecipientType == NotificationRecipientType.Cc)
@@ -54,17 +62,24 @@ namespace VirtoCommerce.NotificationsModule.Data.Model
             {
                 From = emailNotification.From;
                 To = emailNotification.To;
+                ReplyTo = emailNotification.ReplyTo;
 
                 if (emailNotification.CC != null)
                 {
-                    if (Recipients.IsNullCollection()) Recipients = new ObservableCollection<NotificationEmailRecipientEntity>();
+                    if (Recipients.IsNullCollection())
+                    {
+                        Recipients = new ObservableCollection<NotificationEmailRecipientEntity>();
+                    }
                     Recipients.AddRange(emailNotification.CC.Select(cc => AbstractTypeFactory<NotificationEmailRecipientEntity>.TryCreateInstance()
                         .FromModel(cc, NotificationRecipientType.Cc)));
                 }
 
                 if (emailNotification.BCC != null)
                 {
-                    if (Recipients.IsNullCollection()) Recipients = new ObservableCollection<NotificationEmailRecipientEntity>();
+                    if (Recipients.IsNullCollection())
+                    {
+                        Recipients = new ObservableCollection<NotificationEmailRecipientEntity>();
+                    }
                     Recipients.AddRange(emailNotification.BCC.Select(bcc => AbstractTypeFactory<NotificationEmailRecipientEntity>.TryCreateInstance()
                         .FromModel(bcc, NotificationRecipientType.Bcc)));
                 }
@@ -79,6 +94,7 @@ namespace VirtoCommerce.NotificationsModule.Data.Model
             {
                 emailNotification.From = From;
                 emailNotification.To = To;
+                emailNotification.ReplyTo = ReplyTo;
 
                 if (!Recipients.IsNullCollection())
                 {
@@ -87,7 +103,7 @@ namespace VirtoCommerce.NotificationsModule.Data.Model
             }
 
             base.Patch(notification);
-        }        
+        }
     }
 
     /// <summary>
