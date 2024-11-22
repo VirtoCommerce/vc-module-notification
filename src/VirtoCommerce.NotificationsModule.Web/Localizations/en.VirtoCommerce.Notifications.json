@@ -22,6 +22,7 @@
           "recipient": "To:",
           "bcc": "BCC",
           "cc": "CC",
+          "reply-to": "Reply-to",
           "sending-attempts-count": "Sending attempt count",
           "last-fail-attempt-date": "Last failing attempt date",
           "last-fail-attempt-message": "Errors:",
@@ -44,6 +45,7 @@
           "to": "To",
           "cc": "CC",
           "bcc": "BCC",
+          "reply-to": "Reply-to",
           "subject": "Subject",
           "body": "Body",
           "template": "Template",
@@ -59,6 +61,7 @@
           "to": "Email recipient address",
           "cc": "CC recipient addresses",
           "bcc": "BCC recipient address",
+          "reply-to": "Reply to address",
           "from": "Sender address",
           "subject": "Subject of the email notification",
           "sample": "Used in the full preview as a sample notification object"

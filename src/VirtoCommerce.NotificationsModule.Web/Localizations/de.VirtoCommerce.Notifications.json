@@ -22,6 +22,7 @@
           "recipient": "An:",
           "bcc": "BCC",
           "cc": "CC",
+          "reply-to": "Reply-to",
           "sending-attempts-count": "Anzahl der Versandversuche",
           "last-fail-attempt-date": "Datum des letzten fehlgeschlagenen Versuchs",
           "last-fail-attempt-message": "Fehler:",
@@ -44,6 +45,7 @@
           "to": "An",
           "cc": "CC",
           "bcc": "BCC",
+          "reply-to": "Reply-to",
           "subject": "Betreff",
           "body": "Inhalt",
           "template": "Vorlage",
@@ -59,6 +61,7 @@
           "to": "E-Mail-Empfängeradresse",
           "cc": "CC-Empfängeradressen",
           "bcc": "BCC-Empfängeradresse",
+          "reply-to": "Reply-to-Empfängeradresse",
           "from": "Absenderadresse",
           "subject": "Betreff der E-Mail-Benachrichtigung",
           "sample": "Wird in der vollständigen Vorschau als Beispielbenachrichtigungsobjekt verwendet"

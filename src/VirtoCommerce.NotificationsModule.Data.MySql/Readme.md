@@ -1,24 +1,19 @@
+# Generate Migrations
 
-## Package manager 
-Add-Migration Initial -Context VirtoCommerce.NotificationsModule.Data.Repositories.NotificationDbContext  -Verbose -OutputDir Migrations -Project VirtoCommerce.NotificationsModule.Data.MySql -StartupProject VirtoCommerce.NotificationsModule.Data.MySql  -Debug
-
-
-
-### Entity Framework Core Commands
-```
-dotnet tool install --global dotnet-ef --version 6.*
+## Install CLI tools for Entity Framework Core
+```cmd
+dotnet tool install --global dotnet-ef --version 8.0.8
 ```
 
-**Generate Migrations**
+or update
 
-```
-dotnet ef migrations add Initial -- "{connection string}"
-dotnet ef migrations add Update1 -- "{connection string}"
-dotnet ef migrations add Update2 -- "{connection string}"
+```cmd
+dotnet tool update --global dotnet-ef --version 8.0.8
 ```
 
-etc..
+## Add Migration
+Select Data.<Provider> folder and run following command for each provider:
 
-**Apply Migrations**
-
-`dotnet ef database update -- "{connection string}"`
+```cmd
+dotnet ef migrations add <migration-name>
+```

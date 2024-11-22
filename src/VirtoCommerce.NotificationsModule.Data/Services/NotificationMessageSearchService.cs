@@ -92,6 +92,8 @@ namespace VirtoCommerce.NotificationsModule.Data.Services
                     (x is EmailNotificationMessageEntity && (
                         (((EmailNotificationMessageEntity)x).To != null &&
                          ((EmailNotificationMessageEntity)x).To.Contains(criteria.Keyword)) ||
+                        (((EmailNotificationMessageEntity)x).ReplyTo != null &&
+                         ((EmailNotificationMessageEntity)x).ReplyTo.Contains(criteria.Keyword)) ||
                         (((EmailNotificationMessageEntity)x).From != null &&
                          ((EmailNotificationMessageEntity)x).From.Contains(criteria.Keyword)) ||
                         (((EmailNotificationMessageEntity)x).Subject != null &&

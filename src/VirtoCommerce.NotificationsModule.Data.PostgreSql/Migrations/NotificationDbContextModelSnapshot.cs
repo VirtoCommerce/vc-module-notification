@@ -17,7 +17,7 @@ namespace VirtoCommerce.NotificationsModule.Data.PostgreSql.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.0")
+                .HasAnnotation("ProductVersion", "8.0.8")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
@@ -155,7 +155,7 @@ namespace VirtoCommerce.NotificationsModule.Data.PostgreSql.Migrations
 
                     b.ToTable("Notification", (string)null);
 
-                    b.HasDiscriminator<string>("Discriminator").HasValue("NotificationEntity");
+                    b.HasDiscriminator().HasValue("NotificationEntity");
 
                     b.UseTphMappingStrategy();
                 });
@@ -270,7 +270,7 @@ namespace VirtoCommerce.NotificationsModule.Data.PostgreSql.Migrations
 
                     b.ToTable("NotificationMessage", (string)null);
 
-                    b.HasDiscriminator<string>("Discriminator").HasValue("NotificationMessageEntity");
+                    b.HasDiscriminator().HasValue("NotificationMessageEntity");
 
                     b.UseTphMappingStrategy();
                 });
@@ -319,7 +319,7 @@ namespace VirtoCommerce.NotificationsModule.Data.PostgreSql.Migrations
 
                     b.ToTable("NotificationTemplate", (string)null);
 
-                    b.HasDiscriminator<string>("Discriminator").HasValue("NotificationTemplateEntity");
+                    b.HasDiscriminator().HasValue("NotificationTemplateEntity");
 
                     b.UseTphMappingStrategy();
                 });
@@ -329,6 +329,10 @@ namespace VirtoCommerce.NotificationsModule.Data.PostgreSql.Migrations
                     b.HasBaseType("VirtoCommerce.NotificationsModule.Data.Model.NotificationEntity");
 
                     b.Property<string>("From")
+                        .HasMaxLength(128)
+                        .HasColumnType("character varying(128)");
+
+                    b.Property<string>("ReplyTo")
                         .HasMaxLength(128)
                         .HasColumnType("character varying(128)");
 
@@ -366,6 +370,10 @@ namespace VirtoCommerce.NotificationsModule.Data.PostgreSql.Migrations
                         .HasColumnType("character varying(1024)");
 
                     b.Property<string>("From")
+                        .HasMaxLength(128)
+                        .HasColumnType("character varying(128)");
+
+                    b.Property<string>("ReplyTo")
                         .HasMaxLength(128)
                         .HasColumnType("character varying(128)");
 

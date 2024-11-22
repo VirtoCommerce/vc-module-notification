@@ -39,6 +39,11 @@ namespace VirtoCommerce.NotificationsModule.Core.Model
         public string To { get; set; }
 
         /// <summary>
+        /// Address should be used to reply to the message.
+        /// </summary>
+        public string ReplyTo { get; set; }
+
+        /// <summary>
         /// Array of CC recipients
         /// </summary>
         public string[] CC { get; set; }
@@ -82,6 +87,7 @@ namespace VirtoCommerce.NotificationsModule.Core.Model
 
             emailMessage.From = From;
             emailMessage.To = To;
+            emailMessage.ReplyTo = ReplyTo;
             emailMessage.CC = CC;
             emailMessage.BCC = BCC;
             emailMessage.Attachments = Attachments;
@@ -113,6 +119,7 @@ namespace VirtoCommerce.NotificationsModule.Core.Model
                 To = emailRequest.To;
                 CC = emailRequest.CC;
                 BCC = emailRequest.BCC;
+                ReplyTo = emailRequest.ReplyTo;
                 Attachments = emailRequest.Attachments;
             }
 

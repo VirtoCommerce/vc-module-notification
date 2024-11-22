@@ -36,6 +36,9 @@ namespace VirtoCommerce.NotificationsModule.Data.Model
         [StringLength(128)]
         public string To { get; set; }
 
+        [StringLength(128)]
+        public string ReplyTo { get; set; }
+
         [StringLength(1024)]
         public string CC { get; set; }
 
@@ -52,6 +55,7 @@ namespace VirtoCommerce.NotificationsModule.Data.Model
                 emailNotificationMessage.Body = Body;
                 emailNotificationMessage.From = From;
                 emailNotificationMessage.To = To;
+                emailNotificationMessage.ReplyTo = ReplyTo;
                 emailNotificationMessage.CC = CC?.Split(";");
                 emailNotificationMessage.BCC = BCC?.Split(";");
 
@@ -73,6 +77,7 @@ namespace VirtoCommerce.NotificationsModule.Data.Model
                 Body = emailNotificationMessage.Body;
                 From = emailNotificationMessage.From;
                 To = emailNotificationMessage.To;
+                ReplyTo = emailNotificationMessage.ReplyTo;
 
                 if (!emailNotificationMessage.CC.IsNullOrEmpty())
                 {
@@ -103,6 +108,7 @@ namespace VirtoCommerce.NotificationsModule.Data.Model
                 emailNotificationMessageEntity.Body = Body;
                 emailNotificationMessageEntity.From = From;
                 emailNotificationMessageEntity.To = To;
+                emailNotificationMessageEntity.ReplyTo = ReplyTo;
                 emailNotificationMessageEntity.CC = CC;
                 emailNotificationMessageEntity.BCC = BCC;
 
