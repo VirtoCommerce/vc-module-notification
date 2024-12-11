@@ -23,6 +23,7 @@ using VirtoCommerce.NotificationsModule.Data.Services;
 using VirtoCommerce.NotificationsModule.Data.SqlServer;
 using VirtoCommerce.NotificationsModule.LiquidRenderer;
 using VirtoCommerce.NotificationsModule.LiquidRenderer.Filters;
+using VirtoCommerce.NotificationsModule.MicrosoftGraph;
 using VirtoCommerce.NotificationsModule.SendGrid;
 using VirtoCommerce.NotificationsModule.Smtp;
 using VirtoCommerce.NotificationsModule.TemplateLoader.FileSystem;
@@ -104,6 +105,12 @@ namespace VirtoCommerce.NotificationsModule.Web
                         serviceCollection.AddTransient<INotificationMessageSender, SendGridEmailNotificationMessageSender>();
                         break;
                     }
+                case MicrosoftGraphEmailNotificationMessageSender.Name:
+                {
+                    serviceCollection.AddOptions<MicrosoftGraphSenderOptions>().Bind(Configuration.GetSection($"Notifications:{MicrosoftGraphEmailNotificationMessageSender.Name}")).ValidateDataAnnotations();
+                    serviceCollection.AddTransient<INotificationMessageSender, MicrosoftGraphEmailNotificationMessageSender>();
+                    break;
+                }
             }
 
             serviceCollection.AddOptions<SmsSendingOptions>().Bind(Configuration.GetSection("Notifications")).ValidateDataAnnotations();

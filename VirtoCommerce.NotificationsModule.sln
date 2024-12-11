@@ -37,6 +37,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VirtoCommerce.Notifications
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VirtoCommerce.NotificationsModule.Data.PostgreSql", "src\VirtoCommerce.NotificationsModule.Data.PostgreSql\VirtoCommerce.NotificationsModule.Data.PostgreSql.csproj", "{21509C88-133B-4375-B14F-F7CCAE90125D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VirtoCommerce.NotificationsModule.MicrosoftGraph", "src\VirtoCommerce.NotificationsModule.MicrosoftGraph\VirtoCommerce.NotificationsModule.MicrosoftGraph.csproj", "{F19BBFE0-BEB3-4ED3-95F7-833EBA2679FB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -99,6 +101,10 @@ Global
 		{21509C88-133B-4375-B14F-F7CCAE90125D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{21509C88-133B-4375-B14F-F7CCAE90125D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{21509C88-133B-4375-B14F-F7CCAE90125D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F19BBFE0-BEB3-4ED3-95F7-833EBA2679FB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F19BBFE0-BEB3-4ED3-95F7-833EBA2679FB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F19BBFE0-BEB3-4ED3-95F7-833EBA2679FB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F19BBFE0-BEB3-4ED3-95F7-833EBA2679FB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -118,6 +124,7 @@ Global
 		{E1219855-4C36-4C0A-BAAD-DEF7848C324E} = {EC6E4F2D-850E-44B1-9E77-4D1A8F830A19}
 		{5E1291F9-197A-4FD7-9999-B07AC284172F} = {EC6E4F2D-850E-44B1-9E77-4D1A8F830A19}
 		{21509C88-133B-4375-B14F-F7CCAE90125D} = {EC6E4F2D-850E-44B1-9E77-4D1A8F830A19}
+		{F19BBFE0-BEB3-4ED3-95F7-833EBA2679FB} = {EC6E4F2D-850E-44B1-9E77-4D1A8F830A19}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {EF86C9C2-2D08-4D54-BDB2-9529400059E6}
