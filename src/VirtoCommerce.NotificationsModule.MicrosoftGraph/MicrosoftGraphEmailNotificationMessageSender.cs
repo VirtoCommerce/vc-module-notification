@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using Azure.Identity;
 using Microsoft.Extensions.Options;
@@ -37,26 +38,10 @@ public class MicrosoftGraphEmailNotificationMessageSender(
                 Subject = emailNotificationMessage.Subject,
                 Body = new ItemBody { ContentType = BodyType.Html, Content = emailNotificationMessage.Body },
                 From = NewRecipient(emailNotificationMessage.From ?? _emailSendingOptions.DefaultSender),
-                ToRecipients = [NewRecipient(emailNotificationMessage.To)]
+                ToRecipients = [NewRecipient(emailNotificationMessage.To)],
+                CcRecipients = emailNotificationMessage.CC?.Select(NewRecipient).ToList(),
+                BccRecipients = emailNotificationMessage.BCC?.Select(NewRecipient).ToList()
             };
-
-            if (!emailNotificationMessage.CC.IsNullOrEmpty())
-            {
-                graphMessage.CcRecipients ??= [];
-                foreach (var ccEmail in emailNotificationMessage.CC)
-                {
-                    graphMessage.CcRecipients.Add(NewRecipient(ccEmail));
-                }
-            }
-
-            if (!emailNotificationMessage.BCC.IsNullOrEmpty())
-            {
-                graphMessage.BccRecipients ??= [];
-                foreach (var bccEmail in emailNotificationMessage.BCC)
-                {
-                    graphMessage.BccRecipients.Add(NewRecipient(bccEmail));
-                }
-            }
 
             if (!emailNotificationMessage.Attachments.IsNullOrEmpty())
             {
