@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -39,8 +39,8 @@ public class MicrosoftGraphEmailNotificationMessageSender(
                 Body = new ItemBody { ContentType = BodyType.Html, Content = emailNotificationMessage.Body },
                 From = NewRecipient(emailNotificationMessage.From ?? _emailSendingOptions.DefaultSender),
                 ToRecipients = [NewRecipient(emailNotificationMessage.To)],
-                CcRecipients = emailNotificationMessage.CC?.Select(NewRecipient).ToList(),
-                BccRecipients = emailNotificationMessage.BCC?.Select(NewRecipient).ToList()
+                CcRecipients = emailNotificationMessage.CC?.Select(NewRecipient).ToList() ?? [],
+                BccRecipients = emailNotificationMessage.BCC?.Select(NewRecipient).ToList() ?? []
             };
 
             if (!emailNotificationMessage.Attachments.IsNullOrEmpty())
