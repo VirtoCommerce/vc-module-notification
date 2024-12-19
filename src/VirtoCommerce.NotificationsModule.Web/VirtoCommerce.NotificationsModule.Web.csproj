@@ -27,6 +27,7 @@
     <ProjectReference Include="..\VirtoCommerce.NotificationsModule.Data.SqlServer\VirtoCommerce.NotificationsModule.Data.SqlServer.csproj" />
     <ProjectReference Include="..\VirtoCommerce.NotificationsModule.Data\VirtoCommerce.NotificationsModule.Data.csproj" />
     <ProjectReference Include="..\VirtoCommerce.NotificationsModule.LiquidRenderer\VirtoCommerce.NotificationsModule.LiquidRenderer.csproj" />
+    <ProjectReference Include="..\VirtoCommerce.NotificationsModule.MicrosoftGraph\VirtoCommerce.NotificationsModule.MicrosoftGraph.csproj" />
     <ProjectReference Include="..\VirtoCommerce.NotificationsModule.SendGrid\VirtoCommerce.NotificationsModule.SendGrid.csproj" />
     <ProjectReference Include="..\VirtoCommerce.NotificationsModule.Smtp\VirtoCommerce.NotificationsModule.Smtp.csproj" />
     <ProjectReference Include="..\VirtoCommerce.NotificationsModule.TemplateLoader.FileSystem\VirtoCommerce.NotificationsModule.TemplateLoader.FileSystem.csproj" />
