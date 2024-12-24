@@ -31,13 +31,15 @@ public class MicrosoftGraphEmailNotificationMessageSender(
         var emailNotificationMessage = message as EmailNotificationMessage
             ?? throw new ArgumentException($"The message is not {nameof(EmailNotificationMessage)} type");
 
+        emailNotificationMessage.From ??= _emailSendingOptions.DefaultSender;
+
         try
         {
             var graphMessage = new Message
             {
                 Subject = emailNotificationMessage.Subject,
                 Body = new ItemBody { ContentType = BodyType.Html, Content = emailNotificationMessage.Body },
-                From = NewRecipient(emailNotificationMessage.From ?? _emailSendingOptions.DefaultSender),
+                From = NewRecipient(emailNotificationMessage.From),
                 ToRecipients = [NewRecipient(emailNotificationMessage.To)],
                 CcRecipients = emailNotificationMessage.CC?.Select(NewRecipient).ToList() ?? [],
                 BccRecipients = emailNotificationMessage.BCC?.Select(NewRecipient).ToList() ?? []
