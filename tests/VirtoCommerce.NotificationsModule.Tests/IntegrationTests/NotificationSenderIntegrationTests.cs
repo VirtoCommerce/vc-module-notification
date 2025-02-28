@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
 using Hangfire;
 using Microsoft.Extensions.Configuration;
@@ -44,6 +45,7 @@ namespace VirtoCommerce.NotificationsModule.Tests.IntegrationTests
         private readonly Mock<IBackgroundJobClient> _backgroundJobClient;
         private readonly Mock<INotificationLayoutService> _notificationLayoutServiceMock;
         private readonly Mock<INotificationLayoutSearchService> _notificationLayoutSearchService;
+        private readonly IHttpClientFactory _httpClientFactory;
 
         public NotificationSenderIntegrationTests()
         {
@@ -51,6 +53,10 @@ namespace VirtoCommerce.NotificationsModule.Tests.IntegrationTests
                 .AddUserSecrets<NotificationSenderIntegrationTests>();
 
             Configuration = builder.Build();
+
+            _httpClientFactory = new Mock<IHttpClientFactory>().Object;
+            var httpClient = new HttpClient();
+            Mock.Get(_httpClientFactory).Setup(x => x.CreateClient(It.IsAny<string>())).Returns(httpClient);
 
             _smtpOptionsGmail = new SmtpSenderOptions()
             {
@@ -116,7 +122,7 @@ namespace VirtoCommerce.NotificationsModule.Tests.IntegrationTests
             _messageServiceMock.Setup(x => x.GetNotificationsMessageByIds(It.IsAny<string[]>()))
                .ReturnsAsync(new[] { message });
 
-            _messageSender = new SmtpEmailNotificationMessageSender(_smptpOptionsMock.Object, _emailSendingOptions.Object);
+            _messageSender = new SmtpEmailNotificationMessageSender(_smptpOptionsMock.Object, _emailSendingOptions.Object, _httpClientFactory);
 
             var notificationSender = GetNotificationSender();
 
@@ -135,7 +141,7 @@ namespace VirtoCommerce.NotificationsModule.Tests.IntegrationTests
 
             _smtpOptionsGmail.Password = "wrong_password";
             _smptpOptionsMock.Setup(opt => opt.Value).Returns(_smtpOptionsGmail);
-            _messageSender = new SmtpEmailNotificationMessageSender(_smptpOptionsMock.Object, _emailSendingOptions.Object);
+            _messageSender = new SmtpEmailNotificationMessageSender(_smptpOptionsMock.Object, _emailSendingOptions.Object, _httpClientFactory);
 
             var notificationSender = GetNotificationSender();
 
@@ -144,6 +150,73 @@ namespace VirtoCommerce.NotificationsModule.Tests.IntegrationTests
 
             //Assert
             Assert.False(result.IsSuccess);
+        }
+
+        [Fact]
+        public async Task SmtpEmailNotificationMessageSender_WithAttachmentFromUrl()
+        {
+            //Arrange
+            var notification = GetNotification();
+
+            var message = AbstractTypeFactory<NotificationMessage>.TryCreateInstance($"{notification.Kind}Message") as EmailNotificationMessage;
+            message.From = Configuration["SenderEmail"];
+            message.To = Configuration["SenderEmail"];
+            message.Subject = "Test Subject Email With Attachent from URL";
+            message.Body = "Test Body Email With Attachent from URL";
+
+            message.Attachments.Add(new EmailAttachment
+            {
+                FileName = "test.png",
+                Url = "https://virtostart-main.govirto.com/cms-content/assets/catalog/WOW-96976637/All%20spec.png",
+                MimeType = "image/png"
+            });
+
+            _messageServiceMock.Setup(x => x.GetNotificationsMessageByIds(It.IsAny<string[]>()))
+               .ReturnsAsync([message]);
+
+            _messageSender = new SmtpEmailNotificationMessageSender(_smptpOptionsMock.Object, _emailSendingOptions.Object, _httpClientFactory);
+
+            var notificationSender = GetNotificationSender();
+
+            //Act
+            var result = await notificationSender.SendNotificationAsync(notification);
+
+            //Assert
+            Assert.True(result.IsSuccess);
+        }
+
+
+        [Fact]
+        public async Task SmtpEmailNotificationMessageSender_WithAttachmentFromFile()
+        {
+            //Arrange
+            var notification = GetNotification();
+
+            var message = AbstractTypeFactory<NotificationMessage>.TryCreateInstance($"{notification.Kind}Message") as EmailNotificationMessage;
+            message.From = Configuration["SenderEmail"];
+            message.To = Configuration["SenderEmail"];
+            message.Subject = "Test Subject Email With Attachent from URL";
+            message.Body = "Test Body Email With Attachent from URL";
+
+            message.Attachments.Add(new EmailAttachment
+            {
+                FileName = "test.png",
+                Url = "IntegrationTests/All spec.png",
+                MimeType = "image/png"
+            });
+
+            _messageServiceMock.Setup(x => x.GetNotificationsMessageByIds(It.IsAny<string[]>()))
+               .ReturnsAsync([message]);
+
+            _messageSender = new SmtpEmailNotificationMessageSender(_smptpOptionsMock.Object, _emailSendingOptions.Object, _httpClientFactory);
+
+            var notificationSender = GetNotificationSender();
+
+            //Act
+            var result = await notificationSender.SendNotificationAsync(notification);
+
+            //Assert
+            Assert.True(result.IsSuccess);
         }
 
         [Fact]
