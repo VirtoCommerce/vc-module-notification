@@ -1,13 +1,16 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
+using System.Threading;
 using System.Threading.Tasks;
 using Hangfire;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Moq;
+using Moq.Protected;
 using Scriban.Runtime;
 using VirtoCommerce.NotificationsModule.Core.Model;
 using VirtoCommerce.NotificationsModule.Core.Model.Search;
@@ -122,7 +125,7 @@ namespace VirtoCommerce.NotificationsModule.Tests.IntegrationTests
             message.To = Configuration["SenderEmail"];
 
             _messageServiceMock.Setup(x => x.GetNotificationsMessageByIds(It.IsAny<string[]>()))
-               .ReturnsAsync(new[] { message });
+               .ReturnsAsync([message]);
 
             _messageSender = new SmtpEmailNotificationMessageSender(_smptpOptionsMock.Object, _emailSendingOptions.Object, _emailAttachmentServiceMock.Object);
 
@@ -165,18 +168,35 @@ namespace VirtoCommerce.NotificationsModule.Tests.IntegrationTests
             message.To = Configuration["SenderEmail"];
             message.Subject = "Test Subject Email With Attachent from URL";
             message.Body = "Test Body Email With Attachent from URL";
-
             message.Attachments.Add(new EmailAttachment
             {
-                FileName = "test.png",
-                Url = "https://virtostart-main.govirto.com/cms-content/assets/catalog/WOW-96976637/All%20spec.png",
-                MimeType = "image/png"
+                FileName = "test.txt",
+                Url = "http://example.com/test.txt",
+                MimeType = "text/plain"
             });
 
-            var attachmentService = new EmailAttachmentService(_httpClientFactory);
+            var expectedContent = "Test content";
+            var httpMessageHandlerMock = new Mock<HttpMessageHandler>();
+            httpMessageHandlerMock.Protected()
+                .Setup<Task<HttpResponseMessage>>(
+                    "SendAsync",
+                    ItExpr.IsAny<HttpRequestMessage>(),
+                    ItExpr.IsAny<CancellationToken>())
+                .ReturnsAsync(new HttpResponseMessage
+                {
+                    StatusCode = HttpStatusCode.OK,
+                    Content = new StringContent(expectedContent)
+                });
 
-            _messageServiceMock.Setup(x => x.GetNotificationsMessageByIds(It.IsAny<string[]>()))
-               .ReturnsAsync([message]);
+            var httpClient = new HttpClient(httpMessageHandlerMock.Object);
+            var httpClientFactoryMock = new Mock<IHttpClientFactory>();
+            httpClientFactoryMock.Setup(_ => _.CreateClient(It.IsAny<string>())).Returns(httpClient);
+
+            var attachmentService = new EmailAttachmentService(httpClientFactoryMock.Object);
+
+            _messageServiceMock
+                .Setup(x => x.GetNotificationsMessageByIds(It.IsAny<string[]>()))
+                .ReturnsAsync([message]);
 
             _messageSender = new SmtpEmailNotificationMessageSender(_smptpOptionsMock.Object, _emailSendingOptions.Object, attachmentService);
 
@@ -199,8 +219,8 @@ namespace VirtoCommerce.NotificationsModule.Tests.IntegrationTests
             var message = AbstractTypeFactory<NotificationMessage>.TryCreateInstance($"{notification.Kind}Message") as EmailNotificationMessage;
             message.From = Configuration["SenderEmail"];
             message.To = Configuration["SenderEmail"];
-            message.Subject = "Test Subject Email With Attachent from URL";
-            message.Body = "Test Body Email With Attachent from URL";
+            message.Subject = "Test Subject Email With Attachent from File";
+            message.Body = "Test Body Email With Attachent from File";
 
             message.Attachments.Add(new EmailAttachment
             {
@@ -211,8 +231,9 @@ namespace VirtoCommerce.NotificationsModule.Tests.IntegrationTests
 
             var attachmentService = new EmailAttachmentService(_httpClientFactory);
 
-            _messageServiceMock.Setup(x => x.GetNotificationsMessageByIds(It.IsAny<string[]>()))
-               .ReturnsAsync([message]);
+            _messageServiceMock
+                .Setup(x => x.GetNotificationsMessageByIds(It.IsAny<string[]>()))
+                .ReturnsAsync([message]);
 
             _messageSender = new SmtpEmailNotificationMessageSender(_smptpOptionsMock.Object, _emailSendingOptions.Object, attachmentService);
 
@@ -234,7 +255,7 @@ namespace VirtoCommerce.NotificationsModule.Tests.IntegrationTests
             var message = AbstractTypeFactory<NotificationMessage>.TryCreateInstance($"{notification.Kind}Message") as EmailNotificationMessage;
             message.From = Configuration["SendgridSender"];
             message.To = Configuration["SendgridSender"];
-            message.Subject = "subject";
+            message.Subject = "Subject";
             message.Body = "Message";
 
             _messageServiceMock.Setup(x => x.GetNotificationsMessageByIds(It.IsAny<string[]>()))

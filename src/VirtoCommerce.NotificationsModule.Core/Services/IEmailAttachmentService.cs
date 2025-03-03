@@ -7,7 +7,5 @@ namespace VirtoCommerce.NotificationsModule.Core.Services;
 public interface IEmailAttachmentService
 {
     Task<Stream> GetStreamAsync(EmailAttachment attachment);
-
-    Task<byte[]> ReadAllBytesAsync(EmailAttachment attachment);
 }
 

@@ -6,6 +6,7 @@ using Microsoft.Extensions.Options;
 using SendGrid;
 using SendGrid.Helpers.Mail;
 using VirtoCommerce.NotificationsModule.Core.Exceptions;
+using VirtoCommerce.NotificationsModule.Core.Extensions;
 using VirtoCommerce.NotificationsModule.Core.Model;
 using VirtoCommerce.NotificationsModule.Core.Services;
 using VirtoCommerce.Platform.Core.Common;
@@ -99,7 +100,8 @@ namespace VirtoCommerce.NotificationsModule.SendGrid
             {
                 foreach (var attachment in emailNotificationMessage.Attachments)
                 {
-                    var fileBytes = await _attachmentService.ReadAllBytesAsync(attachment);
+                    using var stream = await _attachmentService.GetStreamAsync(attachment);
+                    var fileBytes = await stream.ReadAllBytesAsync();
                     var base64Content = Convert.ToBase64String(fileBytes);
                     mailMsg.AddAttachment(
                         attachment.FileName,

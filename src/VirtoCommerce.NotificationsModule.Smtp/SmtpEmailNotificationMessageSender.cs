@@ -104,5 +104,4 @@ public class SmtpEmailNotificationMessageSender : INotificationMessageSender
             throw new SentNotificationException(ex);
         }
     }
-
 }

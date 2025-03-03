@@ -5,6 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Moq;
 using Moq.Protected;
+using VirtoCommerce.NotificationsModule.Core.Extensions;
 using VirtoCommerce.NotificationsModule.Core.Model;
 using VirtoCommerce.NotificationsModule.Core.Services;
 using Xunit;
@@ -89,7 +90,8 @@ public class EmailAttachmentServiceUnitTests
         try
         {
             // Act
-            var bytes = await _emailAttachmentService.ReadAllBytesAsync(attachment);
+            using var stream = await _emailAttachmentService.GetStreamAsync(attachment);
+            var bytes = await stream.ReadAllBytesAsync();
             var content = System.Text.Encoding.UTF8.GetString(bytes);
 
             // Assert
@@ -124,7 +126,8 @@ public class EmailAttachmentServiceUnitTests
         _httpClientFactoryMock.Setup(_ => _.CreateClient(It.IsAny<string>())).Returns(httpClient);
 
         // Act
-        var bytes = await _emailAttachmentService.ReadAllBytesAsync(attachment);
+        using var stream = await _emailAttachmentService.GetStreamAsync(attachment);
+        var bytes = await stream.ReadAllBytesAsync();
         var content = System.Text.Encoding.UTF8.GetString(bytes);
 
         // Assert
@@ -169,7 +172,8 @@ public class EmailAttachmentServiceUnitTests
         try
         {
             // Act
-            var bytes = await _emailAttachmentService.ReadAllBytesAsync(attachment);
+            using var stream = await _emailAttachmentService.GetStreamAsync(attachment);
+            var bytes = await stream.ReadAllBytesAsync();
             var content = System.Text.Encoding.UTF8.GetString(bytes);
 
             // Assert
@@ -179,7 +183,6 @@ public class EmailAttachmentServiceUnitTests
         {
             // Cleanup
             File.Delete(attachment.Url);
-
         }
     }
 }
