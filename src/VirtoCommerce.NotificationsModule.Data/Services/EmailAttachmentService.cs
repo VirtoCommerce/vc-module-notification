@@ -29,17 +29,15 @@ namespace VirtoCommerce.NotificationsModule.Core.Services
         {
             ArgumentNullException.ThrowIfNull(attachment);
 
-            if (!string.IsNullOrEmpty(attachment.Url))
-            {
-                if (Uri.TryCreate(attachment.Url, UriKind.Absolute, out var uri) &&
+            if (!string.IsNullOrEmpty(attachment.Url) &&
+                Uri.TryCreate(attachment.Url, UriKind.Absolute, out var uri) &&
                     !uri.IsFile)
-                {
-                    // Absolute URL: Download file asynchronously
-                    var httpClient = _httpClientFactory.CreateClient();
-                    var response = await httpClient.GetAsync(uri, HttpCompletionOption.ResponseHeadersRead);
-                    response.EnsureSuccessStatusCode();
-                    return await response.Content.ReadAsStreamAsync();
-                }
+            {
+                // Absolute URL: Download file from uri
+                var httpClient = _httpClientFactory.CreateClient();
+                var response = await httpClient.GetAsync(uri, HttpCompletionOption.ResponseHeadersRead);
+                response.EnsureSuccessStatusCode();
+                return await response.Content.ReadAsStreamAsync();
             }
 
             // Local file: Open file stream
