@@ -1,5 +1,4 @@
 using System;
-using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Azure.Identity;
@@ -16,13 +15,15 @@ namespace VirtoCommerce.NotificationsModule.MicrosoftGraph;
 
 public class MicrosoftGraphEmailNotificationMessageSender(
     IOptions<MicrosoftGraphSenderOptions> microsoftGraphOptions,
-    IOptions<EmailSendingOptions> emailSendingOptions)
+    IOptions<EmailSendingOptions> emailSendingOptions,
+    IEmailAttachmentService attachmentService)
     : INotificationMessageSender
 {
     public const string Name = "MicrosoftGraph";
 
     private readonly MicrosoftGraphSenderOptions _microsoftGraphOptions = microsoftGraphOptions.Value;
     private readonly EmailSendingOptions _emailSendingOptions = emailSendingOptions.Value;
+    private readonly IEmailAttachmentService _emailAttachmentService = attachmentService;
 
     public virtual bool CanSend(NotificationMessage message) => message is EmailNotificationMessage;
 
@@ -55,7 +56,7 @@ public class MicrosoftGraphEmailNotificationMessageSender(
                         ContentType = attachment.MimeType,
                         Name = attachment.FileName,
                         Size = Convert.ToInt32(attachment.Size),
-                        ContentBytes = await File.ReadAllBytesAsync(attachment.FileName),
+                        ContentBytes = await _emailAttachmentService.ReadAllBytesAsync(attachment),
                     });
                 }
             }

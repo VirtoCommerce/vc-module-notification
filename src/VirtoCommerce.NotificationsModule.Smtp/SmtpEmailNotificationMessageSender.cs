@@ -1,6 +1,4 @@
 using System;
-using System.IO;
-using System.Net.Http;
 using System.Threading.Tasks;
 using MailKit.Net.Smtp;
 using MailKit.Security;
@@ -18,15 +16,15 @@ public class SmtpEmailNotificationMessageSender : INotificationMessageSender
     public const string Name = "Smtp";
     private readonly SmtpSenderOptions _smtpOptions;
     private readonly EmailSendingOptions _emailSendingOptions;
-    private readonly IHttpClientFactory _httpClientFactory;
+    private readonly IEmailAttachmentService _attachmentService;
 
     public SmtpEmailNotificationMessageSender(IOptions<SmtpSenderOptions> smtpOptions,
         IOptions<EmailSendingOptions> emailSendingOptions,
-        IHttpClientFactory httpClientFactory)
+        IEmailAttachmentService attachmentService)
     {
         _smtpOptions = smtpOptions.Value;
         _emailSendingOptions = emailSendingOptions.Value;
-        _httpClientFactory = httpClientFactory;
+        _attachmentService = attachmentService;
     }
 
     public virtual bool CanSend(NotificationMessage message)
@@ -82,23 +80,12 @@ public class SmtpEmailNotificationMessageSender : INotificationMessageSender
 
             var builder = new BodyBuilder { HtmlBody = emailNotificationMessage.Body };
 
-            foreach (var attachment in emailNotificationMessage.Attachments)
+            if (!emailNotificationMessage.Attachments.IsNullOrEmpty())
             {
-                if (!string.IsNullOrEmpty(attachment.Url))
+                foreach (var attachment in emailNotificationMessage.Attachments)
                 {
-                    if (Uri.TryCreate(attachment.Url, UriKind.Absolute, out var uri))
-                    {
-                        // Absolute URL: Download file asynchronously
-                        var httpClient = _httpClientFactory.CreateClient();
-                        await using var stream = await httpClient.GetStreamAsync(attachment.Url);
-                        await builder.Attachments.AddAsync(attachment.FileName, stream);
-                    }
-                    else
-                    {
-                        // Local file: Open file stream
-                        await using var stream = File.OpenRead(attachment.Url);
-                        await builder.Attachments.AddAsync(attachment.FileName, stream);
-                    }
+                    using var stream = await _attachmentService.GetStreamAsync(attachment);
+                    await builder.Attachments.AddAsync(attachment.FileName, stream);
                 }
             }
 
@@ -117,4 +104,5 @@ public class SmtpEmailNotificationMessageSender : INotificationMessageSender
             throw new SentNotificationException(ex);
         }
     }
+
 }

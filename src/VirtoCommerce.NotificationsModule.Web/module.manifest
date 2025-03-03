@@ -20,7 +20,7 @@
   <iconUrl>Modules/$(VirtoCommerce.Notifications)/Content/logoVC.png</iconUrl>
   <requireLicenseAcceptance>false</requireLicenseAcceptance>
   <releaseNotes />
-  <copyright>Copyright © 2011-2024 Virto Commerce. All rights reserved</copyright>
+  <copyright>Copyright © 2011-2025 Virto Commerce. All rights reserved</copyright>
   <tags>notifications</tags>
   <assemblyFile>VirtoCommerce.NotificationsModule.Web.dll</assemblyFile>
   <moduleType>VirtoCommerce.NotificationsModule.Web.Module, VirtoCommerce.NotificationsModule.Web</moduleType>
