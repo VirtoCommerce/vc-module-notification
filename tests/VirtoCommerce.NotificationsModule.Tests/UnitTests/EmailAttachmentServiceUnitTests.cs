@@ -5,12 +5,12 @@ using System.Threading;
 using System.Threading.Tasks;
 using Moq;
 using Moq.Protected;
-using VirtoCommerce.NotificationsModule.Core.Extensions;
 using VirtoCommerce.NotificationsModule.Core.Model;
-using VirtoCommerce.NotificationsModule.Core.Services;
+using VirtoCommerce.NotificationsModule.Data.Services;
 using Xunit;
 
 namespace VirtoCommerce.NotificationsModule.Tests.UnitTests;
+
 public class EmailAttachmentServiceUnitTests
 {
     private readonly Mock<IHttpClientFactory> _httpClientFactoryMock;
@@ -23,7 +23,7 @@ public class EmailAttachmentServiceUnitTests
     }
 
     [Fact]
-    public async Task GetStreamAsync_LocalFile_ReturnsFileStream()
+    public async Task GetStreamAsync_LocalFile_ReturnsStream()
     {
         // Arrange
         var fileName = Path.GetTempFileName();
@@ -34,7 +34,7 @@ public class EmailAttachmentServiceUnitTests
         try
         {
             // Act
-            using var stream = await _emailAttachmentService.GetStreamAsync(attachment);
+            await using var stream = await _emailAttachmentService.GetStreamAsync(attachment);
             using var reader = new StreamReader(stream);
             var content = await reader.ReadToEndAsync();
 
@@ -67,10 +67,10 @@ public class EmailAttachmentServiceUnitTests
             });
 
         var httpClient = new HttpClient(httpMessageHandlerMock.Object);
-        _httpClientFactoryMock.Setup(_ => _.CreateClient(It.IsAny<string>())).Returns(httpClient);
+        _httpClientFactoryMock.Setup(x => x.CreateClient(It.IsAny<string>())).Returns(httpClient);
 
         // Act
-        using var stream = await _emailAttachmentService.GetStreamAsync(attachment);
+        await using var stream = await _emailAttachmentService.GetStreamAsync(attachment);
         using var reader = new StreamReader(stream);
         var content = await reader.ReadToEndAsync();
 
@@ -79,63 +79,7 @@ public class EmailAttachmentServiceUnitTests
     }
 
     [Fact]
-    public async Task ReadAllBytesAsync_LocalFile_ReturnsFileBytes()
-    {
-        // Arrange
-        var fileName = Path.GetTempFileName();
-        var attachment = new EmailAttachment { FileName = fileName };
-        var expectedContent = "Test content";
-        await File.WriteAllTextAsync(attachment.FileName, expectedContent);
-
-        try
-        {
-            // Act
-            using var stream = await _emailAttachmentService.GetStreamAsync(attachment);
-            var bytes = await stream.ReadAllBytesAsync();
-            var content = System.Text.Encoding.UTF8.GetString(bytes);
-
-            // Assert
-            Assert.Equal(expectedContent, content);
-        }
-        finally
-        {
-            // Cleanup
-            File.Delete(attachment.FileName);
-        }
-    }
-
-    [Fact]
-    public async Task ReadAllBytesAsync_Url_ReturnsBytesFromUrl()
-    {
-        // Arrange
-        var attachment = new EmailAttachment { Url = "http://example.com/test.txt" };
-        var expectedContent = "Test content";
-        var httpMessageHandlerMock = new Mock<HttpMessageHandler>();
-        httpMessageHandlerMock.Protected()
-            .Setup<Task<HttpResponseMessage>>(
-                "SendAsync",
-                ItExpr.IsAny<HttpRequestMessage>(),
-                ItExpr.IsAny<CancellationToken>())
-            .ReturnsAsync(new HttpResponseMessage
-            {
-                StatusCode = HttpStatusCode.OK,
-                Content = new StringContent(expectedContent)
-            });
-
-        var httpClient = new HttpClient(httpMessageHandlerMock.Object);
-        _httpClientFactoryMock.Setup(_ => _.CreateClient(It.IsAny<string>())).Returns(httpClient);
-
-        // Act
-        using var stream = await _emailAttachmentService.GetStreamAsync(attachment);
-        var bytes = await stream.ReadAllBytesAsync();
-        var content = System.Text.Encoding.UTF8.GetString(bytes);
-
-        // Assert
-        Assert.Equal(expectedContent, content);
-    }
-
-    [Fact]
-    public async Task GetStreamAsync_RelativeUrl_ReturnsFileStream()
+    public async Task GetStreamAsync_RelativeUrl_ReturnsStream()
     {
         // Arrange
         var fileName = Path.GetFileName(Path.GetTempFileName());
@@ -146,35 +90,9 @@ public class EmailAttachmentServiceUnitTests
         try
         {
             // Act
-            using var stream = await _emailAttachmentService.GetStreamAsync(attachment);
+            await using var stream = await _emailAttachmentService.GetStreamAsync(attachment);
             using var reader = new StreamReader(stream);
             var content = await reader.ReadToEndAsync();
-
-            // Assert
-            Assert.Equal(expectedContent, content);
-        }
-        finally
-        {
-            // Cleanup
-            File.Delete(attachment.Url);
-        }
-    }
-
-    [Fact]
-    public async Task ReadAllBytesAsync_RelativeUrl_ReturnsFileBytes()
-    {
-        // Arrange
-        var fileName = Path.GetTempFileName();
-        var attachment = new EmailAttachment { Url = fileName };
-        var expectedContent = "Test content";
-        await File.WriteAllTextAsync(attachment.Url, expectedContent);
-
-        try
-        {
-            // Act
-            using var stream = await _emailAttachmentService.GetStreamAsync(attachment);
-            var bytes = await stream.ReadAllBytesAsync();
-            var content = System.Text.Encoding.UTF8.GetString(bytes);
 
             // Assert
             Assert.Equal(expectedContent, content);

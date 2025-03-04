@@ -3,20 +3,13 @@ using System.IO;
 using System.Net.Http;
 using System.Threading.Tasks;
 using VirtoCommerce.NotificationsModule.Core.Model;
+using VirtoCommerce.NotificationsModule.Core.Services;
+using VirtoCommerce.Platform.Core.Common;
 
-namespace VirtoCommerce.NotificationsModule.Core.Services;
+namespace VirtoCommerce.NotificationsModule.Data.Services;
 
-public class EmailAttachmentService : IEmailAttachmentService
+public class EmailAttachmentService(IHttpClientFactory httpClientFactory) : IEmailAttachmentService
 {
-    private readonly IHttpClientFactory _httpClientFactory;
-
-    public EmailAttachmentService(IHttpClientFactory httpClientFactory)
-    {
-        ArgumentNullException.ThrowIfNull(httpClientFactory);
-
-        _httpClientFactory = httpClientFactory;
-    }
-
     public async Task<Stream> GetStreamAsync(EmailAttachment attachment)
     {
         ArgumentNullException.ThrowIfNull(attachment);
@@ -26,20 +19,20 @@ public class EmailAttachmentService : IEmailAttachmentService
             IsHttpScheme(uri.Scheme))
         {
             // Absolute Http URL: Download file from uri
-            var httpClient = _httpClientFactory.CreateClient();
+            var httpClient = httpClientFactory.CreateClient();
             var response = await httpClient.GetAsync(uri, HttpCompletionOption.ResponseHeadersRead);
             response.EnsureSuccessStatusCode();
             return await response.Content.ReadAsStreamAsync();
         }
 
         // Local file: Open file stream
-        var filePath = !string.IsNullOrEmpty(attachment.Url) ? attachment.Url : attachment.FileName;
+        var filePath = attachment.Url.EmptyToNull() ?? attachment.FileName;
         return File.OpenRead(filePath);
     }
 
     private static bool IsHttpScheme(string scheme)
     {
-        return scheme.Equals("http", StringComparison.OrdinalIgnoreCase) ||
-               scheme.Equals("https", StringComparison.OrdinalIgnoreCase);
+        return scheme.EqualsIgnoreCase("https") ||
+               scheme.EqualsIgnoreCase("http");
     }
 }

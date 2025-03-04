@@ -18,7 +18,8 @@ public class SmtpEmailNotificationMessageSender : INotificationMessageSender
     private readonly EmailSendingOptions _emailSendingOptions;
     private readonly IEmailAttachmentService _attachmentService;
 
-    public SmtpEmailNotificationMessageSender(IOptions<SmtpSenderOptions> smtpOptions,
+    public SmtpEmailNotificationMessageSender(
+        IOptions<SmtpSenderOptions> smtpOptions,
         IOptions<EmailSendingOptions> emailSendingOptions,
         IEmailAttachmentService attachmentService)
     {
@@ -48,7 +49,7 @@ public class SmtpEmailNotificationMessageSender : INotificationMessageSender
             {
                 mailMsg.ReplyTo.Add(replyToAddress);
             }
-            else if (!string.IsNullOrEmpty(_emailSendingOptions?.DefaultReplyTo) &&
+            else if (!string.IsNullOrEmpty(_emailSendingOptions.DefaultReplyTo) &&
                 MailboxAddress.TryParse(_emailSendingOptions.DefaultReplyTo, out var defaultReplyToAddress))
             {
                 mailMsg.ReplyTo.Add(defaultReplyToAddress);
@@ -80,13 +81,10 @@ public class SmtpEmailNotificationMessageSender : INotificationMessageSender
 
             var builder = new BodyBuilder { HtmlBody = emailNotificationMessage.Body };
 
-            if (!emailNotificationMessage.Attachments.IsNullOrEmpty())
+            foreach (var attachment in emailNotificationMessage.Attachments ?? [])
             {
-                foreach (var attachment in emailNotificationMessage.Attachments)
-                {
-                    using var stream = await _attachmentService.GetStreamAsync(attachment);
-                    await builder.Attachments.AddAsync(attachment.FileName, stream);
-                }
+                await using var stream = await _attachmentService.GetStreamAsync(attachment);
+                await builder.Attachments.AddAsync(attachment.FileName, stream);
             }
 
             mailMsg.Body = builder.ToMessageBody();

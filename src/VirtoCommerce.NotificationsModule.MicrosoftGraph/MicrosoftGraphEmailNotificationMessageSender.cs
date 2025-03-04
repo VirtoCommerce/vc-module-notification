@@ -24,7 +24,6 @@ public class MicrosoftGraphEmailNotificationMessageSender(
 
     private readonly MicrosoftGraphSenderOptions _microsoftGraphOptions = microsoftGraphOptions.Value;
     private readonly EmailSendingOptions _emailSendingOptions = emailSendingOptions.Value;
-    private readonly IEmailAttachmentService _emailAttachmentService = attachmentService;
 
     public virtual bool CanSend(NotificationMessage message) => message is EmailNotificationMessage;
 
@@ -52,7 +51,7 @@ public class MicrosoftGraphEmailNotificationMessageSender(
                 graphMessage.Attachments ??= [];
                 foreach (var attachment in emailNotificationMessage.Attachments)
                 {
-                    using var stream = await _emailAttachmentService.GetStreamAsync(attachment);
+                    await using var stream = await attachmentService.GetStreamAsync(attachment);
 
                     graphMessage.Attachments.Add(new FileAttachment
                     {

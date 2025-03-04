@@ -8,4 +8,3 @@ public interface IEmailAttachmentService
 {
     Task<Stream> GetStreamAsync(EmailAttachment attachment);
 }
-

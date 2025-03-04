@@ -20,7 +20,8 @@ namespace VirtoCommerce.NotificationsModule.SendGrid
         private readonly EmailSendingOptions _emailSendingOptions;
         private readonly IEmailAttachmentService _attachmentService;
 
-        public SendGridEmailNotificationMessageSender(IOptions<SendGridSenderOptions> sendGridOptions,
+        public SendGridEmailNotificationMessageSender(
+            IOptions<SendGridSenderOptions> sendGridOptions,
             IOptions<EmailSendingOptions> emailSendingOptions,
             IEmailAttachmentService attachmentService)
         {
@@ -96,18 +97,16 @@ namespace VirtoCommerce.NotificationsModule.SendGrid
                 }
             }
 
-            if (!emailNotificationMessage.Attachments.IsNullOrEmpty())
+            foreach (var attachment in emailNotificationMessage.Attachments ?? [])
             {
-                foreach (var attachment in emailNotificationMessage.Attachments)
-                {
-                    using var stream = await _attachmentService.GetStreamAsync(attachment);
-                    var fileBytes = await stream.ReadAllBytesAsync();
-                    var base64Content = Convert.ToBase64String(fileBytes);
-                    mailMsg.AddAttachment(
-                        attachment.FileName,
-                        base64Content,
-                        attachment.MimeType);
-                }
+                await using var stream = await _attachmentService.GetStreamAsync(attachment);
+                var fileBytes = await stream.ReadAllBytesAsync();
+                var base64Content = Convert.ToBase64String(fileBytes);
+
+                mailMsg.AddAttachment(
+                    attachment.FileName,
+                    base64Content,
+                    attachment.MimeType);
             }
 
             return mailMsg;

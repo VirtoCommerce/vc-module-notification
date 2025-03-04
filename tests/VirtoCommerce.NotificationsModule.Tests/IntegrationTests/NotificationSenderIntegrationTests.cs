@@ -163,20 +163,22 @@ namespace VirtoCommerce.NotificationsModule.Tests.IntegrationTests
             //Arrange
             var notification = GetNotification();
 
-            var message = AbstractTypeFactory<NotificationMessage>.TryCreateInstance($"{notification.Kind}Message") as EmailNotificationMessage;
+            var message = (EmailNotificationMessage)AbstractTypeFactory<NotificationMessage>.TryCreateInstance($"{notification.Kind}Message");
             message.From = Configuration["SenderEmail"];
             message.To = Configuration["SenderEmail"];
-            message.Subject = "Test Subject Email With Attachent from URL";
-            message.Body = "Test Body Email With Attachent from URL";
+            message.Subject = "Test subject: email with attachment from URL";
+            message.Body = "Test body: email with attachment from URL";
+
             message.Attachments.Add(new EmailAttachment
             {
                 FileName = "test.txt",
                 Url = "http://example.com/test.txt",
-                MimeType = "text/plain"
+                MimeType = "text/plain",
             });
 
             var expectedContent = "Test content";
             var httpMessageHandlerMock = new Mock<HttpMessageHandler>();
+
             httpMessageHandlerMock.Protected()
                 .Setup<Task<HttpResponseMessage>>(
                     "SendAsync",
@@ -190,7 +192,10 @@ namespace VirtoCommerce.NotificationsModule.Tests.IntegrationTests
 
             var httpClient = new HttpClient(httpMessageHandlerMock.Object);
             var httpClientFactoryMock = new Mock<IHttpClientFactory>();
-            httpClientFactoryMock.Setup(_ => _.CreateClient(It.IsAny<string>())).Returns(httpClient);
+
+            httpClientFactoryMock
+                .Setup(x => x.CreateClient(It.IsAny<string>()))
+                .Returns(httpClient);
 
             var attachmentService = new EmailAttachmentService(httpClientFactoryMock.Object);
 
@@ -216,17 +221,17 @@ namespace VirtoCommerce.NotificationsModule.Tests.IntegrationTests
             //Arrange
             var notification = GetNotification();
 
-            var message = AbstractTypeFactory<NotificationMessage>.TryCreateInstance($"{notification.Kind}Message") as EmailNotificationMessage;
+            var message = (EmailNotificationMessage)AbstractTypeFactory<NotificationMessage>.TryCreateInstance($"{notification.Kind}Message");
             message.From = Configuration["SenderEmail"];
             message.To = Configuration["SenderEmail"];
-            message.Subject = "Test Subject Email With Attachent from File";
-            message.Body = "Test Body Email With Attachent from File";
+            message.Subject = "Test subject: email with attachment from File";
+            message.Body = "Test body: email with attachment from File";
 
             message.Attachments.Add(new EmailAttachment
             {
                 FileName = "test.png",
                 Url = "IntegrationTests/All spec.png",
-                MimeType = "image/png"
+                MimeType = "image/png",
             });
 
             var attachmentService = new EmailAttachmentService(_httpClientFactory);
