@@ -3,10 +3,12 @@
   <id>VirtoCommerce.Notifications</id>
   <version>3.817.0</version>
   <version-tag />
+
   <platformVersion>3.853.0</platformVersion>
   <dependencies>
     <dependency id="VirtoCommerce.Assets" version="3.808.0" />
   </dependencies>
+
   <title>Notifications</title>
   <description>Provides a comprehensive infrastructure for managing and delivering notifications within the Virto Commerce platform.</description>
   <authors>
@@ -20,7 +22,7 @@
   <iconUrl>Modules/$(VirtoCommerce.Notifications)/Content/logoVC.png</iconUrl>
   <requireLicenseAcceptance>false</requireLicenseAcceptance>
   <releaseNotes />
-  <copyright>Copyright © 2011-2024 Virto Commerce. All rights reserved</copyright>
+  <copyright>Copyright © 2011–2025 Virto Commerce. All rights reserved</copyright>
   <tags>notifications</tags>
   <assemblyFile>VirtoCommerce.NotificationsModule.Web.dll</assemblyFile>
   <moduleType>VirtoCommerce.NotificationsModule.Web.Module, VirtoCommerce.NotificationsModule.Web</moduleType>

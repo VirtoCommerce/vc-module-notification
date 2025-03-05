@@ -1,5 +1,4 @@
 using System;
-using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Azure.Identity;
@@ -8,6 +7,7 @@ using Microsoft.Graph;
 using Microsoft.Graph.Models;
 using Microsoft.Graph.Users.Item.SendMail;
 using VirtoCommerce.NotificationsModule.Core.Exceptions;
+using VirtoCommerce.NotificationsModule.Core.Extensions;
 using VirtoCommerce.NotificationsModule.Core.Model;
 using VirtoCommerce.NotificationsModule.Core.Services;
 using VirtoCommerce.Platform.Core.Common;
@@ -16,7 +16,8 @@ namespace VirtoCommerce.NotificationsModule.MicrosoftGraph;
 
 public class MicrosoftGraphEmailNotificationMessageSender(
     IOptions<MicrosoftGraphSenderOptions> microsoftGraphOptions,
-    IOptions<EmailSendingOptions> emailSendingOptions)
+    IOptions<EmailSendingOptions> emailSendingOptions,
+    IEmailAttachmentService attachmentService)
     : INotificationMessageSender
 {
     public const string Name = "MicrosoftGraph";
@@ -50,12 +51,14 @@ public class MicrosoftGraphEmailNotificationMessageSender(
                 graphMessage.Attachments ??= [];
                 foreach (var attachment in emailNotificationMessage.Attachments)
                 {
+                    await using var stream = await attachmentService.GetStreamAsync(attachment);
+
                     graphMessage.Attachments.Add(new FileAttachment
                     {
                         ContentType = attachment.MimeType,
                         Name = attachment.FileName,
                         Size = Convert.ToInt32(attachment.Size),
-                        ContentBytes = await File.ReadAllBytesAsync(attachment.FileName),
+                        ContentBytes = await stream.ReadAllBytesAsync(),
                     });
                 }
             }
