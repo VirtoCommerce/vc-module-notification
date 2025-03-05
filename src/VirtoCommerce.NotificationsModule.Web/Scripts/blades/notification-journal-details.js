@@ -28,7 +28,7 @@ angular.module('virtoCommerce.notificationsModule')
                 if (blade.currentEntity.kind === 'EmailNotification') {
                     blade.toolbarCommands = [
                         {
-                            name: "platform.commands.preview",
+                            name: 'platform.commands.preview',
                             icon: 'fas fa-eye',
                             executeMethod: blade.openEmailHtmlBlade,
                             canExecuteMethod: function () { return true; },
