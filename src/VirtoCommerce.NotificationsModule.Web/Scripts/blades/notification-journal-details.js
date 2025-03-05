@@ -16,11 +16,10 @@ angular.module('virtoCommerce.notificationsModule')
 
                 blade.openEmailHtmlBlade = function () {
                     var newBlade = {
-                        id: 'contentBlade',
-                        title: blade.currentEntity.subject,
-                        currentEntity: blade.currentEntity,
+                        id: 'emailHtmlContentBlade',
                         controller: 'virtoCommerce.notificationsModule.notificationJournalDetailsContentController',
-                        template: 'Modules/$(VirtoCommerce.Notifications)/Scripts/blades/notification-journal-details-content.tpl.html'
+                        template: 'Modules/$(VirtoCommerce.Notifications)/Scripts/blades/notification-journal-details-content.html',
+                        currentEntity: blade.currentEntity,
                     };
 
                     bladeNavigationService.showBlade(newBlade, blade);
