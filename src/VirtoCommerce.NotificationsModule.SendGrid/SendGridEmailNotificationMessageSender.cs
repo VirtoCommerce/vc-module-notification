@@ -6,6 +6,7 @@ using Microsoft.Extensions.Options;
 using SendGrid;
 using SendGrid.Helpers.Mail;
 using VirtoCommerce.NotificationsModule.Core.Exceptions;
+using VirtoCommerce.NotificationsModule.Core.Extensions;
 using VirtoCommerce.NotificationsModule.Core.Model;
 using VirtoCommerce.NotificationsModule.Core.Services;
 using VirtoCommerce.Platform.Core.Common;
@@ -17,11 +18,16 @@ namespace VirtoCommerce.NotificationsModule.SendGrid
         public const string Name = "SendGrid";
         private readonly SendGridSenderOptions _sendGridOptions;
         private readonly EmailSendingOptions _emailSendingOptions;
+        private readonly IEmailAttachmentService _attachmentService;
 
-        public SendGridEmailNotificationMessageSender(IOptions<SendGridSenderOptions> sendGridOptions, IOptions<EmailSendingOptions> emailSendingOptions)
+        public SendGridEmailNotificationMessageSender(
+            IOptions<SendGridSenderOptions> sendGridOptions,
+            IOptions<EmailSendingOptions> emailSendingOptions,
+            IEmailAttachmentService attachmentService)
         {
             _sendGridOptions = sendGridOptions.Value;
             _emailSendingOptions = emailSendingOptions.Value;
+            _attachmentService = attachmentService;
         }
 
         public virtual bool CanSend(NotificationMessage message) => message is EmailNotificationMessage;
@@ -55,7 +61,7 @@ namespace VirtoCommerce.NotificationsModule.SendGrid
             }
         }
 
-        protected virtual Task<SendGridMessage> ToSendGridMessageAsync(EmailNotificationMessage emailNotificationMessage)
+        protected virtual async Task<SendGridMessage> ToSendGridMessageAsync(EmailNotificationMessage emailNotificationMessage)
         {
             var fromAddress = new EmailAddress(emailNotificationMessage.From ?? _emailSendingOptions.DefaultSender);
             var toAddress = new EmailAddress(emailNotificationMessage.To);
@@ -68,10 +74,10 @@ namespace VirtoCommerce.NotificationsModule.SendGrid
             };
 
             var replyTo = emailNotificationMessage.ReplyTo ?? _emailSendingOptions.DefaultReplyTo;
-            if(!string.IsNullOrEmpty(replyTo))
+            if (!string.IsNullOrEmpty(replyTo))
             {
                 mailMsg.ReplyTo = new EmailAddress(replyTo);
-            }    
+            }
 
             mailMsg.AddTo(toAddress);
 
@@ -91,7 +97,19 @@ namespace VirtoCommerce.NotificationsModule.SendGrid
                 }
             }
 
-            return Task.FromResult(mailMsg);
+            foreach (var attachment in emailNotificationMessage.Attachments ?? [])
+            {
+                await using var stream = await _attachmentService.GetStreamAsync(attachment);
+                var fileBytes = await stream.ReadAllBytesAsync();
+                var base64Content = Convert.ToBase64String(fileBytes);
+
+                mailMsg.AddAttachment(
+                    attachment.FileName,
+                    base64Content,
+                    attachment.MimeType);
+            }
+
+            return mailMsg;
         }
     }
 }

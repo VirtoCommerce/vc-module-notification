@@ -16,11 +16,16 @@ public class SmtpEmailNotificationMessageSender : INotificationMessageSender
     public const string Name = "Smtp";
     private readonly SmtpSenderOptions _smtpOptions;
     private readonly EmailSendingOptions _emailSendingOptions;
+    private readonly IEmailAttachmentService _attachmentService;
 
-    public SmtpEmailNotificationMessageSender(IOptions<SmtpSenderOptions> smtpOptions, IOptions<EmailSendingOptions> emailSendingOptions)
+    public SmtpEmailNotificationMessageSender(
+        IOptions<SmtpSenderOptions> smtpOptions,
+        IOptions<EmailSendingOptions> emailSendingOptions,
+        IEmailAttachmentService attachmentService)
     {
         _smtpOptions = smtpOptions.Value;
         _emailSendingOptions = emailSendingOptions.Value;
+        _attachmentService = attachmentService;
     }
 
     public virtual bool CanSend(NotificationMessage message)
@@ -74,13 +79,15 @@ public class SmtpEmailNotificationMessageSender : INotificationMessageSender
 
             mailMsg.Subject = emailNotificationMessage.Subject;
 
-            var bodyBuilder = new BodyBuilder { HtmlBody = emailNotificationMessage.Body };
+            var builder = new BodyBuilder { HtmlBody = emailNotificationMessage.Body };
 
-            foreach (var attachment in emailNotificationMessage.Attachments)
+            foreach (var attachment in emailNotificationMessage.Attachments ?? [])
             {
-                await bodyBuilder.Attachments.AddAsync(attachment.FileName, ContentType.Parse(attachment.MimeType));
+                await using var stream = await _attachmentService.GetStreamAsync(attachment);
+                await builder.Attachments.AddAsync(attachment.FileName, stream);
             }
-            mailMsg.Body = bodyBuilder.ToMessageBody();
+
+            mailMsg.Body = builder.ToMessageBody();
 
             using var client = new SmtpClient();
             await client.ConnectAsync(_smtpOptions.SmtpServer, _smtpOptions.Port, _smtpOptions.ForceSslTls
