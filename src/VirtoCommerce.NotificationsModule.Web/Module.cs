@@ -78,6 +78,7 @@ namespace VirtoCommerce.NotificationsModule.Web
             serviceCollection.AddTransient<INotificationSender, NotificationSender>();
             serviceCollection.AddTransient<NotificationsExportImport>();
             serviceCollection.AddTransient<NotificationScriptObject>();
+            serviceCollection.AddTransient<IEmailAttachmentService, EmailAttachmentService>();
 
             serviceCollection.AddTransient<RequestPasswordResetHandler>();
 
@@ -106,11 +107,11 @@ namespace VirtoCommerce.NotificationsModule.Web
                         break;
                     }
                 case MicrosoftGraphEmailNotificationMessageSender.Name:
-                {
-                    serviceCollection.AddOptions<MicrosoftGraphSenderOptions>().Bind(Configuration.GetSection($"Notifications:{MicrosoftGraphEmailNotificationMessageSender.Name}")).ValidateDataAnnotations();
-                    serviceCollection.AddTransient<INotificationMessageSender, MicrosoftGraphEmailNotificationMessageSender>();
-                    break;
-                }
+                    {
+                        serviceCollection.AddOptions<MicrosoftGraphSenderOptions>().Bind(Configuration.GetSection($"Notifications:{MicrosoftGraphEmailNotificationMessageSender.Name}")).ValidateDataAnnotations();
+                        serviceCollection.AddTransient<INotificationMessageSender, MicrosoftGraphEmailNotificationMessageSender>();
+                        break;
+                    }
             }
 
             serviceCollection.AddOptions<SmsSendingOptions>().Bind(Configuration.GetSection("Notifications")).ValidateDataAnnotations();
