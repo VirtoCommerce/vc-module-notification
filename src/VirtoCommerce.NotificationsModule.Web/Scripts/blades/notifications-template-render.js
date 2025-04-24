@@ -59,9 +59,7 @@ angular.module('virtoCommerce.notificationsModule')
         };
 
         $scope.errorAsString = function () {
-            if ($scope.error) {
-                return JSON.stringify($scope.error, null, 2);
-            }
+            return $scope.error ? JSON.stringify($scope.error, null, 2) : "";
         };
 
         function sharePreview(eMailTo) {
