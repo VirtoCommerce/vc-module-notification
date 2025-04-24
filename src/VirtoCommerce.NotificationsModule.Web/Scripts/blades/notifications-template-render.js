@@ -60,9 +60,7 @@ angular.module('virtoCommerce.notificationsModule')
 
         $scope.errorAsString = function () {
             if ($scope.error) {
-                var result = JSON.stringify($scope.error, null, 2);
-                console.log(result);
-                return result;
+                return JSON.stringify($scope.error, null, 2);
             }
         };
 
