@@ -191,7 +191,13 @@
       },
       "notifications-template-render": {
         "title": "Formulario de vista previa",
-        "subtitle": "Este formulario renderiza una plantilla"
+        "subtitle": "Este formulario renderiza una plantilla",
+        "labels": {
+          "view-full-response": "Ver respuesta completa",
+          "message": "Mensaje",
+          "stack-trace": "Rastreo de pila",
+          "response": "Respuesta"
+        }
       }
     },
     "widgets": {

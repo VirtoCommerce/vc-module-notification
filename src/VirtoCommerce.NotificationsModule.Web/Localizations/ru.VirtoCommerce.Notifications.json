@@ -191,7 +191,13 @@
       },
       "notifications-template-render": {
         "title": "Форма предварительного просмотра",
-        "subtitle": "Эта форма отображает шаблон"
+        "subtitle": "Эта форма отображает шаблон",
+        "labels": {
+          "view-full-response": "Показать полный ответ",
+          "message": "Сообщение",
+          "stack-trace": "Трассировка стека",
+          "response": "Ответ"
+        }
       }
     },
     "widgets": {

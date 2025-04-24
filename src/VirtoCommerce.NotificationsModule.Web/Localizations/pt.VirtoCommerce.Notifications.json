@@ -191,7 +191,13 @@
       },
       "notifications-template-render": {
         "title": "Formulário de pré-visualização",
-        "subtitle": "Este formulário renderiza um modelo"
+        "subtitle": "Este formulário renderiza um modelo",
+        "labels": {
+          "view-full-response": "Ver resposta completa",
+          "message": "Mensagem",
+          "stack-trace": "Rastreamento de pilha",
+          "response": "Resposta"
+        }
       }
     },
     "widgets": {

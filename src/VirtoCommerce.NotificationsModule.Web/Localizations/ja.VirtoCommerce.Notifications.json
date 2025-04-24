@@ -191,7 +191,13 @@
       },
       "notifications-template-render": {
         "title": "プレビューフォーム",
-        "subtitle": "このフォームはテンプレートをレンダリングします"
+        "subtitle": "このフォームはテンプレートをレンダリングします",
+        "labels": {
+          "view-full-response": "完全なレスポンスを表示",
+          "message": "メッセージ",
+          "stack-trace": "スタックトレース",
+          "response": "レスポンス"
+        }
       }
     },
     "widgets": {
