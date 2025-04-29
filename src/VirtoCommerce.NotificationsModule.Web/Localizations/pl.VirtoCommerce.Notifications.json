@@ -191,7 +191,13 @@
       },
       "notifications-template-render": {
         "title": "Formularz podglądu",
-        "subtitle": "Ten formularz renderuje szablon"
+        "subtitle": "Ten formularz renderuje szablon",
+        "labels": {
+          "view-full-response": "Zobacz pełną odpowiedź",
+          "message": "Wiadomość",
+          "stack-trace": "Ślad stosu",
+          "response": "Odpowiedź"
+        }
       }
     },
     "widgets": {

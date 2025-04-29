@@ -1,10 +1,40 @@
 <div class="blade-content __large-wide">
-	<div class="blade-inner">
-        <div class="inner-block">
-            <div class="form-group">
-                <iframe id="notification_template_preview" srcdoc="{{blade.originHtml}}" frameborder="0" width="100%" height="100%" scrolling="no">
-		        </iframe>
-            </div>
+  <div class="blade-inner">
+    <div class="inner-block">
+      <div class="form-group" ng-if="!error">
+        <iframe id="notification_template_preview" srcdoc="{{blade.originHtml}}" frameborder="0" width="100%" height="100%" scrolling="no"></iframe>
+      </div>
+      <div class="form-group error-container" ng-if="error">
+        <div ng-if="error.data">
+          <label class="form-label">{{ 'notifications.blades.notifications-template-render.labels.view-full-response' | translate }}</label>
+          <div class="form-input">
+            <label class="form-label __switch">
+              <input type="checkbox" ng-model="viewResponse.full">
+              <span class="switch"></span>
+            </label>
+          </div>
         </div>
+        <div ng-if="error.data && !viewResponse.full">
+          <label class="form-label">{{ 'notifications.blades.notifications-template-render.labels.message' | translate }}</label>
+          <pre>{{ error.data.message }}</pre>
+          <label class="form-label">{{ 'notifications.blades.notifications-template-render.labels.stack-trace' | translate }}</label>
+          <pre>{{ error.data.stackTrace }}</pre>
+        </div>
+        <div ng-if="!error.data || viewResponse.full">
+          <label class="form-label">{{ 'notifications.blades.notifications-template-render.labels.response' | translate }}</label>
+          <pre>{{ errorAsString() }}</pre>
+        </div>
+      </div>
     </div>
+  </div>
 </div>
+
+<style>
+  .error-container pre {
+    margin-top: 0;
+  }
+
+  .error-container .switch {
+    margin-bottom: 15px;
+  }
+</style>

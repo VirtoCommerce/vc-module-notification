@@ -191,7 +191,13 @@
       },
       "notifications-template-render": {
         "title": "Modulo di anteprima",
-        "subtitle": "Questo modulo rende un modello"
+        "subtitle": "Questo modulo rende un modello",
+        "labels": {
+          "view-full-response": "Visualizza risposta completa",
+          "message": "Messaggio",
+          "stack-trace": "Traccia dello stack",
+          "response": "Risposta"
+        }
       }
     },
     "widgets": {
