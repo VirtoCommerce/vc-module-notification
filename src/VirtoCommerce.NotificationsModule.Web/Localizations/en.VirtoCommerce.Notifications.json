@@ -191,7 +191,13 @@
       },
       "notifications-template-render": {
         "title": "Preview form",
-        "subtitle": "This form renders a template"
+        "subtitle": "This form renders a template",
+        "labels": {
+          "view-full-response": "View full response",
+          "message": "Message",
+          "stack-trace": "StackTrace",
+          "response": "Response"
+        }
       }
     },
     "widgets": {

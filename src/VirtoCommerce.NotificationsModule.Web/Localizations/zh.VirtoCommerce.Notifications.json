@@ -191,7 +191,13 @@
       },
       "notifications-template-render": {
         "title": "预览表单",
-        "subtitle": "此表单呈现模板"
+        "subtitle": "此表单呈现模板",
+        "labels": {
+          "view-full-response": "查看完整响应",
+          "message": "消息",
+          "stack-trace": "堆栈跟踪",
+          "response": "响应"
+        }
       }
     },
     "widgets": {

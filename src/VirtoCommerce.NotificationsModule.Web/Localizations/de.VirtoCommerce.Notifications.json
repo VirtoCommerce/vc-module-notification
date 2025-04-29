@@ -191,7 +191,13 @@
       },
       "notifications-template-render": {
         "title": "Vorschau-Formular",
-        "subtitle": "Dieses Formular rendert eine Vorlage"
+        "subtitle": "Dieses Formular rendert eine Vorlage",
+        "labels": {
+          "view-full-response": "Gesamte Antwort anzeigen",
+          "message": "Nachricht",
+          "stack-trace": "Stapelverfolgung",
+          "response": "Antwort"
+        }
       }
     },
     "widgets": {

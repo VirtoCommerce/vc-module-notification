@@ -7,6 +7,8 @@ angular.module('virtoCommerce.notificationsModule')
 
         blade.dynamicProperties = '';
         blade.originHtml = '';
+        $scope.error = null;
+        $scope.viewResponse = { full: false };
 
         $scope.setForm = function (form) {
             $scope.formScope = form;
@@ -45,12 +47,19 @@ angular.module('virtoCommerce.notificationsModule')
                 data: blade.data,
                 notificationLayoutId: blade.currentEntity.notificationLayoutId
             }, function (response) {
+                $scope.error = null;
                 $("#notification_template_preview").on("load", function() {
                     $('#notification_template_preview').height($('#notification_template_preview').contents().outerHeight());
                 });
                 blade.originHtml = $sce.trustAsHtml("<html><body>" + response.html + "</body></html>");
+            }, function (error) {
+                $scope.error = error;
             });           
             blade.isLoading = false;
+        };
+
+        $scope.errorAsString = function () {
+            return JSON.stringify($scope.error, null, 2);
         };
 
         function sharePreview(eMailTo) {

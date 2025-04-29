@@ -191,7 +191,13 @@
       },
       "notifications-template-render": {
         "title": "Formulaire de prévisualisation",
-        "subtitle": "Ce formulaire rend un modèle"
+        "subtitle": "Ce formulaire rend un modèle",
+        "labels": {
+          "view-full-response": "Voir la réponse complète",
+          "message": "Message",
+          "stack-trace": "Trace de la pile",
+          "response": "Réponse"
+        }
       }
     },
     "widgets": {
