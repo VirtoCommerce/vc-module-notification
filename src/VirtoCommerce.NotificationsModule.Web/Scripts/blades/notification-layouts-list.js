@@ -72,7 +72,7 @@ angular.module('virtoCommerce.notificationsModule')
                         id: 'createNotificationLayout',
                         isNew: true,
                         controller: 'virtoCommerce.notificationsModule.notificationLayoutController',
-                        template: 'Modules/$(virtoCommerce.Notifications)/Scripts/blades/notification-layout-details.tpl.html'
+                        template: 'Modules/$(VirtoCommerce.Notifications)/Scripts/blades/notification-layout-details.tpl.html'
                     };
 
                     bladeNavigationService.showBlade(newBlade, blade);
@@ -85,7 +85,7 @@ angular.module('virtoCommerce.notificationsModule')
                         currentEntity: layout,
                         currentEntityId: layout.id,
                         controller: 'virtoCommerce.notificationsModule.notificationLayoutController',
-                        template: 'Modules/$(virtoCommerce.Notifications)/Scripts/blades/notification-layout-details.tpl.html'
+                        template: 'Modules/$(VirtoCommerce.Notifications)/Scripts/blades/notification-layout-details.tpl.html'
                     };
 
                     bladeNavigationService.showBlade(newBlade, blade);

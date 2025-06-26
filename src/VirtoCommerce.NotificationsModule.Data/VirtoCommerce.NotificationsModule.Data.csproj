@@ -10,8 +10,8 @@
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0" PrivateAssets="All" />
-    <PackageReference Include="VirtoCommerce.Platform.Data" Version="3.853.0" />
-    <PackageReference Include="VirtoCommerce.Platform.Hangfire" Version="3.853.0" />
+    <PackageReference Include="VirtoCommerce.Platform.Data" Version="3.891.0" />
+    <PackageReference Include="VirtoCommerce.Platform.Hangfire" Version="3.891.0" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\VirtoCommerce.NotificationsModule.Core\VirtoCommerce.NotificationsModule.Core.csproj" />
