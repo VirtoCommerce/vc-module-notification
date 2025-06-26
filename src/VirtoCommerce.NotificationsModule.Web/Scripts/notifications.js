@@ -18,7 +18,7 @@ angular.module(moduleTemplateName, ['textAngular'])
                                 title: 'platform.menu.notifications',
                                 subtitle: 'platform.blades.notifications-menu.subtitle',
                                 controller: 'virtoCommerce.notificationsModule.notificationsMenuController',
-                                template: 'Modules/$(virtoCommerce.Notifications)/Scripts/blades/notifications-menu.tpl.html',
+                                template: 'Modules/$(VirtoCommerce.Notifications)/Scripts/blades/notifications-menu.tpl.html',
                                 isClosingDisabled: true
                             };
                             bladeNavigationService.showBlade(blade);
@@ -50,8 +50,10 @@ angular.module(moduleTemplateName, ['textAngular'])
             }
         };
     }])
-    .run(['platformWebApp.mainMenuService', 'platformWebApp.widgetService', '$state', 'virtoCommerce.notificationsModule.notificationTypesResolverService', 'virtoCommerce.notificationsModule.notificationTemplatesResolverService', '$http', '$compile', 'virtoCommerce.notificationsModule.predefinedSearchFilters',
-        function (mainMenuService, widgetService, $state, notificationTypesResolverService, notificationTemplatesResolverService, $http, $compile, predefinedSearchFilters) {
+    .run(['platformWebApp.mainMenuService', 'platformWebApp.widgetService', '$state', 'virtoCommerce.notificationsModule.notificationTypesResolverService',
+        'virtoCommerce.notificationsModule.notificationTemplatesResolverService', 'platformWebApp.dynamicTemplateService', 'virtoCommerce.notificationsModule.predefinedSearchFilters',
+        function (mainMenuService, widgetService, $state, notificationTypesResolverService,
+            notificationTemplatesResolverService, dynamicTemplateService, predefinedSearchFilters) {
             //Register module in main menu
             var menuItem = {
                 path: 'browse/notificationsModule',
@@ -122,8 +124,5 @@ angular.module(moduleTemplateName, ['textAngular'])
                 
             ]);
             
-            $http.get('Modules/$(VirtoCommerce.Notifications)/Scripts/directives/itemSearch.tpl.html').then(function (response) {
-                // compile the response, which will put stuff into the cache
-                $compile(response.data);
-            });  
+            dynamicTemplateService.ensureTemplateLoaded('Modules/$(VirtoCommerce.Notifications)/Scripts/directives/itemSearch.tpl.html');
     }]);

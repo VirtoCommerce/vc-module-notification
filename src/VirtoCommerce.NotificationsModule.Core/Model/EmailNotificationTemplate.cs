@@ -31,11 +31,11 @@ namespace VirtoCommerce.NotificationsModule.Core.Model
         {
             base.PopulateFromLocalizedContent(content);
 
-            if (content.PartName.EqualsInvariant(nameof(Subject)))
+            if (content.PartName.EqualsIgnoreCase(nameof(Subject)))
             {
                 Subject = content.Content;
             }
-            else if (content.PartName.EqualsInvariant(nameof(Body)))
+            else if (content.PartName.EqualsIgnoreCase(nameof(Body)))
             {
                 Body = content.Content;
             }

@@ -323,7 +323,7 @@ namespace VirtoCommerce.NotificationsModule.Tests.UnitTests
             _repositoryMock.Setup(r => r.Notifications).Returns(mockNotifications);
             var notifications = notificationEntities.Select(n => n.ToModel(AbstractTypeFactory<Notification>.TryCreateInstance(n.Type))).ToArray();
             _notificationServiceMock.Setup(ns => ns.GetByIdsAsync(It.IsAny<string[]>(), searchCriteria.ResponseGroup))
-                .ReturnsAsync(notifications.Where(x => x.Id.EqualsInvariant(sampleNotificationEntity.Id)).ToArray());
+                .ReturnsAsync(notifications.Where(x => x.Id.EqualsIgnoreCase(sampleNotificationEntity.Id)).ToArray());
 
 
             //Act
