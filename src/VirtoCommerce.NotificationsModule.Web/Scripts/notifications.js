@@ -18,7 +18,7 @@ angular.module(moduleTemplateName, ['textAngular'])
                                 title: 'platform.menu.notifications',
                                 subtitle: 'platform.blades.notifications-menu.subtitle',
                                 controller: 'virtoCommerce.notificationsModule.notificationsMenuController',
-                                template: 'Modules/$(virtoCommerce.Notifications)/Scripts/blades/notifications-menu.tpl.html',
+                                template: 'Modules/$(VirtoCommerce.Notifications)/Scripts/blades/notifications-menu.tpl.html',
                                 isClosingDisabled: true
                             };
                             bladeNavigationService.showBlade(blade);
