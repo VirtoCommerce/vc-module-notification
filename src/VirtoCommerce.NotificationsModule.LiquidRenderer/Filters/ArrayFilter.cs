@@ -42,31 +42,31 @@ namespace VirtoCommerce.NotificationsModule.LiquidRenderer.Filters
 
             BinaryExpression operation;
 
-            if (operationName.EqualsInvariant("=="))
+            if (operationName.EqualsIgnoreCase("=="))
             {
                 operation = Expression.Equal(left, right);
             }
-            else if (operationName.EqualsInvariant("!="))
+            else if (operationName.EqualsIgnoreCase("!="))
             {
                 operation = Expression.NotEqual(left, right);
             }
-            else if (operationName.EqualsInvariant(">"))
+            else if (operationName.EqualsIgnoreCase(">"))
             {
                 operation = Expression.GreaterThan(left, right);
             }
-            else if (operationName.EqualsInvariant(">="))
+            else if (operationName.EqualsIgnoreCase(">="))
             {
                 operation = Expression.GreaterThanOrEqual(left, right);
             }
-            else if (operationName.EqualsInvariant("<"))
+            else if (operationName.EqualsIgnoreCase("<"))
             {
                 operation = Expression.LessThan(left, right);
             }
-            else if (operationName.EqualsInvariant("<="))
+            else if (operationName.EqualsIgnoreCase("<="))
             {
                 operation = Expression.LessThanOrEqual(left, right);
             }
-            else if (operationName.EqualsInvariant("contains"))
+            else if (operationName.EqualsIgnoreCase("contains"))
             {
                 Expression expression;
 

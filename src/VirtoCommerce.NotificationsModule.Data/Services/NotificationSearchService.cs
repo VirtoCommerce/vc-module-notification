@@ -126,7 +126,7 @@ namespace VirtoCommerce.NotificationsModule.Data.Services
             var typeInfo = AbstractTypeFactory<Notification>.FindTypeInfoByName(notificationType);
             var notification = GetTransientNotifications()
                                .FirstOrDefault(x => (typeInfo != null && x.GetType().Equals(typeInfo.Type))
-                                                  || x.Alias.EqualsInvariant(notificationType));
+                                                  || x.Alias.EqualsIgnoreCase(notificationType));
             return notification?.Type;
         }
 

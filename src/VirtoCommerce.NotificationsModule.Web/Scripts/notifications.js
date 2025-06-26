@@ -50,7 +50,7 @@ angular.module(moduleTemplateName, ['textAngular'])
             }
         };
     }])
-    .run(['platformWebApp.mainMenuService', 'platformWebApp.widgetService', '$state', 'virtoCommerce.notificationsModule.notificationTypesResolverService', 'virtoCommerce.notificationsModule.notificationTemplatesResolverService', '$http', '$compile', 'virtoCommerce.notificationsModule.predefinedSearchFilters',
+    .run(['platformWebApp.mainMenuService', 'platformWebApp.widgetService', '$state', 'virtoCommerce.notificationsModule.notificationTypesResolverService', 'virtoCommerce.notificationsModule.notificationTemplatesResolverService', 'platformWebApp.dynamicTemplateService', 'virtoCommerce.notificationsModule.predefinedSearchFilters',
         function (mainMenuService, widgetService, $state, notificationTypesResolverService, notificationTemplatesResolverService, $http, $compile, predefinedSearchFilters) {
             //Register module in main menu
             var menuItem = {
@@ -122,8 +122,5 @@ angular.module(moduleTemplateName, ['textAngular'])
                 
             ]);
             
-            $http.get('Modules/$(VirtoCommerce.Notifications)/Scripts/directives/itemSearch.tpl.html').then(function (response) {
-                // compile the response, which will put stuff into the cache
-                $compile(response.data);
-            });  
+            dynamicTemplateService.ensureTemplateLoaded('Modules/$(VirtoCommerce.Notifications)/Scripts/directives/itemSearch.tpl.html');  
     }]);

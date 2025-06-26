@@ -25,7 +25,7 @@ namespace VirtoCommerce.NotificationsModule.Data.Services
 
         public void RegisterLayout(string name, string template, bool saveChanges = false)
         {
-            var layout = _layouts.FirstOrDefault(x => x.Name.EqualsInvariant(name));
+            var layout = _layouts.FirstOrDefault(x => x.Name.EqualsIgnoreCase(name));
 
             if (layout == null)
             {
@@ -79,7 +79,7 @@ namespace VirtoCommerce.NotificationsModule.Data.Services
 
             foreach (var layout in _layouts)
             {
-                var existLayout = existingNotificationLayout.Results.FirstOrDefault(x => x.Name.EqualsInvariant(layout.Name));
+                var existLayout = existingNotificationLayout.Results.FirstOrDefault(x => x.Name.EqualsIgnoreCase(layout.Name));
                 layout.Id = existLayout?.Id;
             }
 
