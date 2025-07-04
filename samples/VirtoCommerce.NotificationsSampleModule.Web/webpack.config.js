@@ -1,4 +1,4 @@
-const namespace = 'VirtoCommerce.Notifications';
+const namespace = 'VirtoCommerce.NotificationsSample';
 
 const glob = require('glob');
 const path = require('path');
