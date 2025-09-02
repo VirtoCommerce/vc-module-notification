@@ -1,6 +1,8 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using VirtoCommerce.NotificationsModule.Core.Model;
 using VirtoCommerce.NotificationsModule.Core.Model.Search;
 using VirtoCommerce.NotificationsModule.Core.Services;
@@ -14,11 +16,14 @@ namespace VirtoCommerce.NotificationsModule.Data.Services
 
         private readonly INotificationLayoutService _layoutService;
         private readonly INotificationLayoutSearchService _layoutSearchService;
+        private readonly ILogger _logger;
 
-        public NotificationLayoutRegistrar(INotificationLayoutService layoutService, INotificationLayoutSearchService layoutSearchService)
+
+        public NotificationLayoutRegistrar(INotificationLayoutService layoutService, INotificationLayoutSearchService layoutSearchService, ILogger<NotificationLayoutRegistrar> logger)
         {
             _layoutService = layoutService;
             _layoutSearchService = layoutSearchService;
+            _logger = logger;
         }
 
         public IEnumerable<NotificationLayout> AllRegisteredLayouts => _layouts;
@@ -73,17 +78,37 @@ namespace VirtoCommerce.NotificationsModule.Data.Services
             var criteria = new NotificationLayoutSearchCriteria
             {
                 Names = _layouts.Select(x => x.Name).ToArray(),
-                Take = 1000
             };
-            var existingNotificationLayout = _layoutSearchService.SearchNoCloneAsync(criteria).GetAwaiter().GetResult();
+            var existingNotificationLayout = _layoutSearchService.SearchAllNoCloneAsync(criteria).GetAwaiter().GetResult();
+
+            var listForSave = new List<NotificationLayout>();
 
             foreach (var layout in _layouts)
             {
-                var existLayout = existingNotificationLayout.Results.FirstOrDefault(x => x.Name.EqualsIgnoreCase(layout.Name));
-                layout.Id = existLayout?.Id;
+                var existingLayout = existingNotificationLayout.FirstOrDefault(x => x.Name.EqualsIgnoreCase(layout.Name));
+                if (existingLayout == null)
+                {
+                    listForSave.Add(layout);
+                }
+                else if (existingLayout.Template != layout.Template)
+                {
+                    layout.Id = existingLayout.Id;
+                    listForSave.Add(layout);
+                }
             }
 
-            _layoutService.SaveChangesAsync(_layouts).GetAwaiter().GetResult();
+            if (listForSave.Any())
+            {
+                try
+                {
+                    _layoutService.SaveChangesAsync(listForSave).GetAwaiter().GetResult();
+                }
+                catch (DbUpdateException exception)
+                {
+                    _logger.LogInformation("Couldn't save notification layouts by reason {Message}", exception.Message);
+                    _logger.LogError(exception.ToString());
+                }
+            }
 
             _layouts.Clear();
         }
