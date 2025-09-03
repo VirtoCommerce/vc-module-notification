@@ -105,8 +105,7 @@ namespace VirtoCommerce.NotificationsModule.Data.Services
                 }
                 catch (DbUpdateException exception)
                 {
-                    _logger.LogInformation("Couldn't save notification layouts by reason {Message}", exception.Message);
-                    _logger.LogError(exception.ToString());
+                    _logger.LogError("Couldn't save notification layouts by reason:\n{Exception}", exception.ToString());
                 }
             }
 
