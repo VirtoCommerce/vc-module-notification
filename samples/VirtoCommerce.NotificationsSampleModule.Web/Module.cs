@@ -84,7 +84,7 @@ namespace VirtoCommerce.NotificationsSampleModule.Web
             //Override notification layout template
             notificationLayoutRegistrar.RegisterLayout(
                 name: "Sample Layout",
-                template: "New template with exist notification layout"
+                template: "New template with existing notification layout"
                 );
 
             var defaultTemplatesDirectory = Path.Combine(ModuleInfo.FullPhysicalPath, "NotificationLayoutsTemplate");
