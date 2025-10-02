@@ -190,7 +190,7 @@ angular.module('virtoCommerce.notificationsModule')
             }
 
             function canRender() {
-                return formScope && formScope.$valid && blade.isSampleValidJson() && !blade.origEntity.isReadonly;
+                return formScope && formScope.$valid && blade && blade.isSampleValidJson() && blade.origEntity && !blade.origEntity.isReadonly;
             }
             
             $scope.$watch("blade.currentEntity", function () {
