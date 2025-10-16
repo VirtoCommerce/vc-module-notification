@@ -1,6 +1,10 @@
 angular.module('virtoCommerce.notificationsModule')
-    .controller('virtoCommerce.notificationsModule.templateRenderController', ['$rootScope', '$scope', '$sce', '$localStorage', 'platformWebApp.bladeNavigationService', 'platformWebApp.dialogService', 'virtoCommerce.notificationsModule.notificationsModuleApi', 'platformWebApp.authService', 'platformWebApp.accounts',
-        function ($rootScope, $scope, $sce, $localStorage, bladeNavigationService, dialogService, notifications, authService, accounts) {
+    .controller('virtoCommerce.notificationsModule.templateRenderController',
+        ['$rootScope', '$scope', '$sce', '$localStorage', 'platformWebApp.bladeNavigationService',
+            'platformWebApp.dialogService', 'virtoCommerce.notificationsModule.notificationsModuleApi',
+            'platformWebApp.authService', 'platformWebApp.accounts', 'virtoCommerce.notificationsModule.sendTestEmailService',
+            function ($rootScope, $scope, $sce, $localStorage, bladeNavigationService,
+                dialogService, notifications, authService, accounts, sendTestEmailService) {
 
         var blade = $scope.blade;
         var keyTemplateLocalStorage;
@@ -62,60 +66,22 @@ angular.module('virtoCommerce.notificationsModule')
             return JSON.stringify($scope.error, null, 2);
         };
 
-        function sharePreview(eMailTo) {
-            delete blade.data.cc;
-            delete blade.data.bcc;
-            blade.data.languageCode = blade.language;
-            blade.data.to = eMailTo;
+        
 
-            notifications.sharePreview({
-                type: blade.notification.type,
-                language: blade.language
-            }, {
-                text: blade.currentEntity.body,
-                data: blade.data
-            }, function (response) {
-                if (response.isSuccess) {
-                    var dialog = {
-                        id: "shareSuccess",
-                        title: 'notifications.dialogs.share-success.title',
-                        message: 'notifications.dialogs.share-success.message'
-                    };
-                    dialogService.showSuccessDialog(dialog);
-                }
-                else {
-                    dialog = {
-                        id: "shareError",
-                        title: 'notifications.dialogs.share-error.title',
-                        message: response.errorMessage
-                    };
-                    dialogService.showErrorDialog(dialog);
-                }                
-            });
-        }
-
-
-        blade.sharePreview = function () {
-            var eMailTo = authService.userLogin;
-            accounts.get({ id: authService.userLogin }, function (data) {
-                eMailTo = data.email;
-                var dialog = {
-                    id: "confirmSharePreview",
-                    email: eMailTo,
-                    setEmail: function (email) {
-                        sharePreview(email);
-                    }
-                }
-                dialogService.showDialog(dialog, 'Modules/$(VirtoCommerce.Notifications)/Scripts/blades/notification-templates-share-preview-dialog.tpl.html', 'platformWebApp.confirmDialogController');
-            });
-
+        blade.sendTestEmail = function () {
+            sendTestEmailService.showDialogAndSendTestEmail(
+                blade.notification.type,
+                blade.language,
+                blade.currentEntity.body,
+                blade.data
+            );
         }
 
         $scope.blade.toolbarCommands = [{
             name: "notifications.commands.share-preview",
-            icon: 'fa fa-share-alt-square',
+            icon: 'fa fa-envelope',
             executeMethod: function () {
-                blade.sharePreview();
+                blade.sendTestEmail();
             },
             canExecuteMethod: function () {
                 return true;
