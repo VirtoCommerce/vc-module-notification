@@ -66,8 +66,6 @@ angular.module('virtoCommerce.notificationsModule')
             return JSON.stringify($scope.error, null, 2);
         };
 
-        
-
         blade.sendTestEmail = function () {
             sendTestEmailService.showDialogAndSendTestEmail(
                 blade.notification.type,
