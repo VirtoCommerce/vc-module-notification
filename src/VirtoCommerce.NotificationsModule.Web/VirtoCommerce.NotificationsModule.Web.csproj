@@ -21,9 +21,6 @@
     <Copy SourceFiles="@(NotificationTemplates)" DestinationFiles="$(PublishDir)\..\%(Identity)" />
   </Target>
   <ItemGroup>
-    <Compile Include="Scripts\services\send-test-email-service.js" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\VirtoCommerce.NotificationsModule.Core\VirtoCommerce.NotificationsModule.Core.csproj" />
     <ProjectReference Include="..\VirtoCommerce.NotificationsModule.Data.MySql\VirtoCommerce.NotificationsModule.Data.MySql.csproj" />
     <ProjectReference Include="..\VirtoCommerce.NotificationsModule.Data.PostgreSql\VirtoCommerce.NotificationsModule.Data.PostgreSql.csproj" />
