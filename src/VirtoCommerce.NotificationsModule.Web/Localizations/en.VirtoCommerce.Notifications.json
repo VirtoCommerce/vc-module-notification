@@ -258,7 +258,7 @@
     },
     "commands": {
       "restore": "Restore",
-      "share-preview": "Share"
+      "share-preview": "Send test email"
     }
   },
   "notificationTypes": {

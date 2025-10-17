@@ -258,7 +258,7 @@
     },
     "commands": {
       "restore": "復元",
-      "share-preview": "共有"
+      "share-preview": "テストメールを送信"
     }
   },
   "notificationTypes": {

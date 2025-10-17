@@ -258,7 +258,7 @@
     },
     "commands": {
       "restore": "恢复",
-      "share-preview": "共享"
+      "share-preview": "发送测试邮件"
     }
   },
   "notificationTypes": {

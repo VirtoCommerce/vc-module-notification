@@ -258,7 +258,7 @@
     },
     "commands": {
       "restore": "Восстановить",
-      "share-preview": "Поделиться"
+      "share-preview": "Отправить тестовое письмо"
     }
   },
   "notificationTypes": {
