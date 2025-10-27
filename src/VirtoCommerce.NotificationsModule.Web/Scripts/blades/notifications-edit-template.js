@@ -1,6 +1,11 @@
 angular.module('virtoCommerce.notificationsModule')
-    .controller('virtoCommerce.notificationsModule.editTemplateController', ['$rootScope', '$scope', '$timeout', '$localStorage', 'virtoCommerce.notificationsModule.notificationsModuleApi', 'virtoCommerce.notificationsModule.notificationLayoutsApi', 'FileUploader', 'platformWebApp.bladeNavigationService', 'platformWebApp.dialogService',
-        function ($rootScope, $scope, $timeout, $localStorage, notifications, layouts, FileUploader, bladeNavigationService, dialogService) {
+    .controller('virtoCommerce.notificationsModule.editTemplateController',
+        ['$rootScope', '$scope', '$timeout', '$localStorage', 'virtoCommerce.notificationsModule.notificationsModuleApi',
+            'virtoCommerce.notificationsModule.notificationLayoutsApi', 'FileUploader', 'platformWebApp.bladeNavigationService', 'platformWebApp.dialogService',
+            'platformWebApp.authService', 'platformWebApp.accounts', 'virtoCommerce.notificationsModule.sendTestEmailService',
+        function ($rootScope, $scope, $timeout, $localStorage, notifications,
+            layouts, FileUploader, bladeNavigationService, dialogService,
+            authService, accounts, sendTestEmailService) {
             var blade = $scope.blade;
             $scope.isValid = false;
 
@@ -154,6 +159,21 @@ angular.module('virtoCommerce.notificationsModule')
                 bladeNavigationService.showBlade(newBlade, blade);
             }
 
+            blade.sendTestEmail = function () {
+                var data = angular.copy(blade.notification);
+
+                if (blade.currentEntity.sample && blade.currentEntity.sample != "") {
+                    var sample = JSON.parse(blade.currentEntity.sample);
+                    angular.extend(data, sample);
+                }
+
+                sendTestEmailService.showDialogAndSendTestEmail(
+                    blade.notification.type,
+                    blade.currentEntity.languageCode ? blade.currentEntity.languageCode : 'default',
+                    blade.currentEntity.body,
+                    data);
+            };
+
             blade.isSampleValidJson = function () {
                 if (blade.currentEntity.sample && blade.currentEntity.sample!="") {
                     try {
@@ -165,25 +185,37 @@ angular.module('virtoCommerce.notificationsModule')
                 return true;
             }
 
-            $scope.blade.toolbarCommands = [{
-                name: "platform.commands.preview",
-                icon: 'fa fa-eye',
-                executeMethod: function () {
-                    blade.renderTemplate();
+            $scope.blade.toolbarCommands = [
+                {
+                    name: "platform.commands.preview",
+                    icon: "fa fa-eye",
+                    executeMethod: function () {
+                        blade.renderTemplate();
+                    },
+                    canExecuteMethod: canRender,
+                    permission: "notifications:templates:read"
                 },
-                canExecuteMethod: canRender,
-                permission: 'notifications:templates:read'
-            }, {
-                name: "notifications.commands.restore",
-                icon: "fa fa-history",
-                executeMethod: function () {
-                    restoreTemplate(blade.currentEntity);
+                {
+                    name: "notifications.commands.share-preview",
+                    icon: "fa fa-envelope",
+                    executeMethod: function () {
+                        blade.sendTestEmail();
+                    },
+                    canExecuteMethod: canRender,
+                    permission: 'notifications:templates:read'
                 },
-                canExecuteMethod: function () {
-                    return blade.currentEntity.isPredefined && blade.currentEntity.isEdited;
-                },
-                permission: 'notifications:template:delete'
-            }];
+                {
+                    name: "notifications.commands.restore",
+                    icon: "fa fa-history",
+                    executeMethod: function () {
+                        restoreTemplate(blade.currentEntity);
+                    },
+                    canExecuteMethod: function () {
+                        return blade.currentEntity.isPredefined && blade.currentEntity.isEdited;
+                    },
+                    permission: "notifications:template:delete"
+                }
+            ];
 
             function isDirty() {
                 return (!angular.equals(blade.origEntity, blade.currentEntity) || blade.isNew) && blade.hasUpdatePermission();
