@@ -258,7 +258,7 @@
     },
     "commands": {
       "restore": "Ripristina",
-      "share-preview": "Condividi"
+      "share-preview": "Invia email di prova"
     }
   },
   "notificationTypes": {
