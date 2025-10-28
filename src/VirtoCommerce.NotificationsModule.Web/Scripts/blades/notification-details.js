@@ -54,14 +54,14 @@ angular.module('virtoCommerce.notificationsModule')
 
                 blade.currentEntity.cc = modifyEmailAddress(blade.currentEntity.cc);
                 blade.currentEntity.bcc = modifyEmailAddress(blade.currentEntity.bcc);
-                
+
                 // Auto-expand fields that have values
                 blade.showOptionalFields.from = !!blade.currentEntity.from;
                 blade.showOptionalFields.to = !!blade.currentEntity.to;
                 blade.showOptionalFields.cc = blade.currentEntity.cc && blade.currentEntity.cc.length > 0;
                 blade.showOptionalFields.bcc = blade.currentEntity.bcc && blade.currentEntity.bcc.length > 0;
                 blade.showOptionalFields.replyTo = !!blade.currentEntity.replyTo;
-                
+
                 _.map(blade.currentEntity.templates, function (template) {
                     template.createdDateAsString = $filter('date')(template.createdDate, "yyyy-MM-dd");
                     template.modifiedDateAsString = $filter('date')(template.modifiedDate, "yyyy-MM-dd");
