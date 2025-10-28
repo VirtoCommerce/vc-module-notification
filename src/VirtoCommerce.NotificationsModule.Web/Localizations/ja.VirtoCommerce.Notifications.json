@@ -167,13 +167,26 @@
         "labels": {
           "is-active": "アクティブ",
           "name": "通知名",
-          "number": "電話番号"
+          "number": "電話番号",
+          "add-optional-email-fields": "オプションのメールフィールドを追加",
+          "add-optional-fields": "CC、BCC、または返信先を追加",
+          "add-cc": "CCを追加",
+          "add-bcc": "BCCを追加",
+          "add-reply-to": "返信先を追加",
+          "system-from": "システム - 送信元",
+          "system-to": "システム - 宛先",
+          "add-system-from": "システム送信元を追加",
+          "add-system-to": "システム宛先を追加"
         },
         "placeholders": {
-          "number": "テキストメッセージの電話番号"
+          "number": "テキストメッセージの電話番号",
+          "system-from": "送信者のメールアドレスを入力",
+          "system-to": "受信者のメールアドレスを入力"
         },
         "descriptions": {
-          "number": "テキストメッセージ（SMS）通知を受け取る電話番号"
+          "number": "テキストメッセージ（SMS）通知を受け取る電話番号",
+          "system-from": "注意：通常は空白のままにします。ビジネスコードは通常、これを実際のストアの送信者アドレスに置き換えます。カスタムシステム通知にのみ使用してください。",
+          "system-to": "注意：通常は空白のままにします。ビジネスコードは通常、これを実際の顧客のメールアドレスに置き換えます。カスタムシステム通知にのみ使用してください。"
         }
       },
       "filter-detail": {

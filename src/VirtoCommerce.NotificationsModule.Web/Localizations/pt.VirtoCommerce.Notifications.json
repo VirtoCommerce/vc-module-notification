@@ -167,13 +167,26 @@
         "labels": {
           "is-active": "Ativo",
           "name": "Nome da notificação",
-          "number": "Número de telefone"
+          "number": "Número de telefone",
+          "add-optional-email-fields": "Adicionar campos de e-mail opcionais",
+          "add-optional-fields": "Adicionar CC, CCO ou Responder para",
+          "add-cc": "Adicionar CC",
+          "add-bcc": "Adicionar CCO",
+          "add-reply-to": "Adicionar Responder para",
+          "system-from": "Sistema - De",
+          "system-to": "Sistema - Para",
+          "add-system-from": "Adicionar Sistema De",
+          "add-system-to": "Adicionar Sistema Para"
         },
         "placeholders": {
-          "number": "Número de telefone para mensagem de texto"
+          "number": "Número de telefone para mensagem de texto",
+          "system-from": "Inserir endereço de e-mail do remetente",
+          "system-to": "Inserir endereço de e-mail do destinatário"
         },
         "descriptions": {
-          "number": "Número de telefone que receberá a notificação por mensagem de texto (SMS)"
+          "number": "Número de telefone que receberá a notificação por mensagem de texto (SMS)",
+          "system-from": "Nota: Normalmente deixado em branco. O código de negócio normalmente substituirá isso pelo endereço do remetente real da loja. Use apenas para notificações de sistema personalizadas.",
+          "system-to": "Nota: Normalmente deixado em branco. O código de negócio normalmente substituirá isso pelo endereço de e-mail real do cliente. Use apenas para notificações de sistema personalizadas."
         }
       },
       "filter-detail": {

@@ -19,29 +19,15 @@
                 <input ng-value="'notificationTypes.' + blade.currentEntity.type + '.displayName' | translate" ng-disabled="blade.currentEntity.type" focus-on required placeholder="{{ 'notifications.blades.notification-details.placeholders.notificationType' | translate }}">
               </div>
             </div>
-            <div class="form-group" ng-hide="true">
-              <label class="form-label" style="margin:0">{{'notifications.blades.notifications-edit-template.labels.from' | translate}}</label>
-              <div class="form-group" style="margin-top:0">
-                <div class="form-input">
-                  <input type="email" focus-on="" class="form-control" ng-model="blade.currentEntity.from" placeholder="{{ 'notifications.blades.notifications-edit-template.placeholders.email-addresses-note' | translate }}" />
-                </div>
-                <div class="table-descr">
-                  {{ 'notifications.blades.notifications-edit-template.labels.blank-note' | translate }}
-                </div>
-              </div>
+            <!-- Add optional fields link (shows when all fields are hidden) -->
+            <div class="form-group" ng-if="shouldShowAddOptionsLink()">
+              <a class="__link __dotted" ng-click="toggleOptionalField('cc')">
+                <i class="fa fa-plus"></i> {{ 'notifications.blades.notification-details.labels.add-optional-email-fields' | translate }}
+              </a>
             </div>
-            <div class="form-group" ng-hide="true">
-              <label class="form-label" style="margin:0">{{'notifications.blades.notifications-edit-template.labels.to' | translate}}</label>
-              <div class="form-group" style="margin-top:0">
-                <div class="form-input">
-                  <input type="email" focus-on="" class="form-control" ng-model="blade.currentEntity.to" placeholder="{{ 'notifications.blades.notifications-edit-template.placeholders.recipient' | translate }}" />
-                </div>
-                <div class="table-descr">
-                  {{ 'notifications.blades.notifications-edit-template.descriptions.to' | translate }}
-                </div>
-              </div>
-            </div>
-            <div class="form-group">
+
+            <!-- CC Field (collapsible) -->
+            <div class="form-group" ng-if="blade.showOptionalFields.cc">
               <label class="form-label" style="margin:0">
                 {{'notifications.blades.notifications-edit-template.labels.cc' | translate}}
                 <i class="form-ico fa fa-question-circle __link __lightblue" ng-click="blade.setting.cc_descrVisible=!blade.setting.cc_descrVisible"></i>
@@ -60,7 +46,9 @@
                 </div>
               </div>
             </div>
-            <div class="form-group">
+
+            <!-- BCC Field (collapsible) -->
+            <div class="form-group" ng-if="blade.showOptionalFields.bcc">
               <label class="form-label" style="margin:0">
                 {{'notifications.blades.notifications-edit-template.labels.bcc' | translate}}
                 <i class="form-ico fa fa-question-circle __link __lightblue" ng-click="blade.setting.bcc_descrVisible=!blade.setting.bcc_descrVisible"></i>
@@ -79,11 +67,12 @@
                 </div>
               </div>
             </div>
-            <div class="form-group">
+
+            <!-- Reply-to Field (collapsible) -->
+            <div class="form-group" ng-if="blade.showOptionalFields.replyTo">
               <label class="form-label" style="margin:0">
                 {{'notifications.blades.notifications-edit-template.labels.reply-to' | translate}}
                 <i class="form-ico fa fa-question-circle __link __lightblue" ng-click="blade.setting.repltyto_descrVisible=!blade.setting.repltyto_descrVisible"></i>
-
               </label>
               <div class="form-group" style="margin-top:0">
                 <div class="form-input">
@@ -95,6 +84,65 @@
                   </div>
                   <a href="" ng-click="blade.setting.repltyto_descrVisible = false;">Hide</a>
                 </div>
+              </div>
+            </div>
+
+            <!-- System From Field (collapsible) -->
+            <div class="form-group" ng-if="blade.showOptionalFields.from">
+              <label class="form-label" style="margin:0">
+                {{ 'notifications.blades.notification-details.labels.system-from' | translate }}
+                <i class="form-ico fa fa-question-circle __link __lightblue" ng-click="blade.setting.from_descrVisible=!blade.setting.from_descrVisible"></i>
+              </label>
+              <div class="form-group" style="margin-top:0">
+                <div class="form-input">
+                  <input type="email" class="form-control" ng-model="blade.currentEntity.from" placeholder="{{ 'notifications.blades.notification-details.placeholders.system-from' | translate }}" />
+                </div>
+                <div ng-if="blade.setting.from_descrVisible">
+                  <div class="table-descr">
+                    {{ 'notifications.blades.notification-details.descriptions.system-from' | translate }}
+                  </div>
+                  <a href="" ng-click="blade.setting.from_descrVisible = false;">Hide</a>
+                </div>
+              </div>
+            </div>
+
+            <!-- System To Field (collapsible) -->
+            <div class="form-group" ng-if="blade.showOptionalFields.to">
+              <label class="form-label" style="margin:0">
+                {{ 'notifications.blades.notification-details.labels.system-to' | translate }}
+                <i class="form-ico fa fa-question-circle __link __lightblue" ng-click="blade.setting.to_descrVisible=!blade.setting.to_descrVisible"></i>
+              </label>
+              <div class="form-group" style="margin-top:0">
+                <div class="form-input">
+                  <input type="email" class="form-control" ng-model="blade.currentEntity.to" placeholder="{{ 'notifications.blades.notification-details.placeholders.system-to' | translate }}" />
+                </div>
+                <div ng-if="blade.setting.to_descrVisible">
+                  <div class="table-descr">
+                    {{ 'notifications.blades.notification-details.descriptions.system-to' | translate }}
+                  </div>
+                  <a href="" ng-click="blade.setting.to_descrVisible = false;">Hide</a>
+                </div>
+              </div>
+            </div>
+
+            <!-- Individual field add links (show when some fields are already shown) -->
+            <div class="form-group" ng-if="hasOptionalFields()">
+              <div style="display: flex; gap: 15px; flex-wrap: wrap;">
+                <a class="__link __dotted" ng-click="toggleOptionalField('cc')" ng-if="!blade.showOptionalFields.cc">
+                  <i class="fa fa-plus"></i> {{ 'notifications.blades.notification-details.labels.add-cc' | translate }}
+                </a>
+                <a class="__link __dotted" ng-click="toggleOptionalField('bcc')" ng-if="!blade.showOptionalFields.bcc">
+                  <i class="fa fa-plus"></i> {{ 'notifications.blades.notification-details.labels.add-bcc' | translate }}
+                </a>
+                <a class="__link __dotted" ng-click="toggleOptionalField('replyTo')" ng-if="!blade.showOptionalFields.replyTo">
+                  <i class="fa fa-plus"></i> {{ 'notifications.blades.notification-details.labels.add-reply-to' | translate }}
+                </a>
+                <a class="__link __dotted" ng-click="toggleOptionalField('from')" ng-if="!blade.showOptionalFields.from">
+                  <i class="fa fa-plus"></i> {{ 'notifications.blades.notification-details.labels.add-system-from' | translate }}
+                </a>
+                <a class="__link __dotted" ng-click="toggleOptionalField('to')" ng-if="!blade.showOptionalFields.to">
+                  <i class="fa fa-plus"></i> {{ 'notifications.blades.notification-details.labels.add-system-to' | translate }}
+                </a>
               </div>
             </div>
             <div class="form-group">

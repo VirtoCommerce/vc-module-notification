@@ -11,6 +11,28 @@ angular.module('virtoCommerce.notificationsModule')
             blade.parametersForTemplate = [];
             $scope.isValid = false;
 
+            // Initialize visibility state for optional fields
+            blade.showOptionalFields = {
+                from: false,
+                to: false,
+                cc: false,
+                bcc: false,
+                replyTo: false
+            };
+
+            // Toggle functions for optional fields
+            $scope.toggleOptionalField = function(fieldName) {
+                blade.showOptionalFields[fieldName] = !blade.showOptionalFields[fieldName];
+            };
+
+            $scope.hasOptionalFields = function() {
+                return blade.showOptionalFields.from || blade.showOptionalFields.to || blade.showOptionalFields.cc || blade.showOptionalFields.bcc || blade.showOptionalFields.replyTo;
+            };
+
+            $scope.shouldShowAddOptionsLink = function() {
+                return !blade.showOptionalFields.from && !blade.showOptionalFields.to && !blade.showOptionalFields.cc && !blade.showOptionalFields.bcc && !blade.showOptionalFields.replyTo;
+            };
+
             blade.initialize = function () {
                 blade.isLoading = true;
                 notifications.getNotificationByType({ type: blade.type, tenantId: blade.tenantId, tenantType: blade.tenantType }, function (data) {
@@ -32,6 +54,10 @@ angular.module('virtoCommerce.notificationsModule')
 
                 blade.currentEntity.cc = modifyEmailAddress(blade.currentEntity.cc);
                 blade.currentEntity.bcc = modifyEmailAddress(blade.currentEntity.bcc);
+
+                // Auto-expand fields that have values
+                expandOptionalFields();
+
                 _.map(blade.currentEntity.templates, function (template) {
                     template.createdDateAsString = $filter('date')(template.createdDate, "yyyy-MM-dd");
                     template.modifiedDateAsString = $filter('date')(template.modifiedDate, "yyyy-MM-dd");
@@ -42,6 +68,14 @@ angular.module('virtoCommerce.notificationsModule')
                 blade.origEntity = angular.copy(blade.currentEntity);
                 $scope.isValid = false;
             };
+
+            function expandOptionalFields() {
+                blade.showOptionalFields.from = !!blade.currentEntity.from;
+                blade.showOptionalFields.to = !!blade.currentEntity.to;
+                blade.showOptionalFields.cc = blade.currentEntity.cc && blade.currentEntity.cc.length > 0;
+                blade.showOptionalFields.bcc = blade.currentEntity.bcc && blade.currentEntity.bcc.length > 0;
+                blade.showOptionalFields.replyTo = !!blade.currentEntity.replyTo;
+            }
 
             function isTransient(data) {
                 return data.tenantIdentity.isEmpty && blade.tenantId && blade.tenantType;
@@ -87,6 +121,7 @@ angular.module('virtoCommerce.notificationsModule')
                     name: "platform.commands.undo", icon: 'fa fa-undo',
                     executeMethod: function () {
                         blade.currentEntity = angular.copy(blade.origEntity);
+                        expandOptionalFields();
                     },
                     canExecuteMethod: isDirty,
                     permission: blade.updatePermission
@@ -126,3 +161,5 @@ angular.module('virtoCommerce.notificationsModule')
 
             blade.initialize();
         }]);
+
+
