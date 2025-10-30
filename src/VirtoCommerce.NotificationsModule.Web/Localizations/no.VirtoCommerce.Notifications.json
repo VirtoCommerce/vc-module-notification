@@ -1,0 +1,326 @@
+{
+  "notifications": {
+    "main-menu-title": "Varsler",
+    "blades": {
+      "notification-journal-details": {
+        "title": "Varseldetaljer",
+        "subtitle": "{{ displayName }}: Varslingstype",
+        "labels": {
+          "id": "Meldings-ID:",
+          "notification-info": "Varslingsinfo",
+          "display-name": "Visningsnavn",
+          "source": "Kilde",
+          "sending-gateway": "Sending via gateway",
+          "active": "Aktiv",
+          "not-active": "Inaktiv",
+          "created": "Opprettet den:",
+          "sent-success": "Sendt vellykket",
+          "not-sent": "Ikke sendt",
+          "sent": "Sendt",
+          "sent-date": "Sendt dato",
+          "sender": "Fra:",
+          "recipient": "Til:",
+          "bcc": "Skjult kopi (BCC)",
+          "cc": "Kopi (CC)",
+          "reply-to": "Svar til",
+          "sending-attempts-count": "Antall sendingforsøk",
+          "last-fail-attempt-date": "Dato for siste mislykkede forsøk",
+          "last-fail-attempt-message": "Feil:",
+          "subject": "Emne:",
+          "body": "Innhold:"
+        }
+      },
+      "notifications-edit-template": {
+        "title": "{{ displayName }}: Mal",
+        "subtitle": "Rediger varslingsmal",
+        "title-new": "{{ displayName }}: Opprett mal",
+        "labels": {
+          "note": "Dette er en liste over varslingstilvalg. Kopier og lim inn denne koden for å sette inn alternativverdier i malen din",
+          "parameter-name": "Alternativnavn",
+          "parameter-description": "Alternativbeskrivelse",
+          "paremeter-code": "Kode for alternativ i malen (kopier denne koden og sett den inn i hvilken som helst del av malen din)",
+          "language": "Språk",
+          "blank-note": "La dette feltet stå tomt for å bruke standardverdien din",
+          "from": "Fra",
+          "to": "Til",
+          "cc": "Kopi (CC)",
+          "bcc": "Skjult kopi (BCC)",
+          "reply-to": "Svar til",
+          "subject": "Emne",
+          "body": "Innhold",
+          "template": "Mal",
+          "sample": "Exempelldat JSON",
+          "preview-data": "Forhåndsvisningsdata",
+          "preview-data-comment": "Mal kontekstdata (JSON)",
+          "note-caption": "Viktig!",
+          "note-text": "Denne malen har en forhåndsdefinert kilde. Når du lagrer varselet ditt, vil denne versjonen erstatte den forhåndsdefinerte. Du kan gjenopprette originalmalen ved å bruke riktig knapp",
+          "layout": "Oppsett",
+          "layout-blank-note": "La dette feltet stå tomt for å bruke valgt standardoppsett"
+        },
+        "descriptions": {
+          "to": "E-postmottakeradresse",
+          "cc": "Mottakeradresser for kopi (CC)",
+          "bcc": "Mottakeradresse for skjult kopi (BCC)",
+          "reply-to": "Svarsadresse",
+          "from": "Avsenderadresse",
+          "subject": "Emne for e-postvarslingen",
+          "sample": "Brukes i full forhåndsvisning som et eksempel på et varselobjekt"
+        },
+        "placeholders": {
+          "language": "Velg...",
+          "recipient": "Mottakeradresse",
+          "email-addresses-note": "Vennligst angi adresser",
+          "subject": "Vennligst angi e-postemne",
+          "layout": "Velg..."
+        }
+      },
+      "notification-templates-list": {
+        "title": "Varslingsmaler",
+        "labels": {
+          "subject": "Emne",
+          "body": "Innhold",
+          "language": "Språk",
+          "created": "Opprettet",
+          "modified": "Endret",
+          "predefined": "Forhåndsdefinert",
+          "edited": "Redigert"
+        }
+      },
+      "notification-layouts-list": {
+        "title": "Varslingsoppsett",
+        "subtitle": "Administrer varslingsoppsett",
+        "labels": {
+          "no-data": "Ingen registrerte oppsett ennå",
+          "name": "Navn",
+          "template": "Mal",
+          "default": "Standard"
+        }
+      },
+      "notification-layout-details": {
+        "title-new": "Opprett varslingsoppsett",
+        "subtitle": "Rediger oppsett",
+        "labels": {
+          "name": "Navn",
+          "template": "Mal",
+          "default": "Standard"
+        },
+        "placeholders": {
+          "name": "Skriv inn navn..."
+        }
+      },
+      "notifications-test-resolve": {
+        "title": "Forhåndsvis varsel",
+        "subtitle": "Skriv inn testdata for {{type}}",
+        "labels": {
+          "test": "Test",
+          "enter-test-data": "Skriv inn testdata"
+        }
+      },
+      "notifications-test-send": {
+        "title": "Send varsel",
+        "subtitle": "Skriv inn testdata for {{type}}",
+        "labels": {
+          "send": "Send",
+          "enter-test-data": "Skriv inn testdata"
+        }
+      },
+      "notifications-journal": {
+        "title": "Varslingsaktivitetshistorikk",
+        "subtitle": "Denne seksjonen inneholder en liste over alle varsler registrert i systemet",
+        "subtitle-search": "Søkeresultater for \"{{keyword}}\"",
+        "labels": {
+          "display-name": "Visningsnavn",
+          "notification": "Varsel",
+          "created": "Opprettet",
+          "status": "Status",
+          "recipient": "Mottaker",
+          "sent-date": "Sendt dato",
+          "channel": "Kanal",
+          "error": "Feil",
+          "processing": "Behandling",
+          "success": "Suksess",
+          "no-notifications": "Ingen varsler ennå",
+          "unnamed-filter": "Unnavngitt filter",
+          "filter-new": "<strong>Legg til nytt filter</strong>",
+          "filter-only-pending": "Kun ventende",
+          "filter-with-errors": "Med feil",
+          "detail": "Vis detaljer",
+          "sendAttemptCount": "Antall sendingforsøk",
+          "resend-messages": "Send meldinger på nytt"
+        },
+        "placeholders": {
+          "select-filter": "Velg et filter"
+        }
+      },
+      "notifications-list": {
+        "title": "Varselliste",
+        "subtitle": "Denne seksjonen inneholder en liste over alle varsler registrert i systemet",
+        "labels": {
+          "no-notifications": "Ingen registrerte varsler ennå",
+          "display-name": "Visningsnavn",
+          "type": "Type",
+          "active": "Aktiv"
+        }
+      },
+      "notification-details": {
+        "title": "{{ displayName }}: Detaljer",
+        "labels": {
+          "is-active": "Aktiv",
+          "name": "Varslingsnavn",
+          "number": "Telefonnummer"
+        },
+        "placeholders": {
+          "number": "Telefonnummer for tekstmelding"
+        },
+        "descriptions": {
+          "number": "Telefonnummer som vil motta tekstmelding (SMS)-varslingen"
+        }
+      },
+      "filter-detail": {
+        "subtitle": "Rediger filter",
+        "new-title": "Nytt filter",
+        "new-subtitle": "Opprett nytt filter",
+        "labels": {
+          "criteria": "Søkefrase",
+          "name": "Filternavn"
+        },
+        "placeholders": {
+          "criteria": "Skriv inn søkefrase",
+          "name": "Navngi dette filteret"
+        }
+      },
+      "notifications-template-render": {
+        "title": "Forhåndsvisningsform",
+        "subtitle": "Denne formen renderer en mal",
+        "labels": {
+          "view-full-response": "Vis fullstendig svar",
+          "message": "Melding",
+          "stack-trace": "StackTrace",
+          "response": "Svar"
+        }
+      }
+    },
+    "widgets": {
+      "notificationsTemplatesWidget": {
+        "title": "Maler",
+        "blade-title": "{{displayName}}: Maloversikt",
+        "blade-subtitle": "Administrer varslingsmaler"
+      },
+      "notificationsLogWidget": {
+        "title": "Varslingslogg",
+        "blade-title": "Logg som lagrer data om varsler",
+        "blade-subtitle": "Vis varslingslogg"
+      },
+      "notificationsAttachmentsWidget": {
+        "title": "Vedlegg (kommer snart)",
+        "blade-title": "Vedlegg",
+        "blade-subtitle": "Vedlegg"
+      }
+    },
+    "dialogs": {
+      "unknown-kind": {
+        "title": "Feil",
+        "message": "Kan ikke åpne '{{type}}'-varsel. Kontakt nettstedadministratoren(e) for informasjon"
+      },
+      "notification-details-save": {
+        "title": "Lagre endringer",
+        "message": "Varslingsmalen har blitt endret. Vil du lagre endringene?"
+      },
+      "notification-template-delete": {
+        "title": "Bekreft sletting",
+        "message": "Er du sikker på at du vil slette de valgte malene?"
+      },
+      "notification-template-delete-notification": {
+        "title": "Kan ikke slette mal",
+        "message": "Du kan ikke slette standard- eller forhåndsdefinerte maler. Fjern disse malene fra valget og prøv igjen"
+      },
+      "notification-template-reset-confirmation": {
+        "title": "Bekreft tilbakestilling av mal",
+        "warning": "ADVARSEL: Denne endringen er permanent og kan ikke angres. Å utføre denne endringen kan føre til datatap",
+        "message": "{{count}} mal(er) for følgende språk vil bli slettet:",
+        "instruction": "Skriv 'ja' for å slette:"
+      },
+      "notification-share-preview-confirmation": {
+        "title": "Bekreft deling av varsel-forhåndsvisning",
+        "message": "Vil du sende denne forhåndsvisningen av varselet til den angitte e-postadressen?"
+      },
+      "share-success": {
+        "title": "Del forhåndsvisning",
+        "message": "Testmelding med varselforhåndsvisning ble sendt vellykket"
+      },
+      "share-error": {
+        "title": "Feil"
+      },
+      "notification-layout-delete": {
+        "title": "Bekreft sletting",
+        "message": "Er du sikker på at du vil slette de valgte oppsettene?"
+      }
+    },
+    "commands": {
+      "restore": "Gjenopprett",
+      "share-preview": "Del"
+    }
+  },
+  "notificationTypes": {
+    "UnregisteredNotification": {
+      "displayName": "Uregistrert varsel",
+      "description": "Opprinnelig varseltype: {{type}}"
+    },
+    "RegistrationEmailNotification": {
+      "displayName": "Registreringsvarsel",
+      "description": "Kunden får en e-postvarsel når de har registrert seg"
+    },
+    "ResetPasswordEmailNotification": {
+      "displayName": "Tilbakestill passord-varsel",
+      "description": "Kunden får en e-postvarsel ved en tilbakestillingsforespørsel for passord"
+    },
+    "TwoFactorEmailNotification": {
+      "displayName": "To-faktor autentisering",
+      "description": "Dette varselet inneholder en sikkerhetstoken for to-faktor autentisering"
+    },
+    "TwoFactorSmsNotification": {
+      "displayName": "To-faktor autentisering",
+      "description": "Dette varselet inneholder en sikkerhetstoken for to-faktor autentisering"
+    },
+    "ConfirmationEmailNotification": {
+      "displayName": "E-postbekreftelse",
+      "description": "Denne e-postvarslingen bekrefter den nys registrerte brukerens e-post"
+    },
+    "ChangePhoneNumberSmsNotification": {
+      "displayName": "Telefonnummerendringsvarsel",
+      "description": "Kunden får en tekstmelding når deres telefonnummer endres"
+    },
+    "ResetPasswordSmsNotification": {
+      "displayName": "Tilbakestill passord tekstmelding",
+      "description": "Kunden får en tekstmelding når deres passord har blitt tilbakestilt"
+    },
+    "RegistrationInvitationEmailNotification": {
+      "displayName": "Registreringsinvitasjonsvarsel (med organisasjon)",
+      "description": "Kunden får en e-postvarsel når de mottar en invitasjon til å registrere seg i en organisasjon"
+    },
+    "RegistrationInvitationCustomerEmailNotification": {
+      "displayName": "Registreringsinvitasjonsvarsel (kunde)",
+      "description": "Kunden får en e-postvarsel når de mottar en invitasjon til å registrere seg uten organisasjon"
+    },
+    "RemindUserNameEmailNotification": {
+      "displayName": "Glemt brukernavn-varsel",
+      "description": "Kunden får en e-postvarsel etter at de klikker på Glemt brukernavnet mitt"
+    }
+  },
+  "permissions": {
+    "notifications:read": "Les varseldata",
+    "notifications:create": "Opprett varseldata",
+    "notifications:update": "Oppdater varseldata",
+    "notifications:delete": "Slett varseldata",
+    "notifications:access": "Tilgang til varseldata",
+    "notifications:export": "Eksporter varseldata",
+    "notifications:import": "Importer varseldata",
+    "notifications:templates:read": "Les maldata",
+    "notifications:templates:create": "Opprett maldata"
+  },
+  "module": {
+    "VirtoCommerce.Notifications": {
+      "description": "Eksporter eller importer varsler"
+    }
+  }
+}
