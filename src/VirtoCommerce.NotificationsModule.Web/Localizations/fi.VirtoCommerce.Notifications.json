@@ -242,11 +242,11 @@
       },
       "notification-share-preview-confirmation": {
         "title": "Vahvista ilmoituksen esikatselun jakaminen",
-        "message": "Haluatko lähettää tämän esikatseluilmoituksen annettuun sähköpostiosoitteeseen?"
+        "message": "Haluatko lähettää tämän ilmoituksen esikatselun määritettyyn sähköpostiosoitteeseen?"
       },
       "share-success": {
         "title": "Jaa esikatselu",
-        "message": "Testiviesti ilmoituksen esikatselulla lähetettiin onnistuneesti"
+        "message": "Testiviesti, jossa oli ilmoituksen esikatselu, lähetettiin onnistuneesti"
       },
       "share-error": {
         "title": "Virhe"
@@ -258,7 +258,7 @@
     },
     "commands": {
       "restore": "Palauta",
-      "share-preview": "Jaa"
+      "share-preview": "Lähetä testiviesti"
     }
   },
   "notificationTypes": {

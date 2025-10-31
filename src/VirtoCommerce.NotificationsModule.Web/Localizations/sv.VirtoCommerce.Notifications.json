@@ -241,12 +241,12 @@
         "instruction": "Skriv ja för att radera:"
       },
       "notification-share-preview-confirmation": {
-        "title": "Bekräfta delning av aviseringsförhandsgranskning",
-        "message": "Vill du skicka denna förhandsgranskning av aviseringen till den angivna e-postadressen?"
+        "title": "Bekräfta förhandsgranskning av delningsavisering",
+        "message": "Vill du skicka den här förhandsgranskningen av aviseringen till den angivna e-postadressen?"
       },
       "share-success": {
         "title": "Dela förhandsgranskning",
-        "message": "Testmeddelande med aviseringsförhandsgranskning skickades framgångsrikt"
+        "message": "Testmeddelandet med förhandsgranskningen av aviseringen skickades framgångsrikt"
       },
       "share-error": {
         "title": "Fel"
@@ -258,7 +258,7 @@
     },
     "commands": {
       "restore": "Återställ",
-      "share-preview": "Dela"
+      "share-preview": "Skicka testmeddelande"
     }
   },
   "notificationTypes": {

@@ -241,7 +241,7 @@
         "instruction": "Skriv 'ja' for å slette:"
       },
       "notification-share-preview-confirmation": {
-        "title": "Bekreft deling av varsel-forhåndsvisning",
+        "title": "Bekreft deling av varslingsforhåndsvisning",
         "message": "Vil du sende denne forhåndsvisningen av varselet til den angitte e-postadressen?"
       },
       "share-success": {
@@ -258,7 +258,7 @@
     },
     "commands": {
       "restore": "Gjenopprett",
-      "share-preview": "Del"
+      "share-preview": "Send test-e-post"
     }
   },
   "notificationTypes": {
