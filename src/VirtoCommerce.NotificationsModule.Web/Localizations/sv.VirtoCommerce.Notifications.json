@@ -49,7 +49,7 @@
           "subject": "Ämne",
           "body": "Innehåll",
           "template": "Mall",
-          "sample": "Exempeldat JSON",
+          "sample": "Exempeldata JSON",
           "preview-data": "Förhandsgranska data",
           "preview-data-comment": "Mallkontextdata (JSON)",
           "note-caption": "Viktigt!",

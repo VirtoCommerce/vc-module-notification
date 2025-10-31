@@ -49,7 +49,7 @@
           "subject": "Aihe",
           "body": "Sisältö",
           "template": "Malli",
-          "sample": "Esimerkkidat JSON",
+          "sample": "Esimerkkidata JSON",
           "preview-data": "Esikatseluaineisto",
           "preview-data-comment": "Mallikontekstiaineisto (JSON)",
           "note-caption": "Tärkeää!",
