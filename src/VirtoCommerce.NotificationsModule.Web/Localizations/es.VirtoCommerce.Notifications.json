@@ -38,7 +38,7 @@
           "note": "Esta es una lista de opciones de notificación. Copie y pegue este código para insertar los valores de opción en su plantilla",
           "parameter-name": "Nombre de la opción",
           "parameter-description": "Descripción de la opción",
-          "paremeter-code": "Código de la opción en la plantilla (copia este código e insértalo en cualquier parte de tu plantilla)",
+          "parameter-code": "Código de la opción en la plantilla (copia este código e insértalo en cualquier parte de tu plantilla)",
           "language": "Idioma",
           "blank-note": "Deje este campo en blanco para usar su valor predeterminado",
           "from": "De",

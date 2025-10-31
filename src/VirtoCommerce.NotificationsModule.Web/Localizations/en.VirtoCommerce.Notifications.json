@@ -38,7 +38,7 @@
           "note": "This is a list of notification options. Copy and paste this code to insert the option values to your template",
           "parameter-name": "Option name",
           "parameter-description": "Option description",
-          "paremeter-code": "Option code in the template (copy this code and insert it to any part of your template)",
+          "parameter-code": "Option code in the template (copy this code and insert it to any part of your template)",
           "language": "Language",
           "blank-note": "Leave this field blank to use your default value",
           "from": "From",
