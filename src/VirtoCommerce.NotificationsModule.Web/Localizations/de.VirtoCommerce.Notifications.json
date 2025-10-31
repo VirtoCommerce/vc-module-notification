@@ -38,7 +38,7 @@
           "note": "Dies ist eine Liste von Benachrichtigungsoptionen. Kopieren Sie diesen Code und fügen Sie ihn in Ihre Vorlage ein, um die Optionswerte einzufügen.",
           "parameter-name": "Optionsname",
           "parameter-description": "Optionsbeschreibung",
-          "paremeter-code": "Optionscode in der Vorlage (kopieren Sie diesen Code und fügen Sie ihn an einer beliebigen Stelle Ihrer Vorlage ein)",
+          "parameter-code": "Optionscode in der Vorlage (kopieren Sie diesen Code und fügen Sie ihn an einer beliebigen Stelle Ihrer Vorlage ein)",
           "language": "Sprache",
           "blank-note": "Lassen Sie dieses Feld leer, um den Standardwert zu verwenden",
           "from": "Von",
