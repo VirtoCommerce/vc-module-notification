@@ -38,7 +38,7 @@
           "note": "Detta är en lista över aviseringsalternativ. Kopiera och klistra in koden för att infoga alternativvärden i din mall",
           "parameter-name": "Alternativnamn",
           "parameter-description": "Alternativbeskrivning",
-          "paremeter-code": "Kod för alternativ i mallen (kopiera denna kod och infoga den i vilken del av din mall som helst)",
+          "parameter-code": "Kod för alternativ i mallen (kopiera denna kod och infoga den i vilken del av din mall som helst)",
           "language": "Språk",
           "blank-note": "Lämna detta fält tomt för att använda ditt standardvärde",
           "from": "Från",

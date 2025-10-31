@@ -38,7 +38,7 @@
           "note": "Dette er en liste over varslingstilvalg. Kopier og lim inn denne koden for å sette inn alternativverdier i malen din",
           "parameter-name": "Alternativnavn",
           "parameter-description": "Alternativbeskrivelse",
-          "paremeter-code": "Kode for alternativ i malen (kopier denne koden og sett den inn i hvilken som helst del av malen din)",
+          "parameter-code": "Kode for alternativ i malen (kopier denne koden og sett den inn i hvilken som helst del av malen din)",
           "language": "Språk",
           "blank-note": "La dette feltet stå tomt for å bruke standardverdien din",
           "from": "Fra",

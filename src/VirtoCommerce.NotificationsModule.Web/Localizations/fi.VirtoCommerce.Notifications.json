@@ -38,7 +38,7 @@
           "note": "Tämä on lista ilmoitusvaihtoehdoista. Kopioi ja liitä tämä koodi lisätäksesi vaihtoehtojen arvot malliisi",
           "parameter-name": "Vaihtoehdon nimi",
           "parameter-description": "Vaihtoehdon kuvaus",
-          "paremeter-code": "Vaihtoehdon koodi mallissa (kopioi tämä koodi ja lisää se mihin tahansa osaan malliasi)",
+          "parameter-code": "Vaihtoehdon koodi mallissa (kopioi tämä koodi ja lisää se mihin tahansa osaan malliasi)",
           "language": "Kieli",
           "blank-note": "Jätä tämä kenttä tyhjäksi käyttääksesi oletusarvoasi",
           "from": "Lähettäjä",
