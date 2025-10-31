@@ -1,0 +1,326 @@
+{
+  "notifications": {
+    "main-menu-title": "Aviseringar",
+    "blades": {
+      "notification-journal-details": {
+        "title": "Aviseringsdetaljer",
+        "subtitle": "{{ displayName }}: Aviseringstyp",
+        "labels": {
+          "id": "Meddelande-ID:",
+          "notification-info": "Aviseringsinformation",
+          "display-name": "Visningsnamn",
+          "source": "Källa",
+          "sending-gateway": "Skicka via gateway",
+          "active": "Aktiv",
+          "not-active": "Inaktiv",
+          "created": "Skapad den:",
+          "sent-success": "Skickad framgångsrikt",
+          "not-sent": "Inte skickad",
+          "sent": "Skickad",
+          "sent-date": "Skickad datum",
+          "sender": "Från:",
+          "recipient": "Till:",
+          "bcc": "Dold kopia (BCC)",
+          "cc": "Kopia (CC)",
+          "reply-to": "Svara till",
+          "sending-attempts-count": "Antal sändningsförsök",
+          "last-fail-attempt-date": "Datum för senaste misslyckade försök",
+          "last-fail-attempt-message": "Fel:",
+          "subject": "Ämne:",
+          "body": "Innehåll:"
+        }
+      },
+      "notifications-edit-template": {
+        "title": "{{ displayName }}: Mall",
+        "subtitle": "Redigera aviseringsmall",
+        "title-new": "{{ displayName }}: Skapa mall",
+        "labels": {
+          "note": "Detta är en lista över aviseringsalternativ. Kopiera och klistra in koden för att infoga alternativvärden i din mall",
+          "parameter-name": "Alternativnamn",
+          "parameter-description": "Alternativbeskrivning",
+          "parameter-code": "Kod för alternativ i mallen (kopiera denna kod och infoga den i vilken del av din mall som helst)",
+          "language": "Språk",
+          "blank-note": "Lämna detta fält tomt för att använda ditt standardvärde",
+          "from": "Från",
+          "to": "Till",
+          "cc": "Kopia (CC)",
+          "bcc": "Dold kopia (BCC)",
+          "reply-to": "Svara till",
+          "subject": "Ämne",
+          "body": "Innehåll",
+          "template": "Mall",
+          "sample": "Exempeldata JSON",
+          "preview-data": "Förhandsgranska data",
+          "preview-data-comment": "Mallkontextdata (JSON)",
+          "note-caption": "Viktigt!",
+          "note-text": "Denna mall har en fördefinierad källa. När du sparar din avisering kommer denna version att ersätta den fördefinierade. Du kan återställa originalmallen med lämplig knapp",
+          "layout": "Layout",
+          "layout-blank-note": "Lämna detta fält tomt för att använda vald standardlayout"
+        },
+        "descriptions": {
+          "to": "E-postmottagaradress",
+          "cc": "Mottagaradresser för kopia (CC)",
+          "bcc": "Mottagaradress för dold kopia (BCC)",
+          "reply-to": "Svarsadress",
+          "from": "Avsändaradress",
+          "subject": "Ämne för e-postaviseringen",
+          "sample": "Används i fullständig förhandsvisning som ett exempel på en avisering"
+        },
+        "placeholders": {
+          "language": "Välj...",
+          "recipient": "Mottagaradress",
+          "email-addresses-note": "Ange adresser",
+          "subject": "Ange e-postämne",
+          "layout": "Välj..."
+        }
+      },
+      "notification-templates-list": {
+        "title": "Aviseringsmallar",
+        "labels": {
+          "subject": "Ämne",
+          "body": "Innehåll",
+          "language": "Språk",
+          "created": "Skapad",
+          "modified": "Modifierad",
+          "predefined": "Fördefinierad",
+          "edited": "Redigerad"
+        }
+      },
+      "notification-layouts-list": {
+        "title": "Aviseringslayouter",
+        "subtitle": "Hantera aviseringslayouter",
+        "labels": {
+          "no-data": "Inga registrerade layouter ännu",
+          "name": "Namn",
+          "template": "Mall",
+          "default": "Standard"
+        }
+      },
+      "notification-layout-details": {
+        "title-new": "Skapa aviseringslayout",
+        "subtitle": "Redigera layout",
+        "labels": {
+          "name": "Namn",
+          "template": "Mall",
+          "default": "Standard"
+        },
+        "placeholders": {
+          "name": "Ange namn..."
+        }
+      },
+      "notifications-test-resolve": {
+        "title": "Förhandsgranska avisering",
+        "subtitle": "Ange testdata för {{type}}",
+        "labels": {
+          "test": "Testa",
+          "enter-test-data": "Ange testdata"
+        }
+      },
+      "notifications-test-send": {
+        "title": "Skicka avisering",
+        "subtitle": "Ange testdata för {{type}}",
+        "labels": {
+          "send": "Skicka",
+          "enter-test-data": "Ange testdata"
+        }
+      },
+      "notifications-journal": {
+        "title": "Aviseringsaktivitetshistorik",
+        "subtitle": "Denna sektion innehåller en lista över alla aviseringar som registrerats i systemet",
+        "subtitle-search": "Sökresultat för \"{{keyword}}\"",
+        "labels": {
+          "display-name": "Visningsnamn",
+          "notification": "Avisering",
+          "created": "Skapad",
+          "status": "Status",
+          "recipient": "Mottagare",
+          "sent-date": "Skickad datum",
+          "channel": "Kanal",
+          "error": "Fel",
+          "processing": "Bearbetning",
+          "success": "Framgång",
+          "no-notifications": "Inga aviseringar ännu",
+          "unnamed-filter": "Namnlös filter",
+          "filter-new": "<strong>Lägg till nytt filter</strong>",
+          "filter-only-pending": "Endast väntande",
+          "filter-with-errors": "Med fel",
+          "detail": "Visa detaljer",
+          "sendAttemptCount": "Antal sändningsförsök",
+          "resend-messages": "Skicka om meddelanden"
+        },
+        "placeholders": {
+          "select-filter": "Välj ett filter"
+        }
+      },
+      "notifications-list": {
+        "title": "Aviseringslista",
+        "subtitle": "Denna sektion innehåller en lista över alla aviseringar registrerade i systemet",
+        "labels": {
+          "no-notifications": "Inga registrerade aviseringar ännu",
+          "display-name": "Visningsnamn",
+          "type": "Typ",
+          "active": "Aktiv"
+        }
+      },
+      "notification-details": {
+        "title": "{{ displayName }}: Detaljer",
+        "labels": {
+          "is-active": "Aktiv",
+          "name": "Aviseringsnamn",
+          "number": "Telefonnummer"
+        },
+        "placeholders": {
+          "number": "Telefonnummer för textmeddelande"
+        },
+        "descriptions": {
+          "number": "Telefonnummer som kommer att få textmeddelande (SMS)-aviseringen"
+        }
+      },
+      "filter-detail": {
+        "subtitle": "Redigera filter",
+        "new-title": "Nytt filter",
+        "new-subtitle": "Skapa nytt filter",
+        "labels": {
+          "criteria": "Sökfras",
+          "name": "Filternamn"
+        },
+        "placeholders": {
+          "criteria": "Ange sökfras",
+          "name": "Namnge detta filter"
+        }
+      },
+      "notifications-template-render": {
+        "title": "Förhandsgranskningsformulär",
+        "subtitle": "Detta formulär renderar en mall",
+        "labels": {
+          "view-full-response": "Visa fullständigt svar",
+          "message": "Meddelande",
+          "stack-trace": "StackTrace",
+          "response": "Svar"
+        }
+      }
+    },
+    "widgets": {
+      "notificationsTemplatesWidget": {
+        "title": "Mallar",
+        "blade-title": "{{displayName}}: Mallista",
+        "blade-subtitle": "Hantera aviseringsmallar"
+      },
+      "notificationsLogWidget": {
+        "title": "Aviseringslogg",
+        "blade-title": "Logg som lagrar data om aviseringar",
+        "blade-subtitle": "Visa aviseringslogg"
+      },
+      "notificationsAttachmentsWidget": {
+        "title": "Bilagor (kommer snart)",
+        "blade-title": "Bilagor",
+        "blade-subtitle": "Bilagor"
+      }
+    },
+    "dialogs": {
+      "unknown-kind": {
+        "title": "Fel",
+        "message": "Kan inte öppna '{{type}}'-avisering. Kontakta din webbplatsadministratör(er) för information"
+      },
+      "notification-details-save": {
+        "title": "Spara ändringar",
+        "message": "Aviseringsmallen har modifierats. Vill du spara ändringarna?"
+      },
+      "notification-template-delete": {
+        "title": "Bekräfta radering",
+        "message": "Är du säker på att du vill radera de valda mallarna?"
+      },
+      "notification-template-delete-notification": {
+        "title": "Kan inte radera mall",
+        "message": "Du kan inte radera standard- eller fördefinierade mallar. Avmarkera dessa mallar och försök igen"
+      },
+      "notification-template-reset-confirmation": {
+        "title": "Bekräfta återställning av mall",
+        "warning": "VARNING: Denna ändring är permanent och kan inte ångras. Genomförandet av denna ändring kan leda till dataförlust",
+        "message": "{{count}} mall(ar) för följande språk kommer att raderas:",
+        "instruction": "Skriv ja för att radera:"
+      },
+      "notification-share-preview-confirmation": {
+        "title": "Bekräfta förhandsgranskning av delningsavisering",
+        "message": "Vill du skicka den här förhandsgranskningen av aviseringen till den angivna e-postadressen?"
+      },
+      "share-success": {
+        "title": "Dela förhandsgranskning",
+        "message": "Testmeddelandet med förhandsgranskningen av aviseringen skickades framgångsrikt"
+      },
+      "share-error": {
+        "title": "Fel"
+      },
+      "notification-layout-delete": {
+        "title": "Bekräfta radering",
+        "message": "Är du säker på att du vill radera de valda layouterna?"
+      }
+    },
+    "commands": {
+      "restore": "Återställ",
+      "share-preview": "Skicka testmeddelande"
+    }
+  },
+  "notificationTypes": {
+    "UnregisteredNotification": {
+      "displayName": "Oregistrerad avisering",
+      "description": "Original aviserings typ: {{type}}"
+    },
+    "RegistrationEmailNotification": {
+      "displayName": "Registreringsavisering",
+      "description": "Kunden får en e-postavisering när de har registrerat sig"
+    },
+    "ResetPasswordEmailNotification": {
+      "displayName": "Återställ lösenordsavisering",
+      "description": "Kunden får en e-postavisering vid en återställningsbegäran av lösenord"
+    },
+    "TwoFactorEmailNotification": {
+      "displayName": "Tvåfaktorsautentisering",
+      "description": "Denna avisering innehåller en säkerhetstoken för tvåfaktorsautentisering"
+    },
+    "TwoFactorSmsNotification": {
+      "displayName": "Tvåfaktorsautentisering",
+      "description": "Denna avisering innehåller en säkerhetstoken för tvåfaktorsautentisering"
+    },
+    "ConfirmationEmailNotification": {
+      "displayName": "E-postbekräftelse",
+      "description": "Denna e-postavisering bekräftar den nyss registrerade användarens e-post"
+    },
+    "ChangePhoneNumberSmsNotification": {
+      "displayName": "Telefonnummerändringsavisering",
+      "description": "Kunden får ett textmeddelande när deras telefonnummer ändras"
+    },
+    "ResetPasswordSmsNotification": {
+      "displayName": "Återställ lösenord textavisering",
+      "description": "Kunden får ett textmeddelande när deras lösenord har återställts"
+    },
+    "RegistrationInvitationEmailNotification": {
+      "displayName": "Registreringsinbjudningsavisering (med organisation)",
+      "description": "Kunden får en e-postavisering när de får en inbjudan att registrera sig till en organisation"
+    },
+    "RegistrationInvitationCustomerEmailNotification": {
+      "displayName": "Registreringsinbjudningsavisering (kund)",
+      "description": "Kunden får en e-postavisering när de får en inbjudan att registrera sig utan organisation"
+    },
+    "RemindUserNameEmailNotification": {
+      "displayName": "Glömt användarnamnsavisering",
+      "description": "Kunden får en e-postavisering efter att de klickat på Glömt mitt användarnamn"
+    }
+  },
+  "permissions": {
+    "notifications:read": "Läs aviseringsdata",
+    "notifications:create": "Skapa aviseringsdata",
+    "notifications:update": "Uppdatera aviseringsdata",
+    "notifications:delete": "Ta bort aviseringsdata",
+    "notifications:access": "Åtkomst till aviseringsdata",
+    "notifications:export": "Exportera aviseringsdata",
+    "notifications:import": "Importera aviseringsdata",
+    "notifications:templates:read": "Läs mall-data",
+    "notifications:templates:create": "Skapa mall-data"
+  },
+  "module": {
+    "VirtoCommerce.Notifications": {
+      "description": "Exportera eller importera aviseringar"
+    }
+  }
+}
