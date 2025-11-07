@@ -1,0 +1,326 @@
+{
+  "notifications": {
+    "main-menu-title": "Ilmoitukset",
+    "blades": {
+      "notification-journal-details": {
+        "title": "Ilmoituksen tiedot",
+        "subtitle": "{{ displayName }}: Ilmoitustyyppi",
+        "labels": {
+          "id": "Viesti-ID:",
+          "notification-info": "Ilmoitustiedot",
+          "display-name": "Näyttönimi",
+          "source": "Lähde",
+          "sending-gateway": "Lähetysväylä",
+          "active": "Aktiivinen",
+          "not-active": "Ei aktiivinen",
+          "created": "Luotu klo:",
+          "sent-success": "Lähetetty onnistuneesti",
+          "not-sent": "Ei lähetetty",
+          "sent": "Lähetetty",
+          "sent-date": "Lähetysaika",
+          "sender": "Lähettäjä:",
+          "recipient": "Vastaanottaja:",
+          "bcc": "Piilokopio (BCC)",
+          "cc": "Kopio (CC)",
+          "reply-to": "Vastausosoite",
+          "sending-attempts-count": "Lähetysyritysten määrä",
+          "last-fail-attempt-date": "Viimeisin epäonnistunut yritysajankohta",
+          "last-fail-attempt-message": "Virheet:",
+          "subject": "Aihe:",
+          "body": "Sisältö:"
+        }
+      },
+      "notifications-edit-template": {
+        "title": "{{ displayName }}: Malli",
+        "subtitle": "Muokkaa ilmoitusmallia",
+        "title-new": "{{ displayName }}: Luo malli",
+        "labels": {
+          "note": "Tämä on lista ilmoitusvaihtoehdoista. Kopioi ja liitä tämä koodi lisätäksesi vaihtoehtojen arvot malliisi",
+          "parameter-name": "Vaihtoehdon nimi",
+          "parameter-description": "Vaihtoehdon kuvaus",
+          "parameter-code": "Vaihtoehdon koodi mallissa (kopioi tämä koodi ja lisää se mihin tahansa osaan malliasi)",
+          "language": "Kieli",
+          "blank-note": "Jätä tämä kenttä tyhjäksi käyttääksesi oletusarvoasi",
+          "from": "Lähettäjä",
+          "to": "Vastaanottaja",
+          "cc": "Kopio (CC)",
+          "bcc": "Piilokopio (BCC)",
+          "reply-to": "Vastausosoite",
+          "subject": "Aihe",
+          "body": "Sisältö",
+          "template": "Malli",
+          "sample": "Esimerkkidata JSON",
+          "preview-data": "Esikatseluaineisto",
+          "preview-data-comment": "Mallikontekstiaineisto (JSON)",
+          "note-caption": "Tärkeää!",
+          "note-text": "Tällä mallilla on ennalta määritetty lähde. Kun tallennat ilmoituksesi, tämä versio korvaa ennalta määritetyn. Voit palauttaa alkuperäisen mallin sopivaa painiketta käyttäen",
+          "layout": "Asettelu",
+          "layout-blank-note": "Jätä tämä kenttä tyhjäksi käyttääksesi valittua oletusasettelua"
+        },
+        "descriptions": {
+          "to": "Sähköpostin vastaanottajan osoite",
+          "cc": "Kopion (CC) vastaanottajaosoitteet",
+          "bcc": "Piilokopion (BCC) vastaanottajaosoite",
+          "reply-to": "Vastausosoite",
+          "from": "Lähettäjän osoite",
+          "subject": "Sähköposti-ilmoituksen aihe",
+          "sample": "Käytetään täydessä esikatselussa esimerkkinä ilmoituskohteesta"
+        },
+        "placeholders": {
+          "language": "Valitse...",
+          "recipient": "Vastaanottajan osoite",
+          "email-addresses-note": "Anna osoitteet",
+          "subject": "Anna sähköpostin aihe",
+          "layout": "Valitse..."
+        }
+      },
+      "notification-templates-list": {
+        "title": "Ilmoitusmallit",
+        "labels": {
+          "subject": "Aihe",
+          "body": "Sisältö",
+          "language": "Kieli",
+          "created": "Luotu",
+          "modified": "Muokattu",
+          "predefined": "Ennalta määritetty",
+          "edited": "Muokattu"
+        }
+      },
+      "notification-layouts-list": {
+        "title": "Ilmoitusasettelut",
+        "subtitle": "Hallitse ilmoitusasetteluja",
+        "labels": {
+          "no-data": "Ei vielä rekisteröityjä asetteluja",
+          "name": "Nimi",
+          "template": "Malli",
+          "default": "Oletus"
+        }
+      },
+      "notification-layout-details": {
+        "title-new": "Luo ilmoitusasettelu",
+        "subtitle": "Muokkaa asettelua",
+        "labels": {
+          "name": "Nimi",
+          "template": "Malli",
+          "default": "Oletus"
+        },
+        "placeholders": {
+          "name": "Anna nimi..."
+        }
+      },
+      "notifications-test-resolve": {
+        "title": "Esikatsele ilmoitus",
+        "subtitle": "Anna testidataa kohteelle {{type}}",
+        "labels": {
+          "test": "Testaa",
+          "enter-test-data": "Anna testidata"
+        }
+      },
+      "notifications-test-send": {
+        "title": "Lähetä ilmoitus",
+        "subtitle": "Anna testidataa kohteelle {{type}}",
+        "labels": {
+          "send": "Lähetä",
+          "enter-test-data": "Anna testidata"
+        }
+      },
+      "notifications-journal": {
+        "title": "Ilmoitusaktiviteettisyöte",
+        "subtitle": "Tämä osio sisältää luettelon kaikista järjestelmään tallennetuista ilmoituksista",
+        "subtitle-search": "Hakutulokset haulle \"{{keyword}}\"",
+        "labels": {
+          "display-name": "Näyttönimi",
+          "notification": "Ilmoitus",
+          "created": "Luotu",
+          "status": "Tila",
+          "recipient": "Vastaanottaja",
+          "sent-date": "Lähetysaika",
+          "channel": "Kanava",
+          "error": "Virhe",
+          "processing": "Käsittely",
+          "success": "Onnistui",
+          "no-notifications": "Ei vielä ilmoituksia",
+          "unnamed-filter": "Nimetön suodatin",
+          "filter-new": "<strong>Lisää uusi suodatin</strong>",
+          "filter-only-pending": "Vain odottavat",
+          "filter-with-errors": "Virheelliset",
+          "detail": "Näytä tiedot",
+          "sendAttemptCount": "Lähetysyritysten määrä",
+          "resend-messages": "Lähetä viestit uudelleen"
+        },
+        "placeholders": {
+          "select-filter": "Valitse suodatin"
+        }
+      },
+      "notifications-list": {
+        "title": "Ilmoitusluettelo",
+        "subtitle": "Tämä osio sisältää luettelon kaikista järjestelmään rekisteröidyistä ilmoituksista",
+        "labels": {
+          "no-notifications": "Ei vielä rekisteröityjä ilmoituksia",
+          "display-name": "Näyttönimi",
+          "type": "Tyyppi",
+          "active": "Aktiivinen"
+        }
+      },
+      "notification-details": {
+        "title": "{{ displayName }}: Tiedot",
+        "labels": {
+          "is-active": "Aktiivinen",
+          "name": "Ilmoituksen nimi",
+          "number": "Puhelinnumero"
+        },
+        "placeholders": {
+          "number": "Tekstiviesti-puhelinnumero"
+        },
+        "descriptions": {
+          "number": "Puhelinnumero, joka vastaanottaa tekstiviesti (SMS)-ilmoituksen"
+        }
+      },
+      "filter-detail": {
+        "subtitle": "Muokkaa suodatinta",
+        "new-title": "Uusi suodatin",
+        "new-subtitle": "Luo uusi suodatin",
+        "labels": {
+          "criteria": "Hakulauseke",
+          "name": "Suodattimen nimi"
+        },
+        "placeholders": {
+          "criteria": "Anna hakulauseke",
+          "name": "Nimeä tämä suodatin"
+        }
+      },
+      "notifications-template-render": {
+        "title": "Esikatselulomake",
+        "subtitle": "Tämä lomake renderöi mallin",
+        "labels": {
+          "view-full-response": "Näytä koko vastaus",
+          "message": "Viesti",
+          "stack-trace": "StackTrace",
+          "response": "Vastaus"
+        }
+      }
+    },
+    "widgets": {
+      "notificationsTemplatesWidget": {
+        "title": "Mallit",
+        "blade-title": "{{displayName}}: Mallilista",
+        "blade-subtitle": "Hallitse ilmoitusmalleja"
+      },
+      "notificationsLogWidget": {
+        "title": "Ilmoitusloki",
+        "blade-title": "Loki, joka tallentaa ilmoitusten dataa",
+        "blade-subtitle": "Näytä ilmoitusloki"
+      },
+      "notificationsAttachmentsWidget": {
+        "title": "Liitteet (tulossa pian)",
+        "blade-title": "Liitteet",
+        "blade-subtitle": "Liitteet"
+      }
+    },
+    "dialogs": {
+      "unknown-kind": {
+        "title": "Virhe",
+        "message": "Ei voi avata '{{type}}'-ilmoitusta. Ota yhteyttä sivuston ylläpitäjään lisätietoja varten"
+      },
+      "notification-details-save": {
+        "title": "Tallenna muutokset",
+        "message": "Ilmoitusmalli on muokattu. Haluatko tallentaa muutokset?"
+      },
+      "notification-template-delete": {
+        "title": "Vahvista poisto",
+        "message": "Haluatko varmasti poistaa valitut mallit?"
+      },
+      "notification-template-delete-notification": {
+        "title": "Mallia ei voi poistaa",
+        "message": "Et voi poistaa oletus- tai ennalta määritettyjä malleja. Poista tällaiset mallit valinnasta ja yritä uudelleen"
+      },
+      "notification-template-reset-confirmation": {
+        "title": "Vahvista mallin nollaus",
+        "warning": "VAROITUS: Tämä muutos on pysyvä eikä sitä voi peruuttaa. Tämän muutoksen tekeminen voi johtaa tietojen menetykseen",
+        "message": "{{count}} mallia(a) seuraavilta kieliltä poistetaan:",
+        "instruction": "Kirjoita 'kyllä' poistaaksesi:"
+      },
+      "notification-share-preview-confirmation": {
+        "title": "Vahvista ilmoituksen esikatselun jakaminen",
+        "message": "Haluatko lähettää tämän ilmoituksen esikatselun määritettyyn sähköpostiosoitteeseen?"
+      },
+      "share-success": {
+        "title": "Jaa esikatselu",
+        "message": "Testiviesti, jossa oli ilmoituksen esikatselu, lähetettiin onnistuneesti"
+      },
+      "share-error": {
+        "title": "Virhe"
+      },
+      "notification-layout-delete": {
+        "title": "Vahvista poisto",
+        "message": "Haluatko varmasti poistaa valitut asettelut?"
+      }
+    },
+    "commands": {
+      "restore": "Palauta",
+      "share-preview": "Lähetä testiviesti"
+    }
+  },
+  "notificationTypes": {
+    "UnregisteredNotification": {
+      "displayName": "Rekisteröimätön ilmoitus",
+      "description": "Alkuperäinen ilmoitustyyppi: {{type}}"
+    },
+    "RegistrationEmailNotification": {
+      "displayName": "Rekisteröitymisilmoitus",
+      "description": "Asiakas saa sähköposti-ilmoituksen rekisteröitymisen jälkeen"
+    },
+    "ResetPasswordEmailNotification": {
+      "displayName": "Salasanan nollausilmoitus",
+      "description": "Asiakas saa sähköposti-ilmoituksen salasanan nollauspyynnön jälkeen"
+    },
+    "TwoFactorEmailNotification": {
+      "displayName": "Kaksivaiheinen tunnistautuminen",
+      "description": "Tämä ilmoitus sisältää turvallisuustunnisteen kaksivaiheiseen tunnistautumiseen"
+    },
+    "TwoFactorSmsNotification": {
+      "displayName": "Kaksivaiheinen tunnistautuminen",
+      "description": "Tämä ilmoitus sisältää turvallisuustunnisteen kaksivaiheiseen tunnistautumiseen"
+    },
+    "ConfirmationEmailNotification": {
+      "displayName": "Sähköpostivahvistus",
+      "description": "Tämä sähköposti-ilmoitus vahvistaa vastikään rekisteröidyn käyttäjän sähköpostin"
+    },
+    "ChangePhoneNumberSmsNotification": {
+      "displayName": "Puhelinnumeron muutosilmoitus",
+      "description": "Asiakas saa tekstiviestin, kun heidän puhelinnumeronsa muuttuu"
+    },
+    "ResetPasswordSmsNotification": {
+      "displayName": "Salasanan nollaus tekstiviesti-ilmoitus",
+      "description": "Asiakas saa tekstiviestin, kun heidän salasanansa on nollattu"
+    },
+    "RegistrationInvitationEmailNotification": {
+      "displayName": "Rekisteröitymispyyntöilmoitus (organisaation kanssa)",
+      "description": "Asiakas saa sähköposti-ilmoituksen, kun he saavat kutsun rekisteröityä organisaatioon"
+    },
+    "RegistrationInvitationCustomerEmailNotification": {
+      "displayName": "Rekisteröitymispyyntöilmoitus (asiakas)",
+      "description": "Asiakas saa sähköposti-ilmoituksen, kun he saavat kutsun rekisteröityä ilman organisaatiota"
+    },
+    "RemindUserNameEmailNotification": {
+      "displayName": "Unohtunut käyttäjätunnusilmoitus",
+      "description": "Asiakas saa sähköposti-ilmoituksen, kun he klikkaavat Unohtunut käyttäjätunnukseni"
+    }
+  },
+  "permissions": {
+    "notifications:read": "Lue ilmoitusdata",
+    "notifications:create": "Luo ilmoitusdata",
+    "notifications:update": "Päivitä ilmoitusdata",
+    "notifications:delete": "Poista ilmoitusdata",
+    "notifications:access": "Pääsy ilmoitusdataan",
+    "notifications:export": "Vie ilmoitusdata",
+    "notifications:import": "Tuo ilmoitusdata",
+    "notifications:templates:read": "Lue mallidata",
+    "notifications:templates:create": "Luo mallidata"
+  },
+  "module": {
+    "VirtoCommerce.Notifications": {
+      "description": "Vie tai tuo ilmoituksia"
+    }
+  }
+}
