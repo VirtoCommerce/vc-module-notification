@@ -38,7 +38,7 @@
           "note": "Esta é uma lista de opções de notificação. Copie e cole este código para inserir os valores das opções no seu modelo",
           "parameter-name": "Nome da opção",
           "parameter-description": "Descrição da opção",
-          "paremeter-code": "Código da opção no modelo (copie este código e insira-o em qualquer parte do seu modelo)",
+          "parameter-code": "Código da opção no modelo (copie este código e insira-o em qualquer parte do seu modelo)",
           "language": "Idioma",
           "blank-note": "Deixe este campo em branco para usar seu valor padrão",
           "from": "De",
