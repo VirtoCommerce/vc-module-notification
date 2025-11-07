@@ -38,7 +38,7 @@
           "note": "这是通知选项的列表。复制并粘贴此代码以将选项值插入到您的模板中",
           "parameter-name": "选项名称",
           "parameter-description": "选项描述",
-          "paremeter-code": "模板中的选项代码（复制此代码并插入到模板的任何部分）",
+          "parameter-code": "模板中的选项代码（复制此代码并插入到模板的任何部分）",
           "language": "语言",
           "blank-note": "将此字段留空以使用默认值",
           "from": "发件人",

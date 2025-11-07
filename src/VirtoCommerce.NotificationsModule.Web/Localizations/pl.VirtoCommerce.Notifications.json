@@ -38,7 +38,7 @@
           "note": "To jest lista opcji powiadomienia. Skopiuj i wklej ten kod, aby wstawić wartości opcji do swojego szablonu",
           "parameter-name": "Nazwa opcji",
           "parameter-description": "Opis opcji",
-          "paremeter-code": "Kod opcji w szablonie (skopiuj ten kod i wstaw go w dowolne miejsce swojego szablonu)",
+          "parameter-code": "Kod opcji w szablonie (skopiuj ten kod i wstaw go w dowolne miejsce swojego szablonu)",
           "language": "Język",
           "blank-note": "Pozostaw to pole puste, aby użyć wartości domyślnej",
           "from": "Od",
