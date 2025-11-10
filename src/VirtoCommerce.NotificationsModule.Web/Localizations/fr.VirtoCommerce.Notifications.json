@@ -38,7 +38,7 @@
           "note": "Ceci est une liste d'options de notification. Copiez et collez ce code pour insérer les valeurs d'option dans votre modèle",
           "parameter-name": "Nom de l'option",
           "parameter-description": "Description de l'option",
-          "paremeter-code": "Code de l'option dans le modèle (copiez ce code et insérez-le dans n'importe quelle partie de votre modèle)",
+          "parameter-code": "Code de l'option dans le modèle (copiez ce code et insérez-le dans n'importe quelle partie de votre modèle)",
           "language": "Langue",
           "blank-note": "Laissez ce champ vide pour utiliser votre valeur par défaut",
           "from": "De",
@@ -167,13 +167,26 @@
         "labels": {
           "is-active": "Actif",
           "name": "Nom de la notification",
-          "number": "Numéro de téléphone"
+          "number": "Numéro de téléphone",
+          "add-optional-email-fields": "Ajouter des champs d'e-mail facultatifs",
+          "add-optional-fields": "Ajouter CC, CCI ou Répondre à",
+          "add-cc": "Ajouter CC",
+          "add-bcc": "Ajouter CCI",
+          "add-reply-to": "Ajouter Répondre à",
+          "system-from": "Système - De",
+          "system-to": "Système - À",
+          "add-system-from": "Ajouter Système De",
+          "add-system-to": "Ajouter Système À"
         },
         "placeholders": {
-          "number": "Numéro de téléphone pour les messages texte"
+          "number": "Numéro de téléphone pour les messages texte",
+          "system-from": "Entrez l'adresse e-mail de l'expéditeur",
+          "system-to": "Entrez l'adresse e-mail du destinataire"
         },
         "descriptions": {
-          "number": "Numéro de téléphone qui recevra la notification par message texte (SMS)"
+          "number": "Numéro de téléphone qui recevra la notification par message texte (SMS)",
+          "system-from": "Note: Généralement laissé vide. Le code métier remplacera ceci par l'adresse d'expéditeur réelle du magasin. À utiliser uniquement pour les notifications système personnalisées.",
+          "system-to": "Note: Généralement laissé vide. Le code métier remplacera ceci par l'adresse e-mail réelle du client. À utiliser uniquement pour les notifications système personnalisées."
         }
       },
       "filter-detail": {

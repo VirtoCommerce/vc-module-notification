@@ -38,7 +38,7 @@
           "note": "Dies ist eine Liste von Benachrichtigungsoptionen. Kopieren Sie diesen Code und fügen Sie ihn in Ihre Vorlage ein, um die Optionswerte einzufügen.",
           "parameter-name": "Optionsname",
           "parameter-description": "Optionsbeschreibung",
-          "paremeter-code": "Optionscode in der Vorlage (kopieren Sie diesen Code und fügen Sie ihn an einer beliebigen Stelle Ihrer Vorlage ein)",
+          "parameter-code": "Optionscode in der Vorlage (kopieren Sie diesen Code und fügen Sie ihn an einer beliebigen Stelle Ihrer Vorlage ein)",
           "language": "Sprache",
           "blank-note": "Lassen Sie dieses Feld leer, um den Standardwert zu verwenden",
           "from": "Von",
@@ -167,13 +167,26 @@
         "labels": {
           "is-active": "Aktiv",
           "name": "Benachrichtigungsname",
-          "number": "Telefonnummer"
+          "number": "Telefonnummer",
+          "add-optional-email-fields": "Optionale E-Mail-Felder hinzufügen",
+          "add-optional-fields": "CC, BCC oder Antwort an hinzufügen",
+          "add-cc": "CC hinzufügen",
+          "add-bcc": "BCC hinzufügen",
+          "add-reply-to": "Antwort an hinzufügen",
+          "system-from": "System - Von",
+          "system-to": "System - An",
+          "add-system-from": "System Von hinzufügen",
+          "add-system-to": "System An hinzufügen"
         },
         "placeholders": {
-          "number": "Telefonnummer für Textnachricht"
+          "number": "Telefonnummer für Textnachricht",
+          "system-from": "Absender-E-Mail-Adresse eingeben",
+          "system-to": "Empfänger-E-Mail-Adresse eingeben"
         },
         "descriptions": {
-          "number": "Telefonnummer, die die Textnachricht (SMS) Benachrichtigung erhält"
+          "number": "Telefonnummer, die die Textnachricht (SMS) Benachrichtigung erhält",
+          "system-from": "Hinweis: Normalerweise leer lassen. Der Geschäftscode ersetzt dies in der Regel durch die tatsächliche Shop-Absenderadresse. Nur für benutzerdefinierte Systembenachrichtigungen verwenden.",
+          "system-to": "Hinweis: Normalerweise leer lassen. Der Geschäftscode ersetzt dies in der Regel durch die echte Kunden-E-Mail-Adresse. Nur für benutzerdefinierte Systembenachrichtigungen verwenden."
         }
       },
       "filter-detail": {

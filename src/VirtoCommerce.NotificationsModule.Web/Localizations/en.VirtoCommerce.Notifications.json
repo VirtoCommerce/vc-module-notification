@@ -38,7 +38,7 @@
           "note": "This is a list of notification options. Copy and paste this code to insert the option values to your template",
           "parameter-name": "Option name",
           "parameter-description": "Option description",
-          "paremeter-code": "Option code in the template (copy this code and insert it to any part of your template)",
+          "parameter-code": "Option code in the template (copy this code and insert it to any part of your template)",
           "language": "Language",
           "blank-note": "Leave this field blank to use your default value",
           "from": "From",
@@ -167,13 +167,26 @@
         "labels": {
           "is-active": "Active",
           "name": "Notification name",
-          "number": "Phone number"
+          "number": "Phone number",
+          "add-optional-email-fields": "Add optional email fields",
+          "add-optional-fields": "Add CC, BCC or Reply-To",
+          "add-cc": "Add CC",
+          "add-bcc": "Add BCC",
+          "add-reply-to": "Add Reply-To",
+          "system-from": "System - From",
+          "system-to": "System - To",
+          "add-system-from": "Add System From",
+          "add-system-to": "Add System To"
         },
         "placeholders": {
-          "number": "Text message phone number"
+          "number": "Text message phone number",
+          "system-from": "Enter sender email address",
+          "system-to": "Enter recipient email address"
         },
         "descriptions": {
-          "number": "Phone number that will get the text message (SMS) notification"
+          "number": "Phone number that will get the text message (SMS) notification",
+          "system-from": "Note: Usually left blank. Business code will typically replace this with the actual store sender address. Use only for custom system notifications.",
+          "system-to": "Note: Usually left blank. Business code will typically replace this with the real customer email address. Use only for custom system notifications."
         }
       },
       "filter-detail": {

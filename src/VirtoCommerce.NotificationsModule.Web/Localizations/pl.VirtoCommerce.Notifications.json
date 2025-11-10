@@ -38,7 +38,7 @@
           "note": "To jest lista opcji powiadomienia. Skopiuj i wklej ten kod, aby wstawić wartości opcji do swojego szablonu",
           "parameter-name": "Nazwa opcji",
           "parameter-description": "Opis opcji",
-          "paremeter-code": "Kod opcji w szablonie (skopiuj ten kod i wstaw go w dowolne miejsce swojego szablonu)",
+          "parameter-code": "Kod opcji w szablonie (skopiuj ten kod i wstaw go w dowolne miejsce swojego szablonu)",
           "language": "Język",
           "blank-note": "Pozostaw to pole puste, aby użyć wartości domyślnej",
           "from": "Od",
@@ -167,13 +167,26 @@
         "labels": {
           "is-active": "Aktywne",
           "name": "Nazwa powiadomienia",
-          "number": "Numer telefonu"
+          "number": "Numer telefonu",
+          "add-optional-email-fields": "Dodaj opcjonalne pola e-mail",
+          "add-optional-fields": "Dodaj DW, UDW lub Odpowiedz do",
+          "add-cc": "Dodaj DW",
+          "add-bcc": "Dodaj UDW",
+          "add-reply-to": "Dodaj Odpowiedz do",
+          "system-from": "System - Od",
+          "system-to": "System - Do",
+          "add-system-from": "Dodaj System Od",
+          "add-system-to": "Dodaj System Do"
         },
         "placeholders": {
-          "number": "Numer telefonu do wiadomości tekstowej"
+          "number": "Numer telefonu do wiadomości tekstowej",
+          "system-from": "Wprowadź adres e-mail nadawcy",
+          "system-to": "Wprowadź adres e-mail odbiorcy"
         },
         "descriptions": {
-          "number": "Numer telefonu, który otrzyma powiadomienie SMS"
+          "number": "Numer telefonu, który otrzyma powiadomienie SMS",
+          "system-from": "Uwaga: Zazwyczaj pozostawia się puste. Kod biznesowy zazwyczaj zastąpi to rzeczywistym adresem nadawcy sklepu. Używaj tylko dla niestandardowych powiadomień systemowych.",
+          "system-to": "Uwaga: Zazwyczaj pozostawia się puste. Kod biznesowy zazwyczaj zastąpi to rzeczywistym adresem e-mail klienta. Używaj tylko dla niestandardowych powiadomień systemowych."
         }
       },
       "filter-detail": {

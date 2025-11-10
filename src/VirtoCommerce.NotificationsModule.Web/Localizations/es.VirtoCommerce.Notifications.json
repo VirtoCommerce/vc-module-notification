@@ -38,7 +38,7 @@
           "note": "Esta es una lista de opciones de notificación. Copie y pegue este código para insertar los valores de opción en su plantilla",
           "parameter-name": "Nombre de la opción",
           "parameter-description": "Descripción de la opción",
-          "paremeter-code": "Código de la opción en la plantilla (copia este código e insértalo en cualquier parte de tu plantilla)",
+          "parameter-code": "Código de la opción en la plantilla (copia este código e insértalo en cualquier parte de tu plantilla)",
           "language": "Idioma",
           "blank-note": "Deje este campo en blanco para usar su valor predeterminado",
           "from": "De",
@@ -167,13 +167,26 @@
         "labels": {
           "is-active": "Activo",
           "name": "Nombre de la notificación",
-          "number": "Número de teléfono"
+          "number": "Número de teléfono",
+          "add-optional-email-fields": "Agregar campos de correo opcionales",
+          "add-optional-fields": "Agregar CC, CCO o Responder a",
+          "add-cc": "Agregar CC",
+          "add-bcc": "Agregar CCO",
+          "add-reply-to": "Agregar Responder a",
+          "system-from": "Sistema - De",
+          "system-to": "Sistema - Para",
+          "add-system-from": "Agregar Sistema De",
+          "add-system-to": "Agregar Sistema Para"
         },
         "placeholders": {
-          "number": "Número de teléfono para el mensaje de texto"
+          "number": "Número de teléfono para el mensaje de texto",
+          "system-from": "Ingrese la dirección de correo del remitente",
+          "system-to": "Ingrese la dirección de correo del destinatario"
         },
         "descriptions": {
-          "number": "Número de teléfono que recibirá la notificación (SMS)"
+          "number": "Número de teléfono que recibirá la notificación (SMS)",
+          "system-from": "Nota: Normalmente se deja en blanco. El código de negocio reemplazará esto con la dirección de remitente real de la tienda. Úselo solo para notificaciones personalizadas del sistema.",
+          "system-to": "Nota: Normalmente se deja en blanco. El código de negocio reemplazará esto con la dirección de correo real del cliente. Úselo solo para notificaciones personalizadas del sistema."
         }
       },
       "filter-detail": {
