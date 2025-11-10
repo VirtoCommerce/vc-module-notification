@@ -167,13 +167,26 @@
         "labels": {
           "is-active": "Attivo",
           "name": "Nome della notifica",
-          "number": "Numero di telefono"
+          "number": "Numero di telefono",
+          "add-optional-email-fields": "Aggiungi campi email facoltativi",
+          "add-optional-fields": "Aggiungi CC, CCN o Rispondi a",
+          "add-cc": "Aggiungi CC",
+          "add-bcc": "Aggiungi CCN",
+          "add-reply-to": "Aggiungi Rispondi a",
+          "system-from": "Sistema - Da",
+          "system-to": "Sistema - A",
+          "add-system-from": "Aggiungi Sistema Da",
+          "add-system-to": "Aggiungi Sistema A"
         },
         "placeholders": {
-          "number": "Numero di telefono per il messaggio di testo"
+          "number": "Numero di telefono per il messaggio di testo",
+          "system-from": "Inserisci indirizzo email del mittente",
+          "system-to": "Inserisci indirizzo email del destinatario"
         },
         "descriptions": {
-          "number": "Numero di telefono che riceverà la notifica (SMS)"
+          "number": "Numero di telefono che riceverà la notifica (SMS)",
+          "system-from": "Nota: Generalmente lasciato vuoto. Il codice aziendale sostituirà questo con l'indirizzo del mittente effettivo del negozio. Usare solo per notifiche di sistema personalizzate.",
+          "system-to": "Nota: Generalmente lasciato vuoto. Il codice aziendale sostituirà questo con l'indirizzo email reale del cliente. Usare solo per notifiche di sistema personalizzate."
         }
       },
       "filter-detail": {

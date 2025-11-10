@@ -167,13 +167,26 @@
         "labels": {
           "is-active": "激活",
           "name": "通知名称",
-          "number": "电话号码"
+          "number": "电话号码",
+          "add-optional-email-fields": "添加可选的电子邮件字段",
+          "add-optional-fields": "添加抄送、密送或回复地址",
+          "add-cc": "添加抄送",
+          "add-bcc": "添加密送",
+          "add-reply-to": "添加回复地址",
+          "system-from": "系统 - 发件人",
+          "system-to": "系统 - 收件人",
+          "add-system-from": "添加系统发件人",
+          "add-system-to": "添加系统收件人"
         },
         "placeholders": {
-          "number": "短信电话号码"
+          "number": "短信电话号码",
+          "system-from": "输入发件人邮箱地址",
+          "system-to": "输入收件人邮箱地址"
         },
         "descriptions": {
-          "number": "将接收短信通知的电话号码"
+          "number": "将接收短信通知的电话号码",
+          "system-from": "注意：通常留空。业务代码通常会将其替换为实际的商店发件人地址。仅用于自定义系统通知。",
+          "system-to": "注意：通常留空。业务代码通常会将其替换为真实的客户电子邮件地址。仅用于自定义系统通知。"
         }
       },
       "filter-detail": {
