@@ -9,7 +9,7 @@
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="MailKit" Version="4.3.0" />
+    <PackageReference Include="MailKit" Version="4.14.0" />
     <PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0" PrivateAssets="All" />
   </ItemGroup>
   <ItemGroup>
