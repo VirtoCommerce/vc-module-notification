@@ -1,10 +1,9 @@
 using System.Collections.Generic;
 using VirtoCommerce.Platform.Core.Common;
-using VirtoCommerce.Platform.Core.Domain;
 
 namespace VirtoCommerce.NotificationsModule.Core.Model
 {
-    public class LocalizedTemplateContent : ValueObject, IHasLanguage
+    public class LocalizedTemplateContent : ValueObject, IHasLanguageCode
     {
         public string LanguageCode { get; set; }
         public string Content { get; set; }

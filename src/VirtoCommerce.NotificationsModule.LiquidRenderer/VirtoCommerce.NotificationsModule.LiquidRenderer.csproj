@@ -11,7 +11,7 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0" PrivateAssets="All" />
     <PackageReference Include="Scriban" Version="5.10.0" />
-    <PackageReference Include="VirtoCommerce.AssetsModule.Core" Version="3.808.0" />
+    <PackageReference Include="VirtoCommerce.AssetsModule.Core" Version="3.814.0-alpha.161-vcst-4203-cleanup" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\VirtoCommerce.NotificationsModule.Core\VirtoCommerce.NotificationsModule.Core.csproj" />
