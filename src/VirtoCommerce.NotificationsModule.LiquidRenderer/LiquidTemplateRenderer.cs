@@ -29,18 +29,6 @@ public class LiquidTemplateRenderer : INotificationTemplateRenderer
         _notificationLayoutSearchService = notificationLayoutSearchService;
     }
 
-    public Task<string> RenderAsync(string stringTemplate, object model, string language = null)
-    {
-        var renderContext = new NotificationRenderContext
-        {
-            Template = stringTemplate,
-            Language = language,
-            Model = model,
-        };
-
-        return RenderAsync(renderContext);
-    }
-
     public async Task<string> RenderAsync(NotificationRenderContext renderContext)
     {
         var templateContext = new LiquidTemplateContext()

@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -13,12 +12,6 @@ namespace VirtoCommerce.NotificationsModule.Core.Model
     /// </summary>
     public abstract class EmailNotification : Notification
     {
-        [Obsolete("need to use ctor with 'type' parameter")]
-        public EmailNotification()
-        {
-            Attachments = new List<EmailAttachment>();
-        }
-
         protected EmailNotification(string type) : base(type)
         {
             Attachments = new List<EmailAttachment>();

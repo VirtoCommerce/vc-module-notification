@@ -1,4 +1,3 @@
-using System;
 using System.Threading.Tasks;
 using VirtoCommerce.NotificationsModule.Core.Extensions;
 using VirtoCommerce.NotificationsModule.Core.Services;
@@ -10,11 +9,6 @@ namespace VirtoCommerce.NotificationsModule.Core.Model
     /// </summary>
     public abstract class SmsNotification : Notification
     {
-        [Obsolete("need to use ctor with 'type' parameter")]
-        public SmsNotification()
-        {
-        }
-
         protected SmsNotification(string type) : base(type)
         {
         }

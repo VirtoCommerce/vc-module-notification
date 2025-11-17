@@ -40,12 +40,6 @@ namespace VirtoCommerce.NotificationsModule.Data.Senders
             }
         }
 
-        [Obsolete("need to use ScheduleSendNotificationAsync")]
-        public void ScheduleSendNotification(Notification notification)
-        {
-            ScheduleSendNotificationAsync(notification).GetAwaiter().GetResult();
-        }
-
         public async Task<NotificationSendResult> SendNotificationAsync(Notification notification)
         {
             if (notification == null)
