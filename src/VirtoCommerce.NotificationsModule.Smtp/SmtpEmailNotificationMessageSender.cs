@@ -41,6 +41,14 @@ public class SmtpEmailNotificationMessageSender : INotificationMessageSender
         {
             using var mailMsg = new MimeMessage();
 
+            if (!_smtpOptions.CustomHeaders.IsNullOrEmpty())
+            {
+                foreach (var header in _smtpOptions.CustomHeaders)
+                {
+                    mailMsg.Headers.Add(header.Key, header.Value);
+                }
+            }
+
             mailMsg.From.Add(MailboxAddress.Parse(emailNotificationMessage.From ?? _emailSendingOptions.DefaultSender));
             mailMsg.To.Add(MailboxAddress.Parse(emailNotificationMessage.To));
 
