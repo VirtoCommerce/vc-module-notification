@@ -41,65 +41,98 @@ public class SmtpEmailNotificationMessageSender : INotificationMessageSender
         {
             using var mailMsg = new MimeMessage();
 
-            mailMsg.From.Add(MailboxAddress.Parse(emailNotificationMessage.From ?? _emailSendingOptions.DefaultSender));
-            mailMsg.To.Add(MailboxAddress.Parse(emailNotificationMessage.To));
+            SetupMailCustomHeaders(mailMsg);
 
-            if (!string.IsNullOrEmpty(emailNotificationMessage.ReplyTo) &&
-                MailboxAddress.TryParse(emailNotificationMessage.ReplyTo, out var replyToAddress))
-            {
-                mailMsg.ReplyTo.Add(replyToAddress);
-            }
-            else if (!string.IsNullOrEmpty(_emailSendingOptions.DefaultReplyTo) &&
-                MailboxAddress.TryParse(_emailSendingOptions.DefaultReplyTo, out var defaultReplyToAddress))
-            {
-                mailMsg.ReplyTo.Add(defaultReplyToAddress);
-            }
+            SetupMailAddresses(emailNotificationMessage, mailMsg);
 
-            if (!emailNotificationMessage.CC.IsNullOrEmpty())
-            {
-                foreach (var ccEmail in emailNotificationMessage.CC)
-                {
-                    if (MailboxAddress.TryParse(ccEmail, out var address))
-                    {
-                        mailMsg.Cc.Add(address);
-                    }
-                }
-            }
+            SetupMailSubject(emailNotificationMessage, mailMsg);
 
-            if (!emailNotificationMessage.BCC.IsNullOrEmpty())
-            {
-                foreach (var bccEmail in emailNotificationMessage.BCC)
-                {
-                    if (MailboxAddress.TryParse(bccEmail, out var address))
-                    {
-                        mailMsg.Bcc.Add(address);
-                    }
-                }
-            }
+            await SetupMailBody(emailNotificationMessage, mailMsg);
 
-            mailMsg.Subject = emailNotificationMessage.Subject;
-
-            var builder = new BodyBuilder { HtmlBody = emailNotificationMessage.Body };
-
-            foreach (var attachment in emailNotificationMessage.Attachments ?? [])
-            {
-                await using var stream = await _attachmentService.GetStreamAsync(attachment);
-                await builder.Attachments.AddAsync(attachment.FileName, stream);
-            }
-
-            mailMsg.Body = builder.ToMessageBody();
-
-            using var client = new SmtpClient();
-            await client.ConnectAsync(_smtpOptions.SmtpServer, _smtpOptions.Port, _smtpOptions.ForceSslTls
-                ? SecureSocketOptions.SslOnConnect
-                : SecureSocketOptions.StartTlsWhenAvailable);
-            await client.AuthenticateAsync(_smtpOptions.Login, _smtpOptions.Password);
-            await client.SendAsync(mailMsg);
-            await client.DisconnectAsync(quit: true);
+            await SendMail(mailMsg);
         }
         catch (Exception ex)
         {
             throw new SentNotificationException(ex);
+        }
+    }
+
+    protected virtual async Task SendMail(MimeMessage mailMsg)
+    {
+        using var client = new SmtpClient();
+        await client.ConnectAsync(_smtpOptions.SmtpServer, _smtpOptions.Port, _smtpOptions.ForceSslTls
+            ? SecureSocketOptions.SslOnConnect
+            : SecureSocketOptions.StartTlsWhenAvailable);
+        await client.AuthenticateAsync(_smtpOptions.Login, _smtpOptions.Password);
+        await client.SendAsync(mailMsg);
+        await client.DisconnectAsync(quit: true);
+    }
+
+    protected virtual async Task SetupMailBody(EmailNotificationMessage emailNotificationMessage, MimeMessage mailMsg)
+    {
+        var builder = new BodyBuilder { HtmlBody = emailNotificationMessage.Body };
+
+        foreach (var attachment in emailNotificationMessage.Attachments ?? [])
+        {
+            await using var stream = await _attachmentService.GetStreamAsync(attachment);
+            await builder.Attachments.AddAsync(attachment.FileName, stream);
+        }
+
+        mailMsg.Body = builder.ToMessageBody();
+    }
+
+    protected virtual void SetupMailSubject(EmailNotificationMessage emailNotificationMessage, MimeMessage mailMsg)
+    {
+        mailMsg.Subject = emailNotificationMessage.Subject;
+    }
+
+    protected virtual void SetupMailAddresses(EmailNotificationMessage emailNotificationMessage, MimeMessage mailMsg)
+    {
+        mailMsg.From.Add(MailboxAddress.Parse(emailNotificationMessage.From ?? _emailSendingOptions.DefaultSender));
+        mailMsg.To.Add(MailboxAddress.Parse(emailNotificationMessage.To));
+
+        if (!string.IsNullOrEmpty(emailNotificationMessage.ReplyTo) &&
+            MailboxAddress.TryParse(emailNotificationMessage.ReplyTo, out var replyToAddress))
+        {
+            mailMsg.ReplyTo.Add(replyToAddress);
+        }
+        else if (!string.IsNullOrEmpty(_emailSendingOptions.DefaultReplyTo) &&
+            MailboxAddress.TryParse(_emailSendingOptions.DefaultReplyTo, out var defaultReplyToAddress))
+        {
+            mailMsg.ReplyTo.Add(defaultReplyToAddress);
+        }
+
+        if (!emailNotificationMessage.CC.IsNullOrEmpty())
+        {
+            foreach (var ccEmail in emailNotificationMessage.CC)
+            {
+                if (MailboxAddress.TryParse(ccEmail, out var address))
+                {
+                    mailMsg.Cc.Add(address);
+                }
+            }
+        }
+
+        if (!emailNotificationMessage.BCC.IsNullOrEmpty())
+        {
+            foreach (var bccEmail in emailNotificationMessage.BCC)
+            {
+                if (MailboxAddress.TryParse(bccEmail, out var address))
+                {
+                    mailMsg.Bcc.Add(address);
+                }
+            }
+        }
+    }
+
+    protected virtual void SetupMailCustomHeaders(MimeMessage mailMsg)
+    {
+        if (!_smtpOptions.CustomHeaders.IsNullOrEmpty())
+        {
+            foreach (var header in _smtpOptions.CustomHeaders)
+            {
+                mailMsg.Headers.Add(header.Key, header.Value);
+            }
         }
     }
 }

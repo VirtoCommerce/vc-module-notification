@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 namespace VirtoCommerce.NotificationsModule.Smtp
 {
@@ -38,6 +39,11 @@ namespace VirtoCommerce.NotificationsModule.Smtp
         /// </remarks>
         /// </summary>
         public bool ForceSslTls { get; set; }
+
+        /// <summary>
+        /// Custom headers for email messages
+        /// </summary>
+        public IDictionary<string, string> CustomHeaders { get; set; }
 
         /// <summary>
         /// Force SSL/TLS
