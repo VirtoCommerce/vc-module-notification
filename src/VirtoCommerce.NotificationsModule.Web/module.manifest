@@ -4,9 +4,9 @@
   <version>3.830.0</version>
   <version-tag />
 
-  <platformVersion>3.916.0-alpha.13164-vcst-4203-cleanup</platformVersion>
+  <platformVersion>3.917.0</platformVersion>
   <dependencies>
-    <dependency id="VirtoCommerce.Assets" version="3.814.0-alpha.161-vcst-4203-cleanup" />
+    <dependency id="VirtoCommerce.Assets" version="3.814.0" />
   </dependencies>
 
   <title>Notifications</title>
