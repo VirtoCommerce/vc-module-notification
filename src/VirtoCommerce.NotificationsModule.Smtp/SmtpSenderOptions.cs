@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 
 namespace VirtoCommerce.NotificationsModule.Smtp
@@ -44,18 +43,5 @@ namespace VirtoCommerce.NotificationsModule.Smtp
         /// Custom headers for email messages
         /// </summary>
         public IDictionary<string, string> CustomHeaders { get; set; }
-
-        /// <summary>
-        /// Force SSL/TLS
-        /// <remarks>
-        /// Don't need to be enabled if server supports STARTTLS
-        /// </remarks>
-        /// </summary>
-        [Obsolete("Use ForceSslTls instead")]
-        public bool EnableSsl
-        {
-            get => ForceSslTls;
-            set => ForceSslTls = value;
-        }
     }
 }
