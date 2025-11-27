@@ -12,13 +12,6 @@ namespace VirtoCommerce.NotificationsModule.Core.Model
     /// </summary>
     public abstract class Notification : AuditableEntity, ICloneable, IHasOuterId
     {
-        [Obsolete("need to use ctor with 'type' parameter")]
-        public Notification()
-        {
-            Type = GetType().Name;
-            Templates = new List<NotificationTemplate>();
-        }
-
         protected Notification(string type)
         {
             Type = type;
