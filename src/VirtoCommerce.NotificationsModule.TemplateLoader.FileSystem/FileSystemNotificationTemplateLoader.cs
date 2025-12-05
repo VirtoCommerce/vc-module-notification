@@ -76,13 +76,14 @@ namespace VirtoCommerce.NotificationsModule.TemplateLoader.FileSystem
         protected virtual IEnumerable<LocalizedTemplateContent> LoadAllNotificationContentsFromPath(Notification notification, string path)
         {
             var result = new HashSet<LocalizedTemplateContent>();
+
             if (Directory.Exists(path))
             {
                 var files = Directory.EnumerateFiles(path, $"{notification.Type}*.*", SearchOption.TopDirectoryOnly);
 
                 foreach (var file in files)
                 {
-                    var match = _options.TemplateFilePattern.Match(file);
+                    var match = _options.TemplateFileRegex.Match(file);
                     if (match.Success)
                     {
                         result.Add(new LocalizedTemplateContent
@@ -94,8 +95,8 @@ namespace VirtoCommerce.NotificationsModule.TemplateLoader.FileSystem
                     }
                 }
             }
+
             return result;
         }
-
     }
 }

@@ -26,5 +26,7 @@ namespace VirtoCommerce.NotificationsModule.Core.Model
         /// only active notification
         /// </summary>
         public bool IsActive { get; set; }
+
+        public string[] Kinds { get; set; }
     }
 }
