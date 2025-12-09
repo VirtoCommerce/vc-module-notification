@@ -8,7 +8,7 @@ namespace VirtoCommerce.NotificationsModule.Core.Model
     public class NotificationSearchCriteria : SearchCriteriaBase
     {
         /// <summary>
-        /// 
+        /// Filter notifications by type
         /// </summary>
         public string NotificationType { get; set; }
 
@@ -23,10 +23,13 @@ namespace VirtoCommerce.NotificationsModule.Core.Model
         public string TenantType { get; set; }
 
         /// <summary>
-        /// only active notification
+        /// Only active notification
         /// </summary>
         public bool IsActive { get; set; }
 
+        /// <summary>
+        /// Filter notifications by kind (e.g., EmailNotification, SmsNotification)
+        /// </summary>
         public string[] Kinds { get; set; }
     }
 }
