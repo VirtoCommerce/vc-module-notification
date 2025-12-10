@@ -90,11 +90,6 @@ namespace VirtoCommerce.NotificationsModule.Data.Services
                 {
                     listForSave.Add(layout);
                 }
-                else if (existingLayout.Template != layout.Template)
-                {
-                    layout.Id = existingLayout.Id;
-                    listForSave.Add(layout);
-                }
             }
 
             if (listForSave.Any())
