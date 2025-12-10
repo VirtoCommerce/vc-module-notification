@@ -9,7 +9,12 @@ namespace VirtoCommerce.NotificationsModule.TemplateLoader.FileSystem
         //The file system folder that is used to discover alternative notification templates.
         //All found templates will only complement the templates are found on the main folder located by DiscoveryPath
         public string FallbackDiscoveryPath { get; set; }
-
-        public Regex TemplateFilePattern { get; set; } = new Regex(@"(?<type>[\w-]+)_(?<part>body|subject|sample)(?<lang>\.[a-z]{1,8}(-[A-Za-z0-9]{1,8})?)?\.[\w]+$", RegexOptions.IgnoreCase);
+        // The regex pattern used to identify notification template files
+        // It can be configured by standard appsettings.json file
+        public string TemplateFilePattern { get; set; } = @"(?<type>[\w-]+)_(?<part>body|subject|sample)(?<lang>\.[a-z]{1,8}(-[A-Za-z0-9]{1,8})?)?\.[\w]+$";
+        // Cached regex instance
+        private Regex _templateFileRegex;
+        // Gets the compiled regex instance for template file pattern
+        public Regex TemplateFileRegex => _templateFileRegex ??= new Regex(TemplateFilePattern, RegexOptions.IgnoreCase);
     }
 }
