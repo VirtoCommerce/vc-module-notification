@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -333,16 +332,11 @@ namespace VirtoCommerce.NotificationsModule.Tests.UnitTests
             Assert.Equal(baseType, result.Type);
         }
 
-        public class PagingTestData : IEnumerable<object[]>
+        public class PagingTestData : TheoryData<int, int, int, string[]>
         {
-            public IEnumerator<object[]> GetEnumerator()
+            public PagingTestData()
             {
-                yield return new object[] { 0, 20, 3, new[] { nameof(InvoiceEmailNotification), nameof(OrderSentEmailNotification), nameof(RegistrationEmailNotification) } };
-            }
-
-            IEnumerator IEnumerable.GetEnumerator()
-            {
-                return GetEnumerator();
+                Add(0, 20, 3, [nameof(InvoiceEmailNotification), nameof(OrderSentEmailNotification), nameof(RegistrationEmailNotification)]);
             }
         }
 
