@@ -126,7 +126,7 @@ namespace VirtoCommerce.NotificationsSampleModule.Tests
             //Arrange
             var type = nameof(RegistrationSocialNetworkNotification);
 
-            var mockNotifications = new List<NotificationEntity>().AsQueryable().BuildMock();
+            var mockNotifications = new List<NotificationEntity>().BuildMock().AsQueryable();
             _repositoryMock.Setup(r => r.Notifications).Returns(mockNotifications);
             _notificationRegistrar.RegisterNotification<RegistrationSocialNetworkNotification>();
 
@@ -146,7 +146,7 @@ namespace VirtoCommerce.NotificationsSampleModule.Tests
             var notifications = new List<NotificationEntity> { new SocialNetworkNotificationEntity() { Id = id, Type = nameof(SocialNetworkNotification) } };
             var responseGroup = NotificationResponseGroup.Default.ToString();
             _repositoryMock.Setup(n => n.GetByIdsAsync(new[] { id }, responseGroup)).ReturnsAsync(notifications.ToArray());
-            var notificationsMock = notifications.AsQueryable().BuildMock();
+            var notificationsMock = notifications.BuildMock().AsQueryable();
             _repositoryMock.Setup(x => x.Notifications).Returns(notificationsMock);
             _notificationRegistrar.RegisterNotification<RegistrationSocialNetworkNotification>();
 
@@ -159,7 +159,7 @@ namespace VirtoCommerce.NotificationsSampleModule.Tests
         }
 
         [Fact(Skip = "fail. Temporary disabled. TODO")]
-        public async Task SaveChangesAsync_SavedNotification()
+        public Task SaveChangesAsync_SavedNotification()
         {
             //Arrange
             var id = Guid.NewGuid().ToString();
@@ -176,12 +176,12 @@ namespace VirtoCommerce.NotificationsSampleModule.Tests
             };
             _repositoryMock.Setup(n => n.GetByIdsAsync(new[] { id }, NotificationResponseGroup.Full.ToString()))
                 .ReturnsAsync(notificationEntities.ToArray());
-            var notificationsMock = notificationEntities.AsQueryable().BuildMock();
+            var notificationsMock = notificationEntities.BuildMock().AsQueryable();
             _repositoryMock.Setup(x => x.Notifications).Returns(notificationsMock);
             var notifications = notificationEntities.Select(n => n.ToModel(AbstractTypeFactory<Notification>.TryCreateInstance(n.Type)));
 
             //Act
-            await _notificationService.SaveChangesAsync(notifications.ToArray());
+            return _notificationService.SaveChangesAsync(notifications.ToArray());
         }
 
         private static IPlatformMemoryCache GetCache()

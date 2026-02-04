@@ -91,7 +91,7 @@ namespace VirtoCommerce.NotificationsModule.Tests.UnitTests
                 }
             };
 
-            var mockNotifications = notifications.AsQueryable().BuildMock();
+            var mockNotifications = notifications.BuildMock();
             _repositoryMock.Setup(r => r.Notifications).Returns(mockNotifications);
             _notificationRegistrar.RegisterNotification<RegistrationEmailNotification>();
             var ids = notifications.Select(n => n.Id).ToArray();
@@ -126,7 +126,7 @@ namespace VirtoCommerce.NotificationsModule.Tests.UnitTests
             criteria4.NotificationType = type;
             _notificationSearchServiceMock.Setup(x => x.SearchNotificationsAsync(criteria4)).ReturnsAsync(new NotificationSearchResult());
 
-            var mockNotifications = notifications.AsQueryable().BuildMock();
+            var mockNotifications = notifications.BuildMock();
             _repositoryMock.Setup(r => r.Notifications).Returns(mockNotifications);
             var ids = notifications.Select(n => n.Id).ToArray();
             _notificationServiceMock.Setup(ns => ns.GetByIdsAsync(ids, null))
@@ -160,7 +160,7 @@ namespace VirtoCommerce.NotificationsModule.Tests.UnitTests
 
             searchCriteria.Take = 1;
             searchCriteria.Skip = 0;
-            var mockNotifications = notifications.AsQueryable().BuildMock();
+            var mockNotifications = notifications.BuildMock();
             _repositoryMock.Setup(r => r.Notifications).Returns(mockNotifications);
             var ids = notifications.Select(n => n.Id).ToArray();
             _notificationServiceMock.Setup(ns => ns.GetByIdsAsync(ids, null))
@@ -190,7 +190,7 @@ namespace VirtoCommerce.NotificationsModule.Tests.UnitTests
                 new EmailNotificationEntity { Type  = nameof(OrderSentEmailNotification), Kind = nameof(EmailNotification), Id = Guid.NewGuid().ToString(), IsActive = true },
                 new EmailNotificationEntity { Type  = nameof(RegistrationEmailNotification), Kind = nameof(EmailNotification), Id = Guid.NewGuid().ToString(), IsActive = true }
             };
-            var mockNotifications = notificationEntities.AsQueryable().BuildMock();
+            var mockNotifications = notificationEntities.BuildMock();
             _repositoryMock.Setup(r => r.Notifications).Returns(mockNotifications);
             var notifications = notificationEntities.Select(n => n.ToModel(AbstractTypeFactory<Notification>.TryCreateInstance(n.Type))).ToArray();
             var ids = notificationEntities.Select(n => n.Id).ToArray();
@@ -220,7 +220,7 @@ namespace VirtoCommerce.NotificationsModule.Tests.UnitTests
                 new EmailNotificationEntity { Type  = nameof(OrderSentEmailNotification), Kind = nameof(EmailNotification), Id = Guid.NewGuid().ToString(), IsActive = true },
                 new EmailNotificationEntity { Type  = nameof(RegistrationEmailNotification), Kind = nameof(EmailNotification), Id = Guid.NewGuid().ToString(), IsActive = true }
             };
-            var mockNotifications = notificationEntities.AsQueryable().BuildMock();
+            var mockNotifications = notificationEntities.BuildMock();
             _repositoryMock.Setup(r => r.Notifications).Returns(mockNotifications);
             var notifications = notificationEntities.Select(n => n.ToModel(AbstractTypeFactory<Notification>.TryCreateInstance(n.Type))).ToArray();
             _notificationServiceMock.Setup(ns => ns.GetByIdsAsync(It.IsAny<string[]>(), responseGroup))
@@ -251,7 +251,7 @@ namespace VirtoCommerce.NotificationsModule.Tests.UnitTests
                 new EmailNotificationEntity { Type  = searchType, Kind = nameof(EmailNotification), Id = Guid.NewGuid().ToString(), TenantId = "someId", TenantType = "Store" },
                 new EmailNotificationEntity { Type  = searchType, Kind = nameof(EmailNotification), Id = Guid.NewGuid().ToString(), TenantId = searchTenant.Id, TenantType = searchTenant.Type }
             };
-            var mockNotifications = notificationEntities.AsQueryable().BuildMock();
+            var mockNotifications = notificationEntities.BuildMock();
             _repositoryMock.Setup(r => r.Notifications).Returns(mockNotifications);
             var notifications = notificationEntities.Select(n => n.ToModel(AbstractTypeFactory<Notification>.TryCreateInstance(n.Type))).ToArray();
             _notificationServiceMock.Setup(ns => ns.GetByIdsAsync(It.IsAny<string[]>(), null))
@@ -283,7 +283,7 @@ namespace VirtoCommerce.NotificationsModule.Tests.UnitTests
                 new EmailNotificationEntity { Type  = searchType, Kind = nameof(EmailNotification), Id = Guid.NewGuid().ToString(), TenantId = null, TenantType = null },
                 new EmailNotificationEntity { Type  = searchType, Kind = nameof(EmailNotification), Id = Guid.NewGuid().ToString(), TenantId = "someId", TenantType = "Store" },
             };
-            var mockNotifications = notificationEntities.AsQueryable().BuildMock();
+            var mockNotifications = notificationEntities.BuildMock().AsQueryable();
             _repositoryMock.Setup(r => r.Notifications).Returns(mockNotifications);
             var notifications = notificationEntities.Select(n => n.ToModel(AbstractTypeFactory<Notification>.TryCreateInstance(n.Type))).ToArray();
             _notificationServiceMock.Setup(ns => ns.GetByIdsAsync(It.IsAny<string[]>(), null))
@@ -319,7 +319,7 @@ namespace VirtoCommerce.NotificationsModule.Tests.UnitTests
                 sampleNotificationEntity,
                 new EmailNotificationEntity { Type  = baseType, Kind = nameof(EmailNotification), Id = Guid.NewGuid().ToString() }
             };
-            var mockNotifications = notificationEntities.AsQueryable().BuildMock();
+            var mockNotifications = notificationEntities.BuildMock().AsQueryable();
             _repositoryMock.Setup(r => r.Notifications).Returns(mockNotifications);
             var notifications = notificationEntities.Select(n => n.ToModel(AbstractTypeFactory<Notification>.TryCreateInstance(n.Type))).ToArray();
             _notificationServiceMock.Setup(ns => ns.GetByIdsAsync(It.IsAny<string[]>(), searchCriteria.ResponseGroup))
