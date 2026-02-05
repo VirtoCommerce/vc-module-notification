@@ -237,7 +237,7 @@ public class NotificationMessageSearchServiceUnitTests
     {
         _repositoryMock
             .Setup(x => x.NotificationMessages)
-            .Returns(entities.AsQueryable().BuildMock());
+            .Returns(entities.BuildMock());
 
         _repositoryMock
             .Setup(x => x.GetMessagesByIdsAsync(It.IsAny<IList<string>>()))
