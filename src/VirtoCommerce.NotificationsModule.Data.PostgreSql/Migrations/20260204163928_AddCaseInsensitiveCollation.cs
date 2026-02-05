@@ -14,7 +14,7 @@ namespace VirtoCommerce.NotificationsModule.Data.PostgreSql.Migrations
 DO $$
 BEGIN
     IF NOT EXISTS (SELECT 1 FROM pg_catalog.pg_collation WHERE collname = 'case_insensitive') THEN
-        CREATE COLLATION public.case_insensitive (provider = icu, locale = 'und-u-ks-level2', deterministic = false);
+        CREATE COLLATION case_insensitive (provider = icu, locale = 'und-u-ks-level2', deterministic = false);
     END IF;
 END $$;
 ");
