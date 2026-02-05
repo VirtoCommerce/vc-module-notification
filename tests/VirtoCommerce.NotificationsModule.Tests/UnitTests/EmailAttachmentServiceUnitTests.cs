@@ -29,14 +29,14 @@ public class EmailAttachmentServiceUnitTests
         var fileName = Path.GetTempFileName();
         var attachment = new EmailAttachment { FileName = fileName };
         var expectedContent = "Test content";
-        await File.WriteAllTextAsync(attachment.FileName, expectedContent);
+        await File.WriteAllTextAsync(attachment.FileName, expectedContent, TestContext.Current.CancellationToken);
 
         try
         {
             // Act
             await using var stream = await _emailAttachmentService.GetStreamAsync(attachment);
             using var reader = new StreamReader(stream);
-            var content = await reader.ReadToEndAsync();
+            var content = await reader.ReadToEndAsync(TestContext.Current.CancellationToken);
 
             // Assert
             Assert.Equal(expectedContent, content);
@@ -72,7 +72,7 @@ public class EmailAttachmentServiceUnitTests
         // Act
         await using var stream = await _emailAttachmentService.GetStreamAsync(attachment);
         using var reader = new StreamReader(stream);
-        var content = await reader.ReadToEndAsync();
+        var content = await reader.ReadToEndAsync(TestContext.Current.CancellationToken);
 
         // Assert
         Assert.Equal(expectedContent, content);
@@ -85,14 +85,14 @@ public class EmailAttachmentServiceUnitTests
         var fileName = Path.GetFileName(Path.GetTempFileName());
         var attachment = new EmailAttachment { Url = fileName };
         var expectedContent = "Test content";
-        await File.WriteAllTextAsync(attachment.Url, expectedContent);
+        await File.WriteAllTextAsync(attachment.Url, expectedContent, TestContext.Current.CancellationToken);
 
         try
         {
             // Act
             await using var stream = await _emailAttachmentService.GetStreamAsync(attachment);
             using var reader = new StreamReader(stream);
-            var content = await reader.ReadToEndAsync();
+            var content = await reader.ReadToEndAsync(TestContext.Current.CancellationToken);
 
             // Assert
             Assert.Equal(expectedContent, content);
