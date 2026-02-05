@@ -17,7 +17,7 @@ namespace VirtoCommerce.NotificationsModule.Data.PostgreSql.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "10.0.1")
+                .HasAnnotation("ProductVersion", "8.0.8")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
@@ -124,8 +124,7 @@ namespace VirtoCommerce.NotificationsModule.Data.PostgreSql.Migrations
 
                     b.Property<string>("Kind")
                         .HasMaxLength(128)
-                        .HasColumnType("character varying(128)")
-                        .UseCollation("case_insensitive");
+                        .HasColumnType("character varying(128)");
 
                     b.Property<string>("ModifiedBy")
                         .HasMaxLength(64)
@@ -148,8 +147,7 @@ namespace VirtoCommerce.NotificationsModule.Data.PostgreSql.Migrations
 
                     b.Property<string>("Type")
                         .HasMaxLength(128)
-                        .HasColumnType("character varying(128)")
-                        .UseCollation("case_insensitive");
+                        .HasColumnType("character varying(128)");
 
                     b.HasKey("Id");
 
@@ -189,8 +187,7 @@ namespace VirtoCommerce.NotificationsModule.Data.PostgreSql.Migrations
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(128)
-                        .HasColumnType("character varying(128)")
-                        .UseCollation("case_insensitive");
+                        .HasColumnType("character varying(128)");
 
                     b.Property<string>("Template")
                         .HasColumnType("text");
@@ -230,8 +227,7 @@ namespace VirtoCommerce.NotificationsModule.Data.PostgreSql.Migrations
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("LastSendError")
-                        .HasColumnType("text")
-                        .UseCollation("case_insensitive");
+                        .HasColumnType("text");
 
                     b.Property<int>("MaxSendAttemptCount")
                         .HasColumnType("integer");
@@ -248,8 +244,7 @@ namespace VirtoCommerce.NotificationsModule.Data.PostgreSql.Migrations
 
                     b.Property<string>("NotificationType")
                         .HasMaxLength(128)
-                        .HasColumnType("character varying(128)")
-                        .UseCollation("case_insensitive");
+                        .HasColumnType("character varying(128)");
 
                     b.Property<int>("SendAttemptCount")
                         .HasColumnType("integer");
@@ -259,8 +254,7 @@ namespace VirtoCommerce.NotificationsModule.Data.PostgreSql.Migrations
 
                     b.Property<string>("Status")
                         .HasMaxLength(20)
-                        .HasColumnType("character varying(20)")
-                        .UseCollation("case_insensitive");
+                        .HasColumnType("character varying(20)");
 
                     b.Property<string>("TenantId")
                         .HasMaxLength(128)
@@ -366,37 +360,30 @@ namespace VirtoCommerce.NotificationsModule.Data.PostgreSql.Migrations
 
                     b.Property<string>("BCC")
                         .HasMaxLength(1024)
-                        .HasColumnType("character varying(1024)")
-                        .UseCollation("case_insensitive");
+                        .HasColumnType("character varying(1024)");
 
                     b.Property<string>("Body")
-                        .HasColumnType("text")
-                        .UseCollation("case_insensitive");
+                        .HasColumnType("text");
 
                     b.Property<string>("CC")
                         .HasMaxLength(1024)
-                        .HasColumnType("character varying(1024)")
-                        .UseCollation("case_insensitive");
+                        .HasColumnType("character varying(1024)");
 
                     b.Property<string>("From")
                         .HasMaxLength(128)
-                        .HasColumnType("character varying(128)")
-                        .UseCollation("case_insensitive");
+                        .HasColumnType("character varying(128)");
 
                     b.Property<string>("ReplyTo")
                         .HasMaxLength(128)
-                        .HasColumnType("character varying(128)")
-                        .UseCollation("case_insensitive");
+                        .HasColumnType("character varying(128)");
 
                     b.Property<string>("Subject")
                         .HasMaxLength(512)
-                        .HasColumnType("character varying(512)")
-                        .UseCollation("case_insensitive");
+                        .HasColumnType("character varying(512)");
 
                     b.Property<string>("To")
                         .HasMaxLength(128)
-                        .HasColumnType("character varying(128)")
-                        .UseCollation("case_insensitive");
+                        .HasColumnType("character varying(128)");
 
                     b.HasDiscriminator().HasValue("EmailNotificationMessageEntity");
                 });
