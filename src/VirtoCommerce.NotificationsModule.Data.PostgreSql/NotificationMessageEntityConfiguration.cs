@@ -2,7 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using VirtoCommerce.NotificationsModule.Data.Model;
 
-namespace VirtoCommerce.NotificationsModule.Data.MySql;
+namespace VirtoCommerce.NotificationsModule.Data.PostgreSql;
 
 public class NotificationMessageEntityConfiguration : IEntityTypeConfiguration<NotificationMessageEntity>
 {
