@@ -9,7 +9,7 @@ using VirtoCommerce.NotificationsModule.Data.Repositories;
 
 #nullable disable
 
-namespace VirtoCommerce.NotificationsModule.Data.SqlServer.VirtoCommerce.NotificationsModule.Data.SqlServer
+namespace VirtoCommerce.NotificationsModule.Data.SqlServer.Migrations
 {
     [DbContext(typeof(NotificationDbContext))]
     [Migration("20241114120451_AddReplyTo")]

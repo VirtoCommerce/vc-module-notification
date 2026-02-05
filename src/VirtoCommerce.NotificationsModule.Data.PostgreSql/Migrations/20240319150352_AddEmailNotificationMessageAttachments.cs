@@ -1,8 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace VirtoCommerce.NotificationsModule.Data.PostgreSql.VirtoCommerce.NotificationsModule.Data.PostgreSql
+namespace VirtoCommerce.NotificationsModule.Data.PostgreSql.Migrations
 {
     /// <inheritdoc />
     public partial class AddEmailNotificationMessageAttachments : Migration

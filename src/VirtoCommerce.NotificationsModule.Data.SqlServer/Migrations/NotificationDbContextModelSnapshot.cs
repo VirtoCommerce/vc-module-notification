@@ -8,7 +8,7 @@ using VirtoCommerce.NotificationsModule.Data.Repositories;
 
 #nullable disable
 
-namespace VirtoCommerce.NotificationsModule.Data.SqlServer.SqlServer.Migrations
+namespace VirtoCommerce.NotificationsModule.Data.SqlServer.Migrations
 {
     [DbContext(typeof(NotificationDbContext))]
     partial class NotificationDbContextModelSnapshot : ModelSnapshot
@@ -17,7 +17,7 @@ namespace VirtoCommerce.NotificationsModule.Data.SqlServer.SqlServer.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.8")
+                .HasAnnotation("ProductVersion", "10.0.1")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);

@@ -2,7 +2,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace VirtoCommerce.NotificationsModule.Data.SqlServer.VirtoCommerce.NotificationsModule.Data.SqlServer
+namespace VirtoCommerce.NotificationsModule.Data.SqlServer.Migrations
 {
     /// <inheritdoc />
     public partial class AddEmailNotificationMessageAttachments : Migration
