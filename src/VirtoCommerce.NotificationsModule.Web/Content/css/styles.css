@@ -1,3 +1,22 @@
+.btn.__search-in-body {
+    height: 34px;
+    margin-top: -2px;
+    margin-right: 6px;
+    font-size: 16px;
+    border: 1px solid #ddd;
+    border-radius: 3px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    color: #999;
+}
+
+.btn.__search-in-body.__active {
+    background: #e8f0fe;
+    color: #1a73e8;
+}
+
 .notification-templates-table .list-name {
     display: inline-block;
     margin-top: 10px;

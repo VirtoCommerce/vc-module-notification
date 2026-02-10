@@ -1,9 +1,8 @@
 <div class="blade-static">
     <div class="form-group" style="display: flex; align-items: center;">
-        <button type="button" class="btn btn-ico"
-                ng-class="filter.searchInBody ? '__selected' : ''"
+        <button type="button" class="btn __search-in-body"
+                ng-class="{'__active': filter.searchInBody}"
                 ng-click="filter.searchInBody = !filter.searchInBody; filter.criteriaChanged()"
-                style="height: 34px; margin-top: -2px; margin-right: 6px; font-size: 16px; border: 1px solid #ddd; border-radius: 3px; display: flex; align-items: center; justify-content: center; background: {{filter.searchInBody ? '#e8f0fe' : 'transparent'}}; color: {{filter.searchInBody ? '#1a73e8' : '#999'}};"
                 title="{{'notifications.blades.notifications-journal.labels.search-in-body-hint' | translate}}">
             <i class="fa fa-file-code-o"></i>
         </button>
