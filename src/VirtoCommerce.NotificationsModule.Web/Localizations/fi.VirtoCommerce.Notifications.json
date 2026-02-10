@@ -146,7 +146,9 @@
           "filter-with-errors": "Virheelliset",
           "detail": "Näytä tiedot",
           "sendAttemptCount": "Lähetysyritysten määrä",
-          "resend-messages": "Lähetä viestit uudelleen"
+          "resend-messages": "Lähetä viestit uudelleen",
+          "search-in-body": "Hae sisällöstä",
+          "search-in-body-hint": "Sisällytä sähköpostin sisältö avainsanahakuun (voi olla hitaampi)"
         },
         "placeholders": {
           "select-filter": "Valitse suodatin"

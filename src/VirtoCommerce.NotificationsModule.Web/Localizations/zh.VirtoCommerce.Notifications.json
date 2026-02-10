@@ -146,7 +146,9 @@
           "filter-with-errors": "有错误",
           "detail": "显示详细信息",
           "sendAttemptCount": "发送尝试次数",
-          "resend-messages": "重新发送消息"
+          "resend-messages": "重新发送消息",
+          "search-in-body": "搜索正文",
+          "search-in-body-hint": "在关键字搜索中包含邮件正文内容（可能较慢）"
         },
         "placeholders": {
           "select-filter": "选择过滤器"

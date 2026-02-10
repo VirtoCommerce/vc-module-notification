@@ -6,6 +6,7 @@ angular.module('virtoCommerce.notificationsModule')
 
             // simple and advanced filtering
             var filter = $scope.filter = {};
+            filter.searchInBody = false;
 
             filter.criteriaChanged = function () {
                 if ($scope.pageSettings.currentPage > 1) {
@@ -21,6 +22,7 @@ angular.module('virtoCommerce.notificationsModule')
                     objectIds: blade.objectId ? [blade.objectId] : undefined,
                     objectType: blade.objectType,
                     keyword: filter.keyword ? filter.keyword : undefined,
+                    searchInBody: filter.searchInBody || undefined,
                     sort: uiGridHelper.getSortExpression($scope),
                     skip: ($scope.pageSettings.currentPage - 1) * $scope.pageSettings.itemsPerPageCount,
                     take: $scope.pageSettings.itemsPerPageCount,

@@ -146,7 +146,8 @@
           "filter-with-errors": "With errors",
           "detail": "Show details",
           "sendAttemptCount": "Sending attempt count",
-          "resend-messages": "Resend messages"
+          "resend-messages": "Resend messages",
+          "search-in-body-hint": "Include email body content in keyword search (may be slower)"
         },
         "placeholders": {
           "select-filter": "Select a filter"

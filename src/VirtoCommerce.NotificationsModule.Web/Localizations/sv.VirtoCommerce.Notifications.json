@@ -146,7 +146,9 @@
           "filter-with-errors": "Med fel",
           "detail": "Visa detaljer",
           "sendAttemptCount": "Antal sändningsförsök",
-          "resend-messages": "Skicka om meddelanden"
+          "resend-messages": "Skicka om meddelanden",
+          "search-in-body": "Sök i innehåll",
+          "search-in-body-hint": "Inkludera e-postinnehåll i nyckelordssökning (kan vara långsammare)"
         },
         "placeholders": {
           "select-filter": "Välj ett filter"

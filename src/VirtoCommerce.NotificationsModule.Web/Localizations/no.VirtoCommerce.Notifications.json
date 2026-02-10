@@ -146,7 +146,9 @@
           "filter-with-errors": "Med feil",
           "detail": "Vis detaljer",
           "sendAttemptCount": "Antall sendingforsøk",
-          "resend-messages": "Send meldinger på nytt"
+          "resend-messages": "Send meldinger på nytt",
+          "search-in-body": "Søk i innhold",
+          "search-in-body-hint": "Inkluder e-postinnhold i søk etter nøkkelord (kan være tregere)"
         },
         "placeholders": {
           "select-filter": "Velg et filter"

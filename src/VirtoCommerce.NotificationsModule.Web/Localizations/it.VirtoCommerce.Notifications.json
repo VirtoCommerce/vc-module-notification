@@ -146,7 +146,9 @@
           "filter-with-errors": "Con errori",
           "detail": "Mostra dettagli",
           "sendAttemptCount": "Conteggio tentativi di invio",
-          "resend-messages": "Reinvia messaggi"
+          "resend-messages": "Reinvia messaggi",
+          "search-in-body": "Cerca nel corpo",
+          "search-in-body-hint": "Includere il contenuto dell'e-mail nella ricerca per parola chiave (potrebbe essere più lento)"
         },
         "placeholders": {
           "select-filter": "Seleziona un filtro"

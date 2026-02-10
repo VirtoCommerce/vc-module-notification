@@ -85,24 +85,19 @@ namespace VirtoCommerce.NotificationsModule.Data.Services
 
             if (!string.IsNullOrEmpty(criteria.Keyword))
             {
+                var searchInBody = criteria.SearchInBody;
                 query = query.Where(x =>
-                    x.Status != null && x.Status.Contains(criteria.Keyword) ||
-                    x.NotificationType != null && x.NotificationType.Contains(criteria.Keyword) ||
-                    x.LastSendError != null && x.LastSendError.Contains(criteria.Keyword) ||
+                    x.Status.Contains(criteria.Keyword) ||
+                    x.NotificationType.Contains(criteria.Keyword) ||
+                    x.LastSendError.Contains(criteria.Keyword) ||
                     (x is EmailNotificationMessageEntity && (
-                        (((EmailNotificationMessageEntity)x).To != null &&
-                         ((EmailNotificationMessageEntity)x).To.Contains(criteria.Keyword)) ||
-                        (((EmailNotificationMessageEntity)x).ReplyTo != null &&
-                         ((EmailNotificationMessageEntity)x).ReplyTo.Contains(criteria.Keyword)) ||
-                        (((EmailNotificationMessageEntity)x).From != null &&
-                         ((EmailNotificationMessageEntity)x).From.Contains(criteria.Keyword)) ||
-                        (((EmailNotificationMessageEntity)x).Subject != null &&
-                         ((EmailNotificationMessageEntity)x).Subject.Contains(criteria.Keyword)) ||
-                        (((EmailNotificationMessageEntity)x).CC != null &&
-                         ((EmailNotificationMessageEntity)x).CC.Contains(criteria.Keyword)) ||
-                        (((EmailNotificationMessageEntity)x).BCC != null &&
-                         ((EmailNotificationMessageEntity)x).BCC.Contains(criteria.Keyword)) ||
-                        (((EmailNotificationMessageEntity)x).Body != null &&
+                         ((EmailNotificationMessageEntity)x).To.Contains(criteria.Keyword) ||
+                         ((EmailNotificationMessageEntity)x).ReplyTo.Contains(criteria.Keyword) ||
+                         ((EmailNotificationMessageEntity)x).From.Contains(criteria.Keyword) ||
+                         ((EmailNotificationMessageEntity)x).Subject.Contains(criteria.Keyword) ||
+                         ((EmailNotificationMessageEntity)x).CC.Contains(criteria.Keyword) ||
+                         ((EmailNotificationMessageEntity)x).BCC.Contains(criteria.Keyword) ||
+                        (searchInBody &&
                          ((EmailNotificationMessageEntity)x).Body.Contains(criteria.Keyword)))));
             }
 

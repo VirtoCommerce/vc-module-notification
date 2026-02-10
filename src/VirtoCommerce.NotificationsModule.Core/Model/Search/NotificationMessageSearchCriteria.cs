@@ -6,5 +6,6 @@ namespace VirtoCommerce.NotificationsModule.Core.Model.Search
     {
         public string NotificationType { get; set; }
         public string Status { get; set; }
+        public bool SearchInBody { get; set; }
     }
 }
