@@ -260,6 +260,95 @@ public class NotificationMessageSearchServiceUnitTests
     }
 
     [Fact]
+    public async Task SearchMessageAsync_ShouldFilterByStartDate()
+    {
+        // Arrange
+        var entities = new List<NotificationMessageEntity>
+        {
+            new EmailNotificationMessageEntity { Id = "1", CreatedDate = new DateTime(2023, 1, 1) },
+            new EmailNotificationMessageEntity { Id = "2", CreatedDate = new DateTime(2024, 6, 15) },
+            new EmailNotificationMessageEntity { Id = "3", CreatedDate = new DateTime(2025, 1, 1) },
+        };
+
+        SetupRepository(entities);
+
+        var searchCriteria = new NotificationMessageSearchCriteria
+        {
+            StartDate = new DateTime(2024, 1, 1),
+            Skip = 0,
+            Take = 10,
+        };
+
+        // Act
+        var result = await _searchService.SearchMessageAsync(searchCriteria);
+
+        // Assert
+        Assert.NotNull(result);
+        Assert.Equal(2, result.TotalCount);
+        Assert.Equal(2, result.Results.Count);
+    }
+
+    [Fact]
+    public async Task SearchMessageAsync_ShouldFilterByEndDate()
+    {
+        // Arrange
+        var entities = new List<NotificationMessageEntity>
+        {
+            new EmailNotificationMessageEntity { Id = "1", CreatedDate = new DateTime(2023, 1, 1) },
+            new EmailNotificationMessageEntity { Id = "2", CreatedDate = new DateTime(2024, 6, 15) },
+            new EmailNotificationMessageEntity { Id = "3", CreatedDate = new DateTime(2025, 1, 1) },
+        };
+
+        SetupRepository(entities);
+
+        var searchCriteria = new NotificationMessageSearchCriteria
+        {
+            EndDate = new DateTime(2024, 12, 31),
+            Skip = 0,
+            Take = 10,
+        };
+
+        // Act
+        var result = await _searchService.SearchMessageAsync(searchCriteria);
+
+        // Assert
+        Assert.NotNull(result);
+        Assert.Equal(2, result.TotalCount);
+        Assert.Equal(2, result.Results.Count);
+    }
+
+    [Fact]
+    public async Task SearchMessageAsync_ShouldFilterByDateRange()
+    {
+        // Arrange
+        var entities = new List<NotificationMessageEntity>
+        {
+            new EmailNotificationMessageEntity { Id = "1", CreatedDate = new DateTime(2023, 1, 1) },
+            new EmailNotificationMessageEntity { Id = "2", CreatedDate = new DateTime(2024, 6, 15) },
+            new EmailNotificationMessageEntity { Id = "3", CreatedDate = new DateTime(2025, 1, 1) },
+        };
+
+        SetupRepository(entities);
+
+        var searchCriteria = new NotificationMessageSearchCriteria
+        {
+            StartDate = new DateTime(2024, 1, 1),
+            EndDate = new DateTime(2024, 12, 31),
+            Skip = 0,
+            Take = 10,
+        };
+
+        // Act
+        var result = await _searchService.SearchMessageAsync(searchCriteria);
+
+        // Assert
+        Assert.NotNull(result);
+        Assert.Equal(1, result.TotalCount);
+        Assert.Single(result.Results);
+        Assert.Equal("2", result.Results.First().Id);
+    }
+
+    [Fact]
     public async Task SearchMessageAsync_ShouldSortByCreatedDateDescending()
     {
         // Arrange

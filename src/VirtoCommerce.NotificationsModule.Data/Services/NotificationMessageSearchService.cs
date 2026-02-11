@@ -83,6 +83,16 @@ namespace VirtoCommerce.NotificationsModule.Data.Services
                 query = query.Where(x => x.Status == criteria.Status);
             }
 
+            if (criteria.StartDate != null)
+            {
+                query = query.Where(x => x.CreatedDate >= criteria.StartDate.Value);
+            }
+
+            if (criteria.EndDate != null)
+            {
+                query = query.Where(x => x.CreatedDate <= criteria.EndDate.Value);
+            }
+
             if (!string.IsNullOrEmpty(criteria.Keyword))
             {
                 var searchInBody = criteria.SearchInBody;

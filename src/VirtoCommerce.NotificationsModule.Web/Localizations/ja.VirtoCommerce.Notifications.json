@@ -148,7 +148,13 @@
           "sendAttemptCount": "送信試行回数",
           "resend-messages": "メッセージを再送信",
           "search-in-body": "本文を検索",
-          "search-in-body-hint": "メール本文をキーワード検索に含める（遅くなる場合があります）"
+          "search-in-body-hint": "メール本文をキーワード検索に含める（遅くなる場合があります）",
+          "filter-button-hint": "フィルターオプション",
+          "filter-status": "ステータス",
+          "filter-status-all": "すべて",
+          "filter-from": "開始日",
+          "filter-to": "終了日",
+          "filter-clear": "フィルターをクリア"
         },
         "placeholders": {
           "select-filter": "フィルターを選択"

@@ -148,7 +148,13 @@
           "sendAttemptCount": "Anzahl der Versandversuche",
           "resend-messages": "Nachrichten erneut senden",
           "search-in-body": "Im Textkörper suchen",
-          "search-in-body-hint": "E-Mail-Inhalt in die Stichwortsuche einbeziehen (kann langsamer sein)"
+          "search-in-body-hint": "E-Mail-Inhalt in die Stichwortsuche einbeziehen (kann langsamer sein)",
+          "filter-button-hint": "Filteroptionen",
+          "filter-status": "Status",
+          "filter-status-all": "Alle",
+          "filter-from": "Von",
+          "filter-to": "Bis",
+          "filter-clear": "Filter löschen"
         },
         "placeholders": {
           "select-filter": "Filter auswählen"

@@ -148,7 +148,13 @@
           "sendAttemptCount": "Количество попыток отправки",
           "resend-messages": "Повторно отправить сообщения",
           "search-in-body": "Искать в теле письма",
-          "search-in-body-hint": "Включить содержимое письма в поиск по ключевому слову (может быть медленнее)"
+          "search-in-body-hint": "Включить содержимое письма в поиск по ключевому слову (может быть медленнее)",
+          "filter-button-hint": "Параметры фильтра",
+          "filter-status": "Статус",
+          "filter-status-all": "Все",
+          "filter-from": "С",
+          "filter-to": "По",
+          "filter-clear": "Очистить фильтры"
         },
         "placeholders": {
           "select-filter": "Выберите фильтр"

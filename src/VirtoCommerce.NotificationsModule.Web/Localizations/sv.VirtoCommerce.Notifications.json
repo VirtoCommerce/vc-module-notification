@@ -148,7 +148,13 @@
           "sendAttemptCount": "Antal sändningsförsök",
           "resend-messages": "Skicka om meddelanden",
           "search-in-body": "Sök i innehåll",
-          "search-in-body-hint": "Inkludera e-postinnehåll i nyckelordssökning (kan vara långsammare)"
+          "search-in-body-hint": "Inkludera e-postinnehåll i nyckelordssökning (kan vara långsammare)",
+          "filter-button-hint": "Filteralternativ",
+          "filter-status": "Status",
+          "filter-status-all": "Alla",
+          "filter-from": "Från",
+          "filter-to": "Till",
+          "filter-clear": "Rensa filter"
         },
         "placeholders": {
           "select-filter": "Välj ett filter"

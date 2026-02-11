@@ -148,7 +148,13 @@
           "sendAttemptCount": "Lähetysyritysten määrä",
           "resend-messages": "Lähetä viestit uudelleen",
           "search-in-body": "Hae sisällöstä",
-          "search-in-body-hint": "Sisällytä sähköpostin sisältö avainsanahakuun (voi olla hitaampi)"
+          "search-in-body-hint": "Sisällytä sähköpostin sisältö avainsanahakuun (voi olla hitaampi)",
+          "filter-button-hint": "Suodatinvaihtoehdot",
+          "filter-status": "Tila",
+          "filter-status-all": "Kaikki",
+          "filter-from": "Alkaen",
+          "filter-to": "Asti",
+          "filter-clear": "Tyhjennä suodattimet"
         },
         "placeholders": {
           "select-filter": "Valitse suodatin"

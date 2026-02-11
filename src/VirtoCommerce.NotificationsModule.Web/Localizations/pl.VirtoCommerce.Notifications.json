@@ -148,7 +148,13 @@
           "sendAttemptCount": "Liczba prób wysyłki",
           "resend-messages": "Wyślij ponownie wiadomości",
           "search-in-body": "Szukaj w treści",
-          "search-in-body-hint": "Uwzględnij treść e-maila w wyszukiwaniu słów kluczowych (może być wolniejsze)"
+          "search-in-body-hint": "Uwzględnij treść e-maila w wyszukiwaniu słów kluczowych (może być wolniejsze)",
+          "filter-button-hint": "Opcje filtrowania",
+          "filter-status": "Status",
+          "filter-status-all": "Wszystkie",
+          "filter-from": "Od",
+          "filter-to": "Do",
+          "filter-clear": "Wyczyść filtry"
         },
         "placeholders": {
           "select-filter": "Wybierz filtr"

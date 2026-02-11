@@ -148,7 +148,13 @@
           "sendAttemptCount": "Contagem de tentativas de envio",
           "resend-messages": "Reenviar mensagens",
           "search-in-body": "Pesquisar no corpo",
-          "search-in-body-hint": "Incluir o conteúdo do e-mail na pesquisa por palavra-chave (pode ser mais lento)"
+          "search-in-body-hint": "Incluir o conteúdo do e-mail na pesquisa por palavra-chave (pode ser mais lento)",
+          "filter-button-hint": "Opções de filtro",
+          "filter-status": "Estado",
+          "filter-status-all": "Todos",
+          "filter-from": "De",
+          "filter-to": "Até",
+          "filter-clear": "Limpar filtros"
         },
         "placeholders": {
           "select-filter": "Selecione um filtro"

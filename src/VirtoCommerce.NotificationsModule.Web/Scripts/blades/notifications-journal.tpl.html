@@ -1,12 +1,41 @@
 <div class="blade-static">
     <div class="form-group" style="display: flex; align-items: center;">
-        <button type="button" class="btn __search-in-body"
-                ng-class="{'__active': filter.searchInBody}"
-                ng-click="filter.searchInBody = !filter.searchInBody; filter.criteriaChanged()"
-                title="{{'notifications.blades.notifications-journal.labels.search-in-body-hint' | translate}}">
-            <i class="fa fa-file-code-o"></i>
-        </button>
-        <div class="form-input __search" style="flex: 1; height: 36px;">
+        <div class="journal-filter-wrap">
+            <button type="button" class="btn __journal-filter"
+                    ng-class="{'__active': filter.hasActiveFilters()}"
+                    ng-click="filter.togglePanel($event)"
+                    title="{{'notifications.blades.notifications-journal.labels.filter-button-hint' | translate}}">
+                <i class="fa fa-sliders"></i>
+                <span class="journal-filter-badge" ng-if="filter.hasActiveFilters()"></span>
+            </button>
+            <div class="journal-filter-panel" ng-if="filter.showPanel" ng-click="$event.stopPropagation()">
+                <div class="journal-filter-panel__row">
+                    <span class="journal-filter-panel__label">{{'notifications.blades.notifications-journal.labels.search-in-body' | translate}}</span>
+                    <label class="form-label __switch" style="margin: 0;">
+                        <input type="checkbox" ng-model="filter.searchInBody" ng-change="filter.criteriaChanged()">
+                        <span class="switch"></span>
+                    </label>
+                </div>
+                <div class="journal-filter-panel__row">
+                    <span class="journal-filter-panel__label">{{'notifications.blades.notifications-journal.labels.filter-status' | translate}}</span>
+                    <select class="journal-filter-panel__select" ng-model="filter.status" ng-change="filter.criteriaChanged()"
+                            ng-options="s.value as (s.label | translate) for s in filter.statuses">
+                    </select>
+                </div>
+                <div class="journal-filter-panel__row">
+                    <span class="journal-filter-panel__label">{{'notifications.blades.notifications-journal.labels.filter-from' | translate}}</span>
+                    <input type="date" class="journal-filter-panel__date-input" ng-model="filter.startDate" ng-change="filter.criteriaChanged()" />
+                </div>
+                <div class="journal-filter-panel__row">
+                    <span class="journal-filter-panel__label">{{'notifications.blades.notifications-journal.labels.filter-to' | translate}}</span>
+                    <input type="date" class="journal-filter-panel__date-input" ng-model="filter.endDate" ng-change="filter.criteriaChanged()" />
+                </div>
+                <div class="journal-filter-panel__row __clear">
+                    <a href ng-click="filter.clearFilters()">{{'notifications.blades.notifications-journal.labels.filter-clear' | translate}}</a>
+                </div>
+            </div>
+        </div>
+        <div class="form-input __search" style="flex: 1;">
             <input placeholder="{{'platform.placeholders.search-keyword' | translate}}" ng-model="filter.keyword" ng-keyup="$event.which === 13 && filter.criteriaChanged()" />
             <button class="btn __other" style="position: relative;right: 35px;" ng-click="filter.keyword=null;filter.criteriaChanged()">
                 <i class="btn-ico fa fa-remove" title="Clear"></i>

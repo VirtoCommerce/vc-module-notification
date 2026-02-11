@@ -148,7 +148,13 @@
           "sendAttemptCount": "发送尝试次数",
           "resend-messages": "重新发送消息",
           "search-in-body": "搜索正文",
-          "search-in-body-hint": "在关键字搜索中包含邮件正文内容（可能较慢）"
+          "search-in-body-hint": "在关键字搜索中包含邮件正文内容（可能较慢）",
+          "filter-button-hint": "筛选选项",
+          "filter-status": "状态",
+          "filter-status-all": "全部",
+          "filter-from": "从",
+          "filter-to": "到",
+          "filter-clear": "清除筛选"
         },
         "placeholders": {
           "select-filter": "选择过滤器"

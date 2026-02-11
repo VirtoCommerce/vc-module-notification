@@ -7,6 +7,45 @@ angular.module('virtoCommerce.notificationsModule')
             // simple and advanced filtering
             var filter = $scope.filter = {};
             filter.searchInBody = false;
+            filter.showPanel = false;
+            filter.startDate = null;
+            filter.endDate = null;
+            filter.status = null;
+            filter.statuses = [
+                { value: null, label: 'notifications.blades.notifications-journal.labels.filter-status-all' },
+                { value: 'Sent', label: 'notifications.blades.notifications-journal.labels.success' },
+                { value: 'Pending', label: 'notifications.blades.notifications-journal.labels.processing' },
+                { value: 'Error', label: 'notifications.blades.notifications-journal.labels.error' }
+            ];
+
+            filter.togglePanel = function ($event) {
+                $event.stopPropagation();
+                filter.showPanel = !filter.showPanel;
+            };
+
+            filter.hasActiveFilters = function () {
+                return filter.searchInBody || filter.startDate || filter.endDate || filter.status;
+            };
+
+            filter.clearFilters = function () {
+                filter.searchInBody = false;
+                filter.startDate = null;
+                filter.endDate = null;
+                filter.status = null;
+                filter.criteriaChanged();
+            };
+
+            // close panel on outside click
+            var closePanel = function () {
+                if (filter.showPanel) {
+                    filter.showPanel = false;
+                    $scope.$apply();
+                }
+            };
+            angular.element(document).on('click', closePanel);
+            $scope.$on('$destroy', function () {
+                angular.element(document).off('click', closePanel);
+            });
 
             filter.criteriaChanged = function () {
                 if ($scope.pageSettings.currentPage > 1) {
@@ -23,6 +62,9 @@ angular.module('virtoCommerce.notificationsModule')
                     objectType: blade.objectType,
                     keyword: filter.keyword ? filter.keyword : undefined,
                     searchInBody: filter.searchInBody || undefined,
+                    startDate: filter.startDate || undefined,
+                    endDate: filter.endDate || undefined,
+                    status: filter.status || undefined,
                     sort: uiGridHelper.getSortExpression($scope),
                     skip: ($scope.pageSettings.currentPage - 1) * $scope.pageSettings.itemsPerPageCount,
                     take: $scope.pageSettings.itemsPerPageCount,

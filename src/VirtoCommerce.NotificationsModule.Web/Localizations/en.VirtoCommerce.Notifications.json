@@ -147,7 +147,14 @@
           "detail": "Show details",
           "sendAttemptCount": "Sending attempt count",
           "resend-messages": "Resend messages",
-          "search-in-body-hint": "Include email body content in keyword search (may be slower)"
+          "search-in-body": "Search in body",
+          "search-in-body-hint": "Include email body content in keyword search (may be slower)",
+          "filter-button-hint": "Filter options",
+          "filter-status": "Status",
+          "filter-status-all": "All",
+          "filter-from": "From",
+          "filter-to": "To",
+          "filter-clear": "Clear filters"
         },
         "placeholders": {
           "select-filter": "Select a filter"
