@@ -8,10 +8,10 @@ angular.module('virtoCommerce.notificationsModule')
             var filter = $scope.filter = {};
             filter.searchInBody = false;
             filter.showPanel = false;
-            filter.startDate = null;
-            filter.endDate = null;
             filter.status = null;
-            filter.dateRange = null;
+            filter.dateRange = 'last24h';
+            filter.startDate = new Date(new Date().getTime() - 24 * 60 * 60 * 1000);
+            filter.endDate = null;
             filter.customStartDate = null;
             filter.customEndDate = null;
             filter.customRangeApplied = false;
