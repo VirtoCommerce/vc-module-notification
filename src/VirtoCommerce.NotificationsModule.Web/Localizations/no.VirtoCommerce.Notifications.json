@@ -152,8 +152,18 @@
           "filter-button-hint": "Filteralternativer",
           "filter-status": "Status",
           "filter-status-all": "Alle",
+          "filter-date": "Dato",
+          "filter-date-any": "Når som helst",
+          "filter-date-today": "I dag",
+          "filter-date-yesterday": "I går",
+          "filter-date-last24h": "Siste 24 timer",
+          "filter-date-last7d": "Siste 7 dager",
+          "filter-date-last30d": "Siste 30 dager",
+          "filter-date-custom": "Egendefinert periode",
           "filter-from": "Fra",
           "filter-to": "Til",
+          "filter-apply": "Bruk",
+          "filter-edit": "Rediger",
           "filter-clear": "Fjern filtre"
         },
         "placeholders": {

@@ -152,8 +152,18 @@
           "filter-button-hint": "Opções de filtro",
           "filter-status": "Estado",
           "filter-status-all": "Todos",
+          "filter-date": "Data",
+          "filter-date-any": "Qualquer momento",
+          "filter-date-today": "Hoje",
+          "filter-date-yesterday": "Ontem",
+          "filter-date-last24h": "Últimas 24 horas",
+          "filter-date-last7d": "Últimos 7 dias",
+          "filter-date-last30d": "Últimos 30 dias",
+          "filter-date-custom": "Intervalo personalizado",
           "filter-from": "De",
           "filter-to": "Até",
+          "filter-apply": "Aplicar",
+          "filter-edit": "Editar",
           "filter-clear": "Limpar filtros"
         },
         "placeholders": {

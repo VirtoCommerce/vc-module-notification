@@ -152,8 +152,18 @@
           "filter-button-hint": "筛选选项",
           "filter-status": "状态",
           "filter-status-all": "全部",
+          "filter-date": "日期",
+          "filter-date-any": "任何时间",
+          "filter-date-today": "今天",
+          "filter-date-yesterday": "昨天",
+          "filter-date-last24h": "过去24小时",
+          "filter-date-last7d": "过去7天",
+          "filter-date-last30d": "过去30天",
+          "filter-date-custom": "自定义范围",
           "filter-from": "从",
           "filter-to": "到",
+          "filter-apply": "应用",
+          "filter-edit": "编辑",
           "filter-clear": "清除筛选"
         },
         "placeholders": {

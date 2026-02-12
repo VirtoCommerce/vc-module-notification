@@ -152,8 +152,18 @@
           "filter-button-hint": "フィルターオプション",
           "filter-status": "ステータス",
           "filter-status-all": "すべて",
+          "filter-date": "日付",
+          "filter-date-any": "すべての期間",
+          "filter-date-today": "今日",
+          "filter-date-yesterday": "昨日",
+          "filter-date-last24h": "過去24時間",
+          "filter-date-last7d": "過去7日間",
+          "filter-date-last30d": "過去30日間",
+          "filter-date-custom": "カスタム範囲",
           "filter-from": "開始日",
           "filter-to": "終了日",
+          "filter-apply": "適用",
+          "filter-edit": "編集",
           "filter-clear": "フィルターをクリア"
         },
         "placeholders": {

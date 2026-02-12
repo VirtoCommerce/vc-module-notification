@@ -23,12 +23,28 @@
                     </select>
                 </div>
                 <div class="journal-filter-panel__row">
-                    <span class="journal-filter-panel__label">{{'notifications.blades.notifications-journal.labels.filter-from' | translate}}</span>
-                    <input type="date" class="journal-filter-panel__date-input" ng-model="filter.startDate" ng-change="filter.criteriaChanged()" />
+                    <span class="journal-filter-panel__label">{{'notifications.blades.notifications-journal.labels.filter-date' | translate}}</span>
+                    <select class="journal-filter-panel__select" ng-model="filter.dateRange" ng-change="filter.dateRangeChanged()"
+                            ng-options="r.value as (r.label | translate) for r in filter.dateRanges">
+                    </select>
                 </div>
-                <div class="journal-filter-panel__row">
-                    <span class="journal-filter-panel__label">{{'notifications.blades.notifications-journal.labels.filter-to' | translate}}</span>
-                    <input type="date" class="journal-filter-panel__date-input" ng-model="filter.endDate" ng-change="filter.criteriaChanged()" />
+                <div ng-if="filter.showCustomInputs" class="journal-filter-panel__custom">
+                    <div class="journal-filter-panel__custom-row">
+                        <span class="journal-filter-panel__label">{{'notifications.blades.notifications-journal.labels.filter-from' | translate}}</span>
+                        <input type="date" class="journal-filter-panel__date-input" ng-model="filter.customStartDate" />
+                    </div>
+                    <div class="journal-filter-panel__custom-row">
+                        <span class="journal-filter-panel__label">{{'notifications.blades.notifications-journal.labels.filter-to' | translate}}</span>
+                        <input type="date" class="journal-filter-panel__date-input" ng-model="filter.customEndDate" />
+                    </div>
+                    <button class="btn __primary journal-filter-panel__apply" ng-click="filter.applyCustomRange()"
+                            ng-disabled="!filter.customStartDate && !filter.customEndDate">
+                        {{'notifications.blades.notifications-journal.labels.filter-apply' | translate}}
+                    </button>
+                </div>
+                <div ng-if="filter.customRangeApplied && !filter.showCustomInputs" class="journal-filter-panel__custom-applied">
+                    <span class="journal-filter-panel__custom-text">{{filter.formatDate(filter.startDate)}} — {{filter.formatDate(filter.endDate)}}</span>
+                    <a href class="journal-filter-panel__edit-link" ng-click="filter.editCustomRange()">{{'notifications.blades.notifications-journal.labels.filter-edit' | translate}}</a>
                 </div>
                 <div class="journal-filter-panel__row __clear">
                     <a href ng-click="filter.clearFilters()">{{'notifications.blades.notifications-journal.labels.filter-clear' | translate}}</a>

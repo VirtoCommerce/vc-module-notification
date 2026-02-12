@@ -110,6 +110,51 @@
     background: #fff;
 }
 
+/* Custom date range */
+.journal-filter-panel__custom {
+    padding: 8px 0;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.journal-filter-panel__custom-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 4px 0;
+}
+
+.journal-filter-panel__apply {
+    width: 100%;
+    margin-top: 8px;
+    padding: 6px 12px;
+    font-size: 13px;
+    border-radius: 3px;
+}
+
+.journal-filter-panel__custom-applied {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 0;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.journal-filter-panel__custom-text {
+    font-size: 13px;
+    color: #333;
+}
+
+.journal-filter-panel__edit-link {
+    font-size: 12px;
+    color: #1a73e8;
+    text-decoration: none;
+    margin-left: 8px;
+}
+
+.journal-filter-panel__edit-link:hover {
+    text-decoration: underline;
+}
+
 /* Notification templates table */
 .notification-templates-table .list-name {
     display: inline-block;

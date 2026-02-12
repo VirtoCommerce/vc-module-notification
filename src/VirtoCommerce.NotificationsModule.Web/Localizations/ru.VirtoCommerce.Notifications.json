@@ -152,8 +152,18 @@
           "filter-button-hint": "Параметры фильтра",
           "filter-status": "Статус",
           "filter-status-all": "Все",
+          "filter-date": "Дата",
+          "filter-date-any": "Любое время",
+          "filter-date-today": "Сегодня",
+          "filter-date-yesterday": "Вчера",
+          "filter-date-last24h": "Последние 24 часа",
+          "filter-date-last7d": "Последние 7 дней",
+          "filter-date-last30d": "Последние 30 дней",
+          "filter-date-custom": "Произвольный период",
           "filter-from": "С",
           "filter-to": "По",
+          "filter-apply": "Применить",
+          "filter-edit": "Изменить",
           "filter-clear": "Очистить фильтры"
         },
         "placeholders": {

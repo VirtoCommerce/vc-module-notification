@@ -152,8 +152,18 @@
           "filter-button-hint": "Suodatinvaihtoehdot",
           "filter-status": "Tila",
           "filter-status-all": "Kaikki",
+          "filter-date": "Päivämäärä",
+          "filter-date-any": "Milloin tahansa",
+          "filter-date-today": "Tänään",
+          "filter-date-yesterday": "Eilen",
+          "filter-date-last24h": "Viimeiset 24 tuntia",
+          "filter-date-last7d": "Viimeiset 7 päivää",
+          "filter-date-last30d": "Viimeiset 30 päivää",
+          "filter-date-custom": "Mukautettu aikaväli",
           "filter-from": "Alkaen",
           "filter-to": "Asti",
+          "filter-apply": "Käytä",
+          "filter-edit": "Muokkaa",
           "filter-clear": "Tyhjennä suodattimet"
         },
         "placeholders": {
