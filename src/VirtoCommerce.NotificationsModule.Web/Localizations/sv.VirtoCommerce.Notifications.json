@@ -146,7 +146,25 @@
           "filter-with-errors": "Med fel",
           "detail": "Visa detaljer",
           "sendAttemptCount": "Antal sändningsförsök",
-          "resend-messages": "Skicka om meddelanden"
+          "resend-messages": "Skicka om meddelanden",
+          "search-in-body": "Sök i innehåll",
+          "search-in-body-hint": "Inkludera e-postinnehåll i nyckelordssökning (kan vara långsammare)",
+          "filter-button-hint": "Filteralternativ",
+          "filter-status": "Status",
+          "filter-status-all": "Alla",
+          "filter-date": "Datum",
+          "filter-date-any": "När som helst",
+          "filter-date-today": "Idag",
+          "filter-date-yesterday": "Igår",
+          "filter-date-last24h": "Senaste 24 timmarna",
+          "filter-date-last7d": "Senaste 7 dagarna",
+          "filter-date-last30d": "Senaste 30 dagarna",
+          "filter-date-custom": "Anpassat intervall",
+          "filter-from": "Från",
+          "filter-to": "Till",
+          "filter-apply": "Tillämpa",
+          "filter-edit": "Redigera",
+          "filter-clear": "Rensa filter"
         },
         "placeholders": {
           "select-filter": "Välj ett filter"
