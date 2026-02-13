@@ -1,3 +1,162 @@
+/* Journal filter button */
+.journal-filter-wrap {
+    position: relative;
+    margin-right: 6px;
+    margin-top: 2px;
+}
+
+.btn.__journal-filter {
+    height: 34px;
+    margin-top: -2px;
+    font-size: 16px;
+    border: 1px solid #ddd;
+    border-radius: 3px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    color: #999;
+    position: relative;
+}
+
+.btn.__journal-filter:hover {
+    color: #555;
+    border-color: #bbb;
+}
+
+.btn.__journal-filter.__active {
+    background: #e8f0fe;
+    color: #1a73e8;
+    border-color: #1a73e8;
+}
+
+.journal-filter-badge {
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #1a73e8;
+}
+
+/* Filter popup panel */
+.journal-filter-panel {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    margin-top: 4px;
+    min-width: 240px;
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    padding: 12px 16px;
+    z-index: 1000;
+}
+
+.journal-filter-panel__row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 0;
+}
+
+.journal-filter-panel__row:not(:last-child) {
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.journal-filter-panel__row.__clear {
+    justify-content: flex-start;
+    padding-top: 18px;
+  }
+
+.journal-filter-panel__row.__clear a {
+    color: #1a73e8;
+    font-size: 13px;
+    text-decoration: none;
+}
+
+.journal-filter-panel__row.__clear a:hover {
+    text-decoration: underline;
+}
+
+.journal-filter-panel__label {
+    font-size: 13px;
+    color: #333;
+}
+
+.journal-filter-panel__date-input {
+    width: 140px;
+    padding: 4px 8px;
+    border: 1px solid #ddd;
+    border-radius: 3px;
+    font-size: 13px;
+    color: #333;
+}
+
+.journal-filter-panel__date-input:focus,
+.journal-filter-panel__select:focus {
+    border-color: #1a73e8;
+    outline: none;
+}
+
+.journal-filter-panel__select {
+    width: 160px;
+    padding: 4px 8px;
+    border: 1px solid #ddd;
+    border-radius: 3px;
+    font-size: 13px;
+    color: #333;
+    background: #fff;
+}
+
+/* Custom date range */
+.journal-filter-panel__custom {
+    padding: 8px 0;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.journal-filter-panel__custom-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 4px 0;
+}
+
+.journal-filter-panel__apply {
+    width: 100%;
+    margin-top: 8px;
+    padding: 6px 12px;
+    font-size: 13px;
+    border-radius: 3px;
+}
+
+.journal-filter-panel__custom-applied {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 0;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.journal-filter-panel__custom-text {
+    font-size: 13px;
+    color: #333;
+}
+
+.journal-filter-panel__edit-link {
+    font-size: 12px;
+    color: #1a73e8;
+    text-decoration: none;
+    margin-left: 8px;
+}
+
+.journal-filter-panel__edit-link:hover {
+    text-decoration: underline;
+}
+
+/* Notification templates table */
 .notification-templates-table .list-name {
     display: inline-block;
     margin-top: 10px;

@@ -116,7 +116,6 @@ public class NotificationMessageSearchServiceUnitTests
 
     [Theory]
     [InlineData(nameof(EmailNotificationMessageEntity.Subject))]
-    [InlineData(nameof(EmailNotificationMessageEntity.Body))]
     [InlineData(nameof(EmailNotificationMessageEntity.From))]
     [InlineData(nameof(EmailNotificationMessageEntity.To))]
     [InlineData(nameof(EmailNotificationMessageEntity.CC))]
@@ -126,14 +125,18 @@ public class NotificationMessageSearchServiceUnitTests
     {
         // Arrange
         var keyword = Guid.NewGuid().ToString();
-        var entity = new EmailNotificationMessageEntity { Id = Guid.NewGuid().ToString() };
+        var entity = CreateEmailNotificationMessage();
         SetProperty(entity, propertyName, $"start_{keyword}_end");
+
+        var entity2 = CreateEmailNotificationMessage();
+
+        var entity3 = CreateEmailNotificationMessage();
 
         var entities = new List<NotificationMessageEntity>
         {
             entity,
-            new EmailNotificationMessageEntity { Id = Guid.NewGuid().ToString() },
-            new EmailNotificationMessageEntity { Id = Guid.NewGuid().ToString() },
+            entity2,
+            entity3,
         };
 
         SetupRepository(entities);
@@ -168,6 +171,181 @@ public class NotificationMessageSearchServiceUnitTests
                 Assert.Fail($"Unsupported property type for field: {propertyName}");
                 break;
         }
+    }
+
+    private static EmailNotificationMessageEntity CreateEmailNotificationMessage()
+    {
+        return new EmailNotificationMessageEntity
+        {
+            Id = Guid.NewGuid().ToString(),
+            Status = string.Empty,
+            NotificationType = string.Empty,
+            LastSendError = string.Empty,
+            To = string.Empty,
+            ReplyTo = string.Empty,
+            From = string.Empty,
+            Subject = string.Empty,
+            CC = string.Empty,
+            BCC = string.Empty,
+            Body = string.Empty
+        };
+    }
+
+    [Fact]
+    public async Task SearchMessageAsync_ShouldFilterByBodyKeyword_WhenSearchInBodyIsTrue()
+    {
+        // Arrange
+        var keyword = "MagicWord";
+        var entity = CreateEmailNotificationMessage();
+        entity.Body = $"start_{keyword}_end";
+
+        var entities = new List<NotificationMessageEntity>
+        {
+            entity,
+            CreateEmailNotificationMessage()
+        };
+
+        SetupRepository(entities);
+
+        var searchCriteria = new NotificationMessageSearchCriteria
+        {
+            Keyword = keyword,
+            SearchInBody = true,
+            Skip = 0,
+            Take = 10,
+        };
+
+        // Act
+        var result = await _searchService.SearchMessageAsync(searchCriteria);
+
+        // Assert
+        Assert.NotNull(result);
+        Assert.Equal(1, result.TotalCount);
+        Assert.Single(result.Results);
+        var firstResult = (EmailNotificationMessage)result.Results.First();
+        Assert.Contains(keyword, firstResult.Body);
+    }
+
+    [Fact]
+    public async Task SearchMessageAsync_ShouldNotFilterByBodyKeyword_WhenSearchInBodyIsFalse()
+    {
+        // Arrange
+        var keyword = "MagicWord";
+        var entity = CreateEmailNotificationMessage();
+        entity.Body = $"start_{keyword}_end";
+
+        var entities = new List<NotificationMessageEntity>
+        {
+            entity,
+            CreateEmailNotificationMessage()
+        };
+
+        SetupRepository(entities);
+
+        var searchCriteria = new NotificationMessageSearchCriteria
+        {
+            Keyword = keyword,
+            SearchInBody = false,
+            Skip = 0,
+            Take = 10,
+        };
+
+        // Act
+        var result = await _searchService.SearchMessageAsync(searchCriteria);
+
+        // Assert
+        Assert.NotNull(result);
+        Assert.Equal(0, result.TotalCount);
+        Assert.Empty(result.Results);
+    }
+
+    [Fact]
+    public async Task SearchMessageAsync_ShouldFilterByStartDate()
+    {
+        // Arrange
+        var entities = new List<NotificationMessageEntity>
+        {
+            new EmailNotificationMessageEntity { Id = "1", CreatedDate = new DateTime(2023, 1, 1) },
+            new EmailNotificationMessageEntity { Id = "2", CreatedDate = new DateTime(2024, 6, 15) },
+            new EmailNotificationMessageEntity { Id = "3", CreatedDate = new DateTime(2025, 1, 1) },
+        };
+
+        SetupRepository(entities);
+
+        var searchCriteria = new NotificationMessageSearchCriteria
+        {
+            StartDate = new DateTime(2024, 1, 1),
+            Skip = 0,
+            Take = 10,
+        };
+
+        // Act
+        var result = await _searchService.SearchMessageAsync(searchCriteria);
+
+        // Assert
+        Assert.NotNull(result);
+        Assert.Equal(2, result.TotalCount);
+        Assert.Equal(2, result.Results.Count);
+    }
+
+    [Fact]
+    public async Task SearchMessageAsync_ShouldFilterByEndDate()
+    {
+        // Arrange
+        var entities = new List<NotificationMessageEntity>
+        {
+            new EmailNotificationMessageEntity { Id = "1", CreatedDate = new DateTime(2023, 1, 1) },
+            new EmailNotificationMessageEntity { Id = "2", CreatedDate = new DateTime(2024, 6, 15) },
+            new EmailNotificationMessageEntity { Id = "3", CreatedDate = new DateTime(2025, 1, 1) },
+        };
+
+        SetupRepository(entities);
+
+        var searchCriteria = new NotificationMessageSearchCriteria
+        {
+            EndDate = new DateTime(2024, 12, 31),
+            Skip = 0,
+            Take = 10,
+        };
+
+        // Act
+        var result = await _searchService.SearchMessageAsync(searchCriteria);
+
+        // Assert
+        Assert.NotNull(result);
+        Assert.Equal(2, result.TotalCount);
+        Assert.Equal(2, result.Results.Count);
+    }
+
+    [Fact]
+    public async Task SearchMessageAsync_ShouldFilterByDateRange()
+    {
+        // Arrange
+        var entities = new List<NotificationMessageEntity>
+        {
+            new EmailNotificationMessageEntity { Id = "1", CreatedDate = new DateTime(2023, 1, 1) },
+            new EmailNotificationMessageEntity { Id = "2", CreatedDate = new DateTime(2024, 6, 15) },
+            new EmailNotificationMessageEntity { Id = "3", CreatedDate = new DateTime(2025, 1, 1) },
+        };
+
+        SetupRepository(entities);
+
+        var searchCriteria = new NotificationMessageSearchCriteria
+        {
+            StartDate = new DateTime(2024, 1, 1),
+            EndDate = new DateTime(2024, 12, 31),
+            Skip = 0,
+            Take = 10,
+        };
+
+        // Act
+        var result = await _searchService.SearchMessageAsync(searchCriteria);
+
+        // Assert
+        Assert.NotNull(result);
+        Assert.Equal(1, result.TotalCount);
+        Assert.Single(result.Results);
+        Assert.Equal("2", result.Results.First().Id);
     }
 
     [Fact]

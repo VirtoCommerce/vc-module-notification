@@ -146,7 +146,25 @@
           "filter-with-errors": "Avec erreurs",
           "detail": "Afficher les détails",
           "sendAttemptCount": "Nombre de tentatives d'envoi",
-          "resend-messages": "Renvoyer les messages"
+          "resend-messages": "Renvoyer les messages",
+          "search-in-body": "Rechercher dans le corps",
+          "search-in-body-hint": "Inclure le contenu de l'e-mail dans la recherche par mot-clé (peut être plus lent)",
+          "filter-button-hint": "Options de filtrage",
+          "filter-status": "Statut",
+          "filter-status-all": "Tous",
+          "filter-date": "Date",
+          "filter-date-any": "N'importe quand",
+          "filter-date-today": "Aujourd'hui",
+          "filter-date-yesterday": "Hier",
+          "filter-date-last24h": "Dernières 24 heures",
+          "filter-date-last7d": "7 derniers jours",
+          "filter-date-last30d": "30 derniers jours",
+          "filter-date-custom": "Plage personnalisée",
+          "filter-from": "De",
+          "filter-to": "À",
+          "filter-apply": "Appliquer",
+          "filter-edit": "Modifier",
+          "filter-clear": "Effacer les filtres"
         },
         "placeholders": {
           "select-filter": "Sélectionner un filtre"
