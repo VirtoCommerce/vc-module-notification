@@ -1,12 +1,12 @@
 <div class="blade-static">
-    <div class="form-group">
-        <div class="form-input __search">
-            <input placeholder="{{'platform.placeholders.search-keyword' | translate}}" ng-model="filter.keyword" ng-keyup="$event.which === 13 && filter.criteriaChanged()" />
-            <button class="btn __other" style="position: relative;right: 45px;">
-                <i class="btn-ico fa fa-times-circle" title="Clear" ng-click="filter.keyword=null;filter.criteriaChanged()"></i>
-            </button>
-        </div>
+  <div class="form-group" style="display: flex; align-items: center;">
+    <div class="form-input" style="flex: 1;">
+      <input ng-model="filter.keyword" ng-keyup="$event.which === 13 && filter.criteriaChanged()" placeholder="{{'platform.placeholders.search-keyword' | translate}}" style="padding-right: 25px; text-overflow: ellipsis;">
+      <button class="btn __other" style="position: relative;right: 35px;" ng-click="filter.keyword=null;filter.criteriaChanged()">
+        <i class="btn-ico fa fa-remove" title="Clear"></i>
+      </button>
     </div>
+  </div>
 </div>
 <div class="blade-static __bottom" ng-if="pageSettings.itemsPerPageCount < pageSettings.totalItems" ng-include="'pagerTemplate.html'"></div>
 

@@ -146,7 +146,25 @@
           "filter-with-errors": "With errors",
           "detail": "Show details",
           "sendAttemptCount": "Sending attempt count",
-          "resend-messages": "Resend messages"
+          "resend-messages": "Resend messages",
+          "search-in-body": "Search in body",
+          "search-in-body-hint": "Include email body content in keyword search (may be slower)",
+          "filter-button-hint": "Filter options",
+          "filter-status": "Status",
+          "filter-status-all": "All",
+          "filter-date": "Date",
+          "filter-date-any": "Any time",
+          "filter-date-today": "Today",
+          "filter-date-yesterday": "Yesterday",
+          "filter-date-last24h": "Last 24 hours",
+          "filter-date-last7d": "Last 7 days",
+          "filter-date-last30d": "Last 30 days",
+          "filter-date-custom": "Custom range",
+          "filter-from": "From",
+          "filter-to": "To",
+          "filter-apply": "Apply",
+          "filter-edit": "Edit",
+          "filter-clear": "Clear filters"
         },
         "placeholders": {
           "select-filter": "Select a filter"

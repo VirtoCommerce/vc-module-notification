@@ -146,7 +146,25 @@
           "filter-with-errors": "Mit Fehlern",
           "detail": "Details anzeigen",
           "sendAttemptCount": "Anzahl der Versandversuche",
-          "resend-messages": "Nachrichten erneut senden"
+          "resend-messages": "Nachrichten erneut senden",
+          "search-in-body": "Im Textkörper suchen",
+          "search-in-body-hint": "E-Mail-Inhalt in die Stichwortsuche einbeziehen (kann langsamer sein)",
+          "filter-button-hint": "Filteroptionen",
+          "filter-status": "Status",
+          "filter-status-all": "Alle",
+          "filter-date": "Datum",
+          "filter-date-any": "Jederzeit",
+          "filter-date-today": "Heute",
+          "filter-date-yesterday": "Gestern",
+          "filter-date-last24h": "Letzte 24 Stunden",
+          "filter-date-last7d": "Letzte 7 Tage",
+          "filter-date-last30d": "Letzte 30 Tage",
+          "filter-date-custom": "Benutzerdefiniert",
+          "filter-from": "Von",
+          "filter-to": "Bis",
+          "filter-apply": "Anwenden",
+          "filter-edit": "Bearbeiten",
+          "filter-clear": "Filter löschen"
         },
         "placeholders": {
           "select-filter": "Filter auswählen"
