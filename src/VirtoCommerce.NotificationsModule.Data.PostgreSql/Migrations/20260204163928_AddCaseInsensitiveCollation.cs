@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore.Migrations;
+using VirtoCommerce.Platform.Data.PostgreSql.Extensions;
 
 #nullable disable
 
@@ -10,14 +11,7 @@ namespace VirtoCommerce.NotificationsModule.Data.PostgreSql.Migrations
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.Sql(@"
-DO $$
-BEGIN
-    IF NOT EXISTS (SELECT 1 FROM pg_catalog.pg_collation WHERE collname = 'case_insensitive') THEN
-        CREATE COLLATION case_insensitive (provider = icu, locale = 'und-u-ks-level2', deterministic = false);
-    END IF;
-END $$;
-");
+            migrationBuilder.CreateCaseInsensitiveCollationIfNotExists();
 
             migrationBuilder.AlterColumn<string>(
                 name: "To",
