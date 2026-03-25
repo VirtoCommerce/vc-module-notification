@@ -205,7 +205,6 @@ namespace VirtoCommerce.NotificationsModule.Web
                 }).ToArray();
                 notificationService.SaveChangesAsync(allRegisteredNotifications).GetAwaiter().GetResult();
             });
-
         }
 
         public void Uninstall()
