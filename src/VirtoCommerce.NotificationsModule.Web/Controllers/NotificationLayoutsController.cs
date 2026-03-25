@@ -107,9 +107,11 @@ namespace VirtoCommerce.NotificationsModule.Web.Controllers
         [ProducesResponseType(typeof(NotificationLayout), StatusCodes.Status200OK)]
         public async Task<ActionResult<NotificationLayout>> UpdateNotificationLayout([FromBody] NotificationLayout layout)
         {
-            // If this is a predefined layout being overridden for the first time,
-            // its Id equals its Name (placeholder set by the controller for in-memory layouts).
-            // We need a real DB UUID so that id != name and the UI can detect it as overridden.
+            // Predefined layouts are served from memory and never stored in the DB.
+            // The GET endpoint uses Name as a synthetic Id for in-memory layouts (id == name convention,
+            // see docs/tech-doc.md "Layout Name as Identity"). When the UI saves such a layout for the
+            // first time we must assign a real DB UUID so subsequent reads return id != name, which is
+            // how the UI distinguishes a DB override from an unmodified predefined layout.
             if (layout.Id == layout.Name && _layoutRegistrar.GetByName(layout.Name) != null)
             {
                 // Check whether a DB record already exists for this name (e.g. from a previous save).

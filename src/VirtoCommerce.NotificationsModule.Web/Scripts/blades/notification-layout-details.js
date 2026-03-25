@@ -65,8 +65,16 @@ angular.module('virtoCommerce.notificationsModule')
                             function (result) {
                                 if (result && result.id) {
                                     blade.currentEntityId = result.id;
+                                    blade.refresh(true);
+                                } else {
+                                    blade.isLoading = false;
+                                    bladeNavigationService.setError('Unexpected response when updating notification layout', blade);
                                 }
-                                blade.refresh(true);
+                            },
+                            function (error) {
+                                blade.isLoading = false;
+                                var errorMessage = (error && error.message) ? error.message : 'Error while updating notification layout';
+                                bladeNavigationService.setError(errorMessage, blade);
                             });
                     }
                 };

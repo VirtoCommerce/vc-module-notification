@@ -206,8 +206,6 @@ namespace VirtoCommerce.NotificationsModule.Web
                 notificationService.SaveChangesAsync(allRegisteredNotifications).GetAwaiter().GetResult();
             });
 
-            var notificationLayoutRegistrar = appBuilder.ApplicationServices.GetService<INotificationLayoutRegistrar>();
-            notificationLayoutRegistrar.RegisterLayout("Default", "<html><body>{{ content }}</body></html>");
         }
 
         public void Uninstall()
