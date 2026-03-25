@@ -51,24 +51,8 @@ public class LiquidTemplateRenderer : INotificationTemplateRenderer
         if (renderContext.UseLayouts && string.IsNullOrEmpty(renderContext.LayoutId))
         {
             var layoutSearchResult = await _notificationLayoutSearchService.SearchAsync(new NotificationLayoutSearchCriteria() { IsDefault = true });
-            renderContext.LayoutId = layoutSearchResult.Results.FirstOrDefault()?.Id;
-
-            if (renderContext.LayoutId == null)
-            {
-                // Fall back to predefined default only if no DB override exists for it.
-                // If a DB override exists but has IsDefault = false, the admin explicitly disabled it — respect that.
-                var predefinedDefault = _layoutRegistrar.AllRegisteredLayouts.FirstOrDefault(x => x.IsDefault);
-                if (predefinedDefault != null)
-                {
-                    var hasDbOverride = (await _notificationLayoutSearchService.SearchAsync(
-                        new NotificationLayoutSearchCriteria { Names = [predefinedDefault.Name], Take = 1 }))
-                        .Results.Any();
-                    if (!hasDbOverride)
-                    {
-                        renderContext.LayoutId = predefinedDefault.Name;
-                    }
-                }
-            }
+            renderContext.LayoutId = layoutSearchResult.Results.FirstOrDefault()?.Id
+                ?? await GetPredefinedDefaultLayoutIdAsync();
         }
 
         if (!string.IsNullOrEmpty(renderContext.LayoutId))
@@ -90,6 +74,26 @@ public class LiquidTemplateRenderer : INotificationTemplateRenderer
         var result = await template.RenderAsync(templateContext);
 
         return result;
+    }
+
+    /// <summary>
+    /// Returns the name of the predefined default layout if it has no DB override, otherwise null.
+    /// Respects the "DB takes precedence" rule: if an admin saved a DB override with IsDefault=false,
+    /// the predefined default is not used.
+    /// </summary>
+    private async Task<string> GetPredefinedDefaultLayoutIdAsync()
+    {
+        var predefinedDefault = _layoutRegistrar.AllRegisteredLayouts.FirstOrDefault(x => x.IsDefault);
+        if (predefinedDefault == null)
+        {
+            return null;
+        }
+
+        var hasDbOverride = (await _notificationLayoutSearchService.SearchAsync(
+            new NotificationLayoutSearchCriteria { Names = [predefinedDefault.Name], Take = 1 }))
+            .Results.Any();
+
+        return hasDbOverride ? null : predefinedDefault.Name;
     }
 
     /// <summary>
