@@ -73,16 +73,22 @@ namespace VirtoCommerce.NotificationsModule.Web.Controllers
                 dbLayout.IsPredefined = _layoutRegistrar.GetByName(dbLayout.Name) != null;
             }
 
-            var predefinedToAdd = _layoutRegistrar.AllRegisteredLayouts
-                .Where(x => !dbNames.Contains(x.Name))
-                .Select(x =>
-                {
-                    var clone = (NotificationLayout)x.Clone();
-                    clone.Id = x.Name;
-                    clone.IsPredefined = true;
-                    return clone;
-                })
-                .ToList();
+            // Predefined layouts only appear on the first page to avoid duplicates across pages.
+            var predefinedToAdd = searchCriteria.Skip > 0
+                ? []
+                : _layoutRegistrar.AllRegisteredLayouts
+                    .Where(x => !dbNames.Contains(x.Name))
+                    .Where(x => searchCriteria.Names is not { Count: > 0 } || searchCriteria.Names.Any(n => n.EqualsIgnoreCase(x.Name)))
+                    .Where(x => searchCriteria.IsDefault == null || x.IsDefault == searchCriteria.IsDefault)
+                    .Where(x => string.IsNullOrEmpty(searchCriteria.Keyword) || x.Name.Contains(searchCriteria.Keyword, StringComparison.OrdinalIgnoreCase))
+                    .Select(x =>
+                    {
+                        var clone = (NotificationLayout)x.Clone();
+                        clone.Id = x.Name;
+                        clone.IsPredefined = true;
+                        return clone;
+                    })
+                    .ToList();
 
             if (predefinedToAdd.Count > 0)
             {
