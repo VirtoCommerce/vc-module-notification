@@ -62,7 +62,10 @@ angular.module('virtoCommerce.notificationsModule')
                             });
                     } else {
                         layouts.updateNotificationLayout(blade.currentEntity,
-                            function () {
+                            function (result) {
+                                if (result && result.id) {
+                                    blade.currentEntityId = result.id;
+                                }
                                 blade.refresh(true);
                             });
                     }
@@ -108,6 +111,17 @@ angular.module('virtoCommerce.notificationsModule')
                             },
                             canExecuteMethod: isDirty,
                             permission: blade.updatePermission
+                        },
+                        {
+                            name: "notifications.commands.reset-to-default",
+                            icon: 'fa fa-refresh',
+                            executeMethod: function () {
+                                layouts.resetNotificationLayout({ id: blade.currentEntity.id }, function () {
+                                    blade.refresh(true);
+                                });
+                            },
+                            canExecuteMethod: isPredefinedOverridden,
+                            permission: blade.updatePermission
                         }
                     );
                 }
@@ -118,6 +132,13 @@ angular.module('virtoCommerce.notificationsModule')
 
                 function isDirty() {
                     return !angular.equals(blade.currentEntity, blade.originalEntity) && blade.hasUpdatePermission();
+                }
+
+                // A layout is a DB-override of a predefined one when the server marks it as predefined
+                // but it has a DB record (id !== name means it was saved, not served from memory)
+                function isPredefinedOverridden() {
+                    var entity = blade.currentEntity;
+                    return entity && entity.isPredefined && entity.id !== entity.name;
                 }
 
                 blade.refresh(false);

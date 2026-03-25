@@ -276,7 +276,8 @@
     },
     "commands": {
       "restore": "Gjenopprett",
-      "share-preview": "Send test-e-post"
+      "share-preview": "Send test-e-post",
+      "reset-to-default": "Tilbakestill til standard"
     }
   },
   "notificationTypes": {

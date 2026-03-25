@@ -289,7 +289,8 @@
     },
     "commands": {
       "restore": "Ripristina",
-      "share-preview": "Invia email di prova"
+      "share-preview": "Invia email di prova",
+      "reset-to-default": "Réinitialiser aux valeurs par défaut"
     }
   },
   "notificationTypes": {

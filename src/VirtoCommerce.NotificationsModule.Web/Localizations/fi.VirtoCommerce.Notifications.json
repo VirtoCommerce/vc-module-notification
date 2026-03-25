@@ -276,7 +276,8 @@
     },
     "commands": {
       "restore": "Palauta",
-      "share-preview": "Lähetä testiviesti"
+      "share-preview": "Lähetä testiviesti",
+      "reset-to-default": "Palauta oletusarvoihin"
     }
   },
   "notificationTypes": {

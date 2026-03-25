@@ -289,7 +289,8 @@
     },
     "commands": {
       "restore": "Восстановить",
-      "share-preview": "Отправить тестовое письмо"
+      "share-preview": "Отправить тестовое письмо",
+      "reset-to-default": "Сбросить к значениям по умолчанию"
     }
   },
   "notificationTypes": {

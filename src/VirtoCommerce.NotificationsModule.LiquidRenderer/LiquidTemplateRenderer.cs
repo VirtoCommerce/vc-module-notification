@@ -18,15 +18,18 @@ public class LiquidTemplateRenderer : INotificationTemplateRenderer
     private readonly LiquidRenderOptions _options;
     private readonly Func<ITemplateLoader> _templateLoaderFactory;
     private readonly INotificationLayoutSearchService _notificationLayoutSearchService;
+    private readonly INotificationLayoutRegistrar _layoutRegistrar;
 
     public LiquidTemplateRenderer(
         IOptions<LiquidRenderOptions> options,
         Func<ITemplateLoader> templateLoaderFactory,
-        INotificationLayoutSearchService notificationLayoutSearchService)
+        INotificationLayoutSearchService notificationLayoutSearchService,
+        INotificationLayoutRegistrar layoutRegistrar)
     {
         _options = options.Value;
         _templateLoaderFactory = templateLoaderFactory;
         _notificationLayoutSearchService = notificationLayoutSearchService;
+        _layoutRegistrar = layoutRegistrar;
     }
 
     public async Task<string> RenderAsync(NotificationRenderContext renderContext)
@@ -48,7 +51,8 @@ public class LiquidTemplateRenderer : INotificationTemplateRenderer
         if (renderContext.UseLayouts && string.IsNullOrEmpty(renderContext.LayoutId))
         {
             var layoutSearchResult = await _notificationLayoutSearchService.SearchAsync(new NotificationLayoutSearchCriteria() { IsDefault = true });
-            renderContext.LayoutId = layoutSearchResult.Results.FirstOrDefault()?.Id;
+            renderContext.LayoutId = layoutSearchResult.Results.FirstOrDefault()?.Id
+                ?? _layoutRegistrar.AllRegisteredLayouts.FirstOrDefault(x => x.IsDefault)?.Name;
         }
 
         if (!string.IsNullOrEmpty(renderContext.LayoutId))

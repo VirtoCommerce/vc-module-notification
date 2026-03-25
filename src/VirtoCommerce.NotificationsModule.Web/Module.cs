@@ -75,7 +75,6 @@ namespace VirtoCommerce.NotificationsModule.Web
             serviceCollection.AddTransient<INotificationService, NotificationService>();
             serviceCollection.AddTransient<INotificationSearchService, NotificationSearchService>();
             serviceCollection.AddSingleton<INotificationRegistrar, NotificationRegistrar>();
-            serviceCollection.AddSingleton<INotificationLayoutRegistrar, NotificationLayoutRegistrar>();
             serviceCollection.AddTransient<INotificationMessageService, NotificationMessageService>();
             serviceCollection.AddTransient<INotificationMessageSearchService, NotificationMessageSearchService>();
             serviceCollection.AddTransient<INotificationSender, NotificationSender>();
@@ -194,13 +193,6 @@ namespace VirtoCommerce.NotificationsModule.Web
 
             var hostLifeTime = appBuilder.ApplicationServices.GetService<IHostApplicationLifetime>();
 
-            //Save all registered notification layouts in the database after application start
-            hostLifeTime.ApplicationStarted.Register(() =>
-            {
-                var notificationLayoutRegistrar = appBuilder.ApplicationServices.GetService<INotificationLayoutRegistrar>();
-                notificationLayoutRegistrar.SaveChanges();
-            });
-
             //Save all registered notifications in the database after application start
             hostLifeTime.ApplicationStarted.Register(() =>
             {
@@ -213,6 +205,9 @@ namespace VirtoCommerce.NotificationsModule.Web
                 }).ToArray();
                 notificationService.SaveChangesAsync(allRegisteredNotifications).GetAwaiter().GetResult();
             });
+
+            var notificationLayoutRegistrar = appBuilder.ApplicationServices.GetService<INotificationLayoutRegistrar>();
+            notificationLayoutRegistrar.RegisterLayout("Default", "<html><body>{{ content }}</body></html>");
         }
 
         public void Uninstall()

@@ -22,6 +22,7 @@ angular.module('virtoCommerce.notificationsModule')
             searchNotificationLayouts: { method: 'POST', url: 'api/notification-layouts/search' },
             createNotificationLayout: { method: 'POST' },
             updateNotificationLayout: { method: 'PUT' },
-            deleteNotificationLayout: { method: 'DELETE' }
+            deleteNotificationLayout: { method: 'DELETE' },
+            resetNotificationLayout: { method: 'DELETE', url: 'api/notification-layouts/:id/reset' }
         })
     }]);

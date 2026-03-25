@@ -289,7 +289,8 @@
     },
     "commands": {
       "restore": "Restore",
-      "share-preview": "Send test email"
+      "share-preview": "Send test email",
+      "reset-to-default": "Reset to Default"
     }
   },
   "notificationTypes": {
