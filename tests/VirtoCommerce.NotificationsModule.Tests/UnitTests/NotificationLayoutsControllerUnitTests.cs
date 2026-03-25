@@ -7,6 +7,7 @@ using VirtoCommerce.NotificationsModule.Core.Model.Search;
 using VirtoCommerce.NotificationsModule.Core.Services;
 using VirtoCommerce.NotificationsModule.Data.Services;
 using VirtoCommerce.NotificationsModule.Web.Controllers;
+using VirtoCommerce.Platform.Core.Common;
 using Xunit;
 
 namespace VirtoCommerce.NotificationsModule.Tests.UnitTests
