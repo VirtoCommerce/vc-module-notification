@@ -125,6 +125,7 @@ angular.module('virtoCommerce.notificationsModule')
                             icon: 'fa fa-refresh',
                             executeMethod: function () {
                                 layouts.resetNotificationLayout({ id: blade.currentEntity.id }, function () {
+                                    blade.currentEntityId = blade.currentEntity.name;
                                     blade.refresh(true);
                                 });
                             },

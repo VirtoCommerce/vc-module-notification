@@ -57,12 +57,13 @@ namespace VirtoCommerce.NotificationsModule.Tests.UnitTests
             _layoutRegistrar.RegisterLayout(name, "<div>{{ content }}</div>");
             var layout = new NotificationLayout { Id = name, Name = name };
 
+            // Generic fallback first, specific override second (Moq: last matching setup wins)
             _layoutSearchServiceMock
-                .Setup(x => x.SearchNoCloneAsync(It.Is<NotificationLayoutSearchCriteria>(c => c.Names.Contains(name))))
-                .ReturnsAsync(new NotificationLayoutSearchResult { Results = [] });
-            _layoutSearchServiceMock
-                .Setup(x => x.SearchAsync(It.IsAny<NotificationLayoutSearchCriteria>()))
+                .Setup(x => x.SearchAsync(It.IsAny<NotificationLayoutSearchCriteria>(), It.IsAny<bool>()))
                 .ReturnsAsync(new NotificationLayoutSearchResult());
+            _layoutSearchServiceMock
+                .Setup(x => x.SearchAsync(It.Is<NotificationLayoutSearchCriteria>(c => c.Names != null && c.Names.Contains(name)), It.IsAny<bool>()))
+                .ReturnsAsync(new NotificationLayoutSearchResult { Results = [] });
 
             // Act
             await _controller.UpdateNotificationLayout(layout);
@@ -81,15 +82,16 @@ namespace VirtoCommerce.NotificationsModule.Tests.UnitTests
             _layoutRegistrar.RegisterLayout(name, "<div>{{ content }}</div>");
             var layout = new NotificationLayout { Id = name, Name = name };
 
+            // Generic fallback first, specific override second (Moq: last matching setup wins)
             _layoutSearchServiceMock
-                .Setup(x => x.SearchNoCloneAsync(It.Is<NotificationLayoutSearchCriteria>(c => c.Names.Contains(name))))
+                .Setup(x => x.SearchAsync(It.IsAny<NotificationLayoutSearchCriteria>(), It.IsAny<bool>()))
+                .ReturnsAsync(new NotificationLayoutSearchResult());
+            _layoutSearchServiceMock
+                .Setup(x => x.SearchAsync(It.Is<NotificationLayoutSearchCriteria>(c => c.Names != null && c.Names.Contains(name)), It.IsAny<bool>()))
                 .ReturnsAsync(new NotificationLayoutSearchResult
                 {
                     Results = [new NotificationLayout { Id = existingUuid, Name = name }]
                 });
-            _layoutSearchServiceMock
-                .Setup(x => x.SearchAsync(It.IsAny<NotificationLayoutSearchCriteria>()))
-                .ReturnsAsync(new NotificationLayoutSearchResult());
 
             // Act
             await _controller.UpdateNotificationLayout(layout);
@@ -108,8 +110,9 @@ namespace VirtoCommerce.NotificationsModule.Tests.UnitTests
             const string id = "real-uuid";
             const string name = "Default";
             _layoutRegistrar.RegisterLayout(name, "<div>{{ content }}</div>");
-            _layoutServiceMock.Setup(x => x.GetNoCloneAsync(id))
-                .ReturnsAsync(new NotificationLayout { Id = id, Name = name });
+            _layoutServiceMock
+                .Setup(x => x.GetAsync(It.Is<IList<string>>(ids => ids.Contains(id)), It.IsAny<string>(), It.IsAny<bool>()))
+                .ReturnsAsync([new NotificationLayout { Id = id, Name = name }]);
 
             // Act
             var result = await _controller.ResetNotificationLayoutToDefault(id);
@@ -123,8 +126,9 @@ namespace VirtoCommerce.NotificationsModule.Tests.UnitTests
         public async Task ResetNotificationLayoutToDefault_NoDbRecord_ReturnsNotFound()
         {
             // Arrange
-            _layoutServiceMock.Setup(x => x.GetNoCloneAsync(It.IsAny<string>()))
-                .ReturnsAsync((NotificationLayout)null);
+            _layoutServiceMock
+                .Setup(x => x.GetAsync(It.IsAny<IList<string>>(), It.IsAny<string>(), It.IsAny<bool>()))
+                .ReturnsAsync([]);
 
             // Act
             var result = await _controller.ResetNotificationLayoutToDefault("nonexistent-id");
@@ -139,8 +143,9 @@ namespace VirtoCommerce.NotificationsModule.Tests.UnitTests
         {
             // Arrange — DB record exists but it's a user-created layout (not registered as predefined)
             const string id = "custom-uuid";
-            _layoutServiceMock.Setup(x => x.GetNoCloneAsync(id))
-                .ReturnsAsync(new NotificationLayout { Id = id, Name = "My Custom Layout" });
+            _layoutServiceMock
+                .Setup(x => x.GetAsync(It.Is<IList<string>>(ids => ids.Contains(id)), It.IsAny<string>(), It.IsAny<bool>()))
+                .ReturnsAsync([new NotificationLayout { Id = id, Name = "My Custom Layout" }]);
 
             // Act
             var result = await _controller.ResetNotificationLayoutToDefault(id);

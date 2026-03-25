@@ -51,6 +51,7 @@ namespace VirtoCommerce.NotificationsModule.Web.Controllers
             }
             else
             {
+                layout = (NotificationLayout)layout.Clone();
                 layout.IsPredefined = _layoutRegistrar.GetByName(layout.Name) != null;
             }
 
@@ -62,7 +63,7 @@ namespace VirtoCommerce.NotificationsModule.Web.Controllers
         [Authorize(ModuleConstants.Security.Permissions.Read)]
         public async Task<ActionResult<NotificationLayoutSearchResult>> SearchNotificationLayouts([FromBody] NotificationLayoutSearchCriteria searchCriteria)
         {
-            var searchResult = await _layoutSearchService.SearchNoCloneAsync(searchCriteria);
+            var searchResult = await _layoutSearchService.SearchAsync(searchCriteria);
 
             // Merge predefined layouts that are not overridden by a DB record
             var dbNames = searchResult.Results.Select(x => x.Name).ToHashSet(StringComparer.OrdinalIgnoreCase);
