@@ -259,11 +259,13 @@
       },
       "notification-template-delete": {
         "title": "Conferma eliminazione",
-        "message": "Sei sicuro di voler eliminare i modelli selezionati"
+        "message": "Sei sicuro di voler eliminare i modelli selezionati",
+        "template": "{{count}} modello(i)"
       },
       "notification-template-delete-notification": {
         "title": "Impossibile eliminare il modello",
-        "message": "Non puoi eliminare modelli predefiniti o standard. Deseleziona tali modelli e riprova"
+        "message": "Non puoi eliminare modelli predefiniti o standard. Deseleziona tali modelli e riprova",
+        "notification": "{{count}} notifica(he)"
       },
       "notification-template-reset-confirmation": {
         "title": "Conferma ripristino modello",
@@ -284,7 +286,8 @@
       },
       "notification-layout-delete": {
         "title": "Conferma eliminazione",
-        "message": "Sei sicuro di voler eliminare i layout selezionati"
+        "message": "Sei sicuro di voler eliminare i layout selezionati",
+        "layout": "{{count}} layout"
       }
     },
     "commands": {

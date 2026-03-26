@@ -259,11 +259,13 @@
       },
       "notification-template-delete": {
         "title": "Confirmar exclusão",
-        "message": "Você tem certeza de que deseja excluir os modelos selecionados"
+        "message": "Você tem certeza de que deseja excluir os modelos selecionados",
+        "template": "{{count}} modelo(s)"
       },
       "notification-template-delete-notification": {
         "title": "Não foi possível excluir o modelo",
-        "message": "Você não pode excluir modelos padrão ou predefinidos. Por favor, desmarque esses modelos e tente novamente"
+        "message": "Você não pode excluir modelos padrão ou predefinidos. Por favor, desmarque esses modelos e tente novamente",
+        "notification": "{{count}} notificação(ões)"
       },
       "notification-template-reset-confirmation": {
         "title": "Confirmar redefinição do modelo",
@@ -284,7 +286,8 @@
       },
       "notification-layout-delete": {
         "title": "Confirmar exclusão",
-        "message": "Você tem certeza de que deseja excluir os layouts selecionados"
+        "message": "Você tem certeza de que deseja excluir os layouts selecionados",
+        "layout": "{{count}} layout(s)"
       }
     },
     "commands": {

@@ -95,7 +95,7 @@ angular.module('virtoCommerce.notificationsModule')
                     var dialog = {
                         id: "confirmDeleteLayouts",
                         title: "notifications.dialogs.notification-layout-delete.title",
-                        message: "notifications.dialogs.notification-layout-delete.message",
+                        data: [{ key: "notifications.dialogs.notification-layout-delete.layout", count: selection.length }],
                         callback: function (remove) {
                             if (remove) {
                                 bladeNavigationService.closeChildrenBlades(blade, function () {
@@ -110,7 +110,7 @@ angular.module('virtoCommerce.notificationsModule')
                             }
                         }
                     };
-                    dialogService.showConfirmationDialog(dialog);
+                    dialogService.showDeleteConfirmationDialog(dialog);
                 }
 
                 // ui-grid

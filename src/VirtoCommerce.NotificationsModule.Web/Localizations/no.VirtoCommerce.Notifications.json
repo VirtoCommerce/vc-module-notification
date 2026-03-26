@@ -246,11 +246,13 @@
       },
       "notification-template-delete": {
         "title": "Bekreft sletting",
-        "message": "Er du sikker på at du vil slette de valgte malene?"
+        "message": "Er du sikker på at du vil slette de valgte malene?",
+        "template": "{{count}} mal(er)"
       },
       "notification-template-delete-notification": {
         "title": "Kan ikke slette mal",
-        "message": "Du kan ikke slette standard- eller forhåndsdefinerte maler. Fjern disse malene fra valget og prøv igjen"
+        "message": "Du kan ikke slette standard- eller forhåndsdefinerte maler. Fjern disse malene fra valget og prøv igjen",
+        "notification": "{{count}} varsling(er)"
       },
       "notification-template-reset-confirmation": {
         "title": "Bekreft tilbakestilling av mal",
@@ -271,7 +273,8 @@
       },
       "notification-layout-delete": {
         "title": "Bekreft sletting",
-        "message": "Er du sikker på at du vil slette de valgte oppsettene?"
+        "message": "Er du sikker på at du vil slette de valgte oppsettene?",
+        "layout": "{{count}} oppsett"
       }
     },
     "commands": {

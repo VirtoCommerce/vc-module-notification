@@ -246,11 +246,13 @@
       },
       "notification-template-delete": {
         "title": "Bekräfta radering",
-        "message": "Är du säker på att du vill radera de valda mallarna?"
+        "message": "Är du säker på att du vill radera de valda mallarna?",
+        "template": "{{count}} mall(ar)"
       },
       "notification-template-delete-notification": {
         "title": "Kan inte radera mall",
-        "message": "Du kan inte radera standard- eller fördefinierade mallar. Avmarkera dessa mallar och försök igen"
+        "message": "Du kan inte radera standard- eller fördefinierade mallar. Avmarkera dessa mallar och försök igen",
+        "notification": "{{count}} avisering(ar)"
       },
       "notification-template-reset-confirmation": {
         "title": "Bekräfta återställning av mall",
@@ -271,7 +273,8 @@
       },
       "notification-layout-delete": {
         "title": "Bekräfta radering",
-        "message": "Är du säker på att du vill radera de valda layouterna?"
+        "message": "Är du säker på att du vill radera de valda layouterna?",
+        "layout": "{{count}} layout(er)"
       }
     },
     "commands": {

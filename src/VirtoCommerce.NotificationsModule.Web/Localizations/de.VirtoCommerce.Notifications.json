@@ -259,11 +259,13 @@
       },
       "notification-template-delete": {
         "title": "Löschen bestätigen",
-        "message": "Sind Sie sicher, dass Sie die ausgewählten Vorlagen löschen möchten?"
+        "message": "Sind Sie sicher, dass Sie die ausgewählten Vorlagen löschen möchten?",
+        "template": "{{count}} Vorlage(n)"
       },
       "notification-template-delete-notification": {
         "title": "Vorlage kann nicht gelöscht werden",
-        "message": "Sie können Standard- oder vordefinierte Vorlagen nicht löschen. Bitte deaktivieren Sie solche Vorlagen und versuchen Sie es erneut"
+        "message": "Sie können Standard- oder vordefinierte Vorlagen nicht löschen. Bitte deaktivieren Sie solche Vorlagen und versuchen Sie es erneut",
+        "notification": "{{count}} Benachrichtigung(en)"
       },
       "notification-template-reset-confirmation": {
         "title": "Vorlage zurücksetzen bestätigen",
@@ -284,7 +286,8 @@
       },
       "notification-layout-delete": {
         "title": "Löschen bestätigen",
-        "message": "Sind Sie sicher, dass Sie die ausgewählten Layouts löschen möchten?"
+        "message": "Sind Sie sicher, dass Sie die ausgewählten Layouts löschen möchten?",
+        "layout": "{{count}} Layout(s)"
       }
     },
     "commands": {

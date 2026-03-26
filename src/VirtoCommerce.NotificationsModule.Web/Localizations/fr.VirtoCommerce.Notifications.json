@@ -259,11 +259,13 @@
       },
       "notification-template-delete": {
         "title": "Confirmer la suppression",
-        "message": "Êtes-vous sûr de vouloir supprimer les modèles sélectionnés ?"
+        "message": "Êtes-vous sûr de vouloir supprimer les modèles sélectionnés ?",
+        "template": "{{count}} modèle(s)"
       },
       "notification-template-delete-notification": {
         "title": "Impossible de supprimer le modèle",
-        "message": "Vous ne pouvez pas supprimer les modèles par défaut ou prédéfinis. Veuillez désélectionner ces modèles et réessayer"
+        "message": "Vous ne pouvez pas supprimer les modèles par défaut ou prédéfinis. Veuillez désélectionner ces modèles et réessayer",
+        "notification": "{{count}} notification(s)"
       },
       "notification-template-reset-confirmation": {
         "title": "Confirmer la réinitialisation du modèle",
@@ -284,7 +286,8 @@
       },
       "notification-layout-delete": {
         "title": "Confirmer la suppression",
-        "message": "Êtes-vous sûr de vouloir supprimer les mises en page sélectionnées?"
+        "message": "Êtes-vous sûr de vouloir supprimer les mises en page sélectionnées?",
+        "layout": "{{count}} mise(s) en page"
       }
     },
     "commands": {

@@ -246,11 +246,13 @@
       },
       "notification-template-delete": {
         "title": "Vahvista poisto",
-        "message": "Haluatko varmasti poistaa valitut mallit?"
+        "message": "Haluatko varmasti poistaa valitut mallit?",
+        "template": "{{count}} malli(a)"
       },
       "notification-template-delete-notification": {
         "title": "Mallia ei voi poistaa",
-        "message": "Et voi poistaa oletus- tai ennalta määritettyjä malleja. Poista tällaiset mallit valinnasta ja yritä uudelleen"
+        "message": "Et voi poistaa oletus- tai ennalta määritettyjä malleja. Poista tällaiset mallit valinnasta ja yritä uudelleen",
+        "notification": "{{count}} ilmoitus(ta)"
       },
       "notification-template-reset-confirmation": {
         "title": "Vahvista mallin nollaus",
@@ -271,7 +273,8 @@
       },
       "notification-layout-delete": {
         "title": "Vahvista poisto",
-        "message": "Haluatko varmasti poistaa valitut asettelut?"
+        "message": "Haluatko varmasti poistaa valitut asettelut?",
+        "layout": "{{count}} asettelu(a)"
       }
     },
     "commands": {

@@ -259,11 +259,13 @@
       },
       "notification-template-delete": {
         "title": "Potwierdź usunięcie",
-        "message": "Czy na pewno chcesz usunąć wybrane szablony?"
+        "message": "Czy na pewno chcesz usunąć wybrane szablony?",
+        "template": "{{count}} szablon(ów)"
       },
       "notification-template-delete-notification": {
         "title": "Nie można usunąć szablonu",
-        "message": "Nie możesz usunąć szablonów domyślnych lub predefiniowanych. Proszę odznaczyć takie szablony i spróbować ponownie"
+        "message": "Nie możesz usunąć szablonów domyślnych lub predefiniowanych. Proszę odznaczyć takie szablony i spróbować ponownie",
+        "notification": "{{count}} powiadomienie(ń)"
       },
       "notification-template-reset-confirmation": {
         "title": "Potwierdź resetowanie szablonu",
@@ -284,7 +286,8 @@
       },
       "notification-layout-delete": {
         "title": "Potwierdź usunięcie",
-        "message": "Czy na pewno chcesz usunąć wybrane układy?"
+        "message": "Czy na pewno chcesz usunąć wybrane układy?",
+        "layout": "{{count}} układ(ów)"
       }
     },
     "commands": {

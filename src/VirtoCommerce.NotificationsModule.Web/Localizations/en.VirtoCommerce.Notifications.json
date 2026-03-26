@@ -259,11 +259,13 @@
       },
       "notification-template-delete": {
         "title": "Confirm delete",
-        "message": "Are you sure you want to delete the selected templates?"
+        "message": "Are you sure you want to delete the selected templates?",
+        "template": "{{count}} template(s)"
       },
       "notification-template-delete-notification": {
         "title": "Unable to delete template",
-        "message": "You cannot delete default or predefined templates. Please deselect such templates and try again"
+        "message": "You cannot delete default or predefined templates. Please deselect such templates and try again",
+        "notification": "{{count}} notification(s)"
       },
       "notification-template-reset-confirmation": {
         "title": "Confirm reset template",
@@ -284,7 +286,8 @@
       },
       "notification-layout-delete": {
         "title": "Confirm delete",
-        "message": "Are you sure you want to delete the selected layouts?"
+        "message": "Are you sure you want to delete the selected layouts?",
+        "layout": "{{count}} layout(s)"
       }
     },
     "commands": {
