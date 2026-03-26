@@ -264,8 +264,7 @@
       },
       "notification-template-delete-notification": {
         "title": "Não foi possível excluir o modelo",
-        "message": "Você não pode excluir modelos padrão ou predefinidos. Por favor, desmarque esses modelos e tente novamente",
-        "notification": "{{count}} notificação(ões)"
+        "message": "Você não pode excluir modelos padrão ou predefinidos. Por favor, desmarque esses modelos e tente novamente"
       },
       "notification-template-reset-confirmation": {
         "title": "Confirmar redefinição do modelo",

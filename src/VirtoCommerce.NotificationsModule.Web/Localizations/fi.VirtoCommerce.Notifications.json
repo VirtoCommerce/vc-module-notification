@@ -251,8 +251,7 @@
       },
       "notification-template-delete-notification": {
         "title": "Mallia ei voi poistaa",
-        "message": "Et voi poistaa oletus- tai ennalta määritettyjä malleja. Poista tällaiset mallit valinnasta ja yritä uudelleen",
-        "notification": "{{count}} ilmoitus(ta)"
+        "message": "Et voi poistaa oletus- tai ennalta määritettyjä malleja. Poista tällaiset mallit valinnasta ja yritä uudelleen"
       },
       "notification-template-reset-confirmation": {
         "title": "Vahvista mallin nollaus",

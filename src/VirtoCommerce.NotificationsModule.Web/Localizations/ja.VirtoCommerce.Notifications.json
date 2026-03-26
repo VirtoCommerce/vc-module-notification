@@ -264,8 +264,7 @@
       },
       "notification-template-delete-notification": {
         "title": "テンプレートを削除できません",
-        "message": "デフォルトまたは事前定義されたテンプレートを削除することはできません。そのようなテンプレートの選択を解除して、再試行してください",
-        "notification": "{{count}} 件の通知"
+        "message": "デフォルトまたは事前定義されたテンプレートを削除することはできません。そのようなテンプレートの選択を解除して、再試行してください"
       },
       "notification-template-reset-confirmation": {
         "title": "テンプレートのリセットを確認",

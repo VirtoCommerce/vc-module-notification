@@ -264,8 +264,7 @@
       },
       "notification-template-delete-notification": {
         "title": "无法删除模板",
-        "message": "您无法删除默认或预定义的模板。请取消选择此类模板并重试",
-        "notification": "{{count}} 个通知"
+        "message": "您无法删除默认或预定义的模板。请取消选择此类模板并重试"
       },
       "notification-template-reset-confirmation": {
         "title": "确认重置模板",

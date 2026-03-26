@@ -264,8 +264,7 @@
       },
       "notification-template-delete-notification": {
         "title": "Nie można usunąć szablonu",
-        "message": "Nie możesz usunąć szablonów domyślnych lub predefiniowanych. Proszę odznaczyć takie szablony i spróbować ponownie",
-        "notification": "{{count}} powiadomienie(ń)"
+        "message": "Nie możesz usunąć szablonów domyślnych lub predefiniowanych. Proszę odznaczyć takie szablony i spróbować ponownie"
       },
       "notification-template-reset-confirmation": {
         "title": "Potwierdź resetowanie szablonu",

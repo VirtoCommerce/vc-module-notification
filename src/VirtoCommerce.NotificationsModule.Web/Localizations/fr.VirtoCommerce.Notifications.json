@@ -264,8 +264,7 @@
       },
       "notification-template-delete-notification": {
         "title": "Impossible de supprimer le modèle",
-        "message": "Vous ne pouvez pas supprimer les modèles par défaut ou prédéfinis. Veuillez désélectionner ces modèles et réessayer",
-        "notification": "{{count}} notification(s)"
+        "message": "Vous ne pouvez pas supprimer les modèles par défaut ou prédéfinis. Veuillez désélectionner ces modèles et réessayer"
       },
       "notification-template-reset-confirmation": {
         "title": "Confirmer la réinitialisation du modèle",

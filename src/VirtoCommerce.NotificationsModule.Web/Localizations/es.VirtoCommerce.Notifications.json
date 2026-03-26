@@ -264,8 +264,7 @@
       },
       "notification-template-delete-notification": {
         "title": "No se pudo eliminar la plantilla",
-        "message": "No puede eliminar plantillas predeterminadas o predefinidas. Por favor, deseleccione esas plantillas e intente nuevamente",
-        "notification": "{{count}} notificación(es)"
+        "message": "No puede eliminar plantillas predeterminadas o predefinidas. Por favor, deseleccione esas plantillas e intente nuevamente"
       },
       "notification-template-reset-confirmation": {
         "title": "Confirmar restablecimiento de plantilla",

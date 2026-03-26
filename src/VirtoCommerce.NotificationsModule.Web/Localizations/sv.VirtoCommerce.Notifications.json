@@ -251,8 +251,7 @@
       },
       "notification-template-delete-notification": {
         "title": "Kan inte radera mall",
-        "message": "Du kan inte radera standard- eller fördefinierade mallar. Avmarkera dessa mallar och försök igen",
-        "notification": "{{count}} avisering(ar)"
+        "message": "Du kan inte radera standard- eller fördefinierade mallar. Avmarkera dessa mallar och försök igen"
       },
       "notification-template-reset-confirmation": {
         "title": "Bekräfta återställning av mall",

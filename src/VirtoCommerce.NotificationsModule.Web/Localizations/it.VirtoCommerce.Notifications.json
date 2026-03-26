@@ -264,8 +264,7 @@
       },
       "notification-template-delete-notification": {
         "title": "Impossibile eliminare il modello",
-        "message": "Non puoi eliminare modelli predefiniti o standard. Deseleziona tali modelli e riprova",
-        "notification": "{{count}} notifica(he)"
+        "message": "Non puoi eliminare modelli predefiniti o standard. Deseleziona tali modelli e riprova"
       },
       "notification-template-reset-confirmation": {
         "title": "Conferma ripristino modello",

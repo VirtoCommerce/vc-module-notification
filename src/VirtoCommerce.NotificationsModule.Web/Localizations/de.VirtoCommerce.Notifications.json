@@ -264,8 +264,7 @@
       },
       "notification-template-delete-notification": {
         "title": "Vorlage kann nicht gelöscht werden",
-        "message": "Sie können Standard- oder vordefinierte Vorlagen nicht löschen. Bitte deaktivieren Sie solche Vorlagen und versuchen Sie es erneut",
-        "notification": "{{count}} Benachrichtigung(en)"
+        "message": "Sie können Standard- oder vordefinierte Vorlagen nicht löschen. Bitte deaktivieren Sie solche Vorlagen und versuchen Sie es erneut"
       },
       "notification-template-reset-confirmation": {
         "title": "Vorlage zurücksetzen bestätigen",
