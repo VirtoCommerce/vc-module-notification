@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>net10.0</TargetFramework>
-    <noWarn>1591;NU1902;NU1903;NU1904</noWarn>
+    <noWarn>1591</noWarn>
     <IsPackable>True</IsPackable>
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
     <EmbedUntrackedSources>true</EmbedUntrackedSources>
@@ -9,7 +9,7 @@
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Scriban" Version="6.5.2" />
+    <PackageReference Include="Scriban" Version="7.0.5" />
     <PackageReference Include="VirtoCommerce.AssetsModule.Core" Version="3.1000.0" />
   </ItemGroup>
   <ItemGroup>
