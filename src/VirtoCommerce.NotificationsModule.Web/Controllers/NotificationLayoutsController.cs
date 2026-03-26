@@ -178,7 +178,13 @@ namespace VirtoCommerce.NotificationsModule.Web.Controllers
         public async Task<ActionResult> ResetNotificationLayoutToDefault(string id)
         {
             var dbLayout = await _layoutService.GetNoCloneAsync(id);
-            if (dbLayout == null || _layoutRegistrar.GetByName(dbLayout.Name) == null)
+            if (dbLayout == null)
+            {
+                // No DB override exists — return 204 if this is a known predefined layout, 404 otherwise.
+                return _layoutRegistrar.GetByName(id) != null ? NoContent() : NotFound();
+            }
+
+            if (_layoutRegistrar.GetByName(dbLayout.Name) == null)
             {
                 return NotFound();
             }
