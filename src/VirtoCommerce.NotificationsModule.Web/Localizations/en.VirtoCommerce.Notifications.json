@@ -264,8 +264,7 @@
       },
       "notification-template-delete-notification": {
         "title": "Unable to delete template",
-        "message": "You cannot delete default or predefined templates. Please deselect such templates and try again",
-        "notification": "{{count}} notification(s)"
+        "message": "You cannot delete default or predefined templates. Please deselect such templates and try again"
       },
       "notification-template-reset-confirmation": {
         "title": "Confirm reset template",
