@@ -19,9 +19,7 @@ angular.module('virtoCommerce.notificationsModule')
                     blade.subtitle = 'notifications.blades.notification-layout-details.subtitle';
                 }
 
-                blade.refresh = function (parentRefresh) {
-                    reloadEditor();
-
+                blade.refresh = function(parentRefresh) {
                     if (blade.isNew) {
                         blade.currentEntity = {};
                         blade.isLoading = false;
@@ -45,6 +43,10 @@ angular.module('virtoCommerce.notificationsModule')
                     }
 
                     blade.isLoading = false;
+
+                    $scope.editorReloaded = false;
+                    $timeout(reloadEditor, 0);
+
                 }
 
                 $scope.setForm = function (form) {
