@@ -63,38 +63,57 @@ namespace VirtoCommerce.NotificationsModule.Web.Controllers
         [Authorize(ModuleConstants.Security.Permissions.Read)]
         public async Task<ActionResult<NotificationLayoutSearchResult>> SearchNotificationLayouts([FromBody] NotificationLayoutSearchCriteria searchCriteria)
         {
-            var searchResult = await _layoutSearchService.SearchAsync(searchCriteria);
+            // Find which predefined layouts already have a DB override.
+            var predefinedNames = _layoutRegistrar.AllRegisteredLayouts.Select(x => x.Name).ToList();
+            var overriddenNames = predefinedNames.Count > 0
+                ? (await _layoutSearchService.SearchNoCloneAsync(
+                    new NotificationLayoutSearchCriteria { Names = predefinedNames, Take = predefinedNames.Count }))
+                    .Results.Select(x => x.Name).ToHashSet(StringComparer.OrdinalIgnoreCase)
+                : new HashSet<string>(StringComparer.OrdinalIgnoreCase);
 
-            // Merge predefined layouts that are not overridden by a DB record
-            var dbNames = searchResult.Results.Select(x => x.Name).ToHashSet(StringComparer.OrdinalIgnoreCase);
+            // Build the list of predefined layouts not overridden in the DB, applying search filters.
+            var predefinedLayouts = _layoutRegistrar.AllRegisteredLayouts
+                .Where(x => !overriddenNames.Contains(x.Name))
+                .Where(x => searchCriteria.Names is not { Count: > 0 } || searchCriteria.Names.Any(n => n.EqualsIgnoreCase(x.Name)))
+                .Where(x => searchCriteria.IsDefault == null || x.IsDefault == searchCriteria.IsDefault)
+                .Where(x => string.IsNullOrEmpty(searchCriteria.Keyword) || x.Name.Contains(searchCriteria.Keyword, StringComparison.OrdinalIgnoreCase))
+                .Select(x =>
+                {
+                    var clone = (NotificationLayout)x.Clone();
+                    clone.Id = x.Name;
+                    clone.IsPredefined = true;
+                    return clone;
+                })
+                .ToList();
+
+            var predefinedCount = predefinedLayouts.Count;
+
+            // Predefined layouts occupy the first slots in the virtual result set.
+            // Adjust Skip/Take for the DB query accordingly.
+            var adjustedSkip = Math.Max(0, searchCriteria.Skip - predefinedCount);
+            var predefinedOnThisPage = searchCriteria.Skip < predefinedCount
+                ? predefinedLayouts.Skip(searchCriteria.Skip).Take(searchCriteria.Take).ToList()
+                : [];
+            var dbTake = searchCriteria.Take - predefinedOnThisPage.Count;
+
+            var dbCriteria = searchCriteria.CloneTyped();
+            dbCriteria.Skip = adjustedSkip;
+            dbCriteria.Take = Math.Max(0, dbTake);
+
+            var searchResult = await _layoutSearchService.SearchAsync(dbCriteria);
+
             // Mark DB layouts that have a predefined counterpart
             foreach (var dbLayout in searchResult.Results)
             {
                 dbLayout.IsPredefined = _layoutRegistrar.GetByName(dbLayout.Name) != null;
             }
 
-            // Predefined layouts only appear on the first page to avoid duplicates across pages.
-            var predefinedToAdd = searchCriteria.Skip > 0
-                ? []
-                : _layoutRegistrar.AllRegisteredLayouts
-                    .Where(x => !dbNames.Contains(x.Name))
-                    .Where(x => searchCriteria.Names is not { Count: > 0 } || searchCriteria.Names.Any(n => n.EqualsIgnoreCase(x.Name)))
-                    .Where(x => searchCriteria.IsDefault == null || x.IsDefault == searchCriteria.IsDefault)
-                    .Where(x => string.IsNullOrEmpty(searchCriteria.Keyword) || x.Name.Contains(searchCriteria.Keyword, StringComparison.OrdinalIgnoreCase))
-                    .Select(x =>
-                    {
-                        var clone = (NotificationLayout)x.Clone();
-                        clone.Id = x.Name;
-                        clone.IsPredefined = true;
-                        return clone;
-                    })
-                    .ToList();
+            // Combine: predefined first, then DB results
+            var combinedResults = new List<NotificationLayout>(predefinedOnThisPage);
+            combinedResults.AddRange(searchResult.Results);
 
-            if (predefinedToAdd.Count > 0)
-            {
-                searchResult.Results.AddRange(predefinedToAdd);
-                searchResult.TotalCount += predefinedToAdd.Count;
-            }
+            searchResult.Results = combinedResults;
+            searchResult.TotalCount += predefinedCount;
 
             return Ok(searchResult);
         }
