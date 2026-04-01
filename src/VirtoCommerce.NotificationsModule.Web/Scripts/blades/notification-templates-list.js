@@ -126,7 +126,7 @@ angular.module('virtoCommerce.notificationsModule')
                     var dialog = {
                         id: "confirmDeleteItem",
                         title: "notifications.dialogs.notification-template-delete.title",
-                        data: [{ key: "notifications.dialogs.notification-template-delete.template", count: selections.length }],
+                        items: [{ key: "notifications.dialogs.notification-template-delete.template", count: selections.length }],
                         callback: function (remove) {
                             if (remove) {
                                 bladeNavigationService.closeChildrenBlades(blade, function () {
