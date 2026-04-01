@@ -10,7 +10,7 @@ namespace VirtoCommerce.NotificationsModule.Core.Services
         IEnumerable<NotificationLayout> AllRegisteredLayouts { get; }
 
         NotificationLayout GetByName(string name) =>
-            AllRegisteredLayouts.FirstOrDefault(x => x.Name.EqualsIgnoreCase(name));
+            string.IsNullOrEmpty(name) ? null : AllRegisteredLayouts.FirstOrDefault(x => x.Name.EqualsIgnoreCase(name));
 
         void RegisterLayout(string name, string template, bool saveChanges = false);
         void RegisterLayoutWithTemplateFromPath(string name, string path, bool saveChanges = false);
