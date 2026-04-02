@@ -23,6 +23,8 @@ angular.module('virtoCommerce.notificationsModule')
                     if (blade.isNew) {
                         blade.currentEntity = {};
                         blade.isLoading = false;
+                        $scope.editorReloaded = false;
+                        $timeout(reloadEditor, 0);
                     } else {
                         blade.isLoading = true;
 
