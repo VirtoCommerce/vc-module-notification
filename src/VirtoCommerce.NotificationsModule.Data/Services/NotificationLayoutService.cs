@@ -67,7 +67,7 @@ namespace VirtoCommerce.NotificationsModule.Data.Services
             foreach (var layout in models.Where(x => x.Id == x.Name && _layoutRegistrar.GetByName(x.Name) != null))
             {
                 using var repository = _repositoryFactory();
-                var existing = ((INotificationRepository)repository).NotificationLayouts
+                var existing = repository.NotificationLayouts
                     .Where(x => x.Name == layout.Name)
                     .Select(x => new { x.Id })
                     .FirstOrDefault();
