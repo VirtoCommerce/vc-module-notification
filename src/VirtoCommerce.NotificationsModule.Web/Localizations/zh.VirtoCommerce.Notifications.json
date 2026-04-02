@@ -259,7 +259,8 @@
       },
       "notification-template-delete": {
         "title": "确认删除",
-        "message": "您确定要删除选定的模板吗？"
+        "message": "您确定要删除选定的模板吗？",
+        "template": "{{count}} 个模板"
       },
       "notification-template-delete-notification": {
         "title": "无法删除模板",
@@ -284,7 +285,8 @@
       },
       "notification-layout-delete": {
         "title": "确认删除",
-        "message": "您确定要删除选定的布局吗？"
+        "message": "您确定要删除选定的布局吗？",
+        "layout": "{{count}} 个布局"
       }
     },
     "commands": {
