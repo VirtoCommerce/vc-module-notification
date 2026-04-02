@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using VirtoCommerce.NotificationsModule.Core.Model;
@@ -19,6 +20,7 @@ namespace VirtoCommerce.NotificationsModule.Core.Services
         /// No-op. Predefined layouts are kept in memory and no longer persisted to the database.
         /// Kept for backward compatibility.
         /// </summary>
+        [Obsolete("Don't call this method.", DiagnosticId = "VC0014", UrlFormat = "https://docs.virtocommerce.org/products/products-virto3-versions")]
         void SaveChanges() { }
     }
 }
