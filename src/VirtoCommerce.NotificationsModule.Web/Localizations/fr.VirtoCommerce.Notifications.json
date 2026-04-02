@@ -291,7 +291,8 @@
     },
     "commands": {
       "restore": "Restaurer",
-      "share-preview": "Wyślij testowy e-mail"
+      "share-preview": "Wyślij testowy e-mail",
+      "reset-to-default": "Réinitialiser aux valeurs par défaut"
     }
   },
   "notificationTypes": {

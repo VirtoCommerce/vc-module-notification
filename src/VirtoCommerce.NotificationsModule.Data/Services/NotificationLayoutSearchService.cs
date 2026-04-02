@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.Extensions.Options;
 using VirtoCommerce.NotificationsModule.Core.Model;
 using VirtoCommerce.NotificationsModule.Core.Model.Search;
@@ -16,13 +17,68 @@ namespace VirtoCommerce.NotificationsModule.Data.Services
 {
     public class NotificationLayoutSearchService : SearchService<NotificationLayoutSearchCriteria, NotificationLayoutSearchResult, NotificationLayout, NotificationLayoutEntity>, INotificationLayoutSearchService
     {
+        private readonly INotificationLayoutRegistrar _layoutRegistrar;
+
         public NotificationLayoutSearchService(
             Func<INotificationRepository> repositoryFactory,
             IPlatformMemoryCache platformMemoryCache,
             INotificationLayoutService crudService,
-            IOptions<CrudOptions> crudOptions)
+            IOptions<CrudOptions> crudOptions,
+            INotificationLayoutRegistrar layoutRegistrar)
             : base(repositoryFactory, platformMemoryCache, crudService, crudOptions)
         {
+            _layoutRegistrar = layoutRegistrar;
+        }
+
+        public override async Task<NotificationLayoutSearchResult> SearchAsync(NotificationLayoutSearchCriteria criteria, bool clone = true)
+        {
+            // Find which predefined layouts already have a DB override.
+            var predefinedNames = _layoutRegistrar.AllRegisteredLayouts.Select(x => x.Name).ToList();
+            var overriddenNames = predefinedNames.Count > 0
+                ? (await base.SearchAsync(
+                    new NotificationLayoutSearchCriteria { Names = predefinedNames, Take = predefinedNames.Count }, clone: false))
+                    .Results.Select(x => x.Name).ToHashSet(StringComparer.OrdinalIgnoreCase)
+                : new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+
+            // Build the list of predefined layouts not overridden in the DB, applying search filters.
+            var predefinedLayouts = _layoutRegistrar.AllRegisteredLayouts
+                .Where(x => !overriddenNames.Contains(x.Name))
+                .Where(x => criteria.Names is not { Count: > 0 } || criteria.Names.Any(n => n.EqualsIgnoreCase(x.Name)))
+                .Where(x => criteria.IsDefault == null || x.IsDefault == criteria.IsDefault)
+                .Where(x => string.IsNullOrEmpty(criteria.Keyword) || x.Name.Contains(criteria.Keyword, StringComparison.OrdinalIgnoreCase))
+                .Select(x =>
+                {
+                    var layout = (NotificationLayout)x.Clone();
+                    layout.Id = x.Name;
+                    layout.IsPredefined = true;
+                    return layout;
+                })
+                .ToList();
+
+            var predefinedCount = predefinedLayouts.Count;
+
+            // Predefined layouts occupy the first slots in the virtual result set.
+            // Adjust Skip/Take for the DB query accordingly.
+            var adjustedSkip = Math.Max(0, criteria.Skip - predefinedCount);
+            var predefinedOnThisPage = criteria.Skip < predefinedCount
+                ? predefinedLayouts.Skip(criteria.Skip).Take(criteria.Take).ToList()
+                : [];
+            var dbTake = criteria.Take - predefinedOnThisPage.Count;
+
+            var dbCriteria = criteria.CloneTyped();
+            dbCriteria.Skip = adjustedSkip;
+            dbCriteria.Take = Math.Max(0, dbTake);
+
+            var searchResult = await base.SearchAsync(dbCriteria, clone);
+
+            // Combine: predefined first, then DB results
+            var combinedResults = new List<NotificationLayout>(predefinedOnThisPage);
+            combinedResults.AddRange(searchResult.Results);
+
+            searchResult.Results = combinedResults;
+            searchResult.TotalCount += predefinedCount;
+
+            return searchResult;
         }
 
         protected override IQueryable<NotificationLayoutEntity> BuildQuery(IRepository repository, NotificationLayoutSearchCriteria criteria)

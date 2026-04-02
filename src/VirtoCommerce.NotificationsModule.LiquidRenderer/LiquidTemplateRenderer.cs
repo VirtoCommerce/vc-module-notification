@@ -47,7 +47,7 @@ public class LiquidTemplateRenderer : INotificationTemplateRenderer
 
         if (renderContext.UseLayouts && string.IsNullOrEmpty(renderContext.LayoutId))
         {
-            var layoutSearchResult = await _notificationLayoutSearchService.SearchAsync(new NotificationLayoutSearchCriteria() { IsDefault = true });
+            var layoutSearchResult = await _notificationLayoutSearchService.SearchAsync(new NotificationLayoutSearchCriteria() { IsDefault = true, Take = 1 });
             renderContext.LayoutId = layoutSearchResult.Results.FirstOrDefault()?.Id;
         }
 

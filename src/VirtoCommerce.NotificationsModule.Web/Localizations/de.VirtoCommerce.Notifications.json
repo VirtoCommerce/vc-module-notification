@@ -291,7 +291,8 @@
     },
     "commands": {
       "restore": "Wiederherstellen",
-      "share-preview": "Test-E-Mail senden"
+      "share-preview": "Test-E-Mail senden",
+      "reset-to-default": "Auf Standard zurücksetzen"
     }
   },
   "notificationTypes": {

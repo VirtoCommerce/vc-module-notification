@@ -278,7 +278,8 @@
     },
     "commands": {
       "restore": "Återställ",
-      "share-preview": "Skicka testmeddelande"
+      "share-preview": "Skicka testmeddelande",
+      "reset-to-default": "Återställ till standardinställningar"
     }
   },
   "notificationTypes": {

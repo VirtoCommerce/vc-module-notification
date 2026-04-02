@@ -185,3 +185,54 @@ If you want to extend an existing notification, you need to:
 > <!---change to tip in new layout--> You can find a notification example [here](https://github.com/VirtoCommerce/vc-module-notification/blob/dev/samples/VirtoCommerce.NotificationsSampleModule.Web/Migrations/20200407123225_OverridingNotificationsForBackwardV2.cs)   
 
 > <!---change to note in new layout--> You can find all our notification samples [here](https://github.com/VirtoCommerce/vc-module-notification/tree/dev/samples/VirtoCommerce.NotificationsSampleModule.Web).
+
+## Registering Predefined Email Layouts
+
+Email layouts provide reusable wrappers (header, footer, etc.) that are applied around notification templates at render time. Like notification templates, layouts support a **predefined/override** pattern: a predefined layout is registered in code and served from memory, while a DB version created through the Admin UI takes precedence.
+
+### How It Works
+
+| Source | When used |
+|---|---|
+| In-memory (registered in code) | No DB override exists for this layout name |
+| Database | An administrator has customized the layout via the Admin UI |
+
+This means you can ship a layout with your module and update it freely in code — the update is picked up on the next restart as long as no one has customized the layout in the Admin UI.
+
+### Registering a Layout in Module.cs
+
+Use `INotificationLayoutRegistrar` in the `PostInitialize` method:
+
+```cs
+var layoutRegistrar = appBuilder.ApplicationServices.GetService<INotificationLayoutRegistrar>();
+
+// Option 1: register from a file on disk
+var layoutsPath = Path.Combine(ModuleInfo.FullPhysicalPath, "Layouts");
+layoutRegistrar.RegisterLayoutWithTemplateFromPath("Default", layoutsPath);
+
+// Option 2: register inline
+layoutRegistrar.RegisterLayout("Default", "<html>{{content}}</html>");
+```
+
+To make a layout the default (applied automatically when no explicit layout is specified):
+
+```cs
+// Get the registered layout object and set IsDefault = true before or after registration
+layoutRegistrar.GetByName("Default").IsDefault = true;
+```
+
+> **Note:** Do not call `SaveChanges()` after registration — it is a no-op kept only for backward compatibility. Predefined layouts are intentionally kept in memory and are never persisted to the database.
+
+### Layout Name as Identity
+
+A predefined layout is identified by its **name**. When rendering, the name is used as the layout ID if no DB override exists. If a DB record with the same name is present, it takes priority.
+
+### Reset to Default
+
+If an administrator has customized a predefined layout via the Admin UI and you want to restore the in-code version, use the reset endpoint:
+
+```
+POST /api/notification-layouts/{name}/reset
+```
+
+This deletes the DB override. On the next render, the predefined layout from memory is used automatically. The endpoint returns `404` if the layout name is not registered as predefined, and `204` (no-op) if no DB override exists.

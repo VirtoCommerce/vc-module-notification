@@ -291,7 +291,8 @@
     },
     "commands": {
       "restore": "Restaurar",
-      "share-preview": "Enviar e-mail de teste"
+      "share-preview": "Enviar e-mail de teste",
+      "reset-to-default": "Repor valores predefinidos"
     }
   },
   "notificationTypes": {

@@ -255,6 +255,79 @@ namespace VirtoCommerce.NotificationsModule.Tests.UnitTests
             Assert.Equal(expectedResult, result);
         }
 
+        [Fact]
+        public async Task RenderAsync_LayoutIdNotInDb_PredefinedLayoutFromServiceUsed()
+        {
+            // Arrange — service returns the predefined layout (resolution happens in the service layer)
+            const string layoutName = "TestLayout";
+
+            var layoutServiceMock = new Mock<INotificationLayoutService>();
+            layoutServiceMock
+                .Setup(x => x.GetAsync(It.Is<IList<string>>(ids => ids.Contains(layoutName)), It.IsAny<string>(), It.IsAny<bool>()))
+                .ReturnsAsync([new NotificationLayout { Id = layoutName, Name = layoutName, Template = "header {{content}} footer", IsPredefined = true }]);
+
+            var searchServiceMock = new Mock<INotificationLayoutSearchService>();
+            searchServiceMock
+                .Setup(x => x.SearchAsync(It.IsAny<NotificationLayoutSearchCriteria>(), It.IsAny<bool>()))
+                .ReturnsAsync(new NotificationLayoutSearchResult { Results = new List<NotificationLayout>() });
+
+            Func<ITemplateLoader> factory = () => new LayoutTemplateLoader(layoutServiceMock.Object);
+            var renderer = new LiquidTemplateRenderer(
+                Options.Create(new LiquidRenderOptions { CustomFilterTypes = [typeof(UrlFilters)] }),
+                factory,
+                searchServiceMock.Object);
+
+            var context = new NotificationRenderContext
+            {
+                Template = "{% capture content %}test_content{% endcapture %}",
+                LayoutId = layoutName,
+            };
+
+            // Act
+            var result = await renderer.RenderAsync(context);
+
+            // Assert
+            Assert.Equal("header test_content footer", result);
+        }
+
+        [Fact]
+        public async Task RenderAsync_UseLayouts_NoDefaultInDb_PredefinedDefaultLayoutFromSearchServiceUsed()
+        {
+            // Arrange — search service returns the predefined default layout (resolution happens in the service layer)
+            const string layoutName = "DefaultLayout";
+
+            var layoutServiceMock = new Mock<INotificationLayoutService>();
+            layoutServiceMock
+                .Setup(x => x.GetAsync(It.Is<IList<string>>(ids => ids.Contains(layoutName)), It.IsAny<string>(), It.IsAny<bool>()))
+                .ReturnsAsync([new NotificationLayout { Id = layoutName, Name = layoutName, Template = "header {{content}} footer", IsDefault = true, IsPredefined = true }]);
+
+            var searchServiceMock = new Mock<INotificationLayoutSearchService>();
+            searchServiceMock
+                .Setup(x => x.SearchAsync(It.Is<NotificationLayoutSearchCriteria>(c => c.IsDefault == true), It.IsAny<bool>()))
+                .ReturnsAsync(new NotificationLayoutSearchResult
+                {
+                    Results = [new NotificationLayout { Id = layoutName, Name = layoutName, IsDefault = true, IsPredefined = true }]
+                });
+
+            Func<ITemplateLoader> factory = () => new LayoutTemplateLoader(layoutServiceMock.Object);
+            var renderer = new LiquidTemplateRenderer(
+                Options.Create(new LiquidRenderOptions { CustomFilterTypes = [typeof(UrlFilters)] }),
+                factory,
+                searchServiceMock.Object);
+
+            var context = new NotificationRenderContext
+            {
+                Template = "{% capture content %}test_content{% endcapture %}",
+                UseLayouts = true,
+            };
+
+            // Act
+            var result = await renderer.RenderAsync(context);
+
+            // Assert
+            Assert.Equal("header test_content footer", result);
+        }
+
         public static IEnumerable<object[]> TranslateData
         {
             get

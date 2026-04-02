@@ -291,7 +291,8 @@
     },
     "commands": {
       "restore": "復元",
-      "share-preview": "テストメールを送信"
+      "share-preview": "テストメールを送信",
+      "reset-to-default": "デフォルトにリセット"
     }
   },
   "notificationTypes": {

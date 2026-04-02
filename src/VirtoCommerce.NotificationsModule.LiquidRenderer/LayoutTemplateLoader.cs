@@ -28,7 +28,6 @@ namespace VirtoCommerce.NotificationsModule.LiquidRenderer
 
         public async ValueTask<string> LoadAsync(TemplateContext context, SourceSpan callerSpan, string templatePath)
         {
-            // use templatePath as notification layout ID
             return await GetLayoutTemplate(templatePath);
         }
 
@@ -40,9 +39,7 @@ namespace VirtoCommerce.NotificationsModule.LiquidRenderer
             }
 
             var layout = await _notificationLayoutService.GetNoCloneAsync(layoutId);
-
-            var result = layout?.Template ?? string.Empty;
-            return result;
+            return layout?.Template ?? string.Empty;
         }
     }
 }

@@ -291,7 +291,8 @@
     },
     "commands": {
       "restore": "恢复",
-      "share-preview": "发送测试邮件"
+      "share-preview": "发送测试邮件",
+      "reset-to-default": "重置为默认值"
     }
   },
   "notificationTypes": {
