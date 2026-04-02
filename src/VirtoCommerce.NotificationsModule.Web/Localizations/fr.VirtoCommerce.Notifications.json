@@ -259,7 +259,8 @@
       },
       "notification-template-delete": {
         "title": "Confirmer la suppression",
-        "message": "Êtes-vous sûr de vouloir supprimer les modèles sélectionnés ?"
+        "message": "Êtes-vous sûr de vouloir supprimer les modèles sélectionnés ?",
+        "template": "{{count}} modèle(s)"
       },
       "notification-template-delete-notification": {
         "title": "Impossible de supprimer le modèle",
@@ -284,7 +285,8 @@
       },
       "notification-layout-delete": {
         "title": "Confirmer la suppression",
-        "message": "Êtes-vous sûr de vouloir supprimer les mises en page sélectionnées?"
+        "message": "Êtes-vous sûr de vouloir supprimer les mises en page sélectionnées?",
+        "layout": "{{count}} mise(s) en page"
       }
     },
     "commands": {

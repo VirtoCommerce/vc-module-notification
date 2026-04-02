@@ -259,7 +259,8 @@
       },
       "notification-template-delete": {
         "title": "Conferma eliminazione",
-        "message": "Sei sicuro di voler eliminare i modelli selezionati"
+        "message": "Sei sicuro di voler eliminare i modelli selezionati",
+        "template": "{{count}} modello(i)"
       },
       "notification-template-delete-notification": {
         "title": "Impossibile eliminare il modello",
@@ -284,7 +285,8 @@
       },
       "notification-layout-delete": {
         "title": "Conferma eliminazione",
-        "message": "Sei sicuro di voler eliminare i layout selezionati"
+        "message": "Sei sicuro di voler eliminare i layout selezionati",
+        "layout": "{{count}} layout"
       }
     },
     "commands": {

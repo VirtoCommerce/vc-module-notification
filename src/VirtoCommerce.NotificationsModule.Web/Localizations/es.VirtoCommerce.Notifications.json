@@ -259,7 +259,8 @@
       },
       "notification-template-delete": {
         "title": "Confirmar eliminación",
-        "message": "¿Está seguro de que desea eliminar las plantillas seleccionadas?"
+        "message": "¿Está seguro de que desea eliminar las plantillas seleccionadas?",
+        "template": "{{count}} plantilla(s)"
       },
       "notification-template-delete-notification": {
         "title": "No se pudo eliminar la plantilla",
@@ -284,7 +285,8 @@
       },
       "notification-layout-delete": {
         "title": "Confirmar eliminación",
-        "message": "¿Está seguro de que desea eliminar los diseños seleccionados?"
+        "message": "¿Está seguro de que desea eliminar los diseños seleccionados?",
+        "layout": "{{count}} diseño(s)"
       }
     },
     "commands": {
