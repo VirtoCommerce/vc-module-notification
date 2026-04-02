@@ -246,7 +246,8 @@
       },
       "notification-template-delete": {
         "title": "Bekreft sletting",
-        "message": "Er du sikker på at du vil slette de valgte malene?"
+        "message": "Er du sikker på at du vil slette de valgte malene?",
+        "template": "{{count}} mal(er)"
       },
       "notification-template-delete-notification": {
         "title": "Kan ikke slette mal",
@@ -271,12 +272,14 @@
       },
       "notification-layout-delete": {
         "title": "Bekreft sletting",
-        "message": "Er du sikker på at du vil slette de valgte oppsettene?"
+        "message": "Er du sikker på at du vil slette de valgte oppsettene?",
+        "layout": "{{count}} oppsett"
       }
     },
     "commands": {
       "restore": "Gjenopprett",
-      "share-preview": "Send test-e-post"
+      "share-preview": "Send test-e-post",
+      "reset-to-default": "Tilbakestill til standard"
     }
   },
   "notificationTypes": {

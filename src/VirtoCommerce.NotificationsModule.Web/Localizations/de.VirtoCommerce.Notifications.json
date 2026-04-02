@@ -259,7 +259,8 @@
       },
       "notification-template-delete": {
         "title": "Löschen bestätigen",
-        "message": "Sind Sie sicher, dass Sie die ausgewählten Vorlagen löschen möchten?"
+        "message": "Sind Sie sicher, dass Sie die ausgewählten Vorlagen löschen möchten?",
+        "template": "{{count}} Vorlage(n)"
       },
       "notification-template-delete-notification": {
         "title": "Vorlage kann nicht gelöscht werden",
@@ -284,12 +285,14 @@
       },
       "notification-layout-delete": {
         "title": "Löschen bestätigen",
-        "message": "Sind Sie sicher, dass Sie die ausgewählten Layouts löschen möchten?"
+        "message": "Sind Sie sicher, dass Sie die ausgewählten Layouts löschen möchten?",
+        "layout": "{{count}} Layout(s)"
       }
     },
     "commands": {
       "restore": "Wiederherstellen",
-      "share-preview": "Test-E-Mail senden"
+      "share-preview": "Test-E-Mail senden",
+      "reset-to-default": "Auf Standard zurücksetzen"
     }
   },
   "notificationTypes": {

@@ -74,20 +74,32 @@ namespace VirtoCommerce.NotificationsSampleModule.Web
                 Body = assembly.GetManifestResourceStream("VirtoCommerce.NotificationsSampleModule.Web.TemplatesEmbedded.SampleEmailNotification_body.html").ReadToString()
             });
 
-            //Register notification layouts
+            // --- Predefined notification layouts ---
+            // These layouts are kept in memory and served until overridden via Admin UI.
+            // Updating the template in code and restarting the app picks up changes automatically
+            // (unless an admin has saved a custom override in the database).
             var notificationLayoutRegistrar = appBuilder.ApplicationServices.GetService<INotificationLayoutRegistrar>();
+
+            // 1. Register a predefined layout inline
             notificationLayoutRegistrar.RegisterLayout(
                 name: "Sample Layout",
-                template: assembly.GetManifestResourceStream("VirtoCommerce.NotificationsSampleModule.Web.NotificationLayoutsTemplate.SampleNotificationLayout_template.html").ReadToString()
+                template: "<div style='border:2px dashed #ccc;padding:16px;'><p><b>Sample Layout</b></p>{{ content }}<hr/><p style='font-size:11px;color:#888;'>Footer from predefined layout</p></div>"
                 );
 
-            //Override notification layout template
+            // 2. Override the same layout by re-registering with the same name.
+            //    This simulates a code-level update — the latest registration wins in memory.
             notificationLayoutRegistrar.RegisterLayout(
                 name: "Sample Layout",
-                template: "New template with existing notification layout"
+                template: "<div style='border:2px dashed #ccc;padding:16px;'><p><b>Sample Layout (updated in code v2)</b></p>{{ content }}<hr/><p style='font-size:11px;color:#888;'>Footer from predefined layout v2</p></div>"
                 );
 
+            // 3. Register a second predefined layout from a file on disk
+            //    This demonstrates RegisterLayoutWithTemplateFromPath.
+            //    The file NotificationLayoutsTemplate/PredefinedBrandedLayout.html is picked up by name.
             var defaultTemplatesDirectory = Path.Combine(ModuleInfo.FullPhysicalPath, "NotificationLayoutsTemplate");
+            notificationLayoutRegistrar.RegisterLayoutWithTemplateFromPath("PredefinedBrandedLayout", defaultTemplatesDirectory);
+
+            // 4. Keep the original file-based registration for backward compatibility
             notificationLayoutRegistrar.RegisterLayoutWithTemplateFromPath("SampleNotificationLayout", defaultTemplatesDirectory);
 
             var moduleTemplatesPath = Path.Combine(ModuleInfo.FullPhysicalPath, "Templates");

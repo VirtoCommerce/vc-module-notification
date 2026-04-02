@@ -246,7 +246,8 @@
       },
       "notification-template-delete": {
         "title": "Bekräfta radering",
-        "message": "Är du säker på att du vill radera de valda mallarna?"
+        "message": "Är du säker på att du vill radera de valda mallarna?",
+        "template": "{{count}} mall(ar)"
       },
       "notification-template-delete-notification": {
         "title": "Kan inte radera mall",
@@ -271,12 +272,14 @@
       },
       "notification-layout-delete": {
         "title": "Bekräfta radering",
-        "message": "Är du säker på att du vill radera de valda layouterna?"
+        "message": "Är du säker på att du vill radera de valda layouterna?",
+        "layout": "{{count}} layout(er)"
       }
     },
     "commands": {
       "restore": "Återställ",
-      "share-preview": "Skicka testmeddelande"
+      "share-preview": "Skicka testmeddelande",
+      "reset-to-default": "Återställ till standardinställningar"
     }
   },
   "notificationTypes": {

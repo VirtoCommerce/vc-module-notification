@@ -259,7 +259,8 @@
       },
       "notification-template-delete": {
         "title": "Potwierdź usunięcie",
-        "message": "Czy na pewno chcesz usunąć wybrane szablony?"
+        "message": "Czy na pewno chcesz usunąć wybrane szablony?",
+        "template": "{{count}} szablon(ów)"
       },
       "notification-template-delete-notification": {
         "title": "Nie można usunąć szablonu",
@@ -284,12 +285,14 @@
       },
       "notification-layout-delete": {
         "title": "Potwierdź usunięcie",
-        "message": "Czy na pewno chcesz usunąć wybrane układy?"
+        "message": "Czy na pewno chcesz usunąć wybrane układy?",
+        "layout": "{{count}} układ(ów)"
       }
     },
     "commands": {
       "restore": "Przywróć",
-      "share-preview": "Wyślij testowy e-mail"
+      "share-preview": "Wyślij testowy e-mail",
+      "reset-to-default": "Przywróć ustawienia domyślne"
     }
   },
   "notificationTypes": {

@@ -11,6 +11,8 @@ namespace VirtoCommerce.NotificationsModule.Core.Model
 
         public bool IsDefault { get; set; }
 
+        public bool IsPredefined { get; set; }
+
         public object Clone()
         {
             return MemberwiseClone();

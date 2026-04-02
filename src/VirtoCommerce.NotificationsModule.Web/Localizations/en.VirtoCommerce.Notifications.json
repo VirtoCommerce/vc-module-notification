@@ -259,7 +259,8 @@
       },
       "notification-template-delete": {
         "title": "Confirm delete",
-        "message": "Are you sure you want to delete the selected templates?"
+        "message": "Are you sure you want to delete the selected templates?",
+        "template": "{{count}} template(s)"
       },
       "notification-template-delete-notification": {
         "title": "Unable to delete template",
@@ -284,12 +285,14 @@
       },
       "notification-layout-delete": {
         "title": "Confirm delete",
-        "message": "Are you sure you want to delete the selected layouts?"
+        "message": "Are you sure you want to delete the selected layouts?",
+        "layout": "{{count}} layout(s)"
       }
     },
     "commands": {
       "restore": "Restore",
-      "share-preview": "Send test email"
+      "share-preview": "Send test email",
+      "reset-to-default": "Reset to default"
     }
   },
   "notificationTypes": {

@@ -30,9 +30,9 @@ namespace VirtoCommerce.NotificationsModule.Web.Controllers
         [HttpGet]
         [Route("{id}")]
         [Authorize(ModuleConstants.Security.Permissions.Access)]
-        public async Task<ActionResult<Notification>> GetNotificationLayoutById(string id)
+        public async Task<ActionResult<NotificationLayout>> GetNotificationLayoutById(string id)
         {
-            var layout = await _layoutService.GetNoCloneAsync(id);
+            var layout = await _layoutService.GetByIdAsync(id);
             return Ok(layout);
         }
 
@@ -41,7 +41,7 @@ namespace VirtoCommerce.NotificationsModule.Web.Controllers
         [Authorize(ModuleConstants.Security.Permissions.Read)]
         public async Task<ActionResult<NotificationLayoutSearchResult>> SearchNotificationLayouts([FromBody] NotificationLayoutSearchCriteria searchCriteria)
         {
-            var searchResult = await _layoutSearchService.SearchNoCloneAsync(searchCriteria);
+            var searchResult = await _layoutSearchService.SearchAsync(searchCriteria);
             return Ok(searchResult);
         }
 
@@ -57,8 +57,8 @@ namespace VirtoCommerce.NotificationsModule.Web.Controllers
         [HttpPut]
         [Route("")]
         [Authorize(ModuleConstants.Security.Permissions.Update)]
-        [ProducesResponseType(typeof(void), StatusCodes.Status204NoContent)]
-        public async Task<ActionResult> UpdateNotificationLayout([FromBody] NotificationLayout layout)
+        [ProducesResponseType(typeof(NotificationLayout), StatusCodes.Status200OK)]
+        public async Task<ActionResult<NotificationLayout>> UpdateNotificationLayout([FromBody] NotificationLayout layout)
         {
             var layouts = new List<NotificationLayout> { layout };
 
@@ -75,7 +75,7 @@ namespace VirtoCommerce.NotificationsModule.Web.Controllers
             }
 
             await _layoutService.SaveChangesAsync(layouts);
-            return NoContent();
+            return Ok(layout);
         }
 
         [HttpDelete]
@@ -85,6 +85,33 @@ namespace VirtoCommerce.NotificationsModule.Web.Controllers
         public async Task<ActionResult> DeleteNotificationLayout([FromQuery] string[] ids)
         {
             await _layoutService.DeleteAsync(ids);
+            return NoContent();
+        }
+
+        /// <summary>
+        /// Resets a customized layout back to its predefined (in-code) version
+        /// by deleting the DB override. The predefined layout is served automatically afterward.
+        /// </summary>
+        [HttpPost]
+        [Route("{id}/reset")]
+        [Authorize(ModuleConstants.Security.Permissions.Update)]
+        [ProducesResponseType(typeof(void), StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<ActionResult> ResetNotificationLayoutToDefault(string id)
+        {
+            var layout = await _layoutService.GetNoCloneAsync(id);
+            if (layout == null || !layout.IsPredefined)
+            {
+                return NotFound();
+            }
+
+            // If id == name, the layout is predefined-only with no DB override — nothing to delete.
+            if (layout.Id == layout.Name)
+            {
+                return NoContent();
+            }
+
+            await _layoutService.DeleteAsync(new[] { id });
             return NoContent();
         }
     }

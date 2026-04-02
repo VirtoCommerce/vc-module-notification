@@ -116,7 +116,7 @@ angular.module('virtoCommerce.notificationsModule')
                 });
 
                 if (containsDefaultNotifications) {
-                    dialogService.showNotificationDialog({
+                    dialogService.showErrorDialog({
                         id: "error",
                         title: "notifications.dialogs.notification-template-delete-notification.title",
                         message: "notifications.dialogs.notification-template-delete-notification.message"
@@ -126,7 +126,7 @@ angular.module('virtoCommerce.notificationsModule')
                     var dialog = {
                         id: "confirmDeleteItem",
                         title: "notifications.dialogs.notification-template-delete.title",
-                        message: "notifications.dialogs.notification-template-delete.message",
+                        items: [{ key: "notifications.dialogs.notification-template-delete.template", count: selections.length }],
                         callback: function (remove) {
                             if (remove) {
                                 bladeNavigationService.closeChildrenBlades(blade, function () {
@@ -145,7 +145,7 @@ angular.module('virtoCommerce.notificationsModule')
                             }
                         }
                     };
-                    dialogService.showConfirmationDialog(dialog);
+                    dialogService.showDeleteConfirmationDialog(dialog);
                 }
             }
 
