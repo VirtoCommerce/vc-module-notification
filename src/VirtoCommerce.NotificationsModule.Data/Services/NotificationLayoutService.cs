@@ -34,12 +34,6 @@ namespace VirtoCommerce.NotificationsModule.Data.Services
         {
             var result = await base.GetAsync(ids, responseGroup, clone);
 
-            // Mark DB results that have a predefined counterpart
-            foreach (var layout in result)
-            {
-                layout.IsPredefined = _layoutRegistrar.GetByName(layout.Name) != null;
-            }
-
             // For IDs not found in DB, try predefined fallback (id == predefined layout name)
             var foundIds = result.Select(x => x.Id).ToHashSet(StringComparer.OrdinalIgnoreCase);
 
@@ -57,6 +51,14 @@ namespace VirtoCommerce.NotificationsModule.Data.Services
             }
 
             return result;
+        }
+
+        // Called during GetByIdsNoCache before the model is placed into the cache.
+        // Safe to mutate here — the object is freshly created, not yet shared.
+        protected override NotificationLayout ProcessModel(string responseGroup, NotificationLayoutEntity entity, NotificationLayout model)
+        {
+            model.IsPredefined = _layoutRegistrar.GetByName(model.Name) != null;
+            return base.ProcessModel(responseGroup, entity, model);
         }
 
         protected override async Task BeforeSaveChanges(IList<NotificationLayout> models)
