@@ -200,7 +200,7 @@ namespace VirtoCommerce.NotificationsModule.Web
                 var allRegisteredNotifications = registrar.AllRegisteredNotifications.Select(x =>
                 {
                     //Do not save predefined templates in the database to prevent rewrite of exists data
-                    x.ReduceDetails(NotificationResponseGroup.Default.ToString());
+                    x.ReduceDetails(nameof(NotificationResponseGroup.Default));
                     return x;
                 }).ToArray();
                 notificationService.SaveChangesAsync(allRegisteredNotifications).GetAwaiter().GetResult();

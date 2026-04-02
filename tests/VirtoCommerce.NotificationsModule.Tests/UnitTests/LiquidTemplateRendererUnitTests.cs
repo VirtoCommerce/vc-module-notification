@@ -10,7 +10,6 @@ using VirtoCommerce.AssetsModule.Core.Assets;
 using VirtoCommerce.NotificationsModule.Core.Model;
 using VirtoCommerce.NotificationsModule.Core.Model.Search;
 using VirtoCommerce.NotificationsModule.Core.Services;
-using VirtoCommerce.NotificationsModule.Data.Services;
 using VirtoCommerce.NotificationsModule.LiquidRenderer;
 using VirtoCommerce.NotificationsModule.LiquidRenderer.Filters;
 using VirtoCommerce.NotificationsModule.Tests.Model;
@@ -39,18 +38,17 @@ namespace VirtoCommerce.NotificationsModule.Tests.UnitTests
                 .Setup(x => x.SearchAsync(It.IsAny<NotificationLayoutSearchCriteria>(), It.IsAny<bool>()))
                 .ReturnsAsync(new NotificationLayoutSearchResult { Results = new List<NotificationLayout>() });
 
-            var layoutRegistrar = new NotificationLayoutRegistrar();
-            Func<ITemplateLoader> factory = () => new LayoutTemplateLoader(_notificationLayoutServiceMock.Object, layoutRegistrar);
+            Func<ITemplateLoader> factory = () => new LayoutTemplateLoader(_notificationLayoutServiceMock.Object);
             _liquidTemplateRenderer = new LiquidTemplateRenderer(Options.Create(new LiquidRenderOptions
             {
                 CustomFilterTypes = [typeof(UrlFilters), typeof(TranslationFilter), typeof(ArrayFilter)]
-            }), factory, notificationLayoutSearchService.Object, layoutRegistrar);
+            }), factory, notificationLayoutSearchService.Object);
 
             _defaultTemplateRenderer = new LiquidTemplateRenderer(Options.Create(new LiquidRenderOptions
             {
                 TemplateScriptLanguage = Scriban.Parsing.ScriptLang.Default,
                 CustomFilterTypes = [typeof(UrlFilters), typeof(TranslationFilter), typeof(ArrayFilter)],
-            }), factory, notificationLayoutSearchService.Object, layoutRegistrar);
+            }), factory, notificationLayoutSearchService.Object);
 
 
             //TODO
@@ -258,30 +256,26 @@ namespace VirtoCommerce.NotificationsModule.Tests.UnitTests
         }
 
         [Fact]
-        public async Task RenderAsync_LayoutIdNotInDb_PredefinedLayoutFromRegistrarUsed()
+        public async Task RenderAsync_LayoutIdNotInDb_PredefinedLayoutFromServiceUsed()
         {
-            // Arrange
+            // Arrange — service returns the predefined layout (resolution happens in the service layer)
             const string layoutName = "TestLayout";
-
-            var registrar = new NotificationLayoutRegistrar();
-            registrar.RegisterLayout(layoutName, "header {{content}} footer");
 
             var layoutServiceMock = new Mock<INotificationLayoutService>();
             layoutServiceMock
-                .Setup(x => x.GetAsync(It.IsAny<IList<string>>(), It.IsAny<string>(), It.IsAny<bool>()))
-                .ReturnsAsync([]);
+                .Setup(x => x.GetAsync(It.Is<IList<string>>(ids => ids.Contains(layoutName)), It.IsAny<string>(), It.IsAny<bool>()))
+                .ReturnsAsync([new NotificationLayout { Id = layoutName, Name = layoutName, Template = "header {{content}} footer", IsPredefined = true }]);
 
             var searchServiceMock = new Mock<INotificationLayoutSearchService>();
             searchServiceMock
                 .Setup(x => x.SearchAsync(It.IsAny<NotificationLayoutSearchCriteria>(), It.IsAny<bool>()))
                 .ReturnsAsync(new NotificationLayoutSearchResult { Results = new List<NotificationLayout>() });
 
-            Func<ITemplateLoader> factory = () => new LayoutTemplateLoader(layoutServiceMock.Object, registrar);
+            Func<ITemplateLoader> factory = () => new LayoutTemplateLoader(layoutServiceMock.Object);
             var renderer = new LiquidTemplateRenderer(
                 Options.Create(new LiquidRenderOptions { CustomFilterTypes = [typeof(UrlFilters)] }),
                 factory,
-                searchServiceMock.Object,
-                registrar);
+                searchServiceMock.Object);
 
             var context = new NotificationRenderContext
             {
@@ -297,31 +291,29 @@ namespace VirtoCommerce.NotificationsModule.Tests.UnitTests
         }
 
         [Fact]
-        public async Task RenderAsync_UseLayouts_NoDefaultInDb_PredefinedDefaultLayoutFromRegistrarUsed()
+        public async Task RenderAsync_UseLayouts_NoDefaultInDb_PredefinedDefaultLayoutFromSearchServiceUsed()
         {
-            // Arrange
+            // Arrange — search service returns the predefined default layout (resolution happens in the service layer)
             const string layoutName = "DefaultLayout";
-
-            var registrar = new NotificationLayoutRegistrar();
-            registrar.RegisterLayout(layoutName, "header {{content}} footer");
-            registrar.AllRegisteredLayouts.First().IsDefault = true;
 
             var layoutServiceMock = new Mock<INotificationLayoutService>();
             layoutServiceMock
-                .Setup(x => x.GetAsync(It.IsAny<IList<string>>(), It.IsAny<string>(), It.IsAny<bool>()))
-                .ReturnsAsync([]);
+                .Setup(x => x.GetAsync(It.Is<IList<string>>(ids => ids.Contains(layoutName)), It.IsAny<string>(), It.IsAny<bool>()))
+                .ReturnsAsync([new NotificationLayout { Id = layoutName, Name = layoutName, Template = "header {{content}} footer", IsDefault = true, IsPredefined = true }]);
 
             var searchServiceMock = new Mock<INotificationLayoutSearchService>();
             searchServiceMock
-                .Setup(x => x.SearchAsync(It.IsAny<NotificationLayoutSearchCriteria>(), It.IsAny<bool>()))
-                .ReturnsAsync(new NotificationLayoutSearchResult { Results = new List<NotificationLayout>() });
+                .Setup(x => x.SearchAsync(It.Is<NotificationLayoutSearchCriteria>(c => c.IsDefault == true), It.IsAny<bool>()))
+                .ReturnsAsync(new NotificationLayoutSearchResult
+                {
+                    Results = [new NotificationLayout { Id = layoutName, Name = layoutName, IsDefault = true, IsPredefined = true }]
+                });
 
-            Func<ITemplateLoader> factory = () => new LayoutTemplateLoader(layoutServiceMock.Object, registrar);
+            Func<ITemplateLoader> factory = () => new LayoutTemplateLoader(layoutServiceMock.Object);
             var renderer = new LiquidTemplateRenderer(
                 Options.Create(new LiquidRenderOptions { CustomFilterTypes = [typeof(UrlFilters)] }),
                 factory,
-                searchServiceMock.Object,
-                registrar);
+                searchServiceMock.Object);
 
             var context = new NotificationRenderContext
             {

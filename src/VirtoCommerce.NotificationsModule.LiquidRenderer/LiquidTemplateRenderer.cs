@@ -18,18 +18,15 @@ public class LiquidTemplateRenderer : INotificationTemplateRenderer
     private readonly LiquidRenderOptions _options;
     private readonly Func<ITemplateLoader> _templateLoaderFactory;
     private readonly INotificationLayoutSearchService _notificationLayoutSearchService;
-    private readonly INotificationLayoutRegistrar _layoutRegistrar;
 
     public LiquidTemplateRenderer(
         IOptions<LiquidRenderOptions> options,
         Func<ITemplateLoader> templateLoaderFactory,
-        INotificationLayoutSearchService notificationLayoutSearchService,
-        INotificationLayoutRegistrar layoutRegistrar)
+        INotificationLayoutSearchService notificationLayoutSearchService)
     {
         _options = options.Value;
         _templateLoaderFactory = templateLoaderFactory;
         _notificationLayoutSearchService = notificationLayoutSearchService;
-        _layoutRegistrar = layoutRegistrar;
     }
 
     public async Task<string> RenderAsync(NotificationRenderContext renderContext)
@@ -50,9 +47,8 @@ public class LiquidTemplateRenderer : INotificationTemplateRenderer
 
         if (renderContext.UseLayouts && string.IsNullOrEmpty(renderContext.LayoutId))
         {
-            var layoutSearchResult = await _notificationLayoutSearchService.SearchAsync(new NotificationLayoutSearchCriteria() { IsDefault = true });
-            renderContext.LayoutId = layoutSearchResult.Results.FirstOrDefault()?.Id
-                ?? await GetPredefinedDefaultLayoutIdAsync();
+            var layoutSearchResult = await _notificationLayoutSearchService.SearchAsync(new NotificationLayoutSearchCriteria() { IsDefault = true, Take = 1 });
+            renderContext.LayoutId = layoutSearchResult.Results.FirstOrDefault()?.Id;
         }
 
         if (!string.IsNullOrEmpty(renderContext.LayoutId))
@@ -74,26 +70,6 @@ public class LiquidTemplateRenderer : INotificationTemplateRenderer
         var result = await template.RenderAsync(templateContext);
 
         return result;
-    }
-
-    /// <summary>
-    /// Returns the name of the predefined default layout if it has no DB override, otherwise null.
-    /// Respects the "DB takes precedence" rule: if an admin saved a DB override with IsDefault=false,
-    /// the predefined default is not used.
-    /// </summary>
-    private async Task<string> GetPredefinedDefaultLayoutIdAsync()
-    {
-        var predefinedDefault = _layoutRegistrar.AllRegisteredLayouts.FirstOrDefault(x => x.IsDefault);
-        if (predefinedDefault == null)
-        {
-            return null;
-        }
-
-        var hasDbOverride = (await _notificationLayoutSearchService.SearchAsync(
-            new NotificationLayoutSearchCriteria { Names = [predefinedDefault.Name], Take = 1 }))
-            .Results.Any();
-
-        return hasDbOverride ? null : predefinedDefault.Name;
     }
 
     /// <summary>

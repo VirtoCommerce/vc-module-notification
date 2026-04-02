@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -19,16 +18,13 @@ namespace VirtoCommerce.NotificationsModule.Web.Controllers
     {
         private readonly INotificationLayoutService _layoutService;
         private readonly INotificationLayoutSearchService _layoutSearchService;
-        private readonly INotificationLayoutRegistrar _layoutRegistrar;
 
         public NotificationLayoutsController(
             INotificationLayoutService layoutService,
-            INotificationLayoutSearchService layoutSearchService,
-            INotificationLayoutRegistrar layoutRegistrar)
+            INotificationLayoutSearchService layoutSearchService)
         {
             _layoutService = layoutService;
             _layoutSearchService = layoutSearchService;
-            _layoutRegistrar = layoutRegistrar;
         }
 
         [HttpGet]
@@ -36,25 +32,7 @@ namespace VirtoCommerce.NotificationsModule.Web.Controllers
         [Authorize(ModuleConstants.Security.Permissions.Access)]
         public async Task<ActionResult<NotificationLayout>> GetNotificationLayoutById(string id)
         {
-            var layout = await _layoutService.GetNoCloneAsync(id);
-
-            if (layout == null)
-            {
-                // Fallback: treat id as predefined layout name
-                layout = _layoutRegistrar.GetByName(id);
-                if (layout != null)
-                {
-                    layout = (NotificationLayout)layout.Clone();
-                    layout.Id = id;
-                    layout.IsPredefined = true;
-                }
-            }
-            else
-            {
-                layout = (NotificationLayout)layout.Clone();
-                layout.IsPredefined = _layoutRegistrar.GetByName(layout.Name) != null;
-            }
-
+            var layout = await _layoutService.GetByIdAsync(id);
             return Ok(layout);
         }
 
@@ -63,58 +41,7 @@ namespace VirtoCommerce.NotificationsModule.Web.Controllers
         [Authorize(ModuleConstants.Security.Permissions.Read)]
         public async Task<ActionResult<NotificationLayoutSearchResult>> SearchNotificationLayouts([FromBody] NotificationLayoutSearchCriteria searchCriteria)
         {
-            // Find which predefined layouts already have a DB override.
-            var predefinedNames = _layoutRegistrar.AllRegisteredLayouts.Select(x => x.Name).ToList();
-            var overriddenNames = predefinedNames.Count > 0
-                ? (await _layoutSearchService.SearchNoCloneAsync(
-                    new NotificationLayoutSearchCriteria { Names = predefinedNames, Take = predefinedNames.Count }))
-                    .Results.Select(x => x.Name).ToHashSet(StringComparer.OrdinalIgnoreCase)
-                : new HashSet<string>(StringComparer.OrdinalIgnoreCase);
-
-            // Build the list of predefined layouts not overridden in the DB, applying search filters.
-            var predefinedLayouts = _layoutRegistrar.AllRegisteredLayouts
-                .Where(x => !overriddenNames.Contains(x.Name))
-                .Where(x => searchCriteria.Names is not { Count: > 0 } || searchCriteria.Names.Any(n => n.EqualsIgnoreCase(x.Name)))
-                .Where(x => searchCriteria.IsDefault == null || x.IsDefault == searchCriteria.IsDefault)
-                .Where(x => string.IsNullOrEmpty(searchCriteria.Keyword) || x.Name.Contains(searchCriteria.Keyword, StringComparison.OrdinalIgnoreCase))
-                .Select(x =>
-                {
-                    var clone = (NotificationLayout)x.Clone();
-                    clone.Id = x.Name;
-                    clone.IsPredefined = true;
-                    return clone;
-                })
-                .ToList();
-
-            var predefinedCount = predefinedLayouts.Count;
-
-            // Predefined layouts occupy the first slots in the virtual result set.
-            // Adjust Skip/Take for the DB query accordingly.
-            var adjustedSkip = Math.Max(0, searchCriteria.Skip - predefinedCount);
-            var predefinedOnThisPage = searchCriteria.Skip < predefinedCount
-                ? predefinedLayouts.Skip(searchCriteria.Skip).Take(searchCriteria.Take).ToList()
-                : [];
-            var dbTake = searchCriteria.Take - predefinedOnThisPage.Count;
-
-            var dbCriteria = searchCriteria.CloneTyped();
-            dbCriteria.Skip = adjustedSkip;
-            dbCriteria.Take = Math.Max(0, dbTake);
-
-            var searchResult = await _layoutSearchService.SearchAsync(dbCriteria);
-
-            // Mark DB layouts that have a predefined counterpart
-            foreach (var dbLayout in searchResult.Results)
-            {
-                dbLayout.IsPredefined = _layoutRegistrar.GetByName(dbLayout.Name) != null;
-            }
-
-            // Combine: predefined first, then DB results
-            var combinedResults = new List<NotificationLayout>(predefinedOnThisPage);
-            combinedResults.AddRange(searchResult.Results);
-
-            searchResult.Results = combinedResults;
-            searchResult.TotalCount += predefinedCount;
-
+            var searchResult = await _layoutSearchService.SearchAsync(searchCriteria);
             return Ok(searchResult);
         }
 
@@ -133,30 +60,6 @@ namespace VirtoCommerce.NotificationsModule.Web.Controllers
         [ProducesResponseType(typeof(NotificationLayout), StatusCodes.Status200OK)]
         public async Task<ActionResult<NotificationLayout>> UpdateNotificationLayout([FromBody] NotificationLayout layout)
         {
-            // Predefined layouts are served from memory and never stored in the DB.
-            // The GET endpoint uses Name as a synthetic Id for in-memory layouts (id == name convention,
-            // see docs/tech-doc.md "Layout Name as Identity"). When the UI saves such a layout for the
-            // first time we must assign a real DB UUID so subsequent reads return id != name, which is
-            // how the UI distinguishes a DB override from an unmodified predefined layout.
-            if (layout.Id == layout.Name && _layoutRegistrar.GetByName(layout.Name) != null)
-            {
-                // Check whether a DB record already exists for this name (e.g. from a previous save).
-                var existing = (await _layoutSearchService.SearchNoCloneAsync(
-                    new NotificationLayoutSearchCriteria { Names = new[] { layout.Name }, Take = 1 }))
-                    .Results.FirstOrDefault();
-
-                if (existing != null)
-                {
-                    // Reuse the existing UUID so this becomes an UPDATE, not an INSERT.
-                    layout.Id = existing.Id;
-                }
-                else
-                {
-                    // No DB record yet — let the service generate a fresh UUID.
-                    layout.Id = null;
-                }
-            }
-
             var layouts = new List<NotificationLayout> { layout };
 
             if (layout.IsDefault)
@@ -189,27 +92,26 @@ namespace VirtoCommerce.NotificationsModule.Web.Controllers
         /// Resets a customized layout back to its predefined (in-code) version
         /// by deleting the DB override. The predefined layout is served automatically afterward.
         /// </summary>
-        [HttpDelete]
+        [HttpPost]
         [Route("{id}/reset")]
         [Authorize(ModuleConstants.Security.Permissions.Update)]
         [ProducesResponseType(typeof(void), StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult> ResetNotificationLayoutToDefault(string id)
         {
-            var dbLayout = await _layoutService.GetNoCloneAsync(id);
-            if (dbLayout == null)
-            {
-                // No DB override exists — return 204 if this is a known predefined layout, 404 otherwise.
-                return _layoutRegistrar.GetByName(id) != null ? NoContent() : NotFound();
-            }
-
-            if (_layoutRegistrar.GetByName(dbLayout.Name) == null)
+            var layout = await _layoutService.GetNoCloneAsync(id);
+            if (layout == null || !layout.IsPredefined)
             {
                 return NotFound();
             }
 
-            await _layoutService.DeleteAsync(new[] { id });
+            // If id == name, the layout is predefined-only with no DB override — nothing to delete.
+            if (layout.Id == layout.Name)
+            {
+                return NoContent();
+            }
 
+            await _layoutService.DeleteAsync(new[] { id });
             return NoContent();
         }
     }
