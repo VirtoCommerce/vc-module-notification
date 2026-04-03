@@ -9,7 +9,7 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="VirtoCommerce.Platform.Data.PostgreSql" Version="3.1013.0" />
+    <PackageReference Include="VirtoCommerce.Platform.Data.PostgreSql" Version="3.1015.0-alpha.13230-abstract-type-factory-thread-safety" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\VirtoCommerce.NotificationsModule.Data\VirtoCommerce.NotificationsModule.Data.csproj" />
