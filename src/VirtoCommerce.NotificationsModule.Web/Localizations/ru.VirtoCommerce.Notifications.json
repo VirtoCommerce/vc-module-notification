@@ -259,7 +259,8 @@
       },
       "notification-template-delete": {
         "title": "Подтвердить удаление",
-        "message": "Вы уверены, что хотите удалить выбранные шаблоны?"
+        "message": "Вы уверены, что хотите удалить выбранные шаблоны?",
+        "template": "{{count}} шаблон(ов)"
       },
       "notification-template-delete-notification": {
         "title": "Не удалось удалить шаблон",
@@ -284,7 +285,8 @@
       },
       "notification-layout-delete": {
         "title": "Подтвердить удаление",
-        "message": "Вы уверены, что хотите удалить выбранные макеты?"
+        "message": "Вы уверены, что хотите удалить выбранные макеты?",
+        "layout": "{{count}} макет(ов)"
       }
     },
     "commands": {
