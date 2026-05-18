@@ -9,9 +9,8 @@
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Azure.Core" Version="1.51.0" />
-    <PackageReference Include="Azure.Identity" Version="1.17.1" />
-    <PackageReference Include="Microsoft.Graph" Version="5.101.0" />
+    <PackageReference Include="Azure.Identity" Version="1.21.0" />
+    <PackageReference Include="Microsoft.Graph" Version="6.0.3" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\VirtoCommerce.NotificationsModule.Core\VirtoCommerce.NotificationsModule.Core.csproj" />
