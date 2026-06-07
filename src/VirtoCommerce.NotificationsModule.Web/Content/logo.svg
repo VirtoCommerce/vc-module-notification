@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="128" height="128" role="img" aria-label="Notifications">
+  <title>Notifications</title>
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="92%" y2="100%">
+      <stop offset="0%" stop-color="#5FC8F5"/>
+      <stop offset="100%" stop-color="#265FC6"/>
+    </linearGradient>
+    <filter id="lift" x="-30%" y="-30%" width="160%" height="160%">
+      <feDropShadow dx="0" dy="3" stdDeviation="3.5" flood-color="#0B3F66" flood-opacity="0.30"/>
+    </filter>
+  </defs>
+
+  <rect width="128" height="128" rx="28" fill="url(#bg)"/>
+
+  <g transform="translate(64,62)" filter="url(#lift)">
+    <!-- Bell top -->
+    <circle cx="0" cy="-31" r="5.5" fill="#ffffff"/>
+    <!-- Bell body -->
+    <path d="M-30,16 C-30,-8 -16,-25 0,-25 C16,-25 30,-8 30,16 L34,16 a4,4 0 0 1 0,9 H-34 a4,4 0 0 1 0,-9 Z" fill="#ffffff"/>
+    <!-- Clapper -->
+    <circle cx="0" cy="33" r="7" fill="#FFC24D"/>
+    <!-- Notification badge -->
+    <circle cx="26" cy="-24" r="11" fill="#E5484D" stroke="#ffffff" stroke-width="3.5"/>
+  </g>
+</svg>
