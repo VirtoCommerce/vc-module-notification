@@ -19,7 +19,7 @@
     <owner>Virto Commerce</owner>
   </owners>
   <projectUrl>https://github.com/VirtoCommerce/vc-module-notification</projectUrl>
-  <iconUrl>Modules/$(VirtoCommerce.Notifications)/Content/logoVC.png</iconUrl>
+  <iconUrl>Modules/$(VirtoCommerce.Notifications)/Content/logo.svg</iconUrl>
   <requireLicenseAcceptance>false</requireLicenseAcceptance>
   <releaseNotes />
   <copyright>Copyright © 2011–2026 Virto Commerce. All rights reserved</copyright>
