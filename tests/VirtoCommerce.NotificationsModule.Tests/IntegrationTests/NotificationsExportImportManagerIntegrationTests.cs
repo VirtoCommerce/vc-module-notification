@@ -82,7 +82,7 @@ namespace VirtoCommerce.NotificationsModule.Tests.IntegrationTests
                 .ReturnsAsync(new NotificationSearchResult { Results = new List<Notification> { entity }, TotalCount = 1 });
 
             //Act
-            await _notificationsExportImportManager.DoExportAsync(fileStream, exportImportProgressInfo => { }, new CancellationTokenWrapper(CancellationToken.None));
+            await _notificationsExportImportManager.DoExportAsync(fileStream, exportImportProgressInfo => { }, CancellationToken.None);
 
             //Assert
             Assert.True(true); // Remove smell
@@ -95,7 +95,7 @@ namespace VirtoCommerce.NotificationsModule.Tests.IntegrationTests
             using var fileStream = new FileStream(Path.GetFullPath("export_test.json"), FileMode.Open);
 
             //Act
-            await _notificationsExportImportManager.DoImportAsync(fileStream, exportImportProgressInfo => { }, new CancellationTokenWrapper(CancellationToken.None));
+            await _notificationsExportImportManager.DoImportAsync(fileStream, exportImportProgressInfo => { }, CancellationToken.None);
 
             //Assert
             Assert.True(true); // Remove smell
