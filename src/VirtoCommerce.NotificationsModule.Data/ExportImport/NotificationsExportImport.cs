@@ -1,4 +1,5 @@
-using System;
+using System;
+using System.Threading;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -25,7 +26,7 @@ namespace VirtoCommerce.NotificationsModule.Data.ExportImport
             _jsonSerializer = jsonSerializer;
         }
 
-        public async Task DoExportAsync(Stream outStream, Action<ExportImportProgressInfo> progressCallback, ICancellationToken cancellationToken)
+        public async Task DoExportAsync(Stream outStream, Action<ExportImportProgressInfo> progressCallback, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
 
@@ -60,7 +61,7 @@ namespace VirtoCommerce.NotificationsModule.Data.ExportImport
             }
         }
 
-        public async Task DoImportAsync(Stream inputStream, Action<ExportImportProgressInfo> progressCallback, ICancellationToken cancellationToken)
+        public async Task DoImportAsync(Stream inputStream, Action<ExportImportProgressInfo> progressCallback, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
 
@@ -87,7 +88,7 @@ namespace VirtoCommerce.NotificationsModule.Data.ExportImport
         }
 
         private static async Task SafeDeserializeArrayWithPagingAsync<T>(JsonTextReader reader, JsonSerializer serializer, int pageSize,
-           ExportImportProgressInfo progressInfo, Func<IList<T>, Task> action, Action<int> progressCallback, ICancellationToken cancellationToken)
+           ExportImportProgressInfo progressInfo, Func<IList<T>, Task> action, Action<int> progressCallback, CancellationToken cancellationToken)
         {
             await reader.ReadAsync();
             if (reader.TokenType == JsonToken.StartArray)
