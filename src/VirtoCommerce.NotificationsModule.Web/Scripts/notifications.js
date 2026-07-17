@@ -5,7 +5,7 @@ if (AppDependencies !== undefined) {
     AppDependencies.push(moduleTemplateName);
 }
 
-angular.module(moduleTemplateName, ['textAngular'])
+angular.module(moduleTemplateName, [])
     .config(['$stateProvider', '$urlRouterProvider',
         function ($stateProvider, $urlRouterProvider) {
             $stateProvider
