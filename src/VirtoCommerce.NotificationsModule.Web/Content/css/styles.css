@@ -156,6 +156,35 @@
     text-decoration: underline;
 }
 
+/* Notification preview iframe blades (template render + journal details).
+   Complete the blade height chain (.inner-block has width but no height in
+   the platform styles) so the preview iframe fills the blade and scrolls its
+   own content instead of being clipped. */
+.notification-preview .inner-block {
+    height: 100%;
+}
+
+.notification-preview .form-group.__preview {
+    height: 100%;
+    margin-bottom: 0;
+}
+
+#notification_template_preview {
+    display: block;
+    width: 100%;
+    height: 100%;
+    border: 0;
+}
+
+/* Error response view in the template render preview */
+.error-container pre {
+    margin-top: 0;
+}
+
+.error-container .switch {
+    margin-bottom: 15px;
+}
+
 /* Notification templates table */
 .notification-templates-table .list-name {
     display: inline-block;
