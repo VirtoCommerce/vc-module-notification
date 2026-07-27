@@ -1,8 +1,8 @@
-<div class="blade-content __large-wide">
+<div class="blade-content __large-wide notification-preview">
   <div class="blade-inner">
     <div class="inner-block">
-      <div class="form-group" ng-if="!error">
-        <iframe id="notification_template_preview" srcdoc="{{blade.originHtml}}" frameborder="0" width="100%" height="100%" scrolling="no"></iframe>
+      <div class="form-group __preview" ng-if="!error">
+        <iframe id="notification_template_preview" srcdoc="{{blade.originHtml}}" frameborder="0" width="100%" height="100%" scrolling="auto"></iframe>
       </div>
       <div class="form-group error-container" ng-if="error">
         <div ng-if="error.data">
@@ -28,13 +28,3 @@
     </div>
   </div>
 </div>
-
-<style>
-  .error-container pre {
-    margin-top: 0;
-  }
-
-  .error-container .switch {
-    margin-bottom: 15px;
-  }
-</style>
