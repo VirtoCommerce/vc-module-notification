@@ -15,10 +15,10 @@ angular.module(moduleTemplateName, [])
                     // don't reload the state (and rebuild the blade stack) when only the search changes.
                     reloadOnSearch: false,
                     templateUrl: '$(Platform)/Scripts/common/templates/home.tpl.html',
-                    controller: ['$scope', '$location', 'platformWebApp.bladeNavigationService',
+                    controller: ['$scope', '$location', '$translate', 'platformWebApp.bladeNavigationService', 'platformWebApp.settings',
                         'virtoCommerce.notificationsModule.notificationsModuleApi',
-                        'virtoCommerce.notificationsModule.notificationTypesResolverService',
-                        function ($scope, $location, bladeNavigationService, notifications, notificationTypesResolverService) {
+                        'virtoCommerce.notificationsModule.notificationTemplatesResolverService',
+                        function ($scope, $location, $translate, bladeNavigationService, settings, notifications, notificationTemplatesResolverService) {
                             var menuBlade = {
                                 id: 'notifications',
                                 title: 'platform.menu.notifications',
@@ -30,24 +30,43 @@ angular.module(moduleTemplateName, [])
                             bladeNavigationService.showBlade(menuBlade);
 
                             // Deep link: /notifications?type=<notificationType>&templateId=<id> loads the
-                            // notification (with its templates) and opens the template editor directly.
+                            // notification and opens the template editor blade directly (no intermediate
+                            // notification-details / template-list blades).
                             var type = $location.search().type;
                             var templateId = $location.search().templateId;
-                            if (type) {
-                                notifications.getNotificationByType({ type: type }, function (data) {
-                                    var resolved = notificationTypesResolverService.resolve(data.kind);
-                                    if (!resolved || !resolved.detailBlade) { return; }
-                                    var detailsBlade = {
-                                        id: 'editNotification',
-                                        title: 'notifications.blades.notification-details.title',
-                                        type: type,
-                                        openTemplateId: templateId,
+                            if (!type) { return; }
+
+                            notifications.getNotificationByType({ type: type }, function (notification) {
+                                // Without templateId fall back to the template that has no id — the
+                                // predefined one that comes from module resources.
+                                var template = templateId
+                                    ? _.find(notification.templates, function (x) { return x.id === templateId; })
+                                    : _.find(notification.templates, function (x) { return !x.id && !x.languageCode; })
+                                        || _.find(notification.templates, function (x) { return !x.id; });
+                                if (!template) { return; }
+
+                                var resolved = notificationTemplatesResolverService.resolve(notification.kind);
+                                if (!resolved || !resolved.detailBlade) { return; }
+
+                                settings.getValues({ id: 'VirtoCommerce.Core.General.Languages' }, function (languages) {
+                                    var editBlade = {
+                                        id: resolved.detailBlade.id,
+                                        title: 'notifications.blades.notifications-edit-template.title',
+                                        titleValues: { displayName: $translate.instant('notificationTypes.' + notification.type + '.displayName') },
+                                        notification: notification,
+                                        languageCode: template.languageCode,
+                                        editedTemplate: template,
+                                        isNew: false,
+                                        isFirst: false,
+                                        isDeepLink: true,
+                                        languages: languages,
+                                        kind: notification.kind,
                                         controller: resolved.detailBlade.controller,
                                         template: resolved.detailBlade.template
                                     };
-                                    bladeNavigationService.showBlade(detailsBlade, menuBlade);
+                                    bladeNavigationService.showBlade(editBlade, menuBlade);
                                 });
-                            }
+                            });
                         }
                     ]
                 });

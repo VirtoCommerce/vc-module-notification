@@ -14,26 +14,6 @@ angular.module('virtoCommerce.notificationsModule')
             blade.initialize = function () {
                 blade.currentEntities = getEffectiveTemplateListByLanguage(blade.currentEntity.templates);
                 blade.isLoading = false;
-                openTemplateForDeepLink();
-            }
-
-            // Deep link: open a template by id once. Languages must be loaded first so the editor's
-            // language selector is populated.
-            function openTemplateForDeepLink() {
-                if (!blade.openTemplateId) { return; }
-                var templateId = blade.openTemplateId;
-                blade.openTemplateId = null;
-                var template = _.find(blade.currentEntity.templates, function (t) { return t.id === templateId; });
-                if (!template) { return; }
-
-                if (blade.languages) {
-                    blade.openTemplate(template);
-                } else {
-                    settings.getValues({ id: 'VirtoCommerce.Core.General.Languages' }, function (data) {
-                        blade.languages = data;
-                        blade.openTemplate(template);
-                    });
-                }
             }
 
             function getEffectiveTemplateListByLanguage(templates) {

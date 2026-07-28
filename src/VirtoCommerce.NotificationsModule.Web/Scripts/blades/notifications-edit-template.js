@@ -496,13 +496,53 @@ angular.module('virtoCommerce.notificationsModule')
                     blade.notification.templates.splice(index, 1);
                 }
 
-                blade.parentBlade.initialize();
+                if (blade.isDeepLink) {
+                    persistNotification();
+                    return;
+                }
+
+                refreshParentBlade();
                 $scope.bladeClose();
+            }
+
+            // When opened from a deep link there is no notification-details / template-list parent,
+            // so there is nothing to refresh.
+            function refreshParentBlade() {
+                if (blade.parentBlade && angular.isFunction(blade.parentBlade.initialize)) {
+                    blade.parentBlade.initialize();
+                }
+            }
+
+            // Deep-linked editor has no details blade to persist the notification, so save it here.
+            function persistNotification() {
+                blade.isLoading = true;
+                var entityToSave = angular.copy(blade.notification);
+                entityToSave.templates = _.filter(blade.notification.templates, { isReadonly: false });
+                entityToSave.templates.forEach(function (element) {
+                    // Need to set IsPredefined to false in order to save the template to the database
+                    if (!!element.isEdited && !!element.isPredefined) {
+                        element.isPredefined = false;
+                    }
+                });
+
+                notifications.updateNotification({ type: blade.notification.type }, entityToSave, function () {
+                    blade.isLoading = false;
+                    $scope.bladeClose();
+                }, function (error) {
+                    blade.isLoading = false;
+                    bladeNavigationService.setError('Error: ' + (error.data ? error.data.message : error.status), blade);
+                });
             }
 
             $scope.saveChanges = function () {
                 saveTemplate();
-                blade.parentBlade.initialize();
+
+                if (blade.isDeepLink) {
+                    persistNotification();
+                    return;
+                }
+
+                refreshParentBlade();
                 $scope.bladeClose();
             };
 

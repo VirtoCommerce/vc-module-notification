@@ -67,29 +67,7 @@ angular.module('virtoCommerce.notificationsModule')
 
                 blade.origEntity = angular.copy(blade.currentEntity);
                 $scope.isValid = false;
-
-                // Deep link: auto-open the template list and the requested template once.
-                if (blade.openTemplateId) {
-                    var templateId = blade.openTemplateId;
-                    blade.openTemplateId = null;
-                    openTemplatesForDeepLink(templateId);
-                }
             };
-
-            function openTemplatesForDeepLink(templateId) {
-                var templatesBlade = {
-                    id: 'notificationTemplatesWidgetChild',
-                    title: 'notifications.widgets.notificationsTemplatesWidget.blade-title',
-                    subtitle: 'notifications.widgets.notificationsTemplatesWidget.blade-subtitle',
-                    tenantId: blade.currentEntity.tenantId,
-                    tenantType: blade.currentEntity.tenantType,
-                    currentEntity: blade.currentEntity,
-                    openTemplateId: templateId,
-                    controller: 'virtoCommerce.notificationsModule.notificationTemplatesListController',
-                    template: 'Modules/$(VirtoCommerce.Notifications)/Scripts/blades/notification-templates-list.tpl.html'
-                };
-                bladeNavigationService.showBlade(templatesBlade, blade);
-            }
 
             function expandOptionalFields() {
                 blade.showOptionalFields.from = !!blade.currentEntity.from;
