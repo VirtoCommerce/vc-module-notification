@@ -23,10 +23,10 @@ var htmlBeautify = require('js-beautify').html;
 
 angular.module('virtoCommerce.notificationsModule')
     .controller('virtoCommerce.notificationsModule.editTemplateController',
-        ['$rootScope', '$scope', '$timeout', '$sce', '$localStorage', 'virtoCommerce.notificationsModule.notificationsModuleApi',
+        ['$rootScope', '$scope', '$timeout', '$sce', '$location', '$localStorage', 'virtoCommerce.notificationsModule.notificationsModuleApi',
             'virtoCommerce.notificationsModule.notificationLayoutsApi', 'FileUploader', 'platformWebApp.bladeNavigationService', 'platformWebApp.dialogService',
             'platformWebApp.authService', 'platformWebApp.accounts', 'virtoCommerce.notificationsModule.sendTestEmailService',
-        function ($rootScope, $scope, $timeout, $sce, $localStorage, notifications,
+        function ($rootScope, $scope, $timeout, $sce, $location, $localStorage, notifications,
             layouts, FileUploader, bladeNavigationService, dialogService,
             authService, accounts, sendTestEmailService) {
             var blade = $scope.blade;
@@ -117,6 +117,9 @@ angular.module('virtoCommerce.notificationsModule')
                 window.removeEventListener('keydown', onFsKeydown);
                 angular.element(document.body).removeClass('nt-fullscreen-active');
                 if (previewTimer) { $timeout.cancel(previewTimer); }
+                // Reset the deep-link query string when the template editor closes.
+                $location.search('type', null);
+                $location.search('templateId', null);
             });
 
             // ---- Live preview (debounced) ----
@@ -546,7 +549,18 @@ angular.module('virtoCommerce.notificationsModule')
 
                 setTemplate();
                 loadLayouts();
+                updateDeepLink();
             };
+
+            // Reflect the open template in the query string so the URL can be copied/shared.
+            // Cleared again on blade close (see $destroy). The state uses reloadOnSearch:false,
+            // so these writes don't rebuild the blade stack.
+            function updateDeepLink() {
+                if (blade.notification && blade.notification.type) {
+                    $location.search('type', blade.notification.type);
+                    $location.search('templateId', (blade.currentEntity && blade.currentEntity.id) || null);
+                }
+            }
 
             // Hide the Layout field entirely when no layouts exist — the ui-scroll-drop-down
             // renders a dimmed/empty control otherwise. A light existence check drives the flag.

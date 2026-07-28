@@ -10,10 +10,16 @@ angular.module(moduleTemplateName, [])
         function ($stateProvider, $urlRouterProvider) {
             $stateProvider
                 .state('workspace.notificationsModule', {
-                    url: '/notifications?objectId&objectTypeId',
+                    url: '/notifications?objectId&objectTypeId&type&templateId',
+                    // We update the query string ourselves (type/templateId) to make templates linkable;
+                    // don't reload the state (and rebuild the blade stack) when only the search changes.
+                    reloadOnSearch: false,
                     templateUrl: '$(Platform)/Scripts/common/templates/home.tpl.html',
-                    controller: ['$scope', 'platformWebApp.bladeNavigationService', function ($scope, bladeNavigationService) {
-                            var blade = {
+                    controller: ['$scope', '$location', 'platformWebApp.bladeNavigationService',
+                        'virtoCommerce.notificationsModule.notificationsModuleApi',
+                        'virtoCommerce.notificationsModule.notificationTypesResolverService',
+                        function ($scope, $location, bladeNavigationService, notifications, notificationTypesResolverService) {
+                            var menuBlade = {
                                 id: 'notifications',
                                 title: 'platform.menu.notifications',
                                 subtitle: 'platform.blades.notifications-menu.subtitle',
@@ -21,7 +27,27 @@ angular.module(moduleTemplateName, [])
                                 template: 'Modules/$(VirtoCommerce.Notifications)/Scripts/blades/notifications-menu.tpl.html',
                                 isClosingDisabled: true
                             };
-                            bladeNavigationService.showBlade(blade);
+                            bladeNavigationService.showBlade(menuBlade);
+
+                            // Deep link: /notifications?type=<notificationType>&templateId=<id> loads the
+                            // notification (with its templates) and opens the template editor directly.
+                            var type = $location.search().type;
+                            var templateId = $location.search().templateId;
+                            if (type) {
+                                notifications.getNotificationByType({ type: type }, function (data) {
+                                    var resolved = notificationTypesResolverService.resolve(data.kind);
+                                    if (!resolved || !resolved.detailBlade) { return; }
+                                    var detailsBlade = {
+                                        id: 'editNotification',
+                                        title: 'notifications.blades.notification-details.title',
+                                        type: type,
+                                        openTemplateId: templateId,
+                                        controller: resolved.detailBlade.controller,
+                                        template: resolved.detailBlade.template
+                                    };
+                                    bladeNavigationService.showBlade(detailsBlade, menuBlade);
+                                });
+                            }
                         }
                     ]
                 });
