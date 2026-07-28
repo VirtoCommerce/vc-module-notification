@@ -1,76 +1,113 @@
-<div class="blade-static __bottom" ng-include="'Modules/$(VirtoCommerce.Notifications)/Scripts/blades/common/templates/ok-cancel.tpl.html'"></div>
-
-<div class="blade-content __xlarge-wide">
+<div class="blade-content __xlarge-wide notification-edit-template">
     <div class="blade-inner">
         <div class="inner-block">
             <form class="form" name="formScope">
-                <p ng-if="blade.currentEntity.isPredefined && blade.currentEntity.isEdited" class="text __note"><span>{{ 'notifications.blades.notifications-edit-template.labels.note-caption' | translate }}</span> {{ 'notifications.blades.notifications-edit-template.labels.note-text' | translate }}</p>
-                <div class="form-group clearfix" ng-init="setForm(formScope)">
-                    <div class="column">
-                        <div class="form-group">
-                            <label class="form-label" style="margin:0">{{'notifications.blades.notifications-edit-template.labels.language' | translate}}</label>
-                            <div class="form-input" style="margin-top:0">
-                                <ui-select ng-model="blade.currentEntity.languageCode" ng-disabled="blade.currentEntity.isReadonly">
-                                    <ui-select-match allow-clear placeholder="{{ 'notifications.blades.notifications-edit-template.placeholders.language' | translate }}">{{$select.selected}}</ui-select-match>
-                                    <ui-select-choices repeat="x in blade.languages">
-                                        <span ng-bind-html="x"></span>
-                                    </ui-select-choices>
-                                </ui-select>
-                                <div class="table-descr">
-                                    {{ 'notifications.blades.notifications-edit-template.labels.blank-note' | translate }}
-                                </div>
+                <!--<p ng-if="blade.currentEntity.isPredefined && blade.currentEntity.isEdited" class="text __note"><span>{{ 'notifications.blades.notifications-edit-template.labels.note-caption' | translate }}</span> {{ 'notifications.blades.notifications-edit-template.labels.note-text' | translate }}</p>-->
+
+                <div class="form-group clearfix nt-header-row" ng-init="setForm(formScope)">
+                    <div class="nt-header-col __subject" ng-if="blade.notification.kind ==='EmailNotification'">
+                        <label class="form-label" style="margin:0">
+                            {{'notifications.blades.notifications-edit-template.labels.subject' | translate}}
+                            <i class="form-ico fa fa-question-circle __link __lightblue" ng-click="blade.subjectDescrVisible = !blade.subjectDescrVisible"></i>
+                        </label>
+                        <div class="form-input">
+                            <input ng-disabled="blade.currentEntity.isReadonly" focus-on="" required class="form-control" ng-model="blade.currentEntity.subject" placeholder="{{ 'notifications.blades.notifications-edit-template.placeholders.subject' | translate }}" />
+                        </div>
+                        <div ng-if="blade.subjectDescrVisible">
+                            <div class="table-descr">{{ 'notifications.blades.notifications-edit-template.descriptions.subject' | translate }}</div>
+                            <a href="" ng-click="blade.subjectDescrVisible = null;">{{ 'platform.blades.settings-detail.hide-description' | translate }}</a>
+                        </div>
+                    </div>
+                    <div class="nt-header-col __language">
+                        <label class="form-label" style="margin:0">
+                            {{'notifications.blades.notifications-edit-template.labels.language' | translate}}
+                            <i class="form-ico fa fa-question-circle __link __lightblue" ng-click="blade.languageDescrVisible = !blade.languageDescrVisible"></i>
+                        </label>
+                        <div class="form-input" style="margin-top:0">
+                            <ui-select ng-model="blade.currentEntity.languageCode" ng-disabled="blade.currentEntity.isReadonly">
+                                <ui-select-match allow-clear placeholder="{{ 'notifications.blades.notifications-edit-template.placeholders.language' | translate }}">{{$select.selected}}</ui-select-match>
+                                <ui-select-choices repeat="x in blade.languages">
+                                    <span ng-bind-html="x"></span>
+                                </ui-select-choices>
+                            </ui-select>
+                            <div ng-if="blade.languageDescrVisible">
+                                <div class="table-descr">{{ 'notifications.blades.notifications-edit-template.labels.blank-note' | translate }}</div>
+                                <a href="" ng-click="blade.languageDescrVisible = null;">{{ 'platform.blades.settings-detail.hide-description' | translate }}</a>
                             </div>
                         </div>
                     </div>
-                    <div class="column" ng-if="blade.notification.kind ==='EmailNotification'">
-                        <div class="form-group">
-                            <label class="form-label" style="margin:0">{{'notifications.blades.notifications-edit-template.labels.layout' | translate}}</label>
-                            <ui-scroll-drop-down page-size="50"
-                                                 ng-model="blade.currentEntity.notificationLayoutId"
-                                                 data="searchNotificationLayouts(criteria)"
-                                                 placeholder="'notifications.blades.notifications-edit-template.placeholders.layout'">
-                            </ui-scroll-drop-down>
-                            <div class="table-descr">
-                                {{ 'notifications.blades.notifications-edit-template.labels.layout-blank-note' | translate }}
+                    <div class="nt-header-col __layout" ng-if="blade.notification.kind ==='EmailNotification' && blade.hasLayouts">
+                        <label class="form-label" style="margin:0">
+                            {{'notifications.blades.notifications-edit-template.labels.layout' | translate}}
+                            <i class="form-ico fa fa-question-circle __link __lightblue" ng-click="blade.layoutDescrVisible = !blade.layoutDescrVisible"></i>
+                        </label>
+                        <ui-scroll-drop-down page-size="50"
+                                             ng-model="blade.currentEntity.notificationLayoutId"
+                                             data="searchNotificationLayouts(criteria)"
+                                             placeholder="'notifications.blades.notifications-edit-template.placeholders.layout'">
+                        </ui-scroll-drop-down>
+                        <div ng-if="blade.layoutDescrVisible">
+                            <div class="table-descr">{{ 'notifications.blades.notifications-edit-template.labels.layout-blank-note' | translate }}</div>
+                            <a href="" ng-click="blade.layoutDescrVisible = null;">{{ 'platform.blades.settings-detail.hide-description' | translate }}</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div ng-if="blade.notification.kind ==='EmailNotification'" class="nt-editor" ng-class="{'__fullscreen': blade.fullscreen}">
+                    <div class="nt-tabbar">
+                        <ul class="nt-tabs" ng-if="!blade.fullscreen">
+                            <li class="nt-tab" ng-class="{'__active': blade.activeTab === 'template'}" ng-click="setActiveTab('template')">
+                                {{'notifications.blades.notifications-edit-template.labels.tab-template' | translate}}
+                            </li>
+                            <li class="nt-tab" ng-class="{'__active': blade.activeTab === 'sample'}" ng-click="setActiveTab('sample')">
+                                {{'notifications.blades.notifications-edit-template.labels.tab-sample' | translate}}
+                            </li>
+                            <li class="nt-tab" ng-class="{'__active': blade.activeTab === 'preview'}" ng-click="setActiveTab('preview')">
+                                {{'platform.commands.preview' | translate}}
+                            </li>
+                        </ul>
+                        <ul class="nt-tabs" ng-if="blade.fullscreen">
+                            <li class="nt-tab" ng-class="{'__active': blade.fsLeft === 'template'}" ng-click="setFsLeft('template')">
+                                {{'notifications.blades.notifications-edit-template.labels.tab-template' | translate}}
+                            </li>
+                            <li class="nt-tab" ng-class="{'__active': blade.fsLeft === 'sample'}" ng-click="setFsLeft('sample')">
+                                {{'notifications.blades.notifications-edit-template.labels.tab-sample' | translate}}
+                            </li>
+                            <li class="nt-tab __static">&rarr; {{'platform.commands.preview' | translate}}</li>
+                        </ul>
+                        <button type="button" class="nt-fs-btn" ng-click="toggleFullscreen()" title="{{ (blade.fullscreen ? 'notifications.blades.notifications-edit-template.labels.exit-fullscreen' : 'notifications.blades.notifications-edit-template.labels.fullscreen') | translate }}">
+                            <i class="fa" ng-class="blade.fullscreen ? 'fa-compress' : 'fa-expand'"></i>
+                            <span ng-if="blade.fullscreen"> {{'notifications.blades.notifications-edit-template.labels.exit-fullscreen' | translate}}</span>
+                        </button>
+                    </div>
+
+                    <div class="nt-panes">
+                        <div class="nt-pane __template" ng-show="paneVisible('template')">
+                            <div class="nt-html-editor">
+                                <ui-codemirror ng-model="blade.currentEntity.body" ui-codemirror-opts="htmlEditorOptions"></ui-codemirror>
+                            </div>
+                        </div>
+
+                        <div class="nt-pane __sample" ng-show="paneVisible('sample')">
+                            <div class="nt-json-editor">
+                                <ui-codemirror ng-model="blade.currentEntity.sample" ui-codemirror-opts="jsonEditorOptions"></ui-codemirror>
+                            </div>
+                        </div>
+
+                        <div class="nt-pane __preview notification-preview" ng-show="paneVisible('preview')">
+                            <div class="nt-preview-wrap" ng-if="!blade.previewError">
+                                <iframe class="nt-preview-frame" srcdoc="{{blade.previewHtml}}" frameborder="0" scrolling="auto"></iframe>
+                            </div>
+                            <div class="nt-preview-error" ng-if="blade.previewError">
+                                <div class="table-descr __error" ng-if="blade.previewError.invalidJson">
+                                    {{ 'notifications.blades.notifications-edit-template.labels.invalid-json' | translate }}
+                                </div>
+                                <pre ng-if="!blade.previewError.invalidJson">{{ blade.previewError.data.message || blade.previewError.statusText || 'Preview failed' }}</pre>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="form-group clearfix" ng-if="blade.notification.kind ==='EmailNotification'">
-                    <div class="column">
-                        <div>
-                            <label class="form-label" style="margin:0">{{'notifications.blades.notifications-edit-template.labels.subject' | translate}}</label>
-                            <div style="margin:0">
-                                <div class="form-input">
-                                    <input ng-disabled="blade.currentEntity.isReadonly" focus-on="" required class="form-control" ng-model="blade.currentEntity.subject" placeholder="{{ 'notifications.blades.notifications-edit-template.placeholders.subject' | translate }}" />
-                                </div>
-                                <div class="table-descr">
-                                    {{ 'notifications.blades.notifications-edit-template.descriptions.subject' | translate }}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="form-group inner-block" ng-if="blade.notification.kind ==='EmailNotification'">
-                    <div class="column">
-                        <div>
-                            <label class="form-label" style="margin:0">{{'notifications.blades.notifications-edit-template.labels.template' | translate}}</label>
-                            <div class="form-group" style="margin:0">
-                                <input id="fileUploader" type="file" multiple style="display: none;" uploader="fileUploader" nv-file-select />
-                                <textarea ng-disabled="blade.currentEntity.isReadonly" vc-uk-htmleditor ng-model="blade.currentEntity.body" file-uploader="fileUploader"></textarea>
-                            </div>
-                        </div>
-                        <div>
-                            <label class="form-label" style="margin:0">{{'notifications.blades.notifications-edit-template.labels.sample' | translate}}</label>
-                            <div class="form-input">
-                                <textarea class="__xlarge form-control" ng-class="{'error': !blade.isSampleValidJson()}" cols="30" rows="30" ng-disabled="blade.currentEntity.isReadonly" ng-model="blade.currentEntity.sample"></textarea>
-                            </div>
-                            <div class="table-descr">
-                                {{ 'notifications.blades.notifications-edit-template.descriptions.sample' | translate }}
-                            </div>
-                        </div>
-                    </div>
-                </div>
+
                 <div class="inner-block" ng-if="blade.notification.kind ==='SmsNotification'">
                     <div class="column">
                         <div class="form-group">

@@ -35,6 +35,11 @@
         "subtitle": "Benachrichtigungsvorlage bearbeiten",
         "title-new": "{{ displayName }}: Vorlage erstellen",
         "labels": {
+          "tab-template": "Vorlage (liquid)",
+          "tab-sample": "Beispieldaten (json)",
+          "fullscreen": "Vollbild",
+          "exit-fullscreen": "Vollbild beenden",
+          "invalid-json": "Ungültiges JSON",
           "note": "Dies ist eine Liste von Benachrichtigungsoptionen. Kopieren Sie diesen Code und fügen Sie ihn in Ihre Vorlage ein, um die Optionswerte einzufügen.",
           "parameter-name": "Optionsname",
           "parameter-description": "Optionsbeschreibung",

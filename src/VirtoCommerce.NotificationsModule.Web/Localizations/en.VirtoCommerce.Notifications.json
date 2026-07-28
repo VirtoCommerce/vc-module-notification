@@ -35,6 +35,11 @@
         "subtitle": "Edit notification template",
         "title-new": "{{ displayName }}: Create template",
         "labels": {
+          "tab-template": "Template (liquid)",
+          "tab-sample": "Sample data (json)",
+          "fullscreen": "Full screen",
+          "exit-fullscreen": "Exit full screen",
+          "invalid-json": "Invalid JSON",
           "note": "This is a list of notification options. Copy and paste this code to insert the option values to your template",
           "parameter-name": "Option name",
           "parameter-description": "Option description",

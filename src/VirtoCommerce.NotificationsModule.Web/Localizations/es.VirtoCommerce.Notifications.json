@@ -35,6 +35,11 @@
         "subtitle": "Editar plantilla de notificación",
         "title-new": "{{ displayName }}: Crear plantilla",
         "labels": {
+          "tab-template": "Plantilla (liquid)",
+          "tab-sample": "Datos de ejemplo (json)",
+          "fullscreen": "Pantalla completa",
+          "exit-fullscreen": "Salir de pantalla completa",
+          "invalid-json": "JSON no válido",
           "note": "Esta es una lista de opciones de notificación. Copie y pegue este código para insertar los valores de opción en su plantilla",
           "parameter-name": "Nombre de la opción",
           "parameter-description": "Descripción de la opción",

@@ -11,6 +11,7 @@
     "clean-webpack-plugin": "^4.0.0",
     "css-loader": "^6.5.1",
     "html-loader": "^5.1.0",
+    "js-beautify": "^2.0.3",
     "mini-css-extract-plugin": "^2.5.1",
     "ngtemplate-loader": "^2.1.0",
     "webpack": "^5.95.0",

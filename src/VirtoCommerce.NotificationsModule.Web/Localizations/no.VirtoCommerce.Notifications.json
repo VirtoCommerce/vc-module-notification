@@ -35,6 +35,11 @@
         "subtitle": "Rediger varslingsmal",
         "title-new": "{{ displayName }}: Opprett mal",
         "labels": {
+          "tab-template": "Mal (liquid)",
+          "tab-sample": "Eksempeldata (json)",
+          "fullscreen": "Fullskjerm",
+          "exit-fullscreen": "Avslutt fullskjerm",
+          "invalid-json": "Ugyldig JSON",
           "note": "Dette er en liste over varslingstilvalg. Kopier og lim inn denne koden for å sette inn alternativverdier i malen din",
           "parameter-name": "Alternativnavn",
           "parameter-description": "Alternativbeskrivelse",

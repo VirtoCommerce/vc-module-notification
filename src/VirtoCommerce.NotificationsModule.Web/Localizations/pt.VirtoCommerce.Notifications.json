@@ -35,6 +35,11 @@
         "subtitle": "Editar modelo de notificação",
         "title-new": "{{ displayName }}: Criar modelo",
         "labels": {
+          "tab-template": "Modelo (liquid)",
+          "tab-sample": "Dados de exemplo (json)",
+          "fullscreen": "Tela cheia",
+          "exit-fullscreen": "Sair da tela cheia",
+          "invalid-json": "JSON inválido",
           "note": "Esta é uma lista de opções de notificação. Copie e cole este código para inserir os valores das opções no seu modelo",
           "parameter-name": "Nome da opção",
           "parameter-description": "Descrição da opção",

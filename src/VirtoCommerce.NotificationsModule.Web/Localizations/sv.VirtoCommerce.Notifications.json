@@ -35,6 +35,11 @@
         "subtitle": "Redigera aviseringsmall",
         "title-new": "{{ displayName }}: Skapa mall",
         "labels": {
+          "tab-template": "Mall (liquid)",
+          "tab-sample": "Exempeldata (json)",
+          "fullscreen": "Helskärm",
+          "exit-fullscreen": "Avsluta helskärm",
+          "invalid-json": "Ogiltig JSON",
           "note": "Detta är en lista över aviseringsalternativ. Kopiera och klistra in koden för att infoga alternativvärden i din mall",
           "parameter-name": "Alternativnamn",
           "parameter-description": "Alternativbeskrivning",

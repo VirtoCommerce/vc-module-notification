@@ -35,6 +35,11 @@
         "subtitle": "Muokkaa ilmoitusmallia",
         "title-new": "{{ displayName }}: Luo malli",
         "labels": {
+          "tab-template": "Malli (liquid)",
+          "tab-sample": "Esimerkkidata (json)",
+          "fullscreen": "Koko näyttö",
+          "exit-fullscreen": "Poistu koko näytöstä",
+          "invalid-json": "Virheellinen JSON",
           "note": "Tämä on lista ilmoitusvaihtoehdoista. Kopioi ja liitä tämä koodi lisätäksesi vaihtoehtojen arvot malliisi",
           "parameter-name": "Vaihtoehdon nimi",
           "parameter-description": "Vaihtoehdon kuvaus",

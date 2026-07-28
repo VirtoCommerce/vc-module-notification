@@ -35,6 +35,11 @@
         "subtitle": "Edytuj szablon powiadomienia",
         "title-new": "{{ displayName }}: Utwórz szablon",
         "labels": {
+          "tab-template": "Szablon (liquid)",
+          "tab-sample": "Dane przykładowe (json)",
+          "fullscreen": "Pełny ekran",
+          "exit-fullscreen": "Zamknij pełny ekran",
+          "invalid-json": "Nieprawidłowy JSON",
           "note": "To jest lista opcji powiadomienia. Skopiuj i wklej ten kod, aby wstawić wartości opcji do swojego szablonu",
           "parameter-name": "Nazwa opcji",
           "parameter-description": "Opis opcji",
