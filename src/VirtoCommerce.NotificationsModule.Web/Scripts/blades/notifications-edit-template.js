@@ -116,6 +116,7 @@ angular.module('virtoCommerce.notificationsModule')
             $scope.$on('$destroy', function () {
                 window.removeEventListener('keydown', onFsKeydown);
                 angular.element(document.body).removeClass('nt-fullscreen-active');
+                if (previewTimer) { $timeout.cancel(previewTimer); }
             });
 
             // ---- Live preview (debounced) ----
@@ -160,7 +161,7 @@ angular.module('virtoCommerce.notificationsModule')
             }
 
             $scope.$watchGroup(
-                ['blade.currentEntity.body', 'blade.currentEntity.sample', 'blade.currentEntity.notificationLayoutId'],
+                ['blade.currentEntity.body', 'blade.currentEntity.sample', 'blade.currentEntity.notificationLayoutId', 'blade.currentEntity.languageCode'],
                 function () { if (isPreviewVisible()) { schedulePreview(); } });
 
             // CodeMirror gutter ids shared by the JSON and HTML editors.
@@ -231,6 +232,7 @@ angular.module('virtoCommerce.notificationsModule')
             }
 
             function formatSampleJson() {
+                if (!blade.currentEntity || blade.currentEntity.isReadonly) { return; }
                 try {
                     blade.currentEntity.sample = JSON.stringify(JSON.parse(blade.currentEntity.sample || '{}'), null, 2);
                 } catch (e) {
@@ -264,7 +266,7 @@ angular.module('virtoCommerce.notificationsModule')
             };
 
             function formatHtml() {
-                if (!blade.currentEntity) { return; }
+                if (!blade.currentEntity || blade.currentEntity.isReadonly) { return; }
                 try {
                     blade.currentEntity.body = htmlBeautify(blade.currentEntity.body || '', {
                         indent_size: 2,
