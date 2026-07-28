@@ -88,6 +88,10 @@ angular.module('virtoCommerce.notificationsModule')
 
             function applyFullscreen(on) {
                 blade.fullscreen = on;
+                // Keep the editor the user was working in on the left when entering full-screen.
+                if (on && (blade.activeTab === 'template' || blade.activeTab === 'sample')) {
+                    blade.fsLeft = blade.activeTab;
+                }
                 // Raise the main content stacking context above the platform nav (see CSS).
                 angular.element(document.body).toggleClass('nt-fullscreen-active', on);
                 if (on) {
@@ -116,6 +120,7 @@ angular.module('virtoCommerce.notificationsModule')
 
             // ---- Live preview (debounced) ----
             var previewTimer;
+            var previewRequestId = 0;
             blade.previewHtml = $sce.trustAsHtml('');
             blade.previewError = null;
 
@@ -125,6 +130,10 @@ angular.module('virtoCommerce.notificationsModule')
             }
 
             function updatePreview() {
+                // Bump the request id up front so any in-flight render (and any state change that
+                // returns early below) invalidates older responses — avoids stale previews.
+                var requestId = ++previewRequestId;
+
                 if (!blade.currentEntity || blade.notification.kind !== 'EmailNotification') { return; }
                 if (!blade.isSampleValidJson()) { blade.previewError = { invalidJson: true }; return; }
 
@@ -141,9 +150,11 @@ angular.module('virtoCommerce.notificationsModule')
                     data: data,
                     notificationLayoutId: blade.currentEntity.notificationLayoutId
                 }, function (response) {
+                    if (requestId !== previewRequestId) { return; }
                     blade.previewError = null;
-                    blade.previewHtml = $sce.trustAsHtml('<html><body>' + response.html + '</body></html>');
+                    blade.previewHtml = $sce.trustAsHtml(`<html><body>${response.html}</body></html>`);
                 }, function (error) {
+                    if (requestId !== previewRequestId) { return; }
                     blade.previewError = error;
                 });
             }
@@ -151,6 +162,10 @@ angular.module('virtoCommerce.notificationsModule')
             $scope.$watchGroup(
                 ['blade.currentEntity.body', 'blade.currentEntity.sample', 'blade.currentEntity.notificationLayoutId'],
                 function () { if (isPreviewVisible()) { schedulePreview(); } });
+
+            // CodeMirror gutter ids shared by the JSON and HTML editors.
+            var CM_GUTTER_LINES = 'CodeMirror-linenumbers';
+            var CM_GUTTER_FOLD = 'CodeMirror-foldgutter';
 
             // ---- Sample data JSON editor (reuses the platform JSON editor pattern) ----
             var sampleEditor = null;
@@ -160,10 +175,10 @@ angular.module('virtoCommerce.notificationsModule')
                 mode: { name: 'javascript', json: true },
                 extraKeys: {
                     'Ctrl-Q': function (cm) { cm.foldCode(cm.getCursor()); },
-                    'Ctrl-Alt-F': function () { formatSampleJson(); }
+                    'Ctrl-Alt-F': function () { formatSampleJson(); $scope.$applyAsync(); }
                 },
                 foldGutter: true,
-                gutters: ['CodeMirror-linenumbers', 'CodeMirror-foldgutter'],
+                gutters: [CM_GUTTER_LINES, CM_GUTTER_FOLD],
                 onLoad: function (_editor) {
                     sampleEditor = _editor;
                     _editor.setOption('readOnly', !!(blade.currentEntity && blade.currentEntity.isReadonly));
@@ -173,7 +188,7 @@ angular.module('virtoCommerce.notificationsModule')
             };
             if (typeof window.jsonlint !== 'undefined') {
                 $scope.jsonEditorOptions.lint = true;
-                $scope.jsonEditorOptions.gutters = ['CodeMirror-linenumbers', 'CodeMirror-foldgutter', 'CodeMirror-lint-markers'];
+                $scope.jsonEditorOptions.gutters = [CM_GUTTER_LINES, CM_GUTTER_FOLD, 'CodeMirror-lint-markers'];
             }
 
             function injectFormatButton(_editor) {
@@ -231,7 +246,7 @@ angular.module('virtoCommerce.notificationsModule')
                 lineWrapping: true,
                 mode: 'liquid-html',
                 foldGutter: true,
-                gutters: ['CodeMirror-linenumbers', 'CodeMirror-foldgutter'],
+                gutters: [CM_GUTTER_LINES, CM_GUTTER_FOLD],
                 matchTags: { bothTags: true },
                 autoCloseTags: true,
                 extraKeys: {
@@ -316,7 +331,7 @@ angular.module('virtoCommerce.notificationsModule')
                 if (closing) { toCh += closing[0].length; }
                 var list = ($scope.sampleVariables || [])
                     .filter(function (v) { return !typed || v.toLowerCase().indexOf(typed) !== -1; })
-                    .map(function (v) { return { text: '{{ ' + v + ' }}', displayText: v }; });
+                    .map(function (v) { return { text: `{{ ${v} }}`, displayText: v }; });
                 if (!list.length) { return null; }
                 return { list: list, from: CM.Pos(cur.line, open), to: CM.Pos(cur.line, toCh) };
             }
@@ -389,7 +404,7 @@ angular.module('virtoCommerce.notificationsModule')
                         (function walk(obj, prefix) {
                             angular.forEach(obj, function (value, key) {
                                 var seg = toLiquidName(key);
-                                var path = prefix ? prefix + '.' + seg : seg;
+                                var path = prefix ? `${prefix}.${seg}` : seg;
                                 if (value && typeof value === 'object' && !angular.isArray(value)) {
                                     walk(value, path);
                                 } else {
