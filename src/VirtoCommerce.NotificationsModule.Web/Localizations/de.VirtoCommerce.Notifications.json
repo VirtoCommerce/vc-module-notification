@@ -40,6 +40,8 @@
           "fullscreen": "Vollbild",
           "exit-fullscreen": "Vollbild beenden",
           "invalid-json": "Ungültiges JSON",
+          "format-json": "JSON formatieren",
+          "format-html": "HTML formatieren",
           "note": "Dies ist eine Liste von Benachrichtigungsoptionen. Kopieren Sie diesen Code und fügen Sie ihn in Ihre Vorlage ein, um die Optionswerte einzufügen.",
           "parameter-name": "Optionsname",
           "parameter-description": "Optionsbeschreibung",

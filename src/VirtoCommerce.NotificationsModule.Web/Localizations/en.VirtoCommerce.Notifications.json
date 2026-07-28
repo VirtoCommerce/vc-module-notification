@@ -40,6 +40,8 @@
           "fullscreen": "Full screen",
           "exit-fullscreen": "Exit full screen",
           "invalid-json": "Invalid JSON",
+          "format-json": "Format JSON",
+          "format-html": "Format HTML",
           "note": "This is a list of notification options. Copy and paste this code to insert the option values to your template",
           "parameter-name": "Option name",
           "parameter-description": "Option description",

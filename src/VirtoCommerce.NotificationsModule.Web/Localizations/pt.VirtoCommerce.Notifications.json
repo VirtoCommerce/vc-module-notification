@@ -40,6 +40,8 @@
           "fullscreen": "Tela cheia",
           "exit-fullscreen": "Sair da tela cheia",
           "invalid-json": "JSON inválido",
+          "format-json": "Formatar JSON",
+          "format-html": "Formatar HTML",
           "note": "Esta é uma lista de opções de notificação. Copie e cole este código para inserir os valores das opções no seu modelo",
           "parameter-name": "Nome da opção",
           "parameter-description": "Descrição da opção",

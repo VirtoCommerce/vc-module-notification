@@ -40,6 +40,8 @@
           "fullscreen": "Pełny ekran",
           "exit-fullscreen": "Zamknij pełny ekran",
           "invalid-json": "Nieprawidłowy JSON",
+          "format-json": "Formatuj JSON",
+          "format-html": "Formatuj HTML",
           "note": "To jest lista opcji powiadomienia. Skopiuj i wklej ten kod, aby wstawić wartości opcji do swojego szablonu",
           "parameter-name": "Nazwa opcji",
           "parameter-description": "Opis opcji",

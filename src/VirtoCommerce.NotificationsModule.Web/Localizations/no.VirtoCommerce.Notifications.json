@@ -40,6 +40,8 @@
           "fullscreen": "Fullskjerm",
           "exit-fullscreen": "Avslutt fullskjerm",
           "invalid-json": "Ugyldig JSON",
+          "format-json": "Formater JSON",
+          "format-html": "Formater HTML",
           "note": "Dette er en liste over varslingstilvalg. Kopier og lim inn denne koden for å sette inn alternativverdier i malen din",
           "parameter-name": "Alternativnavn",
           "parameter-description": "Alternativbeskrivelse",

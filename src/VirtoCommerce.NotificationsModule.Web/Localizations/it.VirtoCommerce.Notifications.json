@@ -40,6 +40,8 @@
           "fullscreen": "Schermo intero",
           "exit-fullscreen": "Esci da schermo intero",
           "invalid-json": "JSON non valido",
+          "format-json": "Formatta JSON",
+          "format-html": "Formatta HTML",
           "note": "Questa è un elenco di opzioni di notifica. Copia e incolla questo codice per inserire i valori delle opzioni nel tuo modello",
           "parameter-name": "Nome dell'opzione",
           "parameter-description": "Descrizione dell'opzione",

@@ -23,10 +23,10 @@ var htmlBeautify = require('js-beautify').html;
 
 angular.module('virtoCommerce.notificationsModule')
     .controller('virtoCommerce.notificationsModule.editTemplateController',
-        ['$rootScope', '$scope', '$timeout', '$sce', '$location', '$localStorage', 'virtoCommerce.notificationsModule.notificationsModuleApi',
+        ['$rootScope', '$scope', '$timeout', '$sce', '$location', '$translate', '$localStorage', 'virtoCommerce.notificationsModule.notificationsModuleApi',
             'virtoCommerce.notificationsModule.notificationLayoutsApi', 'FileUploader', 'platformWebApp.bladeNavigationService', 'platformWebApp.dialogService',
             'platformWebApp.authService', 'platformWebApp.accounts', 'virtoCommerce.notificationsModule.sendTestEmailService',
-        function ($rootScope, $scope, $timeout, $sce, $location, $localStorage, notifications,
+        function ($rootScope, $scope, $timeout, $sce, $location, $translate, $localStorage, notifications,
             layouts, FileUploader, bladeNavigationService, dialogService,
             authService, accounts, sendTestEmailService) {
             var blade = $scope.blade;
@@ -167,6 +167,11 @@ angular.module('virtoCommerce.notificationsModule')
                 ['blade.currentEntity.body', 'blade.currentEntity.sample', 'blade.currentEntity.notificationLayoutId', 'blade.currentEntity.languageCode'],
                 function () { if (isPreviewVisible()) { schedulePreview(); } });
 
+            // Translation helper for this blade's labels.
+            function t(key) {
+                return $translate.instant(`notifications.blades.notifications-edit-template.labels.${key}`);
+            }
+
             // CodeMirror gutter ids shared by the JSON and HTML editors.
             var CM_GUTTER_LINES = 'CodeMirror-linenumbers';
             var CM_GUTTER_FOLD = 'CodeMirror-foldgutter';
@@ -207,7 +212,9 @@ angular.module('virtoCommerce.notificationsModule')
                 var statusIndicator = angular.element('<div class="json-btn status-indicator"></div>');
                 statusIndicator.css(angular.extend({}, commonStyle, { backgroundColor: '#F44336', color: 'white', display: 'none', alignItems: 'center', justifyContent: 'center' }));
 
-                var formatBtn = angular.element('<button type="button" class="json-btn format-btn" title="Format JSON (Ctrl+Alt+F)">Format JSON</button>');
+                var jsonLabel = t('format-json');
+                var formatBtn = angular.element('<button type="button" class="json-btn format-btn"></button>');
+                formatBtn.attr('title', `${jsonLabel} (Ctrl+Alt+F)`).text(jsonLabel);
                 formatBtn.css(angular.extend({}, commonStyle, { backgroundColor: '#43b0e6', color: 'white', cursor: 'pointer' }));
                 formatBtn.on('click', function () { formatSampleJson(); $scope.$apply(); });
 
@@ -230,7 +237,7 @@ angular.module('virtoCommerce.notificationsModule')
                     indicator.css('display', 'none');
                 } catch (e) {
                     indicator.css('display', 'flex');
-                    indicator.text('Invalid JSON');
+                    indicator.text(t('invalid-json'));
                 }
             }
 
@@ -289,7 +296,9 @@ angular.module('virtoCommerce.notificationsModule')
                 wrapper.css('position', 'relative');
                 var container = angular.element('<div class="json-controls"></div>');
                 container.css({ position: 'absolute', top: '5px', right: '5px', zIndex: '10', display: 'flex', gap: '5px' });
-                var btn = angular.element('<button type="button" class="json-btn format-btn" title="Format HTML (Ctrl+Alt+F)">Format HTML</button>');
+                var htmlLabel = t('format-html');
+                var btn = angular.element('<button type="button" class="json-btn format-btn"></button>');
+                btn.attr('title', `${htmlLabel} (Ctrl+Alt+F)`).text(htmlLabel);
                 btn.css({ padding: '2px 8px', fontSize: '12px', borderRadius: '3px', height: '24px', lineHeight: '20px', boxSizing: 'border-box', border: 'none', backgroundColor: '#43b0e6', color: 'white', cursor: 'pointer' });
                 btn.on('click', function () { formatHtml(); $scope.$apply(); });
                 container.append(btn);
@@ -393,7 +402,11 @@ angular.module('virtoCommerce.notificationsModule')
                 for (var i = 0; i < name.length; i++) {
                     var c = name[i];
                     if (c >= 'A' && c <= 'Z') {
-                        if (i > 0 && !(name[i - 1] >= 'A' && name[i - 1] <= 'Z')) { out += '_'; }
+                        var prevUpper = i > 0 && name[i - 1] >= 'A' && name[i - 1] <= 'Z';
+                        var nextLower = i + 1 < name.length && name[i + 1] >= 'a' && name[i + 1] <= 'z';
+                        // Match Scriban's StandardMemberRenamer: break before a capital that starts a
+                        // new word, including the last capital of an acronym (HTMLContent -> html_content).
+                        if (i > 0 && (!prevUpper || nextLower)) { out += '_'; }
                         out += c.toLowerCase();
                     } else {
                         out += c;

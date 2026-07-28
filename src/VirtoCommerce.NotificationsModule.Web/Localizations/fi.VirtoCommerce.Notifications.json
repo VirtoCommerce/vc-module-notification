@@ -40,6 +40,8 @@
           "fullscreen": "Koko näyttö",
           "exit-fullscreen": "Poistu koko näytöstä",
           "invalid-json": "Virheellinen JSON",
+          "format-json": "Muotoile JSON",
+          "format-html": "Muotoile HTML",
           "note": "Tämä on lista ilmoitusvaihtoehdoista. Kopioi ja liitä tämä koodi lisätäksesi vaihtoehtojen arvot malliisi",
           "parameter-name": "Vaihtoehdon nimi",
           "parameter-description": "Vaihtoehdon kuvaus",

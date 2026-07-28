@@ -40,6 +40,8 @@
           "fullscreen": "全屏",
           "exit-fullscreen": "退出全屏",
           "invalid-json": "无效的 JSON",
+          "format-json": "格式化 JSON",
+          "format-html": "格式化 HTML",
           "note": "这是通知选项的列表。复制并粘贴此代码以将选项值插入到您的模板中",
           "parameter-name": "选项名称",
           "parameter-description": "选项描述",
