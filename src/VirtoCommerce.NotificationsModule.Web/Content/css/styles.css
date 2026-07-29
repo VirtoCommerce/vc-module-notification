@@ -206,6 +206,12 @@
     flex-direction: column;
 }
 
+/* "Predefined source" warning: a flex item of the form, so pin its height —
+   otherwise the flex column compresses it and the warning gets clipped. */
+.notification-edit-template .nt-note {
+    flex: 0 0 auto;
+}
+
 /* Header row: Language / Layout / Subject in one row (Subject 8, Language 3, Layout 3) */
 .notification-edit-template .nt-header-row {
     flex: 0 0 auto;
@@ -280,10 +286,24 @@
     border-bottom-color: #ccc;
 }
 
+/* #1565c0 = 5.75:1 on white (WCAG 1.4.3 needs 4.5:1) */
 .notification-edit-template .nt-tabs .nt-tab.__active {
-    color: #1a73e8;
-    border-bottom-color: #1a73e8;
+    color: #1565c0;
+    border-bottom-color: #1565c0;
     font-weight: 500;
+}
+
+/* Visible keyboard focus for the tablist and the full-screen toggle (WCAG 2.4.7) */
+.notification-edit-template .nt-tabs .nt-tab:focus-visible,
+.notification-edit-template .nt-fs-btn:focus-visible {
+    outline: 2px solid #1565c0;
+    outline-offset: 2px;
+    border-radius: 2px;
+}
+
+/* Platform link colour (#43b0e6) is 2.44:1 on white — darken inside this blade. */
+.notification-edit-template .nt-header-col a {
+    color: #1565c0;
 }
 
 .notification-edit-template .nt-tabs .nt-tab.__static {
@@ -299,7 +319,8 @@
 .notification-edit-template .nt-fs-btn {
     flex: none;
     align-self: center;
-    margin: 0 0 6px auto;
+    /* No bottom margin: it fought align-self and pushed the button off the tab centre line. */
+    margin: 0 0 0 auto;
     padding: 5px 12px;
     font-size: 12px;
     color: #666;
@@ -324,6 +345,18 @@
 .notification-edit-template .cm-liquid-tag {
     color: #8250df;
     font-weight: 500;
+}
+
+/* height:100% plus a 1px border overflows the pane by 2px unless the border is counted in. */
+.notification-edit-template .nt-html-editor .CodeMirror,
+.notification-edit-template .nt-json-editor .CodeMirror,
+.notification-edit-template .nt-preview-frame {
+    box-sizing: border-box;
+}
+
+/* Field help text was inheriting 16px — larger than its own 14px label. */
+.notification-edit-template .table-descr {
+    font-size: 12px;
 }
 
 /* Panes and their editors/preview fill the remaining blade height */
@@ -382,6 +415,19 @@
 
 .notification-edit-template .nt-preview-error {
     padding: 12px;
+}
+
+/* Parse messages while typing are expected, so keep them quiet and readable
+   rather than styling them as a failure. */
+.notification-edit-template .nt-preview-messages {
+    margin-top: 6px;
+    padding: 8px 10px;
+    background: #f7f7f7;
+    border: 1px solid #e0e0e0;
+    border-radius: 3px;
+    color: #555;
+    font-size: 12px;
+    white-space: pre-wrap;
 }
 
 .notification-edit-template .table-descr.__error {

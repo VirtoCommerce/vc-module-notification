@@ -2,7 +2,7 @@
     <div class="blade-inner">
         <div class="inner-block">
             <form class="form" name="formScope">
-                <!--<p ng-if="blade.currentEntity.isPredefined && blade.currentEntity.isEdited" class="text __note"><span>{{ 'notifications.blades.notifications-edit-template.labels.note-caption' | translate }}</span> {{ 'notifications.blades.notifications-edit-template.labels.note-text' | translate }}</p>-->
+                <!--<p ng-if="blade.currentEntity.isPredefined && blade.currentEntity.isEdited" class="text __note nt-note" role="alert"><span>{{ 'notifications.blades.notifications-edit-template.labels.note-caption' | translate }}</span> {{ 'notifications.blades.notifications-edit-template.labels.note-text' | translate }}</p>-->
 
                 <div class="form-group clearfix nt-header-row" ng-init="setForm(formScope)">
                     <div class="nt-header-col __subject" ng-if="blade.notification.kind ==='EmailNotification'">
@@ -55,25 +55,45 @@
 
                 <div ng-if="blade.notification.kind ==='EmailNotification'" class="nt-editor" ng-class="{'__fullscreen': blade.fullscreen}">
                     <div class="nt-tabbar">
-                        <ul class="nt-tabs" ng-if="!blade.fullscreen">
-                            <li class="nt-tab" ng-class="{'__active': blade.activeTab === 'template'}" ng-click="setActiveTab('template')">
+                        <ul class="nt-tabs" role="tablist" ng-if="!blade.fullscreen">
+                            <li id="nt-tab-template" class="nt-tab" role="tab" aria-controls="nt-pane-template"
+                                aria-selected="{{blade.activeTab === 'template'}}"
+                                tabindex="{{blade.activeTab === 'template' ? 0 : -1}}"
+                                ng-class="{'__active': blade.activeTab === 'template'}"
+                                ng-click="setActiveTab('template')" ng-keydown="onTabKeydown($event, 'template')">
                                 {{'notifications.blades.notifications-edit-template.labels.tab-template' | translate}}
                             </li>
-                            <li class="nt-tab" ng-class="{'__active': blade.activeTab === 'sample'}" ng-click="setActiveTab('sample')">
+                            <li id="nt-tab-sample" class="nt-tab" role="tab" aria-controls="nt-pane-sample"
+                                aria-selected="{{blade.activeTab === 'sample'}}"
+                                tabindex="{{blade.activeTab === 'sample' ? 0 : -1}}"
+                                ng-class="{'__active': blade.activeTab === 'sample'}"
+                                ng-click="setActiveTab('sample')" ng-keydown="onTabKeydown($event, 'sample')">
                                 {{'notifications.blades.notifications-edit-template.labels.tab-sample' | translate}}
                             </li>
-                            <li class="nt-tab" ng-class="{'__active': blade.activeTab === 'preview'}" ng-click="setActiveTab('preview')">
+                            <li id="nt-tab-preview" class="nt-tab" role="tab" aria-controls="nt-pane-preview"
+                                aria-selected="{{blade.activeTab === 'preview'}}"
+                                tabindex="{{blade.activeTab === 'preview' ? 0 : -1}}"
+                                ng-class="{'__active': blade.activeTab === 'preview'}"
+                                ng-click="setActiveTab('preview')" ng-keydown="onTabKeydown($event, 'preview')">
                                 {{'platform.commands.preview' | translate}}
                             </li>
                         </ul>
-                        <ul class="nt-tabs" ng-if="blade.fullscreen">
-                            <li class="nt-tab" ng-class="{'__active': blade.fsLeft === 'template'}" ng-click="setFsLeft('template')">
+                        <ul class="nt-tabs" role="tablist" ng-if="blade.fullscreen">
+                            <li id="nt-tab-template" class="nt-tab" role="tab" aria-controls="nt-pane-template"
+                                aria-selected="{{blade.fsLeft === 'template'}}"
+                                tabindex="{{blade.fsLeft === 'template' ? 0 : -1}}"
+                                ng-class="{'__active': blade.fsLeft === 'template'}"
+                                ng-click="setFsLeft('template')" ng-keydown="onFsTabKeydown($event, 'template')">
                                 {{'notifications.blades.notifications-edit-template.labels.tab-template' | translate}}
                             </li>
-                            <li class="nt-tab" ng-class="{'__active': blade.fsLeft === 'sample'}" ng-click="setFsLeft('sample')">
+                            <li id="nt-tab-sample" class="nt-tab" role="tab" aria-controls="nt-pane-sample"
+                                aria-selected="{{blade.fsLeft === 'sample'}}"
+                                tabindex="{{blade.fsLeft === 'sample' ? 0 : -1}}"
+                                ng-class="{'__active': blade.fsLeft === 'sample'}"
+                                ng-click="setFsLeft('sample')" ng-keydown="onFsTabKeydown($event, 'sample')">
                                 {{'notifications.blades.notifications-edit-template.labels.tab-sample' | translate}}
                             </li>
-                            <li class="nt-tab __static">&rarr; {{'platform.commands.preview' | translate}}</li>
+                            <li class="nt-tab __static" aria-hidden="true">&rarr; {{'platform.commands.preview' | translate}}</li>
                         </ul>
                         <button type="button" class="nt-fs-btn" ng-click="toggleFullscreen()" title="{{ (blade.fullscreen ? 'notifications.blades.notifications-edit-template.labels.exit-fullscreen' : 'notifications.blades.notifications-edit-template.labels.fullscreen') | translate }}">
                             <i class="fa" ng-class="blade.fullscreen ? 'fa-compress' : 'fa-expand'"></i>
@@ -82,27 +102,31 @@
                     </div>
 
                     <div class="nt-panes">
-                        <div class="nt-pane __template" ng-show="paneVisible('template')">
+                        <div id="nt-pane-template" class="nt-pane __template" role="tabpanel" aria-labelledby="nt-tab-template" ng-show="paneVisible('template')">
                             <div class="nt-html-editor">
                                 <ui-codemirror ng-model="blade.currentEntity.body" ui-codemirror-opts="htmlEditorOptions"></ui-codemirror>
                             </div>
                         </div>
 
-                        <div class="nt-pane __sample" ng-show="paneVisible('sample')">
+                        <div id="nt-pane-sample" class="nt-pane __sample" role="tabpanel" aria-labelledby="nt-tab-sample" ng-show="paneVisible('sample')">
                             <div class="nt-json-editor">
                                 <ui-codemirror ng-model="blade.currentEntity.sample" ui-codemirror-opts="jsonEditorOptions"></ui-codemirror>
                             </div>
                         </div>
 
-                        <div class="nt-pane __preview notification-preview" ng-show="paneVisible('preview')">
+                        <div id="nt-pane-preview" class="nt-pane __preview notification-preview" role="tabpanel" aria-labelledby="nt-tab-preview" ng-show="paneVisible('preview')">
                             <div class="nt-preview-wrap" ng-if="!blade.previewError">
-                                <iframe class="nt-preview-frame" srcdoc="{{blade.previewHtml}}" frameborder="0" scrolling="auto"></iframe>
+                                <iframe class="nt-preview-frame" srcdoc="{{blade.previewHtml}}" frameborder="0" scrolling="auto"
+                                        title="{{'platform.commands.preview' | translate}}"></iframe>
                             </div>
                             <div class="nt-preview-error" ng-if="blade.previewError">
                                 <div class="table-descr __error" ng-if="blade.previewError.invalidJson">
                                     {{ 'notifications.blades.notifications-edit-template.labels.invalid-json' | translate }}
                                 </div>
-                                <pre ng-if="!blade.previewError.invalidJson">{{ blade.previewError.data.message || blade.previewError.statusText || 'Preview failed' }}</pre>
+                                <div ng-if="!blade.previewError.invalidJson">
+                                    <div class="table-descr">{{ 'notifications.blades.notifications-edit-template.labels.preview-parse-error' | translate }}</div>
+                                    <pre class="nt-preview-messages">{{ blade.previewError.data.message || blade.previewError.statusText || blade.previewError.status }}</pre>
+                                </div>
                             </div>
                         </div>
                     </div>

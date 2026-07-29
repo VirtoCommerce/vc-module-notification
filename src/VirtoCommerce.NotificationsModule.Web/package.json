@@ -9,6 +9,7 @@
   },
   "devDependencies": {
     "clean-webpack-plugin": "^4.0.0",
+    "codemirror": "^5.65.18",
     "css-loader": "^6.5.1",
     "html-loader": "^5.1.0",
     "js-beautify": "^2.0.3",
