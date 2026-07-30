@@ -53,6 +53,12 @@ module.exports = (env, argv) => {
             ]
         },
         plugins: [
+            // CodeMirror fold addons must extend the platform's global CodeMirror, not a second
+            // copy bundled here, so their relative core import is redirected to a shim.
+            new webpack.NormalModuleReplacementPlugin(
+                /^\.\.\/\.\.\/lib\/codemirror$/,
+                path.resolve(__dirname, 'Scripts/codemirror-global.js')
+            ),
             new CleanWebpackPlugin(),
             isProduction ?
                 new webpack.SourceMapDevToolPlugin({

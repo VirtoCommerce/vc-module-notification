@@ -185,6 +185,295 @@
     margin-bottom: 15px;
 }
 
+/* Edit-template blade: tabbed Template / Sample data editor */
+/* Fill the blade height: blade-inner -> inner-block -> form -> nt-editor -> panes. */
+.notification-edit-template > .blade-inner {
+    display: flex;
+    flex-direction: column;
+}
+
+.notification-edit-template > .blade-inner > .inner-block {
+    flex: 1 1 auto;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.notification-edit-template > .blade-inner > .inner-block > .form {
+    flex: 1 1 auto;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+/* "Predefined source" warning: a flex item of the form, so pin its height —
+   otherwise the flex column compresses it and the warning gets clipped. */
+.notification-edit-template .nt-note {
+    flex: 0 0 auto;
+}
+
+/* Header row: Language / Layout / Subject in one row (Subject 8, Language 3, Layout 3) */
+.notification-edit-template .nt-header-row {
+    flex: 0 0 auto;
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+}
+
+.notification-edit-template .nt-header-col {
+    min-width: 0;
+}
+
+.notification-edit-template .nt-header-col.__subject {
+    flex: 8 1 0;
+}
+
+.notification-edit-template .nt-header-col.__language {
+    flex: 3 1 0;
+}
+
+.notification-edit-template .nt-header-col.__layout {
+    flex: 3 1 0;
+}
+
+/* Tab bar: tabs on the left, Tabs/Split view toggle on the right */
+.notification-edit-template .nt-editor {
+    flex: 1 1 auto;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.notification-edit-template .nt-tabbar {
+    flex: 0 0 auto;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 12px;
+    margin: 8px 0 16px;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.notification-edit-template .nt-tabs {
+    display: flex;
+    gap: 2px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+/* High specificity + ::before reset to override the platform's em-dash list bullet
+   (.form li::before { content: "— " }; text-indent: -15px) that otherwise prefixes tabs. */
+.notification-edit-template .nt-tabs .nt-tab {
+    display: flex;
+    align-items: center;
+    margin: 0 0 -1px 0;
+    padding: 10px 18px;
+    text-indent: 0;
+    font-size: 14px;
+    color: #666;
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    transition: color .15s ease, border-color .15s ease;
+}
+
+.notification-edit-template .nt-tabs .nt-tab::before {
+    content: none;
+}
+
+.notification-edit-template .nt-tabs .nt-tab:hover {
+    color: #2e2e2e;
+    border-bottom-color: #ccc;
+}
+
+/* #1565c0 = 5.75:1 on white (WCAG 1.4.3 needs 4.5:1) */
+.notification-edit-template .nt-tabs .nt-tab.__active {
+    color: #1565c0;
+    border-bottom-color: #1565c0;
+    font-weight: 500;
+}
+
+/* Visible keyboard focus for the tablist and the full-screen toggle (WCAG 2.4.7) */
+.notification-edit-template .nt-tabs .nt-tab:focus-visible,
+.notification-edit-template .nt-fs-btn:focus-visible {
+    outline: 2px solid #1565c0;
+    outline-offset: 2px;
+    border-radius: 2px;
+}
+
+/* Platform link colour (#43b0e6) is 2.44:1 on white — darken inside this blade. */
+.notification-edit-template .nt-header-col a {
+    color: #1565c0;
+}
+
+.notification-edit-template .nt-tabs .nt-tab.__static {
+    color: #999;
+    cursor: default;
+}
+
+.notification-edit-template .nt-tabs .nt-tab.__static:hover {
+    border-bottom-color: transparent;
+}
+
+/* Full-screen toggle button on the tab bar */
+.notification-edit-template .nt-fs-btn {
+    flex: none;
+    align-self: center;
+    /* No bottom margin: it fought align-self and pushed the button off the tab centre line. */
+    margin: 0 0 0 auto;
+    padding: 5px 12px;
+    font-size: 12px;
+    color: #666;
+    background: #fff;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    cursor: pointer;
+    white-space: nowrap;
+}
+
+.notification-edit-template .nt-fs-btn:hover {
+    color: #1a73e8;
+    border-color: #1a73e8;
+}
+
+/* Liquid tags highlighted over the HTML (liquid-html overlay mode) */
+.notification-edit-template .cm-liquid-output {
+    color: #c7254e;
+    font-weight: 500;
+}
+
+.notification-edit-template .cm-liquid-tag {
+    color: #8250df;
+    font-weight: 500;
+}
+
+/* height:100% plus a 1px border overflows the pane by 2px unless the border is counted in. */
+.notification-edit-template .nt-html-editor .CodeMirror,
+.notification-edit-template .nt-json-editor .CodeMirror,
+.notification-edit-template .nt-preview-frame {
+    box-sizing: border-box;
+}
+
+/* Field help text was inheriting 16px — larger than its own 14px label. */
+.notification-edit-template .table-descr {
+    font-size: 12px;
+}
+
+/* Panes and their editors/preview fill the remaining blade height */
+.notification-edit-template .nt-panes {
+    flex: 1 1 auto;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.notification-edit-template .nt-pane {
+    flex: 1 1 auto;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Template editor (HTML/Liquid CodeMirror) fills its pane */
+.notification-edit-template .nt-html-editor {
+    flex: 1 1 auto;
+    min-height: 0;
+}
+
+.notification-edit-template .nt-html-editor .CodeMirror {
+    height: 100%;
+    border: 1px solid #ddd;
+    border-radius: 3px;
+}
+
+/* Sample data: CodeMirror JSON editor fills its pane */
+.notification-edit-template .nt-json-editor {
+    flex: 1 1 auto;
+    min-height: 0;
+}
+
+.notification-edit-template .nt-json-editor .CodeMirror {
+    height: 100%;
+    border: 1px solid #ddd;
+    border-radius: 3px;
+}
+
+/* Live preview fills its pane */
+.notification-edit-template .nt-preview-wrap {
+    flex: 1 1 auto;
+    min-height: 0;
+}
+
+.notification-edit-template .nt-preview-frame {
+    display: block;
+    width: 100%;
+    height: 100%;
+    border: 1px solid #ddd;
+    border-radius: 3px;
+    background: #fff;
+}
+
+.notification-edit-template .nt-preview-error {
+    padding: 12px;
+}
+
+/* Parse messages while typing are expected, so keep them quiet and readable
+   rather than styling them as a failure. */
+.notification-edit-template .nt-preview-messages {
+    margin-top: 6px;
+    padding: 8px 10px;
+    background: #f7f7f7;
+    border: 1px solid #e0e0e0;
+    border-radius: 3px;
+    color: #555;
+    font-size: 12px;
+    white-space: pre-wrap;
+}
+
+.notification-edit-template .table-descr.__error {
+    color: #e24b4a;
+}
+
+/* Variable autocomplete dropdown (CodeMirror show-hint) is appended to <body>,
+   so it must stack above the blade layers. */
+.CodeMirror-hints {
+    z-index: 10000;
+}
+
+/* Full-screen editor (Option B): left = template OR sample, right = live preview */
+.notification-edit-template .nt-editor.__fullscreen {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    background: #fff;
+    padding: 10px 20px 16px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.notification-edit-template .nt-editor.__fullscreen .nt-panes {
+    flex-direction: row;
+    gap: 12px;
+}
+
+.notification-edit-template .nt-editor.__fullscreen .nt-pane {
+    flex: 1 1 0;
+    min-width: 0;
+}
+
+.notification-edit-template .nt-editor.__fullscreen .table-descr {
+    display: none;
+}
+
+/* The main content <article> has z-index:50 and forms a stacking context, trapping the
+   fixed overlay below the platform nav (z-index:100). While full-screen is active, raise
+   that context above the nav so the overlay covers the whole viewport. Autocomplete hints
+   (z-index:10000, appended to <body>) still stack above the overlay. */
+body.nt-fullscreen-active article {
+    z-index: 1001 !important;
+}
+
 /* Notification templates table */
 .notification-templates-table .list-name {
     display: inline-block;

@@ -119,9 +119,18 @@ namespace VirtoCommerce.NotificationsModule.Web.Controllers
                 LayoutId = request.NotificationLayoutId,
             };
 
-            var result = await _notificationTemplateRender.RenderAsync(context);
+            try
+            {
+                var result = await _notificationTemplateRender.RenderAsync(context);
 
-            return Ok(new { html = result });
+                return Ok(new { html = result });
+            }
+            catch (NotificationTemplateParseException ex)
+            {
+                // The template text comes from the caller (the editor sends it on every keystroke pause),
+                // so a parse failure is invalid input — not a server fault.
+                return BadRequest(new { message = ex.Message, errors = ex.Errors });
+            }
         }
 
 
