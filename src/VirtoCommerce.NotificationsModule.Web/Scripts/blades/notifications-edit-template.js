@@ -35,6 +35,12 @@ require('codemirror/addon/fold/foldgutter.css');
 var deepLinkWriteSeq = 0;
 var deepLinkOwnerToken = null;
 
+// Shared "does any notification layout exist?" probe, so opening several template editors does not
+// repeat the same request (see loadLayouts).
+var LAYOUTS_EXIST_TTL_MS = 30000;
+var layoutsExistPromise = null;
+var layoutsExistCheckedAt = 0;
+
 angular.module('virtoCommerce.notificationsModule')
     .controller('virtoCommerce.notificationsModule.editTemplateController',
         ['$rootScope', '$scope', '$timeout', '$sce', '$location', '$translate', '$localStorage', 'virtoCommerce.notificationsModule.notificationsModuleApi',
@@ -160,19 +166,25 @@ angular.module('virtoCommerce.notificationsModule')
                 // Raise the main content stacking context above the platform nav (see CSS).
                 angular.element(document.body).toggleClass('nt-fullscreen-active', on);
                 if (on) {
-                    window.addEventListener('keydown', onFsKeydown);
+                    window.addEventListener('keydown', onFsKeydown, true);
                     schedulePreview();
                 } else {
-                    window.removeEventListener('keydown', onFsKeydown);
+                    window.removeEventListener('keydown', onFsKeydown, true);
                 }
                 refreshEditors();
             }
 
+            function isAutocompleteOpen() {
+                return !!(templateEditor && templateEditor.state && templateEditor.state.completionActive)
+                    || !!document.querySelector('.CodeMirror-hints');
+            }
+
             function onFsKeydown(e) {
                 if (e.keyCode === 27 && blade.fullscreen) { // Esc
-                    // Esc first closes an open autocomplete popup; only the next one leaves
-                    // full-screen, so a single Esc never changes two things at once.
-                    if (document.querySelector('.CodeMirror-hints')) { return; }
+                    // Runs in the capture phase, i.e. before CodeMirror's own Esc handler removes the
+                    // hint widget — checking afterwards always looked "closed" and exited full-screen
+                    // on the same key. First Esc closes the popup, the next one leaves full-screen.
+                    if (isAutocompleteOpen()) { return; }
                     $scope.$applyAsync(function () { applyFullscreen(false); });
                 }
             }
@@ -182,7 +194,7 @@ angular.module('virtoCommerce.notificationsModule')
             };
 
             $scope.$on('$destroy', function () {
-                window.removeEventListener('keydown', onFsKeydown);
+                window.removeEventListener('keydown', onFsKeydown, true);
                 angular.element(document.body).removeClass('nt-fullscreen-active');
                 if (previewTimer) { $timeout.cancel(previewTimer); }
                 clearDeepLink();
@@ -761,13 +773,26 @@ angular.module('virtoCommerce.notificationsModule')
             }
 
             // Hide the Layout field entirely when no layouts exist — the ui-scroll-drop-down
-            // renders a dimmed/empty control otherwise. A light existence check drives the flag.
+            // renders a dimmed/empty control otherwise. The answer is the same for every blade, so
+            // the probe is shared and cached instead of re-requested on each open (it otherwise
+            // duplicated what ui-scroll-drop-down already fetches). The short TTL lets a layout
+            // created later in the session show up without a page reload.
             blade.hasLayouts = false;
             function loadLayouts() {
                 if (blade.notification.kind !== 'EmailNotification') { return; }
-                layouts.searchNotificationLayouts({ skip: 0, take: 1 }, function (data) {
-                    blade.hasLayouts = !!(data && (data.totalCount > 0 || (data.results && data.results.length)));
-                });
+
+                if (!layoutsExistPromise || (Date.now() - layoutsExistCheckedAt) > LAYOUTS_EXIST_TTL_MS) {
+                    layoutsExistCheckedAt = Date.now();
+                    layoutsExistPromise = layouts.searchNotificationLayouts({ skip: 0, take: 1 }).$promise
+                        .then(function (data) {
+                            return !!(data && (data.totalCount > 0 || (data.results && data.results.length)));
+                        }, function () {
+                            layoutsExistPromise = null;   // let the next open retry after a failure
+                            return false;
+                        });
+                }
+
+                layoutsExistPromise.then(function (exists) { blade.hasLayouts = exists; });
             }
 
             blade.renderTemplate = function () {
