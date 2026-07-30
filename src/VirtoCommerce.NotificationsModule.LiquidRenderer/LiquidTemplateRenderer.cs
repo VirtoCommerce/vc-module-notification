@@ -6,6 +6,7 @@ using Microsoft.Extensions.Options;
 using Scriban;
 using Scriban.Parsing;
 using Scriban.Runtime;
+using VirtoCommerce.NotificationsModule.Core.Exceptions;
 using VirtoCommerce.NotificationsModule.Core.Model;
 using VirtoCommerce.NotificationsModule.Core.Model.Search;
 using VirtoCommerce.NotificationsModule.Core.Services;
@@ -67,6 +68,14 @@ public class LiquidTemplateRenderer : INotificationTemplateRenderer
         templateContext.PushGlobal(scriptObject);
 
         var template = Template.ParseLiquid(stringTemplate);
+
+        // Surface parse failures as a dedicated exception. Otherwise Scriban throws a generic
+        // InvalidOperationException from RenderAsync, which callers cannot tell apart from a real fault.
+        if (template.HasErrors)
+        {
+            throw new NotificationTemplateParseException(template.Messages.Select(x => x.ToString()));
+        }
+
         var result = await template.RenderAsync(templateContext);
 
         return result;
