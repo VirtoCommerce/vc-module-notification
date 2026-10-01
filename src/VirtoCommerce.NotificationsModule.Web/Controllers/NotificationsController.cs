@@ -111,8 +111,7 @@ namespace VirtoCommerce.NotificationsModule.Web.Controllers
         {
             if (request?.Data is null)
             {
-                // The body failed to bind; ModelState names the offending field (data.<field>).
-                return BadRequest(ModelState);
+                return UnboundRequest();
             }
 
             var template = request.Data.Templates.FindTemplateForLanguage(language);
@@ -153,7 +152,7 @@ namespace VirtoCommerce.NotificationsModule.Web.Controllers
         {
             if (request?.Data is null)
             {
-                return BadRequest(ModelState);
+                return UnboundRequest();
             }
 
             var notification = request.Data;
@@ -306,6 +305,25 @@ namespace VirtoCommerce.NotificationsModule.Web.Controllers
             var result = (await _notificationMessageService.GetNotificationsMessageByIds(new[] { id })).FirstOrDefault();
 
             return Ok(result);
+        }
+
+        // The body failed to bind, so MVC passed null. ModelState names the offending field
+        // (data.<field>); the editor shows only "message", so fold the fields into it.
+        private BadRequestObjectResult UnboundRequest()
+        {
+            var errors = ModelState
+                .Where(x => x.Value.Errors.Count > 0)
+                .Select(x =>
+                {
+                    var error = x.Value.Errors[0];
+
+                    return $"{x.Key}: {(string.IsNullOrEmpty(error.ErrorMessage) ? error.Exception?.Message : error.ErrorMessage)}";
+                })
+                .ToList();
+
+            var message = errors.Count > 0 ? string.Join("; ", errors) : "The request body is missing or invalid.";
+
+            return BadRequest(new { message, errors });
         }
 
         private void PopulateNotification(NotificationRequest request, Notification notification)
