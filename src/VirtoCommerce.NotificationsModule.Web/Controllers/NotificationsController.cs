@@ -109,6 +109,12 @@ namespace VirtoCommerce.NotificationsModule.Web.Controllers
         [Authorize(ModuleConstants.Security.Permissions.ReadTemplates)]
         public async Task<ActionResult> RenderingTemplate([FromBody] NotificationTemplateRequest request, string language)
         {
+            if (request?.Data is null)
+            {
+                // The body failed to bind; ModelState names the offending field (data.<field>).
+                return BadRequest(ModelState);
+            }
+
             var template = request.Data.Templates.FindTemplateForLanguage(language);
 
             var context = new NotificationRenderContext
@@ -145,6 +151,11 @@ namespace VirtoCommerce.NotificationsModule.Web.Controllers
         [Authorize(ModuleConstants.Security.Permissions.ReadTemplates)]
         public async Task<ActionResult<NotificationSendResult>> SharePreview([FromBody] NotificationTemplateRequest request, string language)
         {
+            if (request?.Data is null)
+            {
+                return BadRequest(ModelState);
+            }
+
             var notification = request.Data;
             var message = AbstractTypeFactory<NotificationMessage>.TryCreateInstance($"{notification.Kind}Message");
 
