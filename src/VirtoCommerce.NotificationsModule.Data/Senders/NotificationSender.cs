@@ -1,13 +1,14 @@
 using System;
 using System.Linq;
 using System.Threading.Tasks;
-using Hangfire;
 using Polly;
 using VirtoCommerce.NotificationsModule.Core.Exceptions;
 using VirtoCommerce.NotificationsModule.Core.Model;
 using VirtoCommerce.NotificationsModule.Core.Services;
+using VirtoCommerce.NotificationsModule.Data.BackgroundJobs;
 using VirtoCommerce.Platform.Core.Common;
 using VirtoCommerce.Platform.Core.Exceptions;
+using VirtoCommerce.Platform.Core.Jobs;
 
 namespace VirtoCommerce.NotificationsModule.Data.Senders
 {
@@ -17,17 +18,14 @@ namespace VirtoCommerce.NotificationsModule.Data.Senders
         private readonly INotificationTemplateRenderer _notificationTemplateRender;
         private readonly INotificationMessageService _notificationMessageService;
         private readonly INotificationMessageSenderFactory _notificationMessageSenderFactory;
-        private readonly IBackgroundJobClient _jobClient;
 
         public NotificationSender(INotificationTemplateRenderer notificationTemplateRender
             , INotificationMessageService notificationMessageService
-            , INotificationMessageSenderFactory notificationMessageAccessor
-            , IBackgroundJobClient jobClient)
+            , INotificationMessageSenderFactory notificationMessageAccessor)
         {
             _notificationTemplateRender = notificationTemplateRender;
             _notificationMessageService = notificationMessageService;
             _notificationMessageSenderFactory = notificationMessageAccessor;
-            _jobClient = jobClient;
         }
 
         public async Task ScheduleSendNotificationAsync(Notification notification)
@@ -59,7 +57,7 @@ namespace VirtoCommerce.NotificationsModule.Data.Senders
 
         public void EnqueueNotificationSending(string messageId)
         {
-            _jobClient.Enqueue(() => TrySendNotificationMessageAsync(messageId));
+            _ = BackgroundJob.Enqueue<SendNotificationMessageJob>(new SendNotificationMessagePayload { MessageId = messageId });
         }
 
         public async Task<NotificationSendResult> TrySendNotificationMessageAsync(string messageId)

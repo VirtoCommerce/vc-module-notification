@@ -2,12 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Linq.Expressions;
 using System.Net.Mail;
+using System.Threading;
 using System.Threading.Tasks;
-using Hangfire;
-using Hangfire.Common;
-using Hangfire.States;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Moq;
 using Newtonsoft.Json;
@@ -16,6 +14,7 @@ using VirtoCommerce.NotificationsModule.Core.Model;
 using VirtoCommerce.NotificationsModule.Core.Model.Search;
 using VirtoCommerce.NotificationsModule.Core.Services;
 using VirtoCommerce.NotificationsModule.Core.Types;
+using VirtoCommerce.NotificationsModule.Data.BackgroundJobs;
 using VirtoCommerce.NotificationsModule.Data.Model;
 using VirtoCommerce.NotificationsModule.Data.Senders;
 using VirtoCommerce.NotificationsModule.Data.Services;
@@ -25,6 +24,7 @@ using VirtoCommerce.NotificationsModule.Tests.Common;
 using VirtoCommerce.NotificationsModule.Tests.Model;
 using VirtoCommerce.NotificationsModule.Tests.NotificationTypes;
 using VirtoCommerce.Platform.Core.Common;
+using VirtoCommerce.Platform.Core.Jobs;
 using VirtoCommerce.Platform.Core.JsonConverters;
 using Xunit;
 
@@ -38,7 +38,7 @@ namespace VirtoCommerce.NotificationsModule.Tests.UnitTests
         private readonly Mock<INotificationMessageService> _messageServiceMock;
         private readonly Mock<INotificationMessageSender> _messageSenderMock;
         private readonly Mock<INotificationMessageSenderFactory> _senderFactoryMock;
-        private readonly Mock<IBackgroundJobClient> _backgroundJobClient;
+        private readonly Mock<IBackgroundJob> _backgroundJob;
         private readonly Mock<INotificationLayoutService> _notificationLayoutServiceMock;
         private readonly Mock<INotificationLayoutSearchService> _notificationLayoutSearchService;
         private readonly Mock<INotificationSearchService> _notificationSearchServiceMock;
@@ -60,9 +60,11 @@ namespace VirtoCommerce.NotificationsModule.Tests.UnitTests
 
             _senderFactoryMock = new Mock<INotificationMessageSenderFactory>();
             _senderFactoryMock.Setup(s => s.GetSender(It.IsAny<NotificationMessage>())).Returns(_messageSenderMock.Object);
-            _backgroundJobClient = new Mock<IBackgroundJobClient>();
+            _backgroundJob = new Mock<IBackgroundJob>();
+            _backgroundJob.Setup(x => x.Enqueue<SendNotificationMessageJob>(It.IsAny<object>(), It.IsAny<EnqueueOptions>(), It.IsAny<CancellationToken>())).ReturnsAsync("job-id");
+            BackgroundJob.Initialize(new ServiceCollection().AddScoped(_ => _backgroundJob.Object).BuildServiceProvider());
 
-            _sender = new NotificationSender(_templateRender, _messageServiceMock.Object, _senderFactoryMock.Object, _backgroundJobClient.Object);
+            _sender = new NotificationSender(_templateRender, _messageServiceMock.Object, _senderFactoryMock.Object);
 
             if (!AbstractTypeFactory<NotificationTemplate>.AllTypeInfos.SelectMany(x => x.AllSubclasses).Contains(typeof(EmailNotificationTemplate)))
                 AbstractTypeFactory<NotificationTemplate>.RegisterType<EmailNotificationTemplate>().MapToType<NotificationTemplateEntity>();
@@ -440,7 +442,7 @@ namespace VirtoCommerce.NotificationsModule.Tests.UnitTests
             _messageServiceMock.Setup(ms => ms.SaveNotificationMessagesAsync(new NotificationMessage[] { message }));
             _messageSenderMock.Setup(ms => ms.SendNotificationAsync(It.IsAny<NotificationMessage>())).Throws(new SmtpException());
 
-            var sender = new NotificationSender(_templateRender, _messageServiceMock.Object, _senderFactoryMock.Object, _backgroundJobClient.Object);
+            var sender = new NotificationSender(_templateRender, _messageServiceMock.Object, _senderFactoryMock.Object);
 
             //Act
             var result = await sender.SendNotificationAsync(notification);
@@ -466,16 +468,11 @@ namespace VirtoCommerce.NotificationsModule.Tests.UnitTests
             });
             var notification = AbstractTypeFactory<Notification>.TryCreateInstance(nameof(SampleEmailNotification));
             notification.IsActive = true;
-            var jsonSerializeSettings = new JsonSerializerSettings { Converters = new List<JsonConverter> { new PolymorphJsonConverter() } };
-            GlobalConfiguration.Configuration.UseSerializerSettings(jsonSerializeSettings);
-
             //Act
             await _sender.ScheduleSendNotificationAsync(notification);
 
             //Assert
-            Func<Job, bool> condition = job => job.Method.Name == nameof(NotificationSender.TrySendNotificationMessageAsync) && job.Args[0] is null;
-            Expression<Func<Job, bool>> expression = a => condition(a);
-            _backgroundJobClient.Verify(x => x.Create(It.Is(expression), It.IsAny<EnqueuedState>()));
+            _backgroundJob.Verify(x => x.Enqueue<SendNotificationMessageJob>(It.IsAny<object>(), It.IsAny<EnqueueOptions>(), It.IsAny<CancellationToken>()));
         }
 
         [Fact]
@@ -531,8 +528,7 @@ namespace VirtoCommerce.NotificationsModule.Tests.UnitTests
         {
             return new NotificationSender(_templateRender,
                 _messageServiceMock.Object,
-                _senderFactoryMock.Object,
-                _backgroundJobClient.Object);
+                _senderFactoryMock.Object);
         }
     }
 }
