@@ -1,4 +1,4 @@
-using System;
+using System;
 using System.Threading;
 using System.IO;
 using System.Linq;
@@ -13,6 +13,7 @@ using VirtoCommerce.NotificationsModule.Core;
 using VirtoCommerce.NotificationsModule.Core.Model;
 using VirtoCommerce.NotificationsModule.Core.Services;
 using VirtoCommerce.NotificationsModule.Core.Types;
+using VirtoCommerce.NotificationsModule.Data.BackgroundJobs;
 using VirtoCommerce.NotificationsModule.Data.ExportImport;
 using VirtoCommerce.NotificationsModule.Data.Handlers;
 using VirtoCommerce.NotificationsModule.Data.Model;
@@ -32,6 +33,7 @@ using VirtoCommerce.NotificationsModule.Twilio;
 using VirtoCommerce.Platform.Core.Common;
 using VirtoCommerce.Platform.Core.Events;
 using VirtoCommerce.Platform.Core.ExportImport;
+using VirtoCommerce.Platform.Core.Jobs;
 using VirtoCommerce.Platform.Core.JsonConverters;
 using VirtoCommerce.Platform.Core.Modularity;
 using VirtoCommerce.Platform.Core.Security;
@@ -84,6 +86,8 @@ namespace VirtoCommerce.NotificationsModule.Web
             serviceCollection.AddTransient<IEmailAttachmentService, EmailAttachmentService>();
 
             serviceCollection.AddTransient<RequestPasswordResetHandler>();
+            serviceCollection.AddBackgroundJob<SendResetPasswordNotificationJob>();
+            serviceCollection.AddBackgroundJob<SendNotificationMessageJob>();
 
             serviceCollection.AddTransient<INotificationLayoutService, NotificationLayoutService>();
             serviceCollection.AddTransient<INotificationLayoutSearchService, NotificationLayoutSearchService>();

@@ -13,5 +13,7 @@ namespace VirtoCommerce.NotificationsModule.Core.Services
         Task ScheduleSendNotificationAsync(Notification notification);
 
         void EnqueueNotificationSending(string messageId);
+
+        Task<NotificationSendResult> TrySendNotificationMessageAsync(string messageId);
     }
 }
