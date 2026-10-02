@@ -109,6 +109,11 @@ namespace VirtoCommerce.NotificationsModule.Web.Controllers
         [Authorize(ModuleConstants.Security.Permissions.ReadTemplates)]
         public async Task<ActionResult> RenderingTemplate([FromBody] NotificationTemplateRequest request, string language)
         {
+            if (request?.Data is null)
+            {
+                return UnboundRequest();
+            }
+
             var template = request.Data.Templates.FindTemplateForLanguage(language);
 
             var context = new NotificationRenderContext
@@ -145,6 +150,11 @@ namespace VirtoCommerce.NotificationsModule.Web.Controllers
         [Authorize(ModuleConstants.Security.Permissions.ReadTemplates)]
         public async Task<ActionResult<NotificationSendResult>> SharePreview([FromBody] NotificationTemplateRequest request, string language)
         {
+            if (request?.Data is null)
+            {
+                return UnboundRequest();
+            }
+
             var notification = request.Data;
             var message = AbstractTypeFactory<NotificationMessage>.TryCreateInstance($"{notification.Kind}Message");
 
@@ -295,6 +305,25 @@ namespace VirtoCommerce.NotificationsModule.Web.Controllers
             var result = (await _notificationMessageService.GetNotificationsMessageByIds(new[] { id })).FirstOrDefault();
 
             return Ok(result);
+        }
+
+        // The body failed to bind, so MVC passed null. ModelState names the offending field
+        // (data.<field>); the editor shows only "message", so fold the fields into it.
+        private BadRequestObjectResult UnboundRequest()
+        {
+            var errors = ModelState
+                .Where(x => x.Value.Errors.Count > 0)
+                .Select(x =>
+                {
+                    var error = x.Value.Errors[0];
+
+                    return $"{x.Key}: {(string.IsNullOrEmpty(error.ErrorMessage) ? error.Exception?.Message : error.ErrorMessage)}";
+                })
+                .ToList();
+
+            var message = errors.Count > 0 ? string.Join("; ", errors) : "The request body is missing or invalid.";
+
+            return BadRequest(new { message, errors });
         }
 
         private void PopulateNotification(NotificationRequest request, Notification notification)
