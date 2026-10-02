@@ -236,6 +236,10 @@ angular.module('virtoCommerce.notificationsModule')
                     angular.extend(data, JSON.parse(blade.currentEntity.sample));
                 }
 
+                // cc/bcc must reach the API as plain strings, like in Save and the header Preview.
+                data.cc = pluckAddressValues(data.cc);
+                data.bcc = pluckAddressValues(data.bcc);
+
                 previewRequestsInFlight++;
                 notifications.renderTemplate({
                     type: blade.notification.type,
