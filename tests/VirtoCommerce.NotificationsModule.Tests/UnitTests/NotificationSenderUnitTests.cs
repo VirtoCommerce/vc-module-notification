@@ -30,6 +30,7 @@ using Xunit;
 
 namespace VirtoCommerce.NotificationsModule.Tests.UnitTests
 {
+    [Collection(BackgroundJobFacadeCollection.Name)]
     public class NotificationSenderUnitTests
     {
 
