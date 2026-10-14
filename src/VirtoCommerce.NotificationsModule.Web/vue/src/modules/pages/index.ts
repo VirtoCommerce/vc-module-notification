@@ -1,0 +1,9 @@
+export { default as NotificationsMenu } from "./menu.vue";
+export { default as NotificationsList } from "./list.vue";
+export { default as NotificationDetails } from "./details.vue";
+export { default as NotificationTemplates } from "./templates.vue";
+export { default as NotificationTemplateDetails } from "./template-details.vue";
+export { default as NotificationsJournal } from "./journal.vue";
+export { default as NotificationMessageDetails } from "./message-details.vue";
+export { default as NotificationLayouts } from "./layouts.vue";
+export { default as NotificationLayoutDetails } from "./layout-details.vue";

@@ -1,0 +1,18 @@
+{
+  // Notifications admin UI for the Admin Shell host (Module Federation remote)
+  "remote": { "name": "notifications_admin", "exposed": "./Module" },
+  "contributions": {
+    "menu": [
+      {
+        "id": "notifications",
+        "sectionId": "marketing",
+        "title": "Notifications",
+        "icon": "lucide-mail",
+        "route": "/notifications",
+        "permission": "notifications:access",
+        "priority": 30,
+        "replaces": "legacy.notifications"
+      }
+    ]
+  }
+}
