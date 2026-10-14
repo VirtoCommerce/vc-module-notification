@@ -4,7 +4,7 @@
     "menu": [
       {
         "id": "notifications",
-        "sectionId": "marketing",
+        "sectionId": "configuration",
         "title": "Notifications",
         "icon": "lucide-mail",
         "route": "/notifications",
