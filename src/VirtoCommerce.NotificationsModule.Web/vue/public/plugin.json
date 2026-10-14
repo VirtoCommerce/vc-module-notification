@@ -1,5 +1,4 @@
 {
-  // Notifications admin UI for the Admin Shell host (Module Federation remote)
   "remote": { "name": "notifications_admin", "exposed": "./Module" },
   "contributions": {
     "menu": [

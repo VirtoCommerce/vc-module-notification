@@ -170,7 +170,11 @@ const subtitle = computed(
 );
 
 const statuses = ["Sent", "Pending", "Error"];
-const statusVariant = (status?: string) => (status === "Sent" ? "success" : status === "Error" ? "danger" : "warning");
+function statusVariant(status?: string) {
+  if (status === "Sent") return "success";
+  if (status === "Error") return "danger";
+  return "warning";
+}
 const statusLabel = (status?: string) => t(`NOTIFICATIONS.MESSAGE_STATUS.${(status ?? "Pending").toUpperCase()}`);
 
 // the AngularJS journal filter panel: status, "search in body" and a period (today ... last 30 days, or a range)
