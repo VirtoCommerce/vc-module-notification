@@ -1,0 +1,173 @@
+{
+  "NOTIFICATIONS": {
+    "MENU": {
+      "TITLE": "Notifications"
+    },
+    "WIDGETS": {
+      "TEMPLATES": "Templates",
+      "LOG": "Notification log"
+    },
+    "KIND": {
+      "EMAIL": "Email",
+      "SMS": "SMS"
+    },
+    "STATUS": {
+      "ACTIVE": "Active",
+      "INACTIVE": "Inactive"
+    },
+    "MESSAGE_STATUS": {
+      "SENT": "Sent",
+      "PENDING": "Pending",
+      "ERROR": "Error"
+    },
+    "TEMPLATE_STATE": {
+      "PREDEFINED": "Predefined",
+      "EDITED": "Edited",
+      "CUSTOM": "Custom"
+    },
+    "TOOLBAR": {
+      "REFRESH": "Refresh",
+      "ADD": "Add",
+      "CREATE": "Create",
+      "SAVE": "Save",
+      "RESET": "Reset",
+      "DELETE": "Delete",
+      "PREVIEW": "Preview",
+      "RESTORE": "Restore",
+      "CANCEL": "Cancel"
+    },
+    "PAGES": {
+      "MENU": {
+        "TITLE": "Notifications",
+        "JOURNAL": "Sent and pending messages",
+        "LIST": "Notification types, recipients and templates",
+        "LAYOUTS": "Shared e-mail layouts",
+        "COLUMNS": {
+          "SECTION": "Section",
+          "DESCRIPTION": "Description"
+        }
+      },
+      "LIST": {
+        "TITLE": "Notification types",
+        "EMPTY": "No notifications found",
+        "COLUMNS": {
+          "NAME": "Notification",
+          "KIND": "Kind",
+          "STATUS": "Status"
+        }
+      },
+      "DETAILS": {
+        "BLANK_HINT": "Leave blank to use the default",
+        "LIST_HINT": "Press Enter after each e-mail address",
+        "FIELDS": {
+          "TYPE": "Type",
+          "ACTIVE": "Active",
+          "FROM": "From",
+          "TO": "To",
+          "CC": "CC",
+          "BCC": "BCC",
+          "REPLY_TO": "Reply to",
+          "NUMBER": "Phone number"
+        }
+      },
+      "TEMPLATES": {
+        "TITLE": "Templates",
+        "EMPTY": "No templates",
+        "DEFAULT_LANGUAGE": "Default",
+        "COLUMNS": {
+          "LANGUAGE": "Language",
+          "SUBJECT": "Subject",
+          "MESSAGE": "Message",
+          "STATE": "State",
+          "MODIFIED": "Modified"
+        }
+      },
+      "TEMPLATE": {
+        "TITLE": "Template: {language}",
+        "TITLE_NEW": "New template",
+        "PREVIEW": "Preview",
+        "SAMPLE_HINT": "JSON with the data the template is rendered with in the preview",
+        "SEND_TEST": "Send test e-mail",
+        "SEND_TO": "Send to",
+        "SEND": "Send",
+        "FIELDS": {
+          "LANGUAGE": "Language",
+          "LAYOUT": "Layout",
+          "DEFAULT_LAYOUT": "Default layout",
+          "SUBJECT": "Subject",
+          "BODY": "Body",
+          "MESSAGE": "Message",
+          "SAMPLE": "Sample data"
+        }
+      },
+      "JOURNAL": {
+        "TITLE": "Notification activity",
+        "EMPTY": "No messages",
+        "RESEND": "Resend",
+        "SEARCH_IN_BODY": "Search in message body",
+        "SEARCH_IN_BODY_YES": "Yes, include the body",
+        "PERIOD": "Period",
+        "PERIODS": {
+          "TODAY": "Today",
+          "YESTERDAY": "Yesterday",
+          "LAST24H": "Last 24 hours",
+          "LAST7D": "Last 7 days",
+          "LAST30D": "Last 30 days"
+        },
+        "SAVED": {
+          "PLACEHOLDER": "Saved searches",
+          "SAVE": "Save search",
+          "DELETE": "Delete saved search",
+          "NAME": "Name",
+          "HINT": "Saves the search \"{keyword}\" in this browser"
+        },
+        "COLUMNS": {
+          "NOTIFICATION": "Notification",
+          "RECIPIENT": "Recipient",
+          "SUBJECT": "Subject",
+          "CREATED": "Created",
+          "ATTEMPTS": "Attempts",
+          "STATUS": "Status"
+        }
+      },
+      "MESSAGE": {
+        "BODY": "Message",
+        "FIELDS": {
+          "ID": "Id",
+          "SENT": "Sent",
+          "LANGUAGE": "Language",
+          "ERROR": "Last error"
+        }
+      },
+      "LAYOUTS": {
+        "TITLE": "Layouts",
+        "EMPTY": "No layouts yet",
+        "DEFAULT": "Default",
+        "COLUMNS": {
+          "NAME": "Name",
+          "DEFAULT": "Default"
+        }
+      },
+      "LAYOUT": {
+        "TITLE_NEW": "New layout",
+        "SUBTITLE": "Notification layout",
+        "IS_DEFAULT": "Default layout",
+        "TEMPLATE": "Template",
+        "RESET_DEFAULT": "Reset to default"
+      }
+    },
+    "VALIDATION": {
+      "LANGUAGE_EXISTS": "There is already a template for this language",
+      "SAMPLE_JSON": "Not valid JSON"
+    },
+    "ALERTS": {
+      "CLOSE_CONFIRMATION": "You have unsaved changes. Close anyway?",
+      "DELETE_TEMPLATES": "Delete {count} template(s)?",
+      "RESTORE_TEMPLATE": "Discard the changes to this template and use the module's original template again?",
+      "TEST_SENT": "Test e-mail sent to {email}",
+      "RESEND_SCHEDULED": "{count} message(s) scheduled for resending",
+      "DELETE_LAYOUTS": "Delete {count} layout(s)?",
+      "RESET_LAYOUT": "Discard the changes to this layout and use the module's original one?"
+    }
+  }
+}
