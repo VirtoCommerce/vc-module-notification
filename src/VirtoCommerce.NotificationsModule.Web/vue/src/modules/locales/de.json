@@ -1,0 +1,173 @@
+{
+  "NOTIFICATIONS": {
+    "MENU": {
+      "TITLE": "Benachrichtigungen"
+    },
+    "WIDGETS": {
+      "TEMPLATES": "Vorlagen",
+      "LOG": "Nachrichten-Protokoll"
+    },
+    "KIND": {
+      "EMAIL": "E-Mail",
+      "SMS": "SMS"
+    },
+    "STATUS": {
+      "ACTIVE": "Aktiv",
+      "INACTIVE": "Inaktiv"
+    },
+    "MESSAGE_STATUS": {
+      "SENT": "Gesendet",
+      "PENDING": "Ausstehend",
+      "ERROR": "Fehler"
+    },
+    "TEMPLATE_STATE": {
+      "PREDEFINED": "Vordefiniert",
+      "EDITED": "Bearbeitet",
+      "CUSTOM": "Benutzerdefiniert"
+    },
+    "TOOLBAR": {
+      "REFRESH": "Aktualisieren",
+      "ADD": "Hinzufügen",
+      "CREATE": "Erstellen",
+      "SAVE": "Speichern",
+      "RESET": "Zurücksetzen",
+      "DELETE": "Löschen",
+      "PREVIEW": "Vorschau",
+      "RESTORE": "Wiederherstellen",
+      "CANCEL": "Abbrechen"
+    },
+    "PAGES": {
+      "MENU": {
+        "TITLE": "Benachrichtigungen",
+        "JOURNAL": "Gesendete und ausstehende Nachrichten",
+        "LIST": "Benachrichtigungstypen, Empfänger und Vorlagen",
+        "LAYOUTS": "Gemeinsame E-Mail-Layouts",
+        "COLUMNS": {
+          "SECTION": "Bereich",
+          "DESCRIPTION": "Beschreibung"
+        }
+      },
+      "LIST": {
+        "TITLE": "Benachrichtigungstypen",
+        "EMPTY": "Keine Benachrichtigungen gefunden",
+        "COLUMNS": {
+          "NAME": "Benachrichtigung",
+          "KIND": "Art",
+          "STATUS": "Status"
+        }
+      },
+      "DETAILS": {
+        "BLANK_HINT": "Leer lassen, um den Standardwert zu verwenden",
+        "LIST_HINT": "Drücken Sie nach jeder E-Mail-Adresse die Eingabetaste",
+        "FIELDS": {
+          "TYPE": "Typ",
+          "ACTIVE": "Aktiv",
+          "FROM": "Von",
+          "TO": "An",
+          "CC": "CC",
+          "BCC": "BCC",
+          "REPLY_TO": "Antwort an",
+          "NUMBER": "Telefonnummer"
+        }
+      },
+      "TEMPLATES": {
+        "TITLE": "Vorlagen",
+        "EMPTY": "Keine Vorlagen",
+        "DEFAULT_LANGUAGE": "Standard",
+        "COLUMNS": {
+          "LANGUAGE": "Sprache",
+          "SUBJECT": "Betreff",
+          "MESSAGE": "Nachricht",
+          "STATE": "Zustand",
+          "MODIFIED": "Geändert"
+        }
+      },
+      "TEMPLATE": {
+        "TITLE": "Vorlage: {language}",
+        "TITLE_NEW": "Neue Vorlage",
+        "PREVIEW": "Vorschau",
+        "SAMPLE_HINT": "JSON mit den Daten, mit denen die Vorlage in der Vorschau gerendert wird",
+        "SEND_TEST": "Test-E-Mail senden",
+        "SEND_TO": "Senden an",
+        "SEND": "Senden",
+        "FIELDS": {
+          "LANGUAGE": "Sprache",
+          "LAYOUT": "Layout",
+          "DEFAULT_LAYOUT": "Standardlayout",
+          "SUBJECT": "Betreff",
+          "BODY": "Inhalt",
+          "MESSAGE": "Nachricht",
+          "SAMPLE": "Beispieldaten"
+        }
+      },
+      "JOURNAL": {
+        "TITLE": "Benachrichtigungsaktivität",
+        "EMPTY": "Keine Nachrichten",
+        "RESEND": "Erneut senden",
+        "SEARCH_IN_BODY": "Im Nachrichteninhalt suchen",
+        "SEARCH_IN_BODY_YES": "Ja, Inhalt einbeziehen",
+        "PERIOD": "Zeitraum",
+        "PERIODS": {
+          "TODAY": "Heute",
+          "YESTERDAY": "Gestern",
+          "LAST24H": "Letzte 24 Stunden",
+          "LAST7D": "Letzte 7 Tage",
+          "LAST30D": "Letzte 30 Tage"
+        },
+        "SAVED": {
+          "PLACEHOLDER": "Gespeicherte Suchen",
+          "SAVE": "Suche speichern",
+          "DELETE": "Gespeicherte Suche löschen",
+          "NAME": "Name",
+          "HINT": "Speichert die Suche „{keyword}“ in diesem Browser"
+        },
+        "COLUMNS": {
+          "NOTIFICATION": "Benachrichtigung",
+          "RECIPIENT": "Empfänger",
+          "SUBJECT": "Betreff",
+          "CREATED": "Erstellt",
+          "ATTEMPTS": "Versuche",
+          "STATUS": "Status"
+        }
+      },
+      "MESSAGE": {
+        "BODY": "Nachricht",
+        "FIELDS": {
+          "ID": "ID",
+          "SENT": "Gesendet",
+          "LANGUAGE": "Sprache",
+          "ERROR": "Letzter Fehler"
+        }
+      },
+      "LAYOUTS": {
+        "TITLE": "Layouts",
+        "EMPTY": "Noch keine Layouts",
+        "DEFAULT": "Standard",
+        "COLUMNS": {
+          "NAME": "Name",
+          "DEFAULT": "Standard"
+        }
+      },
+      "LAYOUT": {
+        "TITLE_NEW": "Neues Layout",
+        "SUBTITLE": "Benachrichtigungslayout",
+        "IS_DEFAULT": "Standardlayout",
+        "TEMPLATE": "Vorlage",
+        "RESET_DEFAULT": "Auf Standard zurücksetzen"
+      }
+    },
+    "VALIDATION": {
+      "LANGUAGE_EXISTS": "Für diese Sprache gibt es bereits eine Vorlage",
+      "SAMPLE_JSON": "Kein gültiges JSON"
+    },
+    "ALERTS": {
+      "CLOSE_CONFIRMATION": "Sie haben nicht gespeicherte Änderungen. Trotzdem schließen?",
+      "DELETE_TEMPLATES": "{count} Vorlage(n) löschen?",
+      "RESTORE_TEMPLATE": "Änderungen an dieser Vorlage verwerfen und wieder die Originalvorlage des Moduls verwenden?",
+      "TEST_SENT": "Test-E-Mail an {email} gesendet",
+      "RESEND_SCHEDULED": "{count} Nachricht(en) zum erneuten Senden eingeplant",
+      "DELETE_LAYOUTS": "{count} Layout(s) löschen?",
+      "RESET_LAYOUT": "Änderungen an diesem Layout verwerfen und wieder das Originallayout des Moduls verwenden?"
+    }
+  }
+}

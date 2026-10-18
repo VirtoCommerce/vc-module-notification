@@ -1,0 +1,173 @@
+{
+  "NOTIFICATIONS": {
+    "MENU": {
+      "TITLE": "Powiadomienia"
+    },
+    "WIDGETS": {
+      "TEMPLATES": "Szablony",
+      "LOG": "Dziennik powiadomień"
+    },
+    "KIND": {
+      "EMAIL": "E-mail",
+      "SMS": "SMS"
+    },
+    "STATUS": {
+      "ACTIVE": "Aktywne",
+      "INACTIVE": "Nieaktywne"
+    },
+    "MESSAGE_STATUS": {
+      "SENT": "Wysłano",
+      "PENDING": "Oczekuje",
+      "ERROR": "Błąd"
+    },
+    "TEMPLATE_STATE": {
+      "PREDEFINED": "Zdefiniowane",
+      "EDITED": "Edytowane",
+      "CUSTOM": "Niestandardowe"
+    },
+    "TOOLBAR": {
+      "REFRESH": "Odśwież",
+      "ADD": "Dodaj",
+      "CREATE": "Utwórz",
+      "SAVE": "Zapisz",
+      "RESET": "Resetuj",
+      "DELETE": "Usuń",
+      "PREVIEW": "Podgląd",
+      "RESTORE": "Przywróć",
+      "CANCEL": "Anuluj"
+    },
+    "PAGES": {
+      "MENU": {
+        "TITLE": "Powiadomienia",
+        "JOURNAL": "Wiadomości wysłane i oczekujące",
+        "LIST": "Typy powiadomień, odbiorcy i szablony",
+        "LAYOUTS": "Wspólne układy wiadomości e-mail",
+        "COLUMNS": {
+          "SECTION": "Sekcja",
+          "DESCRIPTION": "Opis"
+        }
+      },
+      "LIST": {
+        "TITLE": "Typy powiadomień",
+        "EMPTY": "Nie znaleziono powiadomień",
+        "COLUMNS": {
+          "NAME": "Powiadomienie",
+          "KIND": "Rodzaj",
+          "STATUS": "Status"
+        }
+      },
+      "DETAILS": {
+        "BLANK_HINT": "Pozostaw puste, aby użyć wartości domyślnej",
+        "LIST_HINT": "Naciśnij Enter po każdym adresie e-mail",
+        "FIELDS": {
+          "TYPE": "Typ",
+          "ACTIVE": "Aktywne",
+          "FROM": "Od",
+          "TO": "Do",
+          "CC": "CC",
+          "BCC": "BCC",
+          "REPLY_TO": "Odpowiedz do",
+          "NUMBER": "Numer telefonu"
+        }
+      },
+      "TEMPLATES": {
+        "TITLE": "Szablony",
+        "EMPTY": "Brak szablonów",
+        "DEFAULT_LANGUAGE": "Domyślny",
+        "COLUMNS": {
+          "LANGUAGE": "Język",
+          "SUBJECT": "Temat",
+          "MESSAGE": "Wiadomość",
+          "STATE": "Stan",
+          "MODIFIED": "Zmodyfikowano"
+        }
+      },
+      "TEMPLATE": {
+        "TITLE": "Szablon: {language}",
+        "TITLE_NEW": "Nowy szablon",
+        "PREVIEW": "Podgląd",
+        "SAMPLE_HINT": "JSON z danymi, na podstawie których szablon jest wyświetlany w podglądzie",
+        "SEND_TEST": "Wyślij testowy e-mail",
+        "SEND_TO": "Wyślij do",
+        "SEND": "Wyślij",
+        "FIELDS": {
+          "LANGUAGE": "Język",
+          "LAYOUT": "Układ",
+          "DEFAULT_LAYOUT": "Układ domyślny",
+          "SUBJECT": "Temat",
+          "BODY": "Treść",
+          "MESSAGE": "Wiadomość",
+          "SAMPLE": "Dane przykładowe"
+        }
+      },
+      "JOURNAL": {
+        "TITLE": "Aktywność powiadomień",
+        "EMPTY": "Brak wiadomości",
+        "RESEND": "Wyślij ponownie",
+        "SEARCH_IN_BODY": "Szukaj w treści wiadomości",
+        "SEARCH_IN_BODY_YES": "Tak, uwzględnij treść",
+        "PERIOD": "Okres",
+        "PERIODS": {
+          "TODAY": "Dzisiaj",
+          "YESTERDAY": "Wczoraj",
+          "LAST24H": "Ostatnie 24 godziny",
+          "LAST7D": "Ostatnie 7 dni",
+          "LAST30D": "Ostatnie 30 dni"
+        },
+        "SAVED": {
+          "PLACEHOLDER": "Zapisane wyszukiwania",
+          "SAVE": "Zapisz wyszukiwanie",
+          "DELETE": "Usuń zapisane wyszukiwanie",
+          "NAME": "Nazwa",
+          "HINT": "Zapisuje wyszukiwanie „{keyword}” w tej przeglądarce"
+        },
+        "COLUMNS": {
+          "NOTIFICATION": "Powiadomienie",
+          "RECIPIENT": "Odbiorca",
+          "SUBJECT": "Temat",
+          "CREATED": "Utworzono",
+          "ATTEMPTS": "Próby",
+          "STATUS": "Status"
+        }
+      },
+      "MESSAGE": {
+        "BODY": "Wiadomość",
+        "FIELDS": {
+          "ID": "ID",
+          "SENT": "Wysłano",
+          "LANGUAGE": "Język",
+          "ERROR": "Ostatni błąd"
+        }
+      },
+      "LAYOUTS": {
+        "TITLE": "Układy",
+        "EMPTY": "Brak układów",
+        "DEFAULT": "Domyślny",
+        "COLUMNS": {
+          "NAME": "Nazwa",
+          "DEFAULT": "Domyślny"
+        }
+      },
+      "LAYOUT": {
+        "TITLE_NEW": "Nowy układ",
+        "SUBTITLE": "Układ powiadomienia",
+        "IS_DEFAULT": "Układ domyślny",
+        "TEMPLATE": "Szablon",
+        "RESET_DEFAULT": "Przywróć domyślne"
+      }
+    },
+    "VALIDATION": {
+      "LANGUAGE_EXISTS": "Szablon dla tego języka już istnieje",
+      "SAMPLE_JSON": "Nieprawidłowy JSON"
+    },
+    "ALERTS": {
+      "CLOSE_CONFIRMATION": "Masz niezapisane zmiany. Zamknąć mimo to?",
+      "DELETE_TEMPLATES": "Usunąć szablony ({count})?",
+      "RESTORE_TEMPLATE": "Odrzucić zmiany w tym szablonie i ponownie używać oryginalnego szablonu modułu?",
+      "TEST_SENT": "Testowy e-mail wysłano na adres {email}",
+      "RESEND_SCHEDULED": "Zaplanowano ponowne wysłanie wiadomości ({count})",
+      "DELETE_LAYOUTS": "Usunąć układy ({count})?",
+      "RESET_LAYOUT": "Odrzucić zmiany w tym układzie i używać oryginalnego układu modułu?"
+    }
+  }
+}

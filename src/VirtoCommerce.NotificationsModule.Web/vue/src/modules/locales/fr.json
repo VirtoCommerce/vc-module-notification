@@ -1,0 +1,173 @@
+{
+  "NOTIFICATIONS": {
+    "MENU": {
+      "TITLE": "Notifications"
+    },
+    "WIDGETS": {
+      "TEMPLATES": "Modèles",
+      "LOG": "Journal des notifications"
+    },
+    "KIND": {
+      "EMAIL": "E-mail",
+      "SMS": "SMS"
+    },
+    "STATUS": {
+      "ACTIVE": "Active",
+      "INACTIVE": "Inactive"
+    },
+    "MESSAGE_STATUS": {
+      "SENT": "Envoyé",
+      "PENDING": "En attente",
+      "ERROR": "Erreur"
+    },
+    "TEMPLATE_STATE": {
+      "PREDEFINED": "Prédéfini",
+      "EDITED": "Édité",
+      "CUSTOM": "Personnalisé"
+    },
+    "TOOLBAR": {
+      "REFRESH": "Actualiser",
+      "ADD": "Ajouter",
+      "CREATE": "Créer",
+      "SAVE": "Enregistrer",
+      "RESET": "Réinitialiser",
+      "DELETE": "Supprimer",
+      "PREVIEW": "Prévisualiser",
+      "RESTORE": "Restaurer",
+      "CANCEL": "Annuler"
+    },
+    "PAGES": {
+      "MENU": {
+        "TITLE": "Notifications",
+        "JOURNAL": "Messages envoyés et en attente",
+        "LIST": "Types de notification, destinataires et modèles",
+        "LAYOUTS": "Mises en page d'e-mail partagées",
+        "COLUMNS": {
+          "SECTION": "Section",
+          "DESCRIPTION": "Description"
+        }
+      },
+      "LIST": {
+        "TITLE": "Types de notification",
+        "EMPTY": "Aucune notification trouvée",
+        "COLUMNS": {
+          "NAME": "Notification",
+          "KIND": "Canal",
+          "STATUS": "Statut"
+        }
+      },
+      "DETAILS": {
+        "BLANK_HINT": "Laissez vide pour utiliser la valeur par défaut",
+        "LIST_HINT": "Appuyez sur Entrée après chaque adresse e-mail",
+        "FIELDS": {
+          "TYPE": "Type",
+          "ACTIVE": "Active",
+          "FROM": "De",
+          "TO": "À",
+          "CC": "CC",
+          "BCC": "BCC",
+          "REPLY_TO": "Répondre à",
+          "NUMBER": "Numéro de téléphone"
+        }
+      },
+      "TEMPLATES": {
+        "TITLE": "Modèles",
+        "EMPTY": "Aucun modèle",
+        "DEFAULT_LANGUAGE": "Par défaut",
+        "COLUMNS": {
+          "LANGUAGE": "Langue",
+          "SUBJECT": "Objet",
+          "MESSAGE": "Message",
+          "STATE": "État",
+          "MODIFIED": "Modifié"
+        }
+      },
+      "TEMPLATE": {
+        "TITLE": "Modèle : {language}",
+        "TITLE_NEW": "Nouveau modèle",
+        "PREVIEW": "Aperçu",
+        "SAMPLE_HINT": "JSON contenant les données utilisées pour afficher le modèle dans l'aperçu",
+        "SEND_TEST": "Envoyer un e-mail de test",
+        "SEND_TO": "Envoyer à",
+        "SEND": "Envoyer",
+        "FIELDS": {
+          "LANGUAGE": "Langue",
+          "LAYOUT": "Mise en page",
+          "DEFAULT_LAYOUT": "Mise en page par défaut",
+          "SUBJECT": "Objet",
+          "BODY": "Corps",
+          "MESSAGE": "Message",
+          "SAMPLE": "Données d'exemple"
+        }
+      },
+      "JOURNAL": {
+        "TITLE": "Activité des notifications",
+        "EMPTY": "Aucun message",
+        "RESEND": "Renvoyer",
+        "SEARCH_IN_BODY": "Rechercher dans le corps du message",
+        "SEARCH_IN_BODY_YES": "Oui, inclure le corps",
+        "PERIOD": "Période",
+        "PERIODS": {
+          "TODAY": "Aujourd'hui",
+          "YESTERDAY": "Hier",
+          "LAST24H": "Dernières 24 heures",
+          "LAST7D": "7 derniers jours",
+          "LAST30D": "30 derniers jours"
+        },
+        "SAVED": {
+          "PLACEHOLDER": "Recherches enregistrées",
+          "SAVE": "Enregistrer la recherche",
+          "DELETE": "Supprimer la recherche enregistrée",
+          "NAME": "Nom",
+          "HINT": "Enregistre la recherche « {keyword} » dans ce navigateur"
+        },
+        "COLUMNS": {
+          "NOTIFICATION": "Notification",
+          "RECIPIENT": "Destinataire",
+          "SUBJECT": "Objet",
+          "CREATED": "Créé",
+          "ATTEMPTS": "Tentatives",
+          "STATUS": "Statut"
+        }
+      },
+      "MESSAGE": {
+        "BODY": "Message",
+        "FIELDS": {
+          "ID": "ID",
+          "SENT": "Envoyé",
+          "LANGUAGE": "Langue",
+          "ERROR": "Dernière erreur"
+        }
+      },
+      "LAYOUTS": {
+        "TITLE": "Mises en page",
+        "EMPTY": "Aucune mise en page pour le moment",
+        "DEFAULT": "Par défaut",
+        "COLUMNS": {
+          "NAME": "Nom",
+          "DEFAULT": "Par défaut"
+        }
+      },
+      "LAYOUT": {
+        "TITLE_NEW": "Nouvelle mise en page",
+        "SUBTITLE": "Mise en page de notification",
+        "IS_DEFAULT": "Mise en page par défaut",
+        "TEMPLATE": "Modèle",
+        "RESET_DEFAULT": "Rétablir la valeur par défaut"
+      }
+    },
+    "VALIDATION": {
+      "LANGUAGE_EXISTS": "Un modèle existe déjà pour cette langue",
+      "SAMPLE_JSON": "JSON non valide"
+    },
+    "ALERTS": {
+      "CLOSE_CONFIRMATION": "Vous avez des modifications non enregistrées. Fermer quand même ?",
+      "DELETE_TEMPLATES": "Supprimer {count} modèle(s) ?",
+      "RESTORE_TEMPLATE": "Annuler les modifications de ce modèle et réutiliser le modèle d'origine du module ?",
+      "TEST_SENT": "E-mail de test envoyé à {email}",
+      "RESEND_SCHEDULED": "{count} message(s) planifié(s) pour un nouvel envoi",
+      "DELETE_LAYOUTS": "Supprimer {count} mise(s) en page ?",
+      "RESET_LAYOUT": "Annuler les modifications de cette mise en page et réutiliser celle d'origine du module ?"
+    }
+  }
+}

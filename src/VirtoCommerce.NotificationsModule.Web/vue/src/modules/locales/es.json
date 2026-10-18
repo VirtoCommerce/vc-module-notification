@@ -1,0 +1,173 @@
+{
+  "NOTIFICATIONS": {
+    "MENU": {
+      "TITLE": "Notificaciones"
+    },
+    "WIDGETS": {
+      "TEMPLATES": "Plantillas",
+      "LOG": "Registro de notificaciones"
+    },
+    "KIND": {
+      "EMAIL": "Correo electrónico",
+      "SMS": "SMS"
+    },
+    "STATUS": {
+      "ACTIVE": "Activa",
+      "INACTIVE": "Inactiva"
+    },
+    "MESSAGE_STATUS": {
+      "SENT": "Enviado",
+      "PENDING": "Pendiente",
+      "ERROR": "Error"
+    },
+    "TEMPLATE_STATE": {
+      "PREDEFINED": "Predefinido",
+      "EDITED": "Editado",
+      "CUSTOM": "Personalizado"
+    },
+    "TOOLBAR": {
+      "REFRESH": "Actualizar",
+      "ADD": "Agregar",
+      "CREATE": "Crear",
+      "SAVE": "Guardar",
+      "RESET": "Restablecer",
+      "DELETE": "Eliminar",
+      "PREVIEW": "Vista previa",
+      "RESTORE": "Restaurar",
+      "CANCEL": "Cancelar"
+    },
+    "PAGES": {
+      "MENU": {
+        "TITLE": "Notificaciones",
+        "JOURNAL": "Mensajes enviados y pendientes",
+        "LIST": "Tipos de notificación, destinatarios y plantillas",
+        "LAYOUTS": "Diseños de correo electrónico compartidos",
+        "COLUMNS": {
+          "SECTION": "Sección",
+          "DESCRIPTION": "Descripción"
+        }
+      },
+      "LIST": {
+        "TITLE": "Tipos de notificación",
+        "EMPTY": "No se encontraron notificaciones",
+        "COLUMNS": {
+          "NAME": "Notificación",
+          "KIND": "Canal",
+          "STATUS": "Estado"
+        }
+      },
+      "DETAILS": {
+        "BLANK_HINT": "Déjelo en blanco para usar el valor predeterminado",
+        "LIST_HINT": "Pulse Intro después de cada dirección de correo electrónico",
+        "FIELDS": {
+          "TYPE": "Tipo",
+          "ACTIVE": "Activa",
+          "FROM": "De",
+          "TO": "Para",
+          "CC": "CC",
+          "BCC": "BCC",
+          "REPLY_TO": "Responder a",
+          "NUMBER": "Número de teléfono"
+        }
+      },
+      "TEMPLATES": {
+        "TITLE": "Plantillas",
+        "EMPTY": "No hay plantillas",
+        "DEFAULT_LANGUAGE": "Predeterminado",
+        "COLUMNS": {
+          "LANGUAGE": "Idioma",
+          "SUBJECT": "Asunto",
+          "MESSAGE": "Mensaje",
+          "STATE": "Estado",
+          "MODIFIED": "Modificado"
+        }
+      },
+      "TEMPLATE": {
+        "TITLE": "Plantilla: {language}",
+        "TITLE_NEW": "Nueva plantilla",
+        "PREVIEW": "Vista previa",
+        "SAMPLE_HINT": "JSON con los datos con los que se representa la plantilla en la vista previa",
+        "SEND_TEST": "Enviar correo electrónico de prueba",
+        "SEND_TO": "Enviar a",
+        "SEND": "Enviar",
+        "FIELDS": {
+          "LANGUAGE": "Idioma",
+          "LAYOUT": "Diseño",
+          "DEFAULT_LAYOUT": "Diseño predeterminado",
+          "SUBJECT": "Asunto",
+          "BODY": "Cuerpo",
+          "MESSAGE": "Mensaje",
+          "SAMPLE": "Datos de ejemplo"
+        }
+      },
+      "JOURNAL": {
+        "TITLE": "Actividad de notificaciones",
+        "EMPTY": "No hay mensajes",
+        "RESEND": "Reenviar",
+        "SEARCH_IN_BODY": "Buscar en el cuerpo del mensaje",
+        "SEARCH_IN_BODY_YES": "Sí, incluir el cuerpo",
+        "PERIOD": "Período",
+        "PERIODS": {
+          "TODAY": "Hoy",
+          "YESTERDAY": "Ayer",
+          "LAST24H": "Últimas 24 horas",
+          "LAST7D": "Últimos 7 días",
+          "LAST30D": "Últimos 30 días"
+        },
+        "SAVED": {
+          "PLACEHOLDER": "Búsquedas guardadas",
+          "SAVE": "Guardar búsqueda",
+          "DELETE": "Eliminar búsqueda guardada",
+          "NAME": "Nombre",
+          "HINT": "Guarda la búsqueda «{keyword}» en este navegador"
+        },
+        "COLUMNS": {
+          "NOTIFICATION": "Notificación",
+          "RECIPIENT": "Destinatario",
+          "SUBJECT": "Asunto",
+          "CREATED": "Creado",
+          "ATTEMPTS": "Intentos",
+          "STATUS": "Estado"
+        }
+      },
+      "MESSAGE": {
+        "BODY": "Mensaje",
+        "FIELDS": {
+          "ID": "ID",
+          "SENT": "Enviado",
+          "LANGUAGE": "Idioma",
+          "ERROR": "Último error"
+        }
+      },
+      "LAYOUTS": {
+        "TITLE": "Diseños",
+        "EMPTY": "Aún no hay diseños",
+        "DEFAULT": "Predeterminado",
+        "COLUMNS": {
+          "NAME": "Nombre",
+          "DEFAULT": "Predeterminado"
+        }
+      },
+      "LAYOUT": {
+        "TITLE_NEW": "Nuevo diseño",
+        "SUBTITLE": "Diseño de notificación",
+        "IS_DEFAULT": "Diseño predeterminado",
+        "TEMPLATE": "Plantilla",
+        "RESET_DEFAULT": "Restablecer valores predeterminados"
+      }
+    },
+    "VALIDATION": {
+      "LANGUAGE_EXISTS": "Ya existe una plantilla para este idioma",
+      "SAMPLE_JSON": "JSON no válido"
+    },
+    "ALERTS": {
+      "CLOSE_CONFIRMATION": "Tiene cambios sin guardar. ¿Cerrar de todos modos?",
+      "DELETE_TEMPLATES": "¿Eliminar {count} plantilla(s)?",
+      "RESTORE_TEMPLATE": "¿Descartar los cambios de esta plantilla y volver a usar la plantilla original del módulo?",
+      "TEST_SENT": "Correo electrónico de prueba enviado a {email}",
+      "RESEND_SCHEDULED": "{count} mensaje(s) programado(s) para reenvío",
+      "DELETE_LAYOUTS": "¿Eliminar {count} diseño(s)?",
+      "RESET_LAYOUT": "¿Descartar los cambios de este diseño y volver a usar el diseño original del módulo?"
+    }
+  }
+}
