@@ -1,0 +1,173 @@
+{
+  "NOTIFICATIONS": {
+    "MENU": {
+      "TITLE": "Varsler"
+    },
+    "WIDGETS": {
+      "TEMPLATES": "Maler",
+      "LOG": "Varslingslogg"
+    },
+    "KIND": {
+      "EMAIL": "E-post",
+      "SMS": "SMS"
+    },
+    "STATUS": {
+      "ACTIVE": "Aktiv",
+      "INACTIVE": "Inaktiv"
+    },
+    "MESSAGE_STATUS": {
+      "SENT": "Sendt",
+      "PENDING": "Venter",
+      "ERROR": "Feil"
+    },
+    "TEMPLATE_STATE": {
+      "PREDEFINED": "Forhåndsdefinert",
+      "EDITED": "Redigert",
+      "CUSTOM": "Egendefinert"
+    },
+    "TOOLBAR": {
+      "REFRESH": "Oppdater",
+      "ADD": "Legg til",
+      "CREATE": "Opprett",
+      "SAVE": "Lagre",
+      "RESET": "Tilbakestill",
+      "DELETE": "Slett",
+      "PREVIEW": "Forhåndsvis",
+      "RESTORE": "Gjenopprett",
+      "CANCEL": "Avbryt"
+    },
+    "PAGES": {
+      "MENU": {
+        "TITLE": "Varsler",
+        "JOURNAL": "Sendte og ventende meldinger",
+        "LIST": "Varslingstyper, mottakere og maler",
+        "LAYOUTS": "Felles e-postoppsett",
+        "COLUMNS": {
+          "SECTION": "Seksjon",
+          "DESCRIPTION": "Beskrivelse"
+        }
+      },
+      "LIST": {
+        "TITLE": "Varslingstyper",
+        "EMPTY": "Fant ingen varsler",
+        "COLUMNS": {
+          "NAME": "Varsel",
+          "KIND": "Art",
+          "STATUS": "Status"
+        }
+      },
+      "DETAILS": {
+        "BLANK_HINT": "La stå tomt for å bruke standardverdien",
+        "LIST_HINT": "Trykk Enter etter hver e-postadresse",
+        "FIELDS": {
+          "TYPE": "Type",
+          "ACTIVE": "Aktiv",
+          "FROM": "Fra",
+          "TO": "Til",
+          "CC": "Kopi (CC)",
+          "BCC": "Skjult kopi (BCC)",
+          "REPLY_TO": "Svar til",
+          "NUMBER": "Telefonnummer"
+        }
+      },
+      "TEMPLATES": {
+        "TITLE": "Maler",
+        "EMPTY": "Ingen maler",
+        "DEFAULT_LANGUAGE": "Standard",
+        "COLUMNS": {
+          "LANGUAGE": "Språk",
+          "SUBJECT": "Emne",
+          "MESSAGE": "Melding",
+          "STATE": "Tilstand",
+          "MODIFIED": "Endret"
+        }
+      },
+      "TEMPLATE": {
+        "TITLE": "Mal: {language}",
+        "TITLE_NEW": "Ny mal",
+        "PREVIEW": "Forhåndsvisning",
+        "SAMPLE_HINT": "JSON med dataene malen gjengis med i forhåndsvisningen",
+        "SEND_TEST": "Send test-e-post",
+        "SEND_TO": "Send til",
+        "SEND": "Send",
+        "FIELDS": {
+          "LANGUAGE": "Språk",
+          "LAYOUT": "Oppsett",
+          "DEFAULT_LAYOUT": "Standardoppsett",
+          "SUBJECT": "Emne",
+          "BODY": "Innhold",
+          "MESSAGE": "Melding",
+          "SAMPLE": "Eksempeldata"
+        }
+      },
+      "JOURNAL": {
+        "TITLE": "Varslingsaktivitet",
+        "EMPTY": "Ingen meldinger",
+        "RESEND": "Send på nytt",
+        "SEARCH_IN_BODY": "Søk i meldingsinnholdet",
+        "SEARCH_IN_BODY_YES": "Ja, inkluder innholdet",
+        "PERIOD": "Periode",
+        "PERIODS": {
+          "TODAY": "I dag",
+          "YESTERDAY": "I går",
+          "LAST24H": "Siste 24 timer",
+          "LAST7D": "Siste 7 dager",
+          "LAST30D": "Siste 30 dager"
+        },
+        "SAVED": {
+          "PLACEHOLDER": "Lagrede søk",
+          "SAVE": "Lagre søk",
+          "DELETE": "Slett lagret søk",
+          "NAME": "Navn",
+          "HINT": "Lagrer søket «{keyword}» i denne nettleseren"
+        },
+        "COLUMNS": {
+          "NOTIFICATION": "Varsel",
+          "RECIPIENT": "Mottaker",
+          "SUBJECT": "Emne",
+          "CREATED": "Opprettet",
+          "ATTEMPTS": "Forsøk",
+          "STATUS": "Status"
+        }
+      },
+      "MESSAGE": {
+        "BODY": "Melding",
+        "FIELDS": {
+          "ID": "ID",
+          "SENT": "Sendt",
+          "LANGUAGE": "Språk",
+          "ERROR": "Siste feil"
+        }
+      },
+      "LAYOUTS": {
+        "TITLE": "Oppsett",
+        "EMPTY": "Ingen oppsett ennå",
+        "DEFAULT": "Standard",
+        "COLUMNS": {
+          "NAME": "Navn",
+          "DEFAULT": "Standard"
+        }
+      },
+      "LAYOUT": {
+        "TITLE_NEW": "Nytt oppsett",
+        "SUBTITLE": "Varslingsoppsett",
+        "IS_DEFAULT": "Standardoppsett",
+        "TEMPLATE": "Mal",
+        "RESET_DEFAULT": "Tilbakestill til standard"
+      }
+    },
+    "VALIDATION": {
+      "LANGUAGE_EXISTS": "Det finnes allerede en mal for dette språket",
+      "SAMPLE_JSON": "Ugyldig JSON"
+    },
+    "ALERTS": {
+      "CLOSE_CONFIRMATION": "Du har ulagrede endringer. Lukke likevel?",
+      "DELETE_TEMPLATES": "Slette {count} mal(er)?",
+      "RESTORE_TEMPLATE": "Forkaste endringene i denne malen og bruke modulens opprinnelige mal igjen?",
+      "TEST_SENT": "Test-e-post sendt til {email}",
+      "RESEND_SCHEDULED": "{count} melding(er) planlagt for ny sending",
+      "DELETE_LAYOUTS": "Slette {count} oppsett?",
+      "RESET_LAYOUT": "Forkaste endringene i dette oppsettet og bruke modulens opprinnelige oppsett?"
+    }
+  }
+}

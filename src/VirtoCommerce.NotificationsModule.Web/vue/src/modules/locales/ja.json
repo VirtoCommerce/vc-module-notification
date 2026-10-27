@@ -1,0 +1,173 @@
+{
+  "NOTIFICATIONS": {
+    "MENU": {
+      "TITLE": "通知"
+    },
+    "WIDGETS": {
+      "TEMPLATES": "テンプレート",
+      "LOG": "通知ログ"
+    },
+    "KIND": {
+      "EMAIL": "メール",
+      "SMS": "SMS"
+    },
+    "STATUS": {
+      "ACTIVE": "有効",
+      "INACTIVE": "無効"
+    },
+    "MESSAGE_STATUS": {
+      "SENT": "送信済み",
+      "PENDING": "保留中",
+      "ERROR": "エラー"
+    },
+    "TEMPLATE_STATE": {
+      "PREDEFINED": "事前定義",
+      "EDITED": "編集済み",
+      "CUSTOM": "カスタム"
+    },
+    "TOOLBAR": {
+      "REFRESH": "更新",
+      "ADD": "追加",
+      "CREATE": "作成",
+      "SAVE": "保存",
+      "RESET": "リセット",
+      "DELETE": "削除",
+      "PREVIEW": "プレビュー",
+      "RESTORE": "復元",
+      "CANCEL": "キャンセル"
+    },
+    "PAGES": {
+      "MENU": {
+        "TITLE": "通知",
+        "JOURNAL": "送信済みおよび保留中のメッセージ",
+        "LIST": "通知タイプ、受信者、テンプレート",
+        "LAYOUTS": "共通のメールレイアウト",
+        "COLUMNS": {
+          "SECTION": "セクション",
+          "DESCRIPTION": "説明"
+        }
+      },
+      "LIST": {
+        "TITLE": "通知タイプ",
+        "EMPTY": "通知が見つかりません",
+        "COLUMNS": {
+          "NAME": "通知",
+          "KIND": "種類",
+          "STATUS": "ステータス"
+        }
+      },
+      "DETAILS": {
+        "BLANK_HINT": "デフォルトを使用する場合は空欄のままにしてください",
+        "LIST_HINT": "メールアドレスごとに Enter キーを押してください",
+        "FIELDS": {
+          "TYPE": "タイプ",
+          "ACTIVE": "有効",
+          "FROM": "送信者",
+          "TO": "受信者",
+          "CC": "CC",
+          "BCC": "BCC",
+          "REPLY_TO": "返信先",
+          "NUMBER": "電話番号"
+        }
+      },
+      "TEMPLATES": {
+        "TITLE": "テンプレート",
+        "EMPTY": "テンプレートがありません",
+        "DEFAULT_LANGUAGE": "デフォルト",
+        "COLUMNS": {
+          "LANGUAGE": "言語",
+          "SUBJECT": "件名",
+          "MESSAGE": "メッセージ",
+          "STATE": "状態",
+          "MODIFIED": "更新日時"
+        }
+      },
+      "TEMPLATE": {
+        "TITLE": "テンプレート: {language}",
+        "TITLE_NEW": "新しいテンプレート",
+        "PREVIEW": "プレビュー",
+        "SAMPLE_HINT": "プレビューでテンプレートの表示に使用されるデータを含む JSON",
+        "SEND_TEST": "テストメールを送信",
+        "SEND_TO": "送信先",
+        "SEND": "送信",
+        "FIELDS": {
+          "LANGUAGE": "言語",
+          "LAYOUT": "レイアウト",
+          "DEFAULT_LAYOUT": "デフォルトレイアウト",
+          "SUBJECT": "件名",
+          "BODY": "本文",
+          "MESSAGE": "メッセージ",
+          "SAMPLE": "サンプルデータ"
+        }
+      },
+      "JOURNAL": {
+        "TITLE": "通知アクティビティ",
+        "EMPTY": "メッセージがありません",
+        "RESEND": "再送信",
+        "SEARCH_IN_BODY": "メッセージ本文を検索",
+        "SEARCH_IN_BODY_YES": "はい、本文を含めます",
+        "PERIOD": "期間",
+        "PERIODS": {
+          "TODAY": "今日",
+          "YESTERDAY": "昨日",
+          "LAST24H": "過去 24 時間",
+          "LAST7D": "過去 7 日間",
+          "LAST30D": "過去 30 日間"
+        },
+        "SAVED": {
+          "PLACEHOLDER": "保存した検索",
+          "SAVE": "検索を保存",
+          "DELETE": "保存した検索を削除",
+          "NAME": "名前",
+          "HINT": "検索「{keyword}」をこのブラウザーに保存します"
+        },
+        "COLUMNS": {
+          "NOTIFICATION": "通知",
+          "RECIPIENT": "受信者",
+          "SUBJECT": "件名",
+          "CREATED": "作成日時",
+          "ATTEMPTS": "試行回数",
+          "STATUS": "ステータス"
+        }
+      },
+      "MESSAGE": {
+        "BODY": "メッセージ",
+        "FIELDS": {
+          "ID": "ID",
+          "SENT": "送信日時",
+          "LANGUAGE": "言語",
+          "ERROR": "最後のエラー"
+        }
+      },
+      "LAYOUTS": {
+        "TITLE": "レイアウト",
+        "EMPTY": "レイアウトはまだありません",
+        "DEFAULT": "デフォルト",
+        "COLUMNS": {
+          "NAME": "名前",
+          "DEFAULT": "デフォルト"
+        }
+      },
+      "LAYOUT": {
+        "TITLE_NEW": "新しいレイアウト",
+        "SUBTITLE": "通知レイアウト",
+        "IS_DEFAULT": "デフォルトレイアウト",
+        "TEMPLATE": "テンプレート",
+        "RESET_DEFAULT": "デフォルトにリセット"
+      }
+    },
+    "VALIDATION": {
+      "LANGUAGE_EXISTS": "この言語のテンプレートは既に存在します",
+      "SAMPLE_JSON": "無効な JSON です"
+    },
+    "ALERTS": {
+      "CLOSE_CONFIRMATION": "保存されていない変更があります。閉じてもよろしいですか？",
+      "DELETE_TEMPLATES": "{count} 件のテンプレートを削除しますか？",
+      "RESTORE_TEMPLATE": "このテンプレートへの変更を破棄して、モジュールの元のテンプレートを再び使用しますか？",
+      "TEST_SENT": "テストメールを {email} に送信しました",
+      "RESEND_SCHEDULED": "{count} 件のメッセージの再送信をスケジュールしました",
+      "DELETE_LAYOUTS": "{count} 件のレイアウトを削除しますか？",
+      "RESET_LAYOUT": "このレイアウトへの変更を破棄して、モジュールの元のレイアウトを使用しますか？"
+    }
+  }
+}

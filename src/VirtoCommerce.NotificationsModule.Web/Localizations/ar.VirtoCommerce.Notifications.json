@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "notifications:read": "قراءة بيانات الإشعارات",
+    "notifications:create": "إنشاء بيانات الإشعارات",
+    "notifications:update": "تحديث بيانات الإشعارات",
+    "notifications:delete": "حذف بيانات الإشعارات",
+    "notifications:access": "الوصول إلى بيانات الإشعارات",
+    "notifications:export": "تصدير بيانات الإشعارات",
+    "notifications:import": "استيراد بيانات الإشعارات",
+    "notifications:templates:read": "قراءة بيانات القوالب",
+    "notifications:templates:create": "إنشاء بيانات القوالب"
+  }
+}

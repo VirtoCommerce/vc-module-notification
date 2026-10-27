@@ -1,0 +1,173 @@
+{
+  "NOTIFICATIONS": {
+    "MENU": {
+      "TITLE": "Notificações"
+    },
+    "WIDGETS": {
+      "TEMPLATES": "Modelos",
+      "LOG": "Registro de notificações"
+    },
+    "KIND": {
+      "EMAIL": "E-mail",
+      "SMS": "SMS"
+    },
+    "STATUS": {
+      "ACTIVE": "Ativa",
+      "INACTIVE": "Inativa"
+    },
+    "MESSAGE_STATUS": {
+      "SENT": "Enviado",
+      "PENDING": "Pendente",
+      "ERROR": "Erro"
+    },
+    "TEMPLATE_STATE": {
+      "PREDEFINED": "Predefinido",
+      "EDITED": "Editado",
+      "CUSTOM": "Personalizado"
+    },
+    "TOOLBAR": {
+      "REFRESH": "Atualizar",
+      "ADD": "Adicionar",
+      "CREATE": "Criar",
+      "SAVE": "Salvar",
+      "RESET": "Redefinir",
+      "DELETE": "Excluir",
+      "PREVIEW": "Pré-visualizar",
+      "RESTORE": "Restaurar",
+      "CANCEL": "Cancelar"
+    },
+    "PAGES": {
+      "MENU": {
+        "TITLE": "Notificações",
+        "JOURNAL": "Mensagens enviadas e pendentes",
+        "LIST": "Tipos de notificação, destinatários e modelos",
+        "LAYOUTS": "Layouts de e-mail compartilhados",
+        "COLUMNS": {
+          "SECTION": "Seção",
+          "DESCRIPTION": "Descrição"
+        }
+      },
+      "LIST": {
+        "TITLE": "Tipos de notificação",
+        "EMPTY": "Nenhuma notificação encontrada",
+        "COLUMNS": {
+          "NAME": "Notificação",
+          "KIND": "Canal",
+          "STATUS": "Status"
+        }
+      },
+      "DETAILS": {
+        "BLANK_HINT": "Deixe em branco para usar o padrão",
+        "LIST_HINT": "Pressione Enter após cada endereço de e-mail",
+        "FIELDS": {
+          "TYPE": "Tipo",
+          "ACTIVE": "Ativa",
+          "FROM": "De",
+          "TO": "Para",
+          "CC": "CC",
+          "BCC": "BCC",
+          "REPLY_TO": "Responder para",
+          "NUMBER": "Número de telefone"
+        }
+      },
+      "TEMPLATES": {
+        "TITLE": "Modelos",
+        "EMPTY": "Nenhum modelo",
+        "DEFAULT_LANGUAGE": "Padrão",
+        "COLUMNS": {
+          "LANGUAGE": "Idioma",
+          "SUBJECT": "Assunto",
+          "MESSAGE": "Mensagem",
+          "STATE": "Estado",
+          "MODIFIED": "Modificado"
+        }
+      },
+      "TEMPLATE": {
+        "TITLE": "Modelo: {language}",
+        "TITLE_NEW": "Novo modelo",
+        "PREVIEW": "Pré-visualização",
+        "SAMPLE_HINT": "JSON com os dados usados para renderizar o modelo na pré-visualização",
+        "SEND_TEST": "Enviar e-mail de teste",
+        "SEND_TO": "Enviar para",
+        "SEND": "Enviar",
+        "FIELDS": {
+          "LANGUAGE": "Idioma",
+          "LAYOUT": "Layout",
+          "DEFAULT_LAYOUT": "Layout padrão",
+          "SUBJECT": "Assunto",
+          "BODY": "Corpo",
+          "MESSAGE": "Mensagem",
+          "SAMPLE": "Dados de exemplo"
+        }
+      },
+      "JOURNAL": {
+        "TITLE": "Atividade de notificações",
+        "EMPTY": "Nenhuma mensagem",
+        "RESEND": "Reenviar",
+        "SEARCH_IN_BODY": "Pesquisar no corpo da mensagem",
+        "SEARCH_IN_BODY_YES": "Sim, incluir o corpo",
+        "PERIOD": "Período",
+        "PERIODS": {
+          "TODAY": "Hoje",
+          "YESTERDAY": "Ontem",
+          "LAST24H": "Últimas 24 horas",
+          "LAST7D": "Últimos 7 dias",
+          "LAST30D": "Últimos 30 dias"
+        },
+        "SAVED": {
+          "PLACEHOLDER": "Pesquisas salvas",
+          "SAVE": "Salvar pesquisa",
+          "DELETE": "Excluir pesquisa salva",
+          "NAME": "Nome",
+          "HINT": "Salva a pesquisa \"{keyword}\" neste navegador"
+        },
+        "COLUMNS": {
+          "NOTIFICATION": "Notificação",
+          "RECIPIENT": "Destinatário",
+          "SUBJECT": "Assunto",
+          "CREATED": "Criado",
+          "ATTEMPTS": "Tentativas",
+          "STATUS": "Status"
+        }
+      },
+      "MESSAGE": {
+        "BODY": "Mensagem",
+        "FIELDS": {
+          "ID": "ID",
+          "SENT": "Enviado",
+          "LANGUAGE": "Idioma",
+          "ERROR": "Último erro"
+        }
+      },
+      "LAYOUTS": {
+        "TITLE": "Layouts",
+        "EMPTY": "Ainda não há layouts",
+        "DEFAULT": "Padrão",
+        "COLUMNS": {
+          "NAME": "Nome",
+          "DEFAULT": "Padrão"
+        }
+      },
+      "LAYOUT": {
+        "TITLE_NEW": "Novo layout",
+        "SUBTITLE": "Layout de notificação",
+        "IS_DEFAULT": "Layout padrão",
+        "TEMPLATE": "Modelo",
+        "RESET_DEFAULT": "Redefinir para o padrão"
+      }
+    },
+    "VALIDATION": {
+      "LANGUAGE_EXISTS": "Já existe um modelo para este idioma",
+      "SAMPLE_JSON": "JSON inválido"
+    },
+    "ALERTS": {
+      "CLOSE_CONFIRMATION": "Há alterações não salvas. Fechar mesmo assim?",
+      "DELETE_TEMPLATES": "Excluir {count} modelo(s)?",
+      "RESTORE_TEMPLATE": "Descartar as alterações deste modelo e voltar a usar o modelo original do módulo?",
+      "TEST_SENT": "E-mail de teste enviado para {email}",
+      "RESEND_SCHEDULED": "{count} mensagem(ns) agendada(s) para reenvio",
+      "DELETE_LAYOUTS": "Excluir {count} layout(s)?",
+      "RESET_LAYOUT": "Descartar as alterações deste layout e usar o layout original do módulo?"
+    }
+  }
+}

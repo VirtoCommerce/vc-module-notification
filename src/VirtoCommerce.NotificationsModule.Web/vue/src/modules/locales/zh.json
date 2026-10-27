@@ -1,0 +1,173 @@
+{
+  "NOTIFICATIONS": {
+    "MENU": {
+      "TITLE": "通知"
+    },
+    "WIDGETS": {
+      "TEMPLATES": "模板",
+      "LOG": "通知日志"
+    },
+    "KIND": {
+      "EMAIL": "电子邮件",
+      "SMS": "短信"
+    },
+    "STATUS": {
+      "ACTIVE": "有效",
+      "INACTIVE": "无效"
+    },
+    "MESSAGE_STATUS": {
+      "SENT": "已发送",
+      "PENDING": "待处理",
+      "ERROR": "错误"
+    },
+    "TEMPLATE_STATE": {
+      "PREDEFINED": "预定义",
+      "EDITED": "已编辑",
+      "CUSTOM": "自定义"
+    },
+    "TOOLBAR": {
+      "REFRESH": "刷新",
+      "ADD": "添加",
+      "CREATE": "创建",
+      "SAVE": "保存",
+      "RESET": "重置",
+      "DELETE": "删除",
+      "PREVIEW": "预览",
+      "RESTORE": "恢复",
+      "CANCEL": "取消"
+    },
+    "PAGES": {
+      "MENU": {
+        "TITLE": "通知",
+        "JOURNAL": "已发送和待处理的消息",
+        "LIST": "通知类型、收件人和模板",
+        "LAYOUTS": "共享的电子邮件布局",
+        "COLUMNS": {
+          "SECTION": "部分",
+          "DESCRIPTION": "描述"
+        }
+      },
+      "LIST": {
+        "TITLE": "通知类型",
+        "EMPTY": "未找到通知",
+        "COLUMNS": {
+          "NAME": "通知",
+          "KIND": "种类",
+          "STATUS": "状态"
+        }
+      },
+      "DETAILS": {
+        "BLANK_HINT": "留空以使用默认值",
+        "LIST_HINT": "每输入一个电子邮件地址后按 Enter 键",
+        "FIELDS": {
+          "TYPE": "类型",
+          "ACTIVE": "有效",
+          "FROM": "发件人",
+          "TO": "收件人",
+          "CC": "抄送",
+          "BCC": "密件抄送",
+          "REPLY_TO": "回复地址",
+          "NUMBER": "电话号码"
+        }
+      },
+      "TEMPLATES": {
+        "TITLE": "模板",
+        "EMPTY": "没有模板",
+        "DEFAULT_LANGUAGE": "默认",
+        "COLUMNS": {
+          "LANGUAGE": "语言",
+          "SUBJECT": "主题",
+          "MESSAGE": "消息",
+          "STATE": "状态",
+          "MODIFIED": "修改时间"
+        }
+      },
+      "TEMPLATE": {
+        "TITLE": "模板：{language}",
+        "TITLE_NEW": "新建模板",
+        "PREVIEW": "预览",
+        "SAMPLE_HINT": "在预览中用于渲染模板的 JSON 数据",
+        "SEND_TEST": "发送测试邮件",
+        "SEND_TO": "发送至",
+        "SEND": "发送",
+        "FIELDS": {
+          "LANGUAGE": "语言",
+          "LAYOUT": "布局",
+          "DEFAULT_LAYOUT": "默认布局",
+          "SUBJECT": "主题",
+          "BODY": "正文",
+          "MESSAGE": "消息",
+          "SAMPLE": "示例数据"
+        }
+      },
+      "JOURNAL": {
+        "TITLE": "通知活动",
+        "EMPTY": "没有消息",
+        "RESEND": "重新发送",
+        "SEARCH_IN_BODY": "在消息正文中搜索",
+        "SEARCH_IN_BODY_YES": "是，包含正文",
+        "PERIOD": "时间段",
+        "PERIODS": {
+          "TODAY": "今天",
+          "YESTERDAY": "昨天",
+          "LAST24H": "过去 24 小时",
+          "LAST7D": "过去 7 天",
+          "LAST30D": "过去 30 天"
+        },
+        "SAVED": {
+          "PLACEHOLDER": "已保存的搜索",
+          "SAVE": "保存搜索",
+          "DELETE": "删除已保存的搜索",
+          "NAME": "名称",
+          "HINT": "在此浏览器中保存搜索“{keyword}”"
+        },
+        "COLUMNS": {
+          "NOTIFICATION": "通知",
+          "RECIPIENT": "收件人",
+          "SUBJECT": "主题",
+          "CREATED": "创建时间",
+          "ATTEMPTS": "尝试次数",
+          "STATUS": "状态"
+        }
+      },
+      "MESSAGE": {
+        "BODY": "消息",
+        "FIELDS": {
+          "ID": "ID",
+          "SENT": "发送时间",
+          "LANGUAGE": "语言",
+          "ERROR": "最后一个错误"
+        }
+      },
+      "LAYOUTS": {
+        "TITLE": "布局",
+        "EMPTY": "尚无布局",
+        "DEFAULT": "默认",
+        "COLUMNS": {
+          "NAME": "名称",
+          "DEFAULT": "默认"
+        }
+      },
+      "LAYOUT": {
+        "TITLE_NEW": "新建布局",
+        "SUBTITLE": "通知布局",
+        "IS_DEFAULT": "默认布局",
+        "TEMPLATE": "模板",
+        "RESET_DEFAULT": "重置为默认值"
+      }
+    },
+    "VALIDATION": {
+      "LANGUAGE_EXISTS": "此语言的模板已存在",
+      "SAMPLE_JSON": "JSON 无效"
+    },
+    "ALERTS": {
+      "CLOSE_CONFIRMATION": "有未保存的更改。仍要关闭吗？",
+      "DELETE_TEMPLATES": "删除 {count} 个模板？",
+      "RESTORE_TEMPLATE": "放弃对此模板的更改并重新使用模块的原始模板？",
+      "TEST_SENT": "测试邮件已发送至 {email}",
+      "RESEND_SCHEDULED": "已安排重新发送 {count} 条消息",
+      "DELETE_LAYOUTS": "删除 {count} 个布局？",
+      "RESET_LAYOUT": "放弃对此布局的更改并使用模块的原始布局？"
+    }
+  }
+}

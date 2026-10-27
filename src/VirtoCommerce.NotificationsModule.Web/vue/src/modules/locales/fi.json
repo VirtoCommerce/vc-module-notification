@@ -1,0 +1,173 @@
+{
+  "NOTIFICATIONS": {
+    "MENU": {
+      "TITLE": "Ilmoitukset"
+    },
+    "WIDGETS": {
+      "TEMPLATES": "Mallit",
+      "LOG": "Ilmoitusloki"
+    },
+    "KIND": {
+      "EMAIL": "Sähköposti",
+      "SMS": "SMS"
+    },
+    "STATUS": {
+      "ACTIVE": "Aktiivinen",
+      "INACTIVE": "Ei aktiivinen"
+    },
+    "MESSAGE_STATUS": {
+      "SENT": "Lähetetty",
+      "PENDING": "Odottaa",
+      "ERROR": "Virhe"
+    },
+    "TEMPLATE_STATE": {
+      "PREDEFINED": "Ennalta määritetty",
+      "EDITED": "Muokattu",
+      "CUSTOM": "Mukautettu"
+    },
+    "TOOLBAR": {
+      "REFRESH": "Päivitä",
+      "ADD": "Lisää",
+      "CREATE": "Luo",
+      "SAVE": "Tallenna",
+      "RESET": "Palauta",
+      "DELETE": "Poista",
+      "PREVIEW": "Esikatsele",
+      "RESTORE": "Palauta",
+      "CANCEL": "Peruuta"
+    },
+    "PAGES": {
+      "MENU": {
+        "TITLE": "Ilmoitukset",
+        "JOURNAL": "Lähetetyt ja odottavat viestit",
+        "LIST": "Ilmoitustyypit, vastaanottajat ja mallit",
+        "LAYOUTS": "Yhteiset sähköpostiasettelut",
+        "COLUMNS": {
+          "SECTION": "Osio",
+          "DESCRIPTION": "Kuvaus"
+        }
+      },
+      "LIST": {
+        "TITLE": "Ilmoitustyypit",
+        "EMPTY": "Ilmoituksia ei löytynyt",
+        "COLUMNS": {
+          "NAME": "Ilmoitus",
+          "KIND": "Laji",
+          "STATUS": "Tila"
+        }
+      },
+      "DETAILS": {
+        "BLANK_HINT": "Jätä tyhjäksi käyttääksesi oletusarvoa",
+        "LIST_HINT": "Paina Enter jokaisen sähköpostiosoitteen jälkeen",
+        "FIELDS": {
+          "TYPE": "Tyyppi",
+          "ACTIVE": "Aktiivinen",
+          "FROM": "Lähettäjä",
+          "TO": "Vastaanottaja",
+          "CC": "Kopio (CC)",
+          "BCC": "Piilokopio (BCC)",
+          "REPLY_TO": "Vastausosoite",
+          "NUMBER": "Puhelinnumero"
+        }
+      },
+      "TEMPLATES": {
+        "TITLE": "Mallit",
+        "EMPTY": "Ei malleja",
+        "DEFAULT_LANGUAGE": "Oletus",
+        "COLUMNS": {
+          "LANGUAGE": "Kieli",
+          "SUBJECT": "Aihe",
+          "MESSAGE": "Viesti",
+          "STATE": "Tila",
+          "MODIFIED": "Muokattu"
+        }
+      },
+      "TEMPLATE": {
+        "TITLE": "Malli: {language}",
+        "TITLE_NEW": "Uusi malli",
+        "PREVIEW": "Esikatselu",
+        "SAMPLE_HINT": "JSON, jonka tiedoilla malli muodostetaan esikatselussa",
+        "SEND_TEST": "Lähetä testisähköposti",
+        "SEND_TO": "Lähetä osoitteeseen",
+        "SEND": "Lähetä",
+        "FIELDS": {
+          "LANGUAGE": "Kieli",
+          "LAYOUT": "Asettelu",
+          "DEFAULT_LAYOUT": "Oletusasettelu",
+          "SUBJECT": "Aihe",
+          "BODY": "Sisältö",
+          "MESSAGE": "Viesti",
+          "SAMPLE": "Esimerkkidata"
+        }
+      },
+      "JOURNAL": {
+        "TITLE": "Ilmoitusaktiviteetti",
+        "EMPTY": "Ei viestejä",
+        "RESEND": "Lähetä uudelleen",
+        "SEARCH_IN_BODY": "Hae viestin sisällöstä",
+        "SEARCH_IN_BODY_YES": "Kyllä, sisällytä sisältö",
+        "PERIOD": "Ajanjakso",
+        "PERIODS": {
+          "TODAY": "Tänään",
+          "YESTERDAY": "Eilen",
+          "LAST24H": "Viimeiset 24 tuntia",
+          "LAST7D": "Viimeiset 7 päivää",
+          "LAST30D": "Viimeiset 30 päivää"
+        },
+        "SAVED": {
+          "PLACEHOLDER": "Tallennetut haut",
+          "SAVE": "Tallenna haku",
+          "DELETE": "Poista tallennettu haku",
+          "NAME": "Nimi",
+          "HINT": "Tallentaa haun ”{keyword}” tähän selaimeen"
+        },
+        "COLUMNS": {
+          "NOTIFICATION": "Ilmoitus",
+          "RECIPIENT": "Vastaanottaja",
+          "SUBJECT": "Aihe",
+          "CREATED": "Luotu",
+          "ATTEMPTS": "Yritykset",
+          "STATUS": "Tila"
+        }
+      },
+      "MESSAGE": {
+        "BODY": "Viesti",
+        "FIELDS": {
+          "ID": "Tunnus",
+          "SENT": "Lähetetty",
+          "LANGUAGE": "Kieli",
+          "ERROR": "Viimeisin virhe"
+        }
+      },
+      "LAYOUTS": {
+        "TITLE": "Asettelut",
+        "EMPTY": "Ei vielä asetteluja",
+        "DEFAULT": "Oletus",
+        "COLUMNS": {
+          "NAME": "Nimi",
+          "DEFAULT": "Oletus"
+        }
+      },
+      "LAYOUT": {
+        "TITLE_NEW": "Uusi asettelu",
+        "SUBTITLE": "Ilmoitusasettelu",
+        "IS_DEFAULT": "Oletusasettelu",
+        "TEMPLATE": "Malli",
+        "RESET_DEFAULT": "Palauta oletus"
+      }
+    },
+    "VALIDATION": {
+      "LANGUAGE_EXISTS": "Tälle kielelle on jo malli",
+      "SAMPLE_JSON": "Virheellinen JSON"
+    },
+    "ALERTS": {
+      "CLOSE_CONFIRMATION": "Sinulla on tallentamattomia muutoksia. Suljetaanko silti?",
+      "DELETE_TEMPLATES": "Poistetaanko {count} mallia?",
+      "RESTORE_TEMPLATE": "Hylätäänkö tämän mallin muutokset ja otetaanko moduulin alkuperäinen malli taas käyttöön?",
+      "TEST_SENT": "Testisähköposti lähetetty osoitteeseen {email}",
+      "RESEND_SCHEDULED": "{count} viestiä ajoitettu lähetettäväksi uudelleen",
+      "DELETE_LAYOUTS": "Poistetaanko {count} asettelua?",
+      "RESET_LAYOUT": "Hylätäänkö tämän asettelun muutokset ja otetaanko moduulin alkuperäinen asettelu taas käyttöön?"
+    }
+  }
+}

@@ -1,0 +1,39 @@
+/* classes shared by several notification blades */
+
+/* the blade body layout (as in the Orders detail) */
+.ntf-form {
+  padding: 20px 22px 36px;
+}
+
+.ntf-list__name {
+  color: var(--neutrals-900);
+}
+
+/* Liquid + HTML sources: monospace, kept exactly as typed */
+.ntf-code textarea {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 12px;
+  line-height: 1.5;
+  white-space: pre;
+  tab-size: 2;
+}
+
+.ntf-code--body textarea {
+  min-height: 420px;
+}
+
+/* a rendered e-mail in a sandboxed iframe */
+.ntf-preview {
+  display: block;
+  width: 100%;
+  height: 720px;
+  border: 0;
+  background: #fff;
+}
+
+.ntf-popup-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  width: 100%;
+}

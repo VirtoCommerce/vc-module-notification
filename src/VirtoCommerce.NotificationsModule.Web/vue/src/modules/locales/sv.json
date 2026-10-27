@@ -1,0 +1,173 @@
+{
+  "NOTIFICATIONS": {
+    "MENU": {
+      "TITLE": "Aviseringar"
+    },
+    "WIDGETS": {
+      "TEMPLATES": "Mallar",
+      "LOG": "Aviseringslogg"
+    },
+    "KIND": {
+      "EMAIL": "E-post",
+      "SMS": "SMS"
+    },
+    "STATUS": {
+      "ACTIVE": "Aktiv",
+      "INACTIVE": "Inaktiv"
+    },
+    "MESSAGE_STATUS": {
+      "SENT": "Skickad",
+      "PENDING": "Väntande",
+      "ERROR": "Fel"
+    },
+    "TEMPLATE_STATE": {
+      "PREDEFINED": "Fördefinierad",
+      "EDITED": "Redigerad",
+      "CUSTOM": "Anpassad"
+    },
+    "TOOLBAR": {
+      "REFRESH": "Uppdatera",
+      "ADD": "Lägg till",
+      "CREATE": "Skapa",
+      "SAVE": "Spara",
+      "RESET": "Återställ",
+      "DELETE": "Ta bort",
+      "PREVIEW": "Förhandsgranska",
+      "RESTORE": "Återställ",
+      "CANCEL": "Avbryt"
+    },
+    "PAGES": {
+      "MENU": {
+        "TITLE": "Aviseringar",
+        "JOURNAL": "Skickade och väntande meddelanden",
+        "LIST": "Aviseringstyper, mottagare och mallar",
+        "LAYOUTS": "Gemensamma e-postlayouter",
+        "COLUMNS": {
+          "SECTION": "Avsnitt",
+          "DESCRIPTION": "Beskrivning"
+        }
+      },
+      "LIST": {
+        "TITLE": "Aviseringstyper",
+        "EMPTY": "Inga aviseringar hittades",
+        "COLUMNS": {
+          "NAME": "Avisering",
+          "KIND": "Slag",
+          "STATUS": "Status"
+        }
+      },
+      "DETAILS": {
+        "BLANK_HINT": "Lämna tomt för att använda standardvärdet",
+        "LIST_HINT": "Tryck på Enter efter varje e-postadress",
+        "FIELDS": {
+          "TYPE": "Typ",
+          "ACTIVE": "Aktiv",
+          "FROM": "Från",
+          "TO": "Till",
+          "CC": "Kopia (CC)",
+          "BCC": "Dold kopia (BCC)",
+          "REPLY_TO": "Svara till",
+          "NUMBER": "Telefonnummer"
+        }
+      },
+      "TEMPLATES": {
+        "TITLE": "Mallar",
+        "EMPTY": "Inga mallar",
+        "DEFAULT_LANGUAGE": "Standard",
+        "COLUMNS": {
+          "LANGUAGE": "Språk",
+          "SUBJECT": "Ämne",
+          "MESSAGE": "Meddelande",
+          "STATE": "Tillstånd",
+          "MODIFIED": "Ändrad"
+        }
+      },
+      "TEMPLATE": {
+        "TITLE": "Mall: {language}",
+        "TITLE_NEW": "Ny mall",
+        "PREVIEW": "Förhandsgranskning",
+        "SAMPLE_HINT": "JSON med de data som mallen återges med i förhandsgranskningen",
+        "SEND_TEST": "Skicka testmejl",
+        "SEND_TO": "Skicka till",
+        "SEND": "Skicka",
+        "FIELDS": {
+          "LANGUAGE": "Språk",
+          "LAYOUT": "Layout",
+          "DEFAULT_LAYOUT": "Standardlayout",
+          "SUBJECT": "Ämne",
+          "BODY": "Innehåll",
+          "MESSAGE": "Meddelande",
+          "SAMPLE": "Exempeldata"
+        }
+      },
+      "JOURNAL": {
+        "TITLE": "Aviseringsaktivitet",
+        "EMPTY": "Inga meddelanden",
+        "RESEND": "Skicka om",
+        "SEARCH_IN_BODY": "Sök i meddelandets innehåll",
+        "SEARCH_IN_BODY_YES": "Ja, inkludera innehållet",
+        "PERIOD": "Period",
+        "PERIODS": {
+          "TODAY": "I dag",
+          "YESTERDAY": "I går",
+          "LAST24H": "Senaste 24 timmarna",
+          "LAST7D": "Senaste 7 dagarna",
+          "LAST30D": "Senaste 30 dagarna"
+        },
+        "SAVED": {
+          "PLACEHOLDER": "Sparade sökningar",
+          "SAVE": "Spara sökning",
+          "DELETE": "Ta bort sparad sökning",
+          "NAME": "Namn",
+          "HINT": "Sparar sökningen ”{keyword}” i den här webbläsaren"
+        },
+        "COLUMNS": {
+          "NOTIFICATION": "Avisering",
+          "RECIPIENT": "Mottagare",
+          "SUBJECT": "Ämne",
+          "CREATED": "Skapad",
+          "ATTEMPTS": "Försök",
+          "STATUS": "Status"
+        }
+      },
+      "MESSAGE": {
+        "BODY": "Meddelande",
+        "FIELDS": {
+          "ID": "ID",
+          "SENT": "Skickad",
+          "LANGUAGE": "Språk",
+          "ERROR": "Senaste fel"
+        }
+      },
+      "LAYOUTS": {
+        "TITLE": "Layouter",
+        "EMPTY": "Inga layouter ännu",
+        "DEFAULT": "Standard",
+        "COLUMNS": {
+          "NAME": "Namn",
+          "DEFAULT": "Standard"
+        }
+      },
+      "LAYOUT": {
+        "TITLE_NEW": "Ny layout",
+        "SUBTITLE": "Aviseringslayout",
+        "IS_DEFAULT": "Standardlayout",
+        "TEMPLATE": "Mall",
+        "RESET_DEFAULT": "Återställ till standard"
+      }
+    },
+    "VALIDATION": {
+      "LANGUAGE_EXISTS": "Det finns redan en mall för det här språket",
+      "SAMPLE_JSON": "Ogiltig JSON"
+    },
+    "ALERTS": {
+      "CLOSE_CONFIRMATION": "Du har osparade ändringar. Stäng ändå?",
+      "DELETE_TEMPLATES": "Ta bort {count} mall(ar)?",
+      "RESTORE_TEMPLATE": "Ignorera ändringarna i den här mallen och använda modulens ursprungliga mall igen?",
+      "TEST_SENT": "Testmejl skickat till {email}",
+      "RESEND_SCHEDULED": "{count} meddelande(n) schemalagda för att skickas om",
+      "DELETE_LAYOUTS": "Ta bort {count} layout(er)?",
+      "RESET_LAYOUT": "Ignorera ändringarna i den här layouten och använda modulens ursprungliga layout?"
+    }
+  }
+}
