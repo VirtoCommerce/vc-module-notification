@@ -1,0 +1,173 @@
+{
+  "NOTIFICATIONS": {
+    "MENU": {
+      "TITLE": "התראות"
+    },
+    "WIDGETS": {
+      "TEMPLATES": "תבניות",
+      "LOG": "יומן התראות"
+    },
+    "KIND": {
+      "EMAIL": "דוא״ל",
+      "SMS": "SMS"
+    },
+    "STATUS": {
+      "ACTIVE": "פעילה",
+      "INACTIVE": "לא פעילה"
+    },
+    "MESSAGE_STATUS": {
+      "SENT": "נשלחה",
+      "PENDING": "ממתינה",
+      "ERROR": "שגיאה"
+    },
+    "TEMPLATE_STATE": {
+      "PREDEFINED": "מוגדרת מראש",
+      "EDITED": "נערכה",
+      "CUSTOM": "מותאמת אישית"
+    },
+    "TOOLBAR": {
+      "REFRESH": "רענון",
+      "ADD": "הוספה",
+      "CREATE": "יצירה",
+      "SAVE": "שמירה",
+      "RESET": "איפוס",
+      "DELETE": "מחיקה",
+      "PREVIEW": "תצוגה מקדימה",
+      "RESTORE": "שחזור",
+      "CANCEL": "ביטול"
+    },
+    "PAGES": {
+      "MENU": {
+        "TITLE": "התראות",
+        "JOURNAL": "הודעות שנשלחו והודעות ממתינות",
+        "LIST": "סוגי התראות, נמענים ותבניות",
+        "LAYOUTS": "פריסות דוא״ל משותפות",
+        "COLUMNS": {
+          "SECTION": "מקטע",
+          "DESCRIPTION": "תיאור"
+        }
+      },
+      "LIST": {
+        "TITLE": "סוגי התראות",
+        "EMPTY": "לא נמצאו התראות",
+        "COLUMNS": {
+          "NAME": "התראה",
+          "KIND": "סוג",
+          "STATUS": "סטטוס"
+        }
+      },
+      "DETAILS": {
+        "BLANK_HINT": "יש להשאיר ריק כדי להשתמש בברירת המחדל",
+        "LIST_HINT": "יש להקיש Enter אחרי כל כתובת דוא״ל",
+        "FIELDS": {
+          "TYPE": "סוג",
+          "ACTIVE": "פעילה",
+          "FROM": "מאת",
+          "TO": "אל",
+          "CC": "עותק",
+          "BCC": "עותק מוסתר",
+          "REPLY_TO": "כתובת לתשובה",
+          "NUMBER": "מספר טלפון"
+        }
+      },
+      "TEMPLATES": {
+        "TITLE": "תבניות",
+        "EMPTY": "אין תבניות",
+        "DEFAULT_LANGUAGE": "ברירת מחדל",
+        "COLUMNS": {
+          "LANGUAGE": "שפה",
+          "SUBJECT": "נושא",
+          "MESSAGE": "הודעה",
+          "STATE": "מצב",
+          "MODIFIED": "שינוי אחרון"
+        }
+      },
+      "TEMPLATE": {
+        "TITLE": "תבנית: {language}",
+        "TITLE_NEW": "תבנית חדשה",
+        "PREVIEW": "תצוגה מקדימה",
+        "SAMPLE_HINT": "JSON עם הנתונים שבהם משתמשים להצגת התבנית בתצוגה המקדימה",
+        "SEND_TEST": "שליחת הודעת דוא״ל לבדיקה",
+        "SEND_TO": "שליחה אל",
+        "SEND": "שליחה",
+        "FIELDS": {
+          "LANGUAGE": "שפה",
+          "LAYOUT": "פריסה",
+          "DEFAULT_LAYOUT": "פריסת ברירת מחדל",
+          "SUBJECT": "נושא",
+          "BODY": "גוף ההודעה",
+          "MESSAGE": "הודעה",
+          "SAMPLE": "נתונים לדוגמה"
+        }
+      },
+      "JOURNAL": {
+        "TITLE": "פעילות התראות",
+        "EMPTY": "אין הודעות",
+        "RESEND": "שליחה חוזרת",
+        "SEARCH_IN_BODY": "חיפוש בגוף ההודעה",
+        "SEARCH_IN_BODY_YES": "כן, כולל גוף ההודעה",
+        "PERIOD": "תקופה",
+        "PERIODS": {
+          "TODAY": "היום",
+          "YESTERDAY": "אתמול",
+          "LAST24H": "24 השעות האחרונות",
+          "LAST7D": "7 הימים האחרונים",
+          "LAST30D": "30 הימים האחרונים"
+        },
+        "SAVED": {
+          "PLACEHOLDER": "חיפושים שמורים",
+          "SAVE": "שמירת החיפוש",
+          "DELETE": "מחיקת החיפוש השמור",
+          "NAME": "שם",
+          "HINT": "החיפוש \"{keyword}\" יישמר בדפדפן זה"
+        },
+        "COLUMNS": {
+          "NOTIFICATION": "התראה",
+          "RECIPIENT": "נמען",
+          "SUBJECT": "נושא",
+          "CREATED": "תאריך יצירה",
+          "ATTEMPTS": "ניסיונות",
+          "STATUS": "סטטוס"
+        }
+      },
+      "MESSAGE": {
+        "BODY": "הודעה",
+        "FIELDS": {
+          "ID": "מזהה",
+          "SENT": "תאריך שליחה",
+          "LANGUAGE": "שפה",
+          "ERROR": "שגיאה אחרונה"
+        }
+      },
+      "LAYOUTS": {
+        "TITLE": "פריסות",
+        "EMPTY": "עדיין אין פריסות",
+        "DEFAULT": "ברירת מחדל",
+        "COLUMNS": {
+          "NAME": "שם",
+          "DEFAULT": "ברירת מחדל"
+        }
+      },
+      "LAYOUT": {
+        "TITLE_NEW": "פריסה חדשה",
+        "SUBTITLE": "פריסת התראה",
+        "IS_DEFAULT": "פריסת ברירת מחדל",
+        "TEMPLATE": "תבנית",
+        "RESET_DEFAULT": "איפוס לברירת המחדל"
+      }
+    },
+    "VALIDATION": {
+      "LANGUAGE_EXISTS": "כבר קיימת תבנית לשפה זו",
+      "SAMPLE_JSON": "JSON לא תקין"
+    },
+    "ALERTS": {
+      "CLOSE_CONFIRMATION": "יש שינויים שלא נשמרו. האם לסגור בכל זאת?",
+      "DELETE_TEMPLATES": "האם למחוק את התבניות ({count})?",
+      "RESTORE_TEMPLATE": "האם לבטל את השינויים בתבנית זו ולחזור לתבנית המקורית של המודול?",
+      "TEST_SENT": "הודעת דוא״ל לבדיקה נשלחה אל {email}",
+      "RESEND_SCHEDULED": "הודעות שתוזמנו לשליחה חוזרת: {count}",
+      "DELETE_LAYOUTS": "האם למחוק את הפריסות ({count})?",
+      "RESET_LAYOUT": "האם לבטל את השינויים בפריסה זו ולחזור לפריסה המקורית של המודול?"
+    }
+  }
+}

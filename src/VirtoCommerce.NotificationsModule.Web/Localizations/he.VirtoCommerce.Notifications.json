@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "notifications:read": "קריאת נתוני התראות",
+    "notifications:create": "יצירת נתוני התראות",
+    "notifications:update": "עדכון נתוני התראות",
+    "notifications:delete": "מחיקת נתוני התראות",
+    "notifications:access": "גישה לנתוני התראות",
+    "notifications:export": "ייצוא נתוני התראות",
+    "notifications:import": "ייבוא נתוני התראות",
+    "notifications:templates:read": "קריאת נתוני תבניות",
+    "notifications:templates:create": "יצירת נתוני תבניות"
+  }
+}

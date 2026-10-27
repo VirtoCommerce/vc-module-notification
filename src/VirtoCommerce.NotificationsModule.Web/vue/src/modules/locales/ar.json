@@ -1,0 +1,173 @@
+{
+  "NOTIFICATIONS": {
+    "MENU": {
+      "TITLE": "الإشعارات"
+    },
+    "WIDGETS": {
+      "TEMPLATES": "القوالب",
+      "LOG": "سجل الإشعارات"
+    },
+    "KIND": {
+      "EMAIL": "البريد الإلكتروني",
+      "SMS": "SMS"
+    },
+    "STATUS": {
+      "ACTIVE": "نشط",
+      "INACTIVE": "غير نشط"
+    },
+    "MESSAGE_STATUS": {
+      "SENT": "مُرسَلة",
+      "PENDING": "قيد الانتظار",
+      "ERROR": "خطأ"
+    },
+    "TEMPLATE_STATE": {
+      "PREDEFINED": "محدد مسبقًا",
+      "EDITED": "معدّل",
+      "CUSTOM": "مخصص"
+    },
+    "TOOLBAR": {
+      "REFRESH": "تحديث",
+      "ADD": "إضافة",
+      "CREATE": "إنشاء",
+      "SAVE": "حفظ",
+      "RESET": "إعادة تعيين",
+      "DELETE": "حذف",
+      "PREVIEW": "معاينة",
+      "RESTORE": "استعادة",
+      "CANCEL": "إلغاء"
+    },
+    "PAGES": {
+      "MENU": {
+        "TITLE": "الإشعارات",
+        "JOURNAL": "الرسائل المرسلة والمعلّقة",
+        "LIST": "أنواع الإشعارات ومستلموها وقوالبها",
+        "LAYOUTS": "تخطيطات البريد الإلكتروني المشتركة",
+        "COLUMNS": {
+          "SECTION": "القسم",
+          "DESCRIPTION": "الوصف"
+        }
+      },
+      "LIST": {
+        "TITLE": "أنواع الإشعارات",
+        "EMPTY": "لم يتم العثور على إشعارات",
+        "COLUMNS": {
+          "NAME": "الإشعار",
+          "KIND": "النوع",
+          "STATUS": "الحالة"
+        }
+      },
+      "DETAILS": {
+        "BLANK_HINT": "اتركه فارغًا لاستخدام القيمة الافتراضية",
+        "LIST_HINT": "اضغط Enter بعد كل عنوان بريد إلكتروني",
+        "FIELDS": {
+          "TYPE": "النوع",
+          "ACTIVE": "نشط",
+          "FROM": "من",
+          "TO": "إلى",
+          "CC": "نسخة إلى",
+          "BCC": "نسخة مخفية إلى",
+          "REPLY_TO": "الرد إلى",
+          "NUMBER": "رقم الهاتف"
+        }
+      },
+      "TEMPLATES": {
+        "TITLE": "القوالب",
+        "EMPTY": "لا توجد قوالب",
+        "DEFAULT_LANGUAGE": "الافتراضي",
+        "COLUMNS": {
+          "LANGUAGE": "اللغة",
+          "SUBJECT": "الموضوع",
+          "MESSAGE": "الرسالة",
+          "STATE": "الوضع",
+          "MODIFIED": "تاريخ التعديل"
+        }
+      },
+      "TEMPLATE": {
+        "TITLE": "القالب: {language}",
+        "TITLE_NEW": "قالب جديد",
+        "PREVIEW": "معاينة",
+        "SAMPLE_HINT": "بيانات JSON التي يُعرض بها القالب في المعاينة",
+        "SEND_TEST": "إرسال بريد إلكتروني تجريبي",
+        "SEND_TO": "الإرسال إلى",
+        "SEND": "إرسال",
+        "FIELDS": {
+          "LANGUAGE": "اللغة",
+          "LAYOUT": "التخطيط",
+          "DEFAULT_LAYOUT": "التخطيط الافتراضي",
+          "SUBJECT": "الموضوع",
+          "BODY": "النص",
+          "MESSAGE": "الرسالة",
+          "SAMPLE": "بيانات نموذجية"
+        }
+      },
+      "JOURNAL": {
+        "TITLE": "نشاط الإشعارات",
+        "EMPTY": "لا توجد رسائل",
+        "RESEND": "إعادة الإرسال",
+        "SEARCH_IN_BODY": "البحث في نص الرسالة",
+        "SEARCH_IN_BODY_YES": "نعم، تضمين نص الرسالة",
+        "PERIOD": "الفترة",
+        "PERIODS": {
+          "TODAY": "اليوم",
+          "YESTERDAY": "أمس",
+          "LAST24H": "آخر 24 ساعة",
+          "LAST7D": "آخر 7 أيام",
+          "LAST30D": "آخر 30 يومًا"
+        },
+        "SAVED": {
+          "PLACEHOLDER": "عمليات البحث المحفوظة",
+          "SAVE": "حفظ البحث",
+          "DELETE": "حذف البحث المحفوظ",
+          "NAME": "الاسم",
+          "HINT": "يحفظ البحث «{keyword}» في هذا المتصفح"
+        },
+        "COLUMNS": {
+          "NOTIFICATION": "الإشعار",
+          "RECIPIENT": "المستلم",
+          "SUBJECT": "الموضوع",
+          "CREATED": "تاريخ الإنشاء",
+          "ATTEMPTS": "المحاولات",
+          "STATUS": "الحالة"
+        }
+      },
+      "MESSAGE": {
+        "BODY": "الرسالة",
+        "FIELDS": {
+          "ID": "المعرّف",
+          "SENT": "تاريخ الإرسال",
+          "LANGUAGE": "اللغة",
+          "ERROR": "آخر خطأ"
+        }
+      },
+      "LAYOUTS": {
+        "TITLE": "التخطيطات",
+        "EMPTY": "لا توجد تخطيطات بعد",
+        "DEFAULT": "الافتراضي",
+        "COLUMNS": {
+          "NAME": "الاسم",
+          "DEFAULT": "الافتراضي"
+        }
+      },
+      "LAYOUT": {
+        "TITLE_NEW": "تخطيط جديد",
+        "SUBTITLE": "تخطيط الإشعار",
+        "IS_DEFAULT": "التخطيط الافتراضي",
+        "TEMPLATE": "القالب",
+        "RESET_DEFAULT": "إعادة التعيين إلى الافتراضي"
+      }
+    },
+    "VALIDATION": {
+      "LANGUAGE_EXISTS": "يوجد قالب لهذه اللغة بالفعل",
+      "SAMPLE_JSON": "JSON غير صالح"
+    },
+    "ALERTS": {
+      "CLOSE_CONFIRMATION": "لديك تغييرات غير محفوظة. هل تريد الإغلاق على أي حال؟",
+      "DELETE_TEMPLATES": "هل تريد حذف القوالب ({count})؟",
+      "RESTORE_TEMPLATE": "هل تريد تجاهل التغييرات على هذا القالب واستخدام القالب الأصلي للوحدة مرة أخرى؟",
+      "TEST_SENT": "تم إرسال بريد إلكتروني تجريبي إلى {email}",
+      "RESEND_SCHEDULED": "تمت جدولة إعادة إرسال الرسائل ({count})",
+      "DELETE_LAYOUTS": "هل تريد حذف التخطيطات ({count})؟",
+      "RESET_LAYOUT": "هل تريد تجاهل التغييرات على هذا التخطيط واستخدام التخطيط الأصلي للوحدة؟"
+    }
+  }
+}
