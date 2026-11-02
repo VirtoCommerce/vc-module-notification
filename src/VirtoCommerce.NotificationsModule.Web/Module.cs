@@ -183,6 +183,9 @@ namespace VirtoCommerce.NotificationsModule.Web
 
             appBuilder.RegisterEventHandler<UserRequestPasswordResetEvent, RequestPasswordResetHandler>();
 
+            var snippetRegistrar = appBuilder.ApplicationServices.GetRequiredService<INotificationSnippetRegistrar>();
+            snippetRegistrar.RegisterSnippetsFromPath(Path.Combine(ModuleInfo.FullPhysicalPath, "NotificationSnippets"));
+
             var defaultTemplatesDirectory = Path.Combine(ModuleInfo.FullPhysicalPath, "NotificationTemplates");
             var registrar = appBuilder.ApplicationServices.GetService<INotificationRegistrar>();
             registrar.RegisterNotification<ResetPasswordEmailNotification>().WithTemplatesFromPath(defaultTemplatesDirectory);

@@ -55,8 +55,10 @@ public class LiquidTemplateRenderer : INotificationTemplateRenderer
         if (!string.IsNullOrEmpty(renderContext.LayoutId))
         {
             stringTemplate = IncludeLayout(stringTemplate, renderContext.LayoutId);
-            templateContext.TemplateLoader = _templateLoaderFactory();
         }
+
+        // Set even without a layout, so a body can include snippets
+        templateContext.TemplateLoader = _templateLoaderFactory();
 
         var scriptObject = AbstractTypeFactory<NotificationScriptObject>.TryCreateInstance();
         scriptObject.Language = renderContext.Language;

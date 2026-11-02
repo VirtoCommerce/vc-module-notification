@@ -31,6 +31,7 @@
   </ItemGroup>
   <ItemGroup>
     <NotificationTemplates Include="NotificationTemplates\**" />
+    <NotificationTemplates Include="NotificationSnippets\**" />
   </ItemGroup>
   <Target Name="CopyCustomContentOnPublish" AfterTargets="Publish">
     <Copy SourceFiles="@(NotificationTemplates)" DestinationFiles="$(PublishDir)\..\%(Identity)" />
