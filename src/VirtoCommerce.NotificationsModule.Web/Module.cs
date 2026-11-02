@@ -90,6 +90,7 @@ namespace VirtoCommerce.NotificationsModule.Web
             serviceCollection.AddBackgroundJob<SendNotificationMessageJob>();
 
             serviceCollection.AddTransient<INotificationLayoutService, NotificationLayoutService>();
+            serviceCollection.AddTransient<INotificationLayoutUsageService, NotificationLayoutUsageService>();
             serviceCollection.AddTransient<INotificationLayoutSearchService, NotificationLayoutSearchService>();
             serviceCollection.AddSingleton<INotificationLayoutRegistrar, NotificationLayoutRegistrar>();
 

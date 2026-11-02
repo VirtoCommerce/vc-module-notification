@@ -18,13 +18,30 @@ namespace VirtoCommerce.NotificationsModule.Web.Controllers
     {
         private readonly INotificationLayoutService _layoutService;
         private readonly INotificationLayoutSearchService _layoutSearchService;
+        private readonly INotificationLayoutUsageService _layoutUsageService;
 
         public NotificationLayoutsController(
             INotificationLayoutService layoutService,
-            INotificationLayoutSearchService layoutSearchService)
+            INotificationLayoutSearchService layoutSearchService,
+            INotificationLayoutUsageService layoutUsageService)
         {
             _layoutService = layoutService;
             _layoutSearchService = layoutSearchService;
+            _layoutUsageService = layoutUsageService;
+        }
+
+        /// <summary>
+        /// Returns the notification types whose email templates use the layout
+        /// </summary>
+        [HttpGet]
+        [Route("{id}/usage")]
+        [Authorize(ModuleConstants.Security.Permissions.Read)]
+        [ProducesResponseType(typeof(NotificationLayoutUsage), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<ActionResult<NotificationLayoutUsage>> GetNotificationLayoutUsage(string id)
+        {
+            var usage = await _layoutUsageService.GetUsageAsync(id);
+            return usage == null ? NotFound() : Ok(usage);
         }
 
         [HttpGet]

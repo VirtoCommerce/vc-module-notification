@@ -14,15 +14,18 @@ namespace VirtoCommerce.NotificationsModule.Tests.UnitTests
     {
         private readonly Mock<INotificationLayoutService> _layoutServiceMock;
         private readonly Mock<INotificationLayoutSearchService> _layoutSearchServiceMock;
+        private readonly Mock<INotificationLayoutUsageService> _layoutUsageServiceMock;
         private readonly NotificationLayoutsController _controller;
 
         public NotificationLayoutsControllerUnitTests()
         {
             _layoutServiceMock = new Mock<INotificationLayoutService>();
             _layoutSearchServiceMock = new Mock<INotificationLayoutSearchService>();
+            _layoutUsageServiceMock = new Mock<INotificationLayoutUsageService>();
             _controller = new NotificationLayoutsController(
                 _layoutServiceMock.Object,
-                _layoutSearchServiceMock.Object);
+                _layoutSearchServiceMock.Object,
+                _layoutUsageServiceMock.Object);
         }
 
         // UpdateNotificationLayout
@@ -112,6 +115,47 @@ namespace VirtoCommerce.NotificationsModule.Tests.UnitTests
             // Assert — custom layouts cannot be reset
             Assert.IsType<NotFoundResult>(result);
             _layoutServiceMock.Verify(x => x.DeleteAsync(It.IsAny<IList<string>>(), It.IsAny<bool>()), Times.Never);
+        }
+        [Fact]
+        public async Task ResetNotificationLayoutToDefault_CalledWithNameOfOverriddenLayout_DeletesOverrideById()
+        {
+            // Arrange — the service resolves the predefined name to its DB override
+            _layoutServiceMock
+                .Setup(x => x.GetAsync(It.Is<IList<string>>(ids => ids.Contains("Default")), It.IsAny<string>(), It.IsAny<bool>()))
+                .ReturnsAsync([new NotificationLayout { Id = "real-uuid", Name = "Default", IsPredefined = true }]);
+
+            // Act
+            var result = await _controller.ResetNotificationLayoutToDefault("Default");
+
+            // Assert
+            Assert.IsType<NoContentResult>(result);
+            _layoutServiceMock.Verify(x => x.DeleteAsync(new[] { "real-uuid" }, It.IsAny<bool>()), Times.Once);
+        }
+
+        // GetNotificationLayoutUsage
+
+        [Fact]
+        public async Task GetNotificationLayoutUsage_LayoutExists_ReturnsUsage()
+        {
+            // Arrange
+            var usage = new NotificationLayoutUsage { LayoutId = "Default", NotificationTypes = ["OrderCreateEmailNotification"] };
+            _layoutUsageServiceMock.Setup(x => x.GetUsageAsync("Default")).ReturnsAsync(usage);
+
+            // Act
+            var result = await _controller.GetNotificationLayoutUsage("Default");
+
+            // Assert
+            Assert.Same(usage, Assert.IsType<OkObjectResult>(result.Result).Value);
+        }
+
+        [Fact]
+        public async Task GetNotificationLayoutUsage_LayoutMissing_ReturnsNotFound()
+        {
+            // Act
+            var result = await _controller.GetNotificationLayoutUsage("missing");
+
+            // Assert
+            Assert.IsType<NotFoundResult>(result.Result);
         }
     }
 }
