@@ -1,0 +1,95 @@
+<!--
+  Default Master layout. Brand values come from the `brand` object of the layout; each one has a default,
+  so the layout renders without any settings. The template body is printed in place of {{ content }}.
+  Test strings with `.size > 0`: in Scriban Liquid mode `x != blank` is true even when x is null.
+  Edit this file and run `npm run build:email`; never edit NotificationLayouts/Default.html by hand.
+-->
+<mjml lang="{{ language | default: 'en' }}">
+  <mj-head>
+    <mj-attributes>
+      <mj-all font-family="Roboto, 'Segoe UI', Helvetica, Arial, sans-serif" />
+      <mj-text padding="0" />
+      <mj-section padding="0" />
+    </mj-attributes>
+    <mj-raw>
+      <meta name="color-scheme" content="light only">
+      <meta name="supported-color-schemes" content="light only">
+    </mj-raw>
+    <mj-style>
+      a { color: inherit; }
+      .content a { color: {{ brand.accent_color | default: '#e8912a' }}; }
+    </mj-style>
+  </mj-head>
+  <mj-body width="613px" background-color="#eef0f3">
+    <mj-raw>
+      {%- assign accent_color = brand.accent_color | default: '#e8912a' -%}
+      {%- assign header_style = brand.header_style | default: 'line' -%}
+      {%- assign email_width = brand.email_width | default: 600 -%}
+      {%- assign logo_text = brand.logo_text | default: 'Virto Commerce' -%}
+      {%- assign logo_width = brand.logo_width | default: 160 -%}
+      {%- if header_style == 'dark' -%}
+        {%- assign header_background = '#16233f' -%}{%- assign header_color = '#ffffff' -%}{%- assign header_border = 'none' -%}
+      {%- elsif header_style == 'accent' -%}
+        {%- assign header_background = accent_color -%}{%- assign header_color = '#ffffff' -%}{%- assign header_border = 'none' -%}
+      {%- else -%}
+        {%- assign header_background = '#ffffff' -%}{%- assign header_color = '#16233f' -%}{%- assign header_border = '1px solid #eef0f3' -%}
+      {%- endif -%}
+      {%- if preheader.size > 0 -%}
+        <div style="display:none;max-height:0;max-width:0;opacity:0;overflow:hidden;mso-hide:all;">{{ preheader }}</div>
+      {%- endif -%}
+    </mj-raw>
+
+    <mj-wrapper padding="32px 16px 0">
+      <mj-section background-color="{{ header_background }}" border-bottom="{{ header_border }}" border-radius="11px 11px 0 0" padding="20px 26px">
+        <mj-column>
+          <mj-text color="{{ header_color }}" font-size="20px" line-height="24px" font-weight="700">
+            {%- if brand.logo_url.size > 0 -%}
+              <img src="{{ brand.logo_url }}" width="{{ logo_width }}" alt="{{ logo_text }}" style="display:block;border:0;outline:none;height:auto;width:{{ logo_width }}px;max-width:100%;">
+            {%- else -%}
+              <span style="color:{{ header_color }};">{{ logo_text }}</span>
+            {%- endif -%}
+          </mj-text>
+        </mj-column>
+      </mj-section>
+
+      <mj-section background-color="#ffffff" border-radius="0 0 11px 11px" padding="24px 26px 28px">
+        <mj-column>
+          <mj-text css-class="content" color="#46516a" font-size="15px" line-height="23px">
+            {{ content }}
+          </mj-text>
+        </mj-column>
+      </mj-section>
+    </mj-wrapper>
+
+    <mj-section padding="24px 26px 32px">
+      <mj-column>
+        <mj-text align="center" color="#8a94a0" font-size="13px" line-height="20px">
+          {%- if brand.footer_text.size > 0 -%}
+            {{ brand.footer_text | replace: "\n", "<br>" }}
+          {%- else -%}
+            &copy; {{ date.now.year }} {{ logo_text }}. All rights reserved.
+          {%- endif -%}
+          {%- if brand.address.size > 0 -%}
+            <br>{{ brand.address | replace: "\n", "<br>" }}
+          {%- endif -%}
+          {%- if brand.social_links.size > 0 -%}
+            <br><br>
+            {%- for link in brand.social_links -%}
+              <a href="{{ link.url }}" style="color:#5b6673;text-decoration:none;">{{ link.name }}</a>{% unless forloop.last %} &nbsp;&middot;&nbsp; {% endunless %}
+            {%- endfor -%}
+          {%- endif -%}
+          {%- if brand.utility_links.size > 0 or brand.show_unsubscribe and unsubscribe_url.size > 0 -%}
+            <br><br>
+            {%- for link in brand.utility_links -%}
+              <a href="{{ link.url }}" style="color:#8a94a0;text-decoration:underline;">{{ link.name }}</a>{% unless forloop.last %} &nbsp;&middot;&nbsp; {% endunless %}
+            {%- endfor -%}
+            {%- if brand.show_unsubscribe and unsubscribe_url.size > 0 -%}
+              {%- if brand.utility_links.size > 0 %} &nbsp;&middot;&nbsp; {% endif -%}
+              <a href="{{ unsubscribe_url }}" style="color:#8a94a0;text-decoration:underline;">Unsubscribe</a>
+            {%- endif -%}
+          {%- endif -%}
+        </mj-text>
+      </mj-column>
+    </mj-section>
+  </mj-body>
+</mjml>

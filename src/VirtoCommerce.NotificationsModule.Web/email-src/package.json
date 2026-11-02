@@ -1,0 +1,13 @@
+{
+  "name": "vc-notification-email-src",
+  "version": "1.0.0",
+  "private": true,
+  "description": "MJML sources of the predefined notification layouts. The compiled HTML is committed, so the module build does not need this package.",
+  "type": "module",
+  "scripts": {
+    "build:email": "node build.mjs"
+  },
+  "devDependencies": {
+    "mjml": "5.4.1"
+  }
+}

@@ -1,0 +1,290 @@
+<!doctype html>
+<html lang="{{ language | default: 'en' }}" dir="auto" xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office">
+  <head>
+    <title></title>
+    <!--[if !mso]><!-->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!--<![endif]-->
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style type="text/css">
+      #outlook a { padding:0; }
+      body { margin:0;padding:0;-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%; }
+      table, td { border-collapse:collapse;mso-table-lspace:0pt;mso-table-rspace:0pt; }
+      img { border:0;height:auto;line-height:100%; outline:none;text-decoration:none;-ms-interpolation-mode:bicubic; }
+      p { display:block;margin:13px 0; }
+    </style>
+    <!--[if mso]>
+    <noscript>
+    <xml>
+    <o:OfficeDocumentSettings>
+      <o:AllowPNG/>
+      <o:PixelsPerInch>96</o:PixelsPerInch>
+    </o:OfficeDocumentSettings>
+    </xml>
+    </noscript>
+    <![endif]-->
+    <!--[if lte mso 11]>
+    <style type="text/css">
+      .mj-outlook-group-fix { width:100% !important; }
+    </style>
+    <![endif]-->
+    
+      <!--[if !mso]><!-->
+        <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700" rel="stylesheet" type="text/css">
+        <style type="text/css">
+          @import url(https://fonts.googleapis.com/css?family=Roboto:300,400,500,700);
+        </style>
+      <!--<![endif]-->
+
+    
+    
+    <style type="text/css">
+      @media only screen and (min-width:480px) {
+        .mj-column-per-100 { width:100% !important; max-width: 100%; }
+      }
+    </style>
+    <style media="screen and (min-width:480px)">
+      .moz-text-html .mj-column-per-100 { width:100% !important; max-width: 100%; }
+    </style>
+    
+    
+  
+    
+     
+    <style type="text/css">
+a { color: inherit; }
+      .content a { color: {{ brand.accent_color | default: '#e8912a' }}; }
+    </style>
+    <meta name="color-scheme" content="light only">
+      <meta name="supported-color-schemes" content="light only">
+  </head>
+  
+      <body  style="word-spacing:normal;background-color:#eef0f3;">
+        
+        <div
+           aria-roledescription="email" role="article" lang="{{ language | default: 'en' }}" dir="auto" style="word-spacing:normal;background-color:#eef0f3;"
+        >
+        {%- assign accent_color = brand.accent_color | default: '#e8912a' -%}
+      {%- assign header_style = brand.header_style | default: 'line' -%}
+      {%- assign email_width = brand.email_width | default: 600 -%}
+      {%- assign logo_text = brand.logo_text | default: 'Virto Commerce' -%}
+      {%- assign logo_width = brand.logo_width | default: 160 -%}
+      {%- if header_style == 'dark' -%}
+        {%- assign header_background = '#16233f' -%}{%- assign header_color = '#ffffff' -%}{%- assign header_border = 'none' -%}
+      {%- elsif header_style == 'accent' -%}
+        {%- assign header_background = accent_color -%}{%- assign header_color = '#ffffff' -%}{%- assign header_border = 'none' -%}
+      {%- else -%}
+        {%- assign header_background = '#ffffff' -%}{%- assign header_color = '#16233f' -%}{%- assign header_border = '1px solid #eef0f3' -%}
+      {%- endif -%}
+      {%- if preheader.size > 0 -%}
+        <div style="display:none;max-height:0;max-width:0;opacity:0;overflow:hidden;mso-hide:all;">{{ preheader }}</div>
+      {%- endif -%}
+      
+      <!--[if mso | IE]><table align="center" border="0" cellpadding="0" cellspacing="0" class="" role="presentation" style="width:{{ email_width }}px;" width="{{ email_width }}" ><tr><td style="line-height:0px;font-size:0px;mso-line-height-rule:exactly;"><![endif]-->
+    
+      
+      <div  style="margin:0px auto;max-width:{{ email_width }}px;">
+        
+        <table
+           align="center" border="0" cellpadding="0" cellspacing="0" role="presentation" style="width:100%;"
+        >
+          <tbody>
+            <tr>
+              <td
+                 style="direction:ltr;font-size:0px;padding:32px 16px 0;text-align:center;"
+              >
+                <!--[if mso | IE]><table role="presentation" border="0" cellpadding="0" cellspacing="0"><tr><td class="" width="{{ email_width }}px" ><table align="center" border="0" cellpadding="0" cellspacing="0" class="" role="presentation" style="width:{{ email_width | minus: 32 }}px;" width="{{ email_width | minus: 32 }}" bgcolor="{{ header_background }}" ><tr><td style="line-height:0px;font-size:0px;mso-line-height-rule:exactly;"><![endif]-->
+    
+      
+      <div  style="background:{{ header_background }};background-color:{{ header_background }};margin:0px auto;max-width:{{ email_width | minus: 32 }}px;border-radius:11px 11px 0 0;overflow:hidden;">
+        
+        <table
+           align="center" border="0" cellpadding="0" cellspacing="0" role="presentation" style="background:{{ header_background }};background-color:{{ header_background }};width:100%;border-collapse:separate;"
+        >
+          <tbody>
+            <tr>
+              <td
+                 style="border-bottom:{{ header_border }};border-radius:11px 11px 0 0;direction:ltr;font-size:0px;padding:20px 26px;text-align:center;"
+              >
+                <!--[if mso | IE]><table role="presentation" border="0" cellpadding="0" cellspacing="0"><tr><td class="" style="vertical-align:top;width:{{ email_width | minus: 84 }}px;" ><![endif]-->
+            
+      <div
+         class="mj-column-per-100 mj-outlook-group-fix" style="font-size:0px;text-align:left;direction:ltr;display:inline-block;vertical-align:top;width:100%;"
+      >
+        
+      <table
+         border="0" cellpadding="0" cellspacing="0" role="presentation" style="vertical-align:top;" width="100%"
+      >
+        <tbody>
+          
+              <tr>
+                <td
+                   align="left" style="font-size:0px;padding:0;word-break:break-word;"
+                >
+                  
+      <div
+         style="font-family:Roboto, 'Segoe UI', Helvetica, Arial, sans-serif;font-size:20px;font-weight:700;line-height:24px;text-align:left;color:{{ header_color }};"
+      >{%- if brand.logo_url.size > 0 -%}
+              <img src="{{ brand.logo_url }}" width="{{ logo_width }}" alt="{{ logo_text }}" style="display:block;border:0;outline:none;height:auto;width:{{ logo_width }}px;max-width:100%;">
+            {%- else -%}
+              <span style="color:{{ header_color }};">{{ logo_text }}</span>
+            {%- endif -%}</div>
+    
+                </td>
+              </tr>
+            
+        </tbody>
+      </table>
+    
+      </div>
+    
+          <!--[if mso | IE]></td></tr></table><![endif]-->
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        
+      </div>
+    
+      
+      <!--[if mso | IE]></td></tr></table></td></tr><tr><td class="" width="{{ email_width }}px" ><table align="center" border="0" cellpadding="0" cellspacing="0" class="" role="presentation" style="width:{{ email_width | minus: 32 }}px;" width="{{ email_width | minus: 32 }}" bgcolor="#ffffff" ><tr><td style="line-height:0px;font-size:0px;mso-line-height-rule:exactly;"><![endif]-->
+    
+      
+      <div  style="background:#ffffff;background-color:#ffffff;margin:0px auto;max-width:{{ email_width | minus: 32 }}px;border-radius:0 0 11px 11px;overflow:hidden;">
+        
+        <table
+           align="center" border="0" cellpadding="0" cellspacing="0" role="presentation" style="background:#ffffff;background-color:#ffffff;width:100%;border-collapse:separate;"
+        >
+          <tbody>
+            <tr>
+              <td
+                 style="border-radius:0 0 11px 11px;direction:ltr;font-size:0px;padding:24px 26px 28px;text-align:center;"
+              >
+                <!--[if mso | IE]><table role="presentation" border="0" cellpadding="0" cellspacing="0"><tr><td class="" style="vertical-align:top;width:{{ email_width | minus: 84 }}px;" ><![endif]-->
+            
+      <div
+         class="mj-column-per-100 mj-outlook-group-fix" style="font-size:0px;text-align:left;direction:ltr;display:inline-block;vertical-align:top;width:100%;"
+      >
+        
+      <table
+         border="0" cellpadding="0" cellspacing="0" role="presentation" style="vertical-align:top;" width="100%"
+      >
+        <tbody>
+          
+              <tr>
+                <td
+                   align="left" class="content" style="font-size:0px;padding:0;word-break:break-word;"
+                >
+                  
+      <div
+         style="font-family:Roboto, 'Segoe UI', Helvetica, Arial, sans-serif;font-size:15px;line-height:23px;text-align:left;color:#46516a;"
+      >{{ content }}</div>
+    
+                </td>
+              </tr>
+            
+        </tbody>
+      </table>
+    
+      </div>
+    
+          <!--[if mso | IE]></td></tr></table><![endif]-->
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        
+      </div>
+    
+      
+      <!--[if mso | IE]></td></tr></table></td></tr></table><![endif]-->
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        
+      </div>
+    
+      
+      <!--[if mso | IE]></td></tr></table><table align="center" border="0" cellpadding="0" cellspacing="0" class="" role="presentation" style="width:{{ email_width }}px;" width="{{ email_width }}" ><tr><td style="line-height:0px;font-size:0px;mso-line-height-rule:exactly;"><![endif]-->
+    
+      
+      <div  style="margin:0px auto;max-width:{{ email_width }}px;">
+        
+        <table
+           align="center" border="0" cellpadding="0" cellspacing="0" role="presentation" style="width:100%;"
+        >
+          <tbody>
+            <tr>
+              <td
+                 style="direction:ltr;font-size:0px;padding:24px 26px 32px;text-align:center;"
+              >
+                <!--[if mso | IE]><table role="presentation" border="0" cellpadding="0" cellspacing="0"><tr><td class="" style="vertical-align:top;width:{{ email_width | minus: 52 }}px;" ><![endif]-->
+            
+      <div
+         class="mj-column-per-100 mj-outlook-group-fix" style="font-size:0px;text-align:left;direction:ltr;display:inline-block;vertical-align:top;width:100%;"
+      >
+        
+      <table
+         border="0" cellpadding="0" cellspacing="0" role="presentation" style="vertical-align:top;" width="100%"
+      >
+        <tbody>
+          
+              <tr>
+                <td
+                   align="center" style="font-size:0px;padding:0;word-break:break-word;"
+                >
+                  
+      <div
+         style="font-family:Roboto, 'Segoe UI', Helvetica, Arial, sans-serif;font-size:13px;line-height:20px;text-align:center;color:#8a94a0;"
+      >{%- if brand.footer_text.size > 0 -%}
+            {{ brand.footer_text | replace: "\n", "<br>" }}
+          {%- else -%}
+            &copy; {{ date.now.year }} {{ logo_text }}. All rights reserved.
+          {%- endif -%}
+          {%- if brand.address.size > 0 -%}
+            <br>{{ brand.address | replace: "\n", "<br>" }}
+          {%- endif -%}
+          {%- if brand.social_links.size > 0 -%}
+            <br><br>
+            {%- for link in brand.social_links -%}
+              <a href="{{ link.url }}" style="color:#5b6673;text-decoration:none;">{{ link.name }}</a>{% unless forloop.last %} &nbsp;&middot;&nbsp; {% endunless %}
+            {%- endfor -%}
+          {%- endif -%}
+          {%- if brand.utility_links.size > 0 or brand.show_unsubscribe and unsubscribe_url.size > 0 -%}
+            <br><br>
+            {%- for link in brand.utility_links -%}
+              <a href="{{ link.url }}" style="color:#8a94a0;text-decoration:underline;">{{ link.name }}</a>{% unless forloop.last %} &nbsp;&middot;&nbsp; {% endunless %}
+            {%- endfor -%}
+            {%- if brand.show_unsubscribe and unsubscribe_url.size > 0 -%}
+              {%- if brand.utility_links.size > 0 %} &nbsp;&middot;&nbsp; {% endif -%}
+              <a href="{{ unsubscribe_url }}" style="color:#8a94a0;text-decoration:underline;">Unsubscribe</a>
+            {%- endif -%}
+          {%- endif -%}</div>
+    
+                </td>
+              </tr>
+            
+        </tbody>
+      </table>
+    
+      </div>
+    
+          <!--[if mso | IE]></td></tr></table><![endif]-->
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        
+      </div>
+    
+      
+      <!--[if mso | IE]></td></tr></table><![endif]-->
+    
+    
+      </div>
+      </body>
+    
+</html>
+  

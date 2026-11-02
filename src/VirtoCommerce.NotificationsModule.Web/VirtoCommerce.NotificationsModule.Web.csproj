@@ -13,6 +13,8 @@
     <EmbeddedResource Remove="node_modules\**" />
     <None Remove="dist\**" />
     <None Remove="node_modules\**" />
+    <Content Remove="email-src\node_modules\**" />
+    <None Remove="email-src\node_modules\**" />
     <!-- Admin Shell plugin: Vue sources in vue/, built into plugins/admin-shell/ -->
     <Compile Remove="vue\**" />
     <Content Remove="vue\**" />
@@ -32,6 +34,7 @@
   <ItemGroup>
     <NotificationTemplates Include="NotificationTemplates\**" />
     <NotificationTemplates Include="NotificationSnippets\**" />
+    <NotificationTemplates Include="NotificationLayouts\**" />
   </ItemGroup>
   <Target Name="CopyCustomContentOnPublish" AfterTargets="Publish">
     <Copy SourceFiles="@(NotificationTemplates)" DestinationFiles="$(PublishDir)\..\%(Identity)" />

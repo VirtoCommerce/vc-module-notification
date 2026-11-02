@@ -42,5 +42,6 @@
     <None Update="secrets.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="..\..\src\VirtoCommerce.NotificationsModule.Web\NotificationLayouts\**" LinkBase="NotificationLayouts" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
 </Project>

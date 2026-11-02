@@ -183,6 +183,10 @@ namespace VirtoCommerce.NotificationsModule.Web
 
             appBuilder.RegisterEventHandler<UserRequestPasswordResetEvent, RequestPasswordResetHandler>();
 
+            // Not marked as default, so templates without a layout (including ones edited in the DB) render as before
+            var layoutRegistrar = appBuilder.ApplicationServices.GetRequiredService<INotificationLayoutRegistrar>();
+            layoutRegistrar.RegisterLayoutWithTemplateFromPath(ModuleConstants.DefaultLayoutName, Path.Combine(ModuleInfo.FullPhysicalPath, "NotificationLayouts"));
+
             var snippetRegistrar = appBuilder.ApplicationServices.GetRequiredService<INotificationSnippetRegistrar>();
             snippetRegistrar.RegisterSnippetsFromPath(Path.Combine(ModuleInfo.FullPhysicalPath, "NotificationSnippets"));
 

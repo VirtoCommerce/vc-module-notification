@@ -9,6 +9,11 @@ namespace VirtoCommerce.NotificationsModule.Core
     {
         public static int DefaultLiquidRendererLoopLimit { get; } = 2000;
 
+        /// <summary>
+        /// Name (and id) of the predefined Master layout. Modules opt a template in with .WithLayout(DefaultLayoutName).
+        /// </summary>
+        public const string DefaultLayoutName = "Default";
+
         public static class Security
         {
             public static class Permissions
