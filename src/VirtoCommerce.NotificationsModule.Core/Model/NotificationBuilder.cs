@@ -64,7 +64,10 @@ namespace VirtoCommerce.NotificationsModule.Core.Model
 
             if (layouts.Results.Any())
             {
-                var layoutId = layouts.Results.First().Id;
+                // Keep the name of a predefined layout: the search returns the id of its DB override when there is one,
+                // and that id would dangle after the override is reset
+                var layout = layouts.Results.First();
+                var layoutId = layout.IsPredefined ? layout.Name : layout.Id;
                 foreach (var template in Notification.Templates.OfType<EmailNotificationTemplate>())
                 {
                     template.NotificationLayoutId = layoutId;
