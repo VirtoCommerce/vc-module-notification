@@ -111,7 +111,8 @@ namespace VirtoCommerce.NotificationsModule.Web.Controllers
                 return NoContent();
             }
 
-            await _layoutService.DeleteAsync(new[] { id });
+            // Delete by the DB id: when called with the layout name, the service resolves it to the DB override
+            await _layoutService.DeleteAsync(new[] { layout.Id });
             return NoContent();
         }
     }

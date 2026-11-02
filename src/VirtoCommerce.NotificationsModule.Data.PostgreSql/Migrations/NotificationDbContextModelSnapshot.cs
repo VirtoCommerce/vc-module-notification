@@ -17,7 +17,7 @@ namespace VirtoCommerce.NotificationsModule.Data.PostgreSql.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "10.0.1")
+                .HasAnnotation("ProductVersion", "10.0.13")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
@@ -157,7 +157,7 @@ namespace VirtoCommerce.NotificationsModule.Data.PostgreSql.Migrations
 
                     b.ToTable("Notification", (string)null);
 
-                    b.HasDiscriminator().HasValue("NotificationEntity");
+                    b.HasDiscriminator<string>("Discriminator").HasValue("NotificationEntity");
 
                     b.UseTphMappingStrategy();
                 });
@@ -276,7 +276,7 @@ namespace VirtoCommerce.NotificationsModule.Data.PostgreSql.Migrations
 
                     b.ToTable("NotificationMessage", (string)null);
 
-                    b.HasDiscriminator().HasValue("NotificationMessageEntity");
+                    b.HasDiscriminator<string>("Discriminator").HasValue("NotificationMessageEntity");
 
                     b.UseTphMappingStrategy();
                 });
@@ -325,7 +325,7 @@ namespace VirtoCommerce.NotificationsModule.Data.PostgreSql.Migrations
 
                     b.ToTable("NotificationTemplate", (string)null);
 
-                    b.HasDiscriminator().HasValue("NotificationTemplateEntity");
+                    b.HasDiscriminator<string>("Discriminator").HasValue("NotificationTemplateEntity");
 
                     b.UseTphMappingStrategy();
                 });
@@ -487,16 +487,6 @@ namespace VirtoCommerce.NotificationsModule.Data.PostgreSql.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
 
                     b.Navigation("Notification");
-                });
-
-            modelBuilder.Entity("VirtoCommerce.NotificationsModule.Data.Model.EmailNotificationTemplateEntity", b =>
-                {
-                    b.HasOne("VirtoCommerce.NotificationsModule.Data.Model.NotificationLayoutEntity", "NotificationLayout")
-                        .WithMany()
-                        .HasForeignKey("NotificationLayoutId")
-                        .OnDelete(DeleteBehavior.SetNull);
-
-                    b.Navigation("NotificationLayout");
                 });
 
             modelBuilder.Entity("VirtoCommerce.NotificationsModule.Data.Model.NotificationEntity", b =>

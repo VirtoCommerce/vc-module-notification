@@ -47,11 +47,10 @@ namespace VirtoCommerce.NotificationsModule.Data.Repositories
             modelBuilder.Entity<NotificationTemplateEntity>().HasOne(x => x.Notification).WithMany(x => x.Templates)
                        .HasForeignKey(x => x.NotificationId).OnDelete(DeleteBehavior.Cascade);
 
-            modelBuilder.Entity<EmailNotificationTemplateEntity>();
-            modelBuilder.Entity<EmailNotificationTemplateEntity>().HasOne(x => x.NotificationLayout)
-                        .WithMany()
-                        .HasForeignKey(x => x.NotificationLayoutId)
-                        .OnDelete(DeleteBehavior.SetNull);
+            // No foreign key to NotificationLayout: a template can point to a predefined layout by its name,
+            // and predefined layouts are kept in memory only. NotificationLayoutService.DeleteAsync detaches templates instead.
+            modelBuilder.Entity<EmailNotificationTemplateEntity>().Ignore("NotificationLayout");
+            modelBuilder.Entity<EmailNotificationTemplateEntity>().HasIndex(x => x.NotificationLayoutId);
 
             modelBuilder.Entity<SmsNotificationTemplateEntity>();
 

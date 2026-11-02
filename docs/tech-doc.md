@@ -227,6 +227,8 @@ layoutRegistrar.GetByName("Default").IsDefault = true;
 
 A predefined layout is identified by its **name**. When rendering, the name is used as the layout ID if no DB override exists. If a DB record with the same name is present, it takes priority.
 
+Templates refer to a predefined layout by its name (`.WithLayout("Default")` stores `Default` as `NotificationLayoutId`). `INotificationLayoutService.GetAsync` resolves such an id to the DB override of that layout when there is one, so an edit of the layout in the Admin UI applies to every template that uses it. Template rows have no foreign key to the layout table for this reason. When a DB layout is deleted, templates that pointed to it are moved to the predefined layout with the same name, or get no layout if there is none.
+
 ### Reset to Default
 
 If an administrator has customized a predefined layout via the Admin UI and you want to restore the in-code version, use the reset endpoint:

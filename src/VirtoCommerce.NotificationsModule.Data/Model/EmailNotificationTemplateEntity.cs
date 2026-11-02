@@ -1,3 +1,4 @@
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using VirtoCommerce.NotificationsModule.Core.Model;
@@ -28,11 +29,12 @@ namespace VirtoCommerce.NotificationsModule.Data.Model
         public string Sample { get; set; }
 
         /// <summary>
-        /// Id of notification
+        /// Id of the layout, or the name of a predefined layout
         /// </summary>
         [StringLength(128)]
         public string NotificationLayoutId { get; set; }
 
+        [Obsolete("Not mapped. A template can point to a predefined layout that exists in memory only, so there is no relationship to NotificationLayoutEntity.", DiagnosticId = "VC0015", UrlFormat = "https://docs.virtocommerce.org/products/products-virto3-versions")]
         public NotificationLayoutEntity NotificationLayout { get; set; }
 
         public override NotificationTemplate ToModel(NotificationTemplate template)

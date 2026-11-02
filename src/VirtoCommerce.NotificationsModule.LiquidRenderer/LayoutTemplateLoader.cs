@@ -39,7 +39,9 @@ namespace VirtoCommerce.NotificationsModule.LiquidRenderer
             }
 
             var layout = await _notificationLayoutService.GetNoCloneAsync(layoutId);
-            return layout?.Template ?? string.Empty;
+
+            // A template can point to a layout that no longer exists; render the content alone rather than an empty email
+            return layout?.Template ?? "{{ content }}";
         }
     }
 }

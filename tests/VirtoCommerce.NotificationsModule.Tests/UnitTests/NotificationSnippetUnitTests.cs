@@ -79,6 +79,23 @@ namespace VirtoCommerce.NotificationsModule.Tests.UnitTests
         }
 
         [Fact]
+        public async Task RenderAsync_LayoutNotFound_ContentRendered()
+        {
+            _notificationLayoutServiceMock
+                .Setup(x => x.GetAsync(It.IsAny<IList<string>>(), It.IsAny<string>(), It.IsAny<bool>()))
+                .ReturnsAsync(new List<NotificationLayout>());
+            var context = new NotificationRenderContext
+            {
+                Template = "{% capture content %}<p>Hi</p>{% endcapture %}",
+                LayoutId = "deleted-layout-id",
+            };
+
+            var result = await _renderer.RenderAsync(context);
+
+            Assert.Equal("<p>Hi</p>", result);
+        }
+
+        [Fact]
         public async Task RenderAsync_LayoutIncludesSnippet_SnippetRendered()
         {
             _snippetRegistrar.RegisterSnippet("divider", "<hr>");
