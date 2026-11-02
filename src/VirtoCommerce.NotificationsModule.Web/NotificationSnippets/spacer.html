@@ -1,0 +1,7 @@
+{% comment %}
+  Vertical space.
+  spacer_size: optional, height in pixels, 16 by default
+{% endcomment %}
+{%- assign spacer_size = spacer_size | default: 16 -%}
+<div style="height:{{ spacer_size }}px;font-size:0;line-height:{{ spacer_size }}px;">&nbsp;</div>
+{%- assign spacer_size = nil -%}

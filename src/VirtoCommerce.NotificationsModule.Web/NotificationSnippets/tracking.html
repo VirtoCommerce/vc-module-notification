@@ -1,0 +1,21 @@
+{% comment %}
+  Shipment tracking number.
+  tracking_number: tracking number
+  tracking_carrier: optional, carrier name, for example 'DHL Express'
+  tracking_url: optional, link to the carrier's tracking page
+{% endcomment %}
+<table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" style="margin:0 0 16px;">
+  <tr>
+    <td style="padding:14px 16px;border:1px solid #e6e9ee;border-radius:10px;background-color:#f6f8fb;">
+      <div style="font-size:12px;line-height:16px;color:#8a94a0;">Tracking number{% if tracking_carrier.size > 0 %} &middot; {{ tracking_carrier | escape }}{% endif %}</div>
+      <div style="margin-top:4px;font-size:16px;line-height:22px;font-weight:700;color:#1b2740;">
+        {%- if tracking_url.size > 0 -%}
+          <a href="{{ tracking_url }}" style="color:#1b2740;text-decoration:underline;">{{ tracking_number | escape }}</a>
+        {%- else -%}
+          {{ tracking_number | escape }}
+        {%- endif -%}
+      </div>
+    </td>
+  </tr>
+</table>
+{%- assign tracking_number = nil -%}{%- assign tracking_carrier = nil -%}{%- assign tracking_url = nil -%}

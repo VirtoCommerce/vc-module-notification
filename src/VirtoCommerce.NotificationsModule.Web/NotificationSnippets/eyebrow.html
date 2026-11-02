@@ -1,0 +1,6 @@
+{% comment %}
+  Small uppercase label above the heading.
+  eyebrow_text: label text
+{% endcomment %}
+<div style="margin:0 0 9px;font-size:12px;line-height:16px;font-weight:800;letter-spacing:1.6px;text-transform:uppercase;color:{{ brand.accent_color | default: '#e8912a' }};">{{ eyebrow_text }}</div>
+{%- assign eyebrow_text = nil -%}

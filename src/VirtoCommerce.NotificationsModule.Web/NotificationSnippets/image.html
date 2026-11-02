@@ -1,0 +1,12 @@
+{% comment %}
+  Full-width image.
+  image_url: image address
+  image_alt: optional, alternative text
+  image_link: optional, link around the image
+{% endcomment %}
+<div style="margin:0 0 16px;">
+  {%- if image_link.size > 0 -%}<a href="{{ image_link }}" style="text-decoration:none;">{%- endif -%}
+  <img src="{{ image_url }}" alt="{{ image_alt | escape }}" width="100%" style="display:block;width:100%;max-width:100%;height:auto;border:0;outline:none;border-radius:9px;">
+  {%- if image_link.size > 0 -%}</a>{%- endif -%}
+</div>
+{%- assign image_url = nil -%}{%- assign image_alt = nil -%}{%- assign image_link = nil -%}

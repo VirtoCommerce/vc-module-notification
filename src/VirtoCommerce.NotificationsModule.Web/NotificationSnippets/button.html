@@ -1,0 +1,22 @@
+{% comment %}
+  Call-to-action button. Outlook for Windows gets a VML button, other clients a styled link.
+  button_url: link
+  button_label: button text
+  button_style: optional, 'primary' (default, filled with the accent colour) or 'secondary' (outlined)
+{% endcomment %}
+{%- assign button_color = brand.accent_color | default: '#e8912a' -%}
+{%- if button_style == 'secondary' -%}
+  {%- assign button_fill = '#ffffff' -%}{%- assign button_text_color = button_color -%}
+{%- else -%}
+  {%- assign button_fill = button_color -%}{%- assign button_text_color = '#ffffff' -%}
+{%- endif -%}
+<table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" style="margin:22px 0 4px;">
+  <tr>
+    <td align="center">
+      <!--[if mso]><v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" href="{{ button_url }}" style="height:50px;v-text-anchor:middle;width:240px;" arcsize="18%" strokecolor="{{ button_color }}" fillcolor="{{ button_fill }}"><w:anchorlock/><center style="color:{{ button_text_color }};font-family:Arial,sans-serif;font-size:16px;font-weight:bold;">{{ button_label }}</center></v:roundrect><![endif]-->
+      <!--[if !mso]><!--><a href="{{ button_url }}" style="display:inline-block;min-width:184px;padding:14px 28px;border:1px solid {{ button_color }};border-radius:9px;background-color:{{ button_fill }};color:{{ button_text_color }};font-size:15px;line-height:20px;font-weight:700;text-align:center;text-decoration:none;">{{ button_label }}</a><!--<![endif]-->
+    </td>
+  </tr>
+</table>
+{%- assign button_url = nil -%}{%- assign button_label = nil -%}{%- assign button_style = nil -%}
+{%- assign button_color = nil -%}{%- assign button_fill = nil -%}{%- assign button_text_color = nil -%}

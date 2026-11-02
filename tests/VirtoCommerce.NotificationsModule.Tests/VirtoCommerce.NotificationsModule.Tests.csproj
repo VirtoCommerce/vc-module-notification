@@ -43,5 +43,6 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="..\..\src\VirtoCommerce.NotificationsModule.Web\NotificationLayouts\**" LinkBase="NotificationLayouts" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="..\..\src\VirtoCommerce.NotificationsModule.Web\NotificationSnippets\**" LinkBase="NotificationSnippets" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
 </Project>

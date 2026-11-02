@@ -1,0 +1,16 @@
+{% comment %}
+  Highlighted note, for example a link expiry warning.
+  notice_text: note content, may contain inline HTML
+  notice_style: optional, 'info' (default) or 'warning'
+{% endcomment %}
+{%- if notice_style == 'warning' -%}
+  {%- assign notice_background = '#fdf3e4' -%}{%- assign notice_border = '#f3d19c' -%}
+{%- else -%}
+  {%- assign notice_background = '#f6f8fb' -%}{%- assign notice_border = '#e6e9ee' -%}
+{%- endif -%}
+<table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" style="margin:0 0 16px;">
+  <tr>
+    <td style="padding:14px 16px;border:1px solid {{ notice_border }};border-radius:10px;background-color:{{ notice_background }};font-size:14px;line-height:21px;color:#46516a;">{{ notice_text }}</td>
+  </tr>
+</table>
+{%- assign notice_text = nil -%}{%- assign notice_style = nil -%}{%- assign notice_background = nil -%}{%- assign notice_border = nil -%}

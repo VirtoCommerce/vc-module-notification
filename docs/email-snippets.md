@@ -18,7 +18,7 @@ Scriban runs an `include` in the same scope as the caller, so its arguments beco
 2. At the end of the snippet, set every argument to `nil`. An optional argument from one call then does not carry over to the next call.
 
 ```liquid
-{%- comment -%} snippets/button: button_url, button_label, button_style (optional, default 'primary') {%- endcomment -%}
+{% comment %} snippets/button: button_url, button_label, button_style (optional, default 'primary') {% endcomment %}
 <a href="{{ button_url }}" class="{{ button_style | default: 'primary' }}">{{ button_label }}</a>
 {%- assign button_url = nil -%}
 {%- assign button_label = nil -%}
@@ -47,3 +47,29 @@ In Scriban Liquid mode `x != blank` and `x != empty` are true even when `x` is n
 ```
 
 The `newline_to_br` and `date: '%Y'` filters are not available either. Use `replace: "\n", "<br>"` and `{{ date.now.year }}`.
+
+Write comments as `{% comment %}…{% endcomment %}` without the `-` whitespace markers: `{%- comment -%}` is not recognized and its text ends up in the email.
+
+## Formatting money
+
+`{{ amount | money: currency }}` formats an amount in the notification language with the currency symbol, for example `$1,157.39` for `en-US` and `1.157,39 €` for `de-DE`. Without a currency code it prints the number only. When the server runs in globalization-invariant mode it prints `1,157.39 USD`.
+
+## Shipped snippets
+
+| Snippet | Arguments |
+|---|---|
+| `eyebrow` | `eyebrow_text` |
+| `heading` | `heading_text` |
+| `text` | `text_body` |
+| `button` | `button_url`, `button_label`, `button_style` (`primary` or `secondary`) |
+| `divider` | none |
+| `spacer` | `spacer_size` (pixels, 16 by default) |
+| `image` | `image_url`, `image_alt`, `image_link` |
+| `items` | `items_list` (line items), `items_currency` |
+| `totals` | `totals_source` (order or cart) |
+| `address` | `address_value`, `address_title` |
+| `notice` | `notice_text`, `notice_style` (`info` or `warning`) |
+| `tracking` | `tracking_number`, `tracking_carrier`, `tracking_url` |
+| `benefits` | `benefits_items` (up to three, separated by `\|`) |
+
+Model values such as product names and addresses are HTML-escaped inside the snippets. Text arguments such as `heading_text` are printed as they are, so they can contain inline HTML.

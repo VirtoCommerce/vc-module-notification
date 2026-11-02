@@ -1,0 +1,25 @@
+{% comment %}
+  Table of line items with image, name, SKU, quantity and line total.
+  items_list: line items, for example customer_order.items or cart.items
+              (each with name, sku, quantity, extended_price, image_url)
+  items_currency: currency code for the prices, for example customer_order.currency
+{% endcomment %}
+<table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" style="margin:0 0 4px;border:1px solid #e6e9ee;border-radius:11px;border-collapse:separate;">
+  {%- for items_item in items_list -%}
+  <tr>
+    <td width="54" valign="middle" style="padding:13px 0 13px 13px;{% unless forloop.first %}border-top:1px solid #edeff3;{% endunless %}">
+      {%- if items_item.image_url.size > 0 -%}
+        <img src="{{ items_item.image_url }}" alt="" width="54" height="54" style="display:block;width:54px;height:54px;border:0;border-radius:9px;object-fit:cover;">
+      {%- else -%}
+        <div style="width:54px;height:54px;border-radius:9px;background-color:#f0f1f4;"></div>
+      {%- endif -%}
+    </td>
+    <td valign="middle" style="padding:13px;{% unless forloop.first %}border-top:1px solid #edeff3;{% endunless %}">
+      <div style="font-size:14px;line-height:20px;font-weight:700;color:#1f2733;">{{ items_item.name | escape }}</div>
+      <div style="margin-top:3px;font-size:12px;line-height:16px;color:#9aa3ae;">SKU: {{ items_item.sku | escape }} &nbsp;&bull;&nbsp; Qty: {{ items_item.quantity }}</div>
+    </td>
+    <td align="right" valign="middle" style="padding:13px 13px 13px 0;white-space:nowrap;font-size:15px;line-height:20px;font-weight:700;color:#1f2733;{% unless forloop.first %}border-top:1px solid #edeff3;{% endunless %}">{{ items_item.extended_price | money: items_currency }}</td>
+  </tr>
+  {%- endfor -%}
+</table>
+{%- assign items_list = nil -%}{%- assign items_currency = nil -%}{%- assign items_item = nil -%}

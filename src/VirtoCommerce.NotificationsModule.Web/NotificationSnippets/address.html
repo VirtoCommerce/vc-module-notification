@@ -1,0 +1,19 @@
+{% comment %}
+  Postal address block.
+  address_value: address object (first_name, last_name, organization, line1, line2, city, region_name,
+                 postal_code, country_name, phone), for example the shipping address of an order
+  address_title: optional, label above the address, for example 'Shipping address'
+{% endcomment %}
+<div style="margin:0 0 16px;font-size:14px;line-height:21px;color:#46516a;">
+  {%- if address_title.size > 0 -%}
+    <div style="margin:0 0 4px;font-size:13px;font-weight:700;color:#1b2740;">{{ address_title }}</div>
+  {%- endif -%}
+  {{ address_value.first_name | escape }} {{ address_value.last_name | escape }}
+  {%- if address_value.organization.size > 0 -%}<br>{{ address_value.organization | escape }}{%- endif -%}
+  {%- if address_value.line1.size > 0 -%}<br>{{ address_value.line1 | escape }}{%- endif -%}
+  {%- if address_value.line2.size > 0 -%}<br>{{ address_value.line2 | escape }}{%- endif -%}
+  <br>{{ address_value.city | escape }}{% if address_value.region_name.size > 0 %}, {{ address_value.region_name | escape }}{% endif %} {{ address_value.postal_code | escape }}
+  {%- if address_value.country_name.size > 0 -%}<br>{{ address_value.country_name | escape }}{%- endif -%}
+  {%- if address_value.phone.size > 0 -%}<br>{{ address_value.phone | escape }}{%- endif -%}
+</div>
+{%- assign address_value = nil -%}{%- assign address_title = nil -%}

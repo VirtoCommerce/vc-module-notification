@@ -1,0 +1,15 @@
+{% comment %}
+  Row of up to three short selling points.
+  benefits_items: items separated by '|', for example 'Fast delivery|Easy payment|Order rewards'
+{% endcomment %}
+{%- assign benefits_list = benefits_items | split: '|' -%}
+<table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" style="margin:0 0 16px;">
+  <tr>
+    {%- for benefits_item in benefits_list limit: 3 -%}
+    <td width="33%" valign="top" style="padding:0 {% unless forloop.last %}5px{% else %}0{% endunless %} 0 {% unless forloop.first %}5px{% else %}0{% endunless %};">
+      <div style="padding:14px 8px;border-radius:10px;background-color:#f6f8fb;text-align:center;font-size:13px;line-height:18px;font-weight:700;color:#1b2740;">{{ benefits_item }}</div>
+    </td>
+    {%- endfor -%}
+  </tr>
+</table>
+{%- assign benefits_items = nil -%}{%- assign benefits_list = nil -%}{%- assign benefits_item = nil -%}

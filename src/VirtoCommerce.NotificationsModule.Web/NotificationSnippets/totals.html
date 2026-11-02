@@ -1,0 +1,35 @@
+{% comment %}
+  Subtotal, discount, shipping, tax and total of an order or cart. Discount, shipping and tax rows are hidden when zero.
+  totals_source: object with sub_total, discount_total, shipping_total, tax_total, total and currency,
+                 for example customer_order or cart
+{% endcomment %}
+{%- assign totals_currency = totals_source.currency -%}
+<table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" style="margin:6px 0 0;font-size:14px;line-height:20px;color:#46516a;">
+  <tr>
+    <td style="padding:6px 2px;">Subtotal</td>
+    <td align="right" style="padding:6px 2px;">{{ totals_source.sub_total | money: totals_currency }}</td>
+  </tr>
+  {%- if totals_source.discount_total > 0 -%}
+  <tr>
+    <td style="padding:6px 2px;">Discount</td>
+    <td align="right" style="padding:6px 2px;">&minus;{{ totals_source.discount_total | money: totals_currency }}</td>
+  </tr>
+  {%- endif -%}
+  {%- if totals_source.shipping_total > 0 -%}
+  <tr>
+    <td style="padding:6px 2px;">Shipping</td>
+    <td align="right" style="padding:6px 2px;">{{ totals_source.shipping_total | money: totals_currency }}</td>
+  </tr>
+  {%- endif -%}
+  {%- if totals_source.tax_total > 0 -%}
+  <tr>
+    <td style="padding:6px 2px;">Tax</td>
+    <td align="right" style="padding:6px 2px;">{{ totals_source.tax_total | money: totals_currency }}</td>
+  </tr>
+  {%- endif -%}
+  <tr>
+    <td style="padding:12px 2px 6px;border-top:1px solid #e6e9ee;font-size:16px;font-weight:800;color:#1b2740;">Total</td>
+    <td align="right" style="padding:12px 2px 6px;border-top:1px solid #e6e9ee;font-size:16px;font-weight:800;color:#16233f;">{{ totals_source.total | money: totals_currency }}</td>
+  </tr>
+</table>
+{%- assign totals_source = nil -%}{%- assign totals_currency = nil -%}
