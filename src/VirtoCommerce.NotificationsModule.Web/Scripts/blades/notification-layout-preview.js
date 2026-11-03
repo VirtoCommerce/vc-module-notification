@@ -54,10 +54,18 @@ angular.module('virtoCommerce.notificationsModule')
                     }, onError);
                 }
 
+                // Among the templates of the selected language prefer the one built on this layout, then the DB one
+                // (it wins over the predefined one when the email is sent)
                 function findTemplate() {
+                    var layout = layoutBlade.currentEntity;
                     var templates = _.filter(blade.notification.templates || [], function (x) { return x.kind === 'EmailNotification'; });
-                    return _.find(templates, function (x) { return x.languageCode === blade.selection.language; })
-                        || _.find(templates, function (x) { return !x.languageCode; });
+                    var candidates = _.filter(templates, function (x) { return x.languageCode === blade.selection.language; });
+                    if (!candidates.length) {
+                        candidates = _.filter(templates, function (x) { return !x.languageCode; });
+                    }
+                    return _.find(candidates, function (x) { return x.notificationLayoutId && (x.notificationLayoutId === layout.id || x.notificationLayoutId === layout.name); })
+                        || _.find(candidates, function (x) { return !x.isPredefined; })
+                        || candidates[0];
                 }
 
                 function render() {
