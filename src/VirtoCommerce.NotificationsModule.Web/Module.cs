@@ -91,6 +91,7 @@ namespace VirtoCommerce.NotificationsModule.Web
 
             serviceCollection.AddTransient<INotificationLayoutService, NotificationLayoutService>();
             serviceCollection.AddTransient<INotificationLayoutUsageService, NotificationLayoutUsageService>();
+            serviceCollection.AddTransient<INotificationBrandService, NotificationBrandService>();
             serviceCollection.AddTransient<INotificationLayoutSearchService, NotificationLayoutSearchService>();
             serviceCollection.AddSingleton<INotificationLayoutRegistrar, NotificationLayoutRegistrar>();
 
@@ -169,6 +170,8 @@ namespace VirtoCommerce.NotificationsModule.Web
 
             var settingsRegistrar = appBuilder.ApplicationServices.GetRequiredService<ISettingsRegistrar>();
             settingsRegistrar.RegisterSettings(ModuleConstants.Settings.AllSettings, ModuleInfo.Id);
+            // Email brand can be set per store; a store value wins over the global one
+            settingsRegistrar.RegisterSettingsForType(ModuleConstants.Settings.StoreLevelSettings, "Store");
 
             var permissionsRegistrar = appBuilder.ApplicationServices.GetRequiredService<IPermissionsRegistrar>();
             permissionsRegistrar.RegisterPermissions(ModuleInfo.Id, "Notifications", ModuleConstants.Security.Permissions.AllPermissions);

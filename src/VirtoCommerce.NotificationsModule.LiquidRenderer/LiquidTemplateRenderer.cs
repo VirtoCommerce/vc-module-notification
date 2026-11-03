@@ -16,18 +16,31 @@ namespace VirtoCommerce.NotificationsModule.LiquidRenderer;
 
 public class LiquidTemplateRenderer : INotificationTemplateRenderer
 {
+    private const string StoreTenantType = "Store";
+
     private readonly LiquidRenderOptions _options;
     private readonly Func<ITemplateLoader> _templateLoaderFactory;
     private readonly INotificationLayoutSearchService _notificationLayoutSearchService;
+    private readonly INotificationBrandService _brandService;
 
     public LiquidTemplateRenderer(
         IOptions<LiquidRenderOptions> options,
         Func<ITemplateLoader> templateLoaderFactory,
         INotificationLayoutSearchService notificationLayoutSearchService)
+        : this(options, templateLoaderFactory, notificationLayoutSearchService, brandService: null)
+    {
+    }
+
+    public LiquidTemplateRenderer(
+        IOptions<LiquidRenderOptions> options,
+        Func<ITemplateLoader> templateLoaderFactory,
+        INotificationLayoutSearchService notificationLayoutSearchService,
+        INotificationBrandService brandService)
     {
         _options = options.Value;
         _templateLoaderFactory = templateLoaderFactory;
         _notificationLayoutSearchService = notificationLayoutSearchService;
+        _brandService = brandService;
     }
 
     public async Task<string> RenderAsync(NotificationRenderContext renderContext)
@@ -63,6 +76,7 @@ public class LiquidTemplateRenderer : INotificationTemplateRenderer
         var scriptObject = AbstractTypeFactory<NotificationScriptObject>.TryCreateInstance();
         scriptObject.Language = renderContext.Language;
         scriptObject.Import(renderContext.Model);
+        await ImportBrandAsync(scriptObject, renderContext.Model);
         foreach (var customFilterType in _options.CustomFilterTypes)
         {
             scriptObject.Import(customFilterType);
@@ -81,6 +95,23 @@ public class LiquidTemplateRenderer : INotificationTemplateRenderer
         var result = await template.RenderAsync(templateContext);
 
         return result;
+    }
+
+    /// <summary>
+    /// Adds the email brand of the notification's store as `brand`, unless the model already has one
+    /// (for example sample data in the template editor)
+    /// </summary>
+    private async Task ImportBrandAsync(ScriptObject scriptObject, object model)
+    {
+        const string brandVariable = "brand";
+
+        if (_brandService == null || scriptObject.ContainsKey(brandVariable))
+        {
+            return;
+        }
+
+        var storeId = model is Notification { TenantIdentity: { Type: StoreTenantType } tenant } ? tenant.Id : null;
+        scriptObject.Add(brandVariable, await _brandService.GetBrandAsync(storeId));
     }
 
     /// <summary>

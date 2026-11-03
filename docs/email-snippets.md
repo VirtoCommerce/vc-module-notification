@@ -73,3 +73,9 @@ Write comments as `{% comment %}…{% endcomment %}` without the `-` whitespace 
 | `benefits` | `benefits_items` (up to three, separated by `\|`) |
 
 Model values such as product names and addresses are HTML-escaped inside the snippets. Text arguments such as `heading_text` are printed as they are, so they can contain inline HTML.
+
+## Brand
+
+The Default Master and the snippets read the email brand from the `brand` object: `brand.logo_text`, `brand.logo_url`, `brand.logo_width`, `brand.accent_color`, `brand.header_style` (`line`, `dark` or `accent`), `brand.email_width`, `brand.footer_text`, `brand.address`, `brand.social_links` and `brand.utility_links` (each with `name` and `url`), and `brand.show_unsubscribe`.
+
+The brand is set in the `Notifications.Brand.*` settings, globally and per store (store settings, group "Email brand"). When a notification is sent for a store, the renderer takes each value from the store, then from the global setting, then the default. Notifications sent without a store use the global values. If the model already has a `brand` member, for example in the sample data of the template editor, that one is used instead.

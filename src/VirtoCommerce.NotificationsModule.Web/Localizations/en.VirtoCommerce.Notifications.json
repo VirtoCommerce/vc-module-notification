@@ -368,5 +368,51 @@
     "VirtoCommerce.Notifications": {
       "description": "Export or import notifications"
     }
+  },
+  "settings": {
+    "Notifications.Brand.LogoText": {
+      "title": "Email logo text",
+      "description": "Shown in the email header when no logo image is set. Defaults to Virto Commerce"
+    },
+    "Notifications.Brand.LogoUrl": {
+      "title": "Email logo image",
+      "description": "Absolute URL of the logo image for the email header"
+    },
+    "Notifications.Brand.LogoWidth": {
+      "title": "Email logo width",
+      "description": "Width of the logo image in pixels"
+    },
+    "Notifications.Brand.AccentColor": {
+      "title": "Email accent color",
+      "description": "Color of buttons, labels and links, for example #e8912a"
+    },
+    "Notifications.Brand.HeaderStyle": {
+      "title": "Email header style",
+      "description": "line: logo on white with a line below; dark: dark bar; accent: bar in the accent color"
+    },
+    "Notifications.Brand.EmailWidth": {
+      "title": "Email width",
+      "description": "Width of the email content in pixels"
+    },
+    "Notifications.Brand.FooterText": {
+      "title": "Email footer text",
+      "description": "Text at the bottom of every email. Defaults to the copyright line"
+    },
+    "Notifications.Brand.Address": {
+      "title": "Email footer address",
+      "description": "Company address shown in the footer"
+    },
+    "Notifications.Brand.SocialLinks": {
+      "title": "Email social links",
+      "description": "JSON list of links shown in the footer, for example [{ \"name\": \"LinkedIn\", \"url\": \"https://...\" }]"
+    },
+    "Notifications.Brand.UtilityLinks": {
+      "title": "Email utility links",
+      "description": "JSON list of links such as the privacy policy, for example [{ \"name\": \"Privacy\", \"url\": \"https://...\" }]"
+    },
+    "Notifications.Brand.ShowUnsubscribe": {
+      "title": "Show unsubscribe link",
+      "description": "Show the unsubscribe link in emails that provide one, such as abandoned cart. Transactional emails do not need it"
+    }
   }
 }
