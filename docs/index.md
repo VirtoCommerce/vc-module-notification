@@ -82,7 +82,7 @@ To preview the rendered email, click the *Preview* button on the top of the scre
 The preview screen shows the sample of the email body. All styles in the preview screen are in the default state and you can see the sample on the *as is* basis.
 Unfortunately, different email clients show HTML markups in a slightly different way and not exactly as it is in the browser with the default styles.
 
-We encourage you to refer to our [template construction tips](tips-and-tricks-for-creating-email-templates.md) to understand the basics of template development and avoid typical problems with email client differences.
+To build a template on the shared Default Master layout with ready-made blocks, see [Building email templates on the Default Master](building-email-templates.md). For the basics of email HTML and typical problems with email client differences, refer to our [template construction tips](tips-and-tricks-for-creating-email-templates.md).
 
 You can send the preview to someone to ensure the body looks well in your email client software using the *Share* button:
 
