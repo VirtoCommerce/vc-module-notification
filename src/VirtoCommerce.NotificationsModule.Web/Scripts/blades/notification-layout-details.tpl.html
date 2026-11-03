@@ -2,6 +2,13 @@
     <div class="blade-inner">
         <div class="inner-block">
             <form class="form" name="formScope">
+                <div class="note" ng-if="blade.usage">
+                    <i class="fa fa-info-circle"></i>
+                    {{'notifications.blades.notification-layout-details.labels.usage' | translate:{ count: blade.usage.count } }}
+                    <span ng-if="blade.usage.count > 0" title="{{blade.usage.notificationTypes.join(', ')}}">
+                        ({{blade.usage.notificationTypes.slice(0, 3).join(', ')}}<span ng-if="blade.usage.count > 3">, &hellip;</span>)
+                    </span>
+                </div>
                 <div class="columns clearfix">
                     <div class="column">
                         <div class="form-group">

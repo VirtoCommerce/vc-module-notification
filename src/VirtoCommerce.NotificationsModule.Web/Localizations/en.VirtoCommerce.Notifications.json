@@ -114,7 +114,8 @@
         "labels": {
           "name": "Name",
           "template": "Template",
-          "default": "Default"
+          "default": "Default",
+          "usage": "Shared layout: changes here apply to every email type that uses it ({{count}} now)"
         },
         "placeholders": {
           "name": "Enter name..."
@@ -240,6 +241,19 @@
           "message": "Message",
           "stack-trace": "StackTrace",
           "response": "Response"
+        }
+      },
+      "notification-layout-preview": {
+        "title": "Preview: {{name}}",
+        "labels": {
+          "email-type": "Email type",
+          "store": "Store brand",
+          "language": "Language",
+          "default-language": "Default",
+          "no-template": "This email type has no template to preview."
+        },
+        "placeholders": {
+          "store": "Global brand"
         }
       }
     },

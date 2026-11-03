@@ -116,13 +116,26 @@ namespace VirtoCommerce.NotificationsModule.Web.Controllers
 
             var template = request.Data.Templates.FindTemplateForLanguage(language);
 
+            if (!string.IsNullOrEmpty(request.StoreId))
+            {
+                request.Data.TenantIdentity = new TenantIdentity(request.StoreId, "Store");
+            }
+
             var context = new NotificationRenderContext
             {
                 Template = request.Text,
                 Model = request.Data,
-                Language = template.LanguageCode,
+                Language = template?.LanguageCode,
                 LayoutId = request.NotificationLayoutId,
             };
+
+            // Preview of an unsaved layout: the body captures `content` and the layout text that follows prints it,
+            // the same as the include the renderer appends for a saved layout
+            if (!string.IsNullOrEmpty(request.LayoutTemplate))
+            {
+                context.Template = request.Text + request.LayoutTemplate;
+                context.LayoutId = null;
+            }
 
             try
             {

@@ -42,6 +42,7 @@ angular.module('virtoCommerce.notificationsModule')
 
                     if (!blade.isNew) {
                         blade.title = blade.currentEntity.name;
+                        loadUsage();
                     }
 
                     blade.isLoading = false;
@@ -49,6 +50,27 @@ angular.module('virtoCommerce.notificationsModule')
                     $scope.editorReloaded = false;
                     $timeout(reloadEditor, 0);
 
+                }
+
+                // The layout is shared, so the blade shows how many email types an edit affects
+                function loadUsage() {
+                    layouts.getNotificationLayoutUsage({ id: blade.currentEntity.id }, function (usage) {
+                        blade.usage = usage;
+                    }, function () {
+                        blade.usage = null;
+                    });
+                }
+
+                function openPreview() {
+                    var newBlade = {
+                        id: 'notificationLayoutPreview',
+                        layoutBlade: blade,
+                        title: 'notifications.blades.notification-layout-preview.title',
+                        titleValues: { name: blade.currentEntity.name },
+                        controller: 'virtoCommerce.notificationsModule.notificationLayoutPreviewController',
+                        template: 'Modules/$(VirtoCommerce.Notifications)/Scripts/blades/notification-layout-preview.tpl.html'
+                    };
+                    bladeNavigationService.showBlade(newBlade, blade);
                 }
 
                 $scope.setForm = function (form) {
@@ -113,6 +135,13 @@ angular.module('virtoCommerce.notificationsModule')
 
                 if (!blade.isNew) {
                     blade.toolbarCommands.push(
+                        {
+                            name: "platform.commands.preview",
+                            icon: 'fa fa-eye',
+                            executeMethod: openPreview,
+                            canExecuteMethod: function () { return !!blade.currentEntity; },
+                            permission: 'notifications:templates:read'
+                        },
                         {
                             name: "platform.commands.reset",
                             icon: 'fa fa-undo',

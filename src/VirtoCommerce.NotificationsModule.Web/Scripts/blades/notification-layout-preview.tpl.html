@@ -1,0 +1,47 @@
+<div class="blade-content __large-wide notification-preview">
+    <div class="blade-inner">
+        <div class="inner-block">
+            <div class="form">
+                <div class="columns clearfix">
+                    <div class="column">
+                        <div class="form-group">
+                            <label class="form-label">{{ 'notifications.blades.notification-layout-preview.labels.email-type' | translate }}</label>
+                            <div class="form-input">
+                                <select class="form-control" ng-model="blade.selection.type" ng-change="onTypeChanged()"
+                                        ng-options="x for x in blade.emailTypes"></select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="column" ng-if="blade.stores.length">
+                        <div class="form-group">
+                            <label class="form-label">{{ 'notifications.blades.notification-layout-preview.labels.store' | translate }}</label>
+                            <div class="form-input">
+                                <select class="form-control" ng-model="blade.selection.storeId" ng-change="onOptionsChanged()"
+                                        ng-options="x.id as x.name for x in blade.stores">
+                                    <option value="">{{ 'notifications.blades.notification-layout-preview.placeholders.store' | translate }}</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="column" ng-if="blade.languages.length > 1">
+                        <div class="form-group">
+                            <label class="form-label">{{ 'notifications.blades.notification-layout-preview.labels.language' | translate }}</label>
+                            <div class="form-input">
+                                <select class="form-control" ng-model="blade.selection.language" ng-change="onOptionsChanged()"
+                                        ng-options="x as (x || ('notifications.blades.notification-layout-preview.labels.default-language' | translate)) for x in blade.languages"></select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="note" ng-if="blade.noTemplate">{{ 'notifications.blades.notification-layout-preview.labels.no-template' | translate }}</div>
+            <div class="form-group __preview" ng-if="blade.previewHtml && !blade.error">
+                <iframe srcdoc="{{blade.previewHtml}}" frameborder="0" width="100%" height="100%" scrolling="auto"
+                        title="{{ 'platform.commands.preview' | translate }}"></iframe>
+            </div>
+            <div class="form-group error-container" ng-if="blade.error">
+                <pre>{{ blade.error.data.message || blade.error.statusText || blade.error.status }}</pre>
+            </div>
+        </div>
+    </div>
+</div>
