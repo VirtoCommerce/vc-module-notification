@@ -28,6 +28,8 @@ for (const file of (await readdir(layoutsSrc)).filter((x) => x.endsWith(".mjml")
     // Soft, because Liquid in attributes such as background-color="{{ header_background }}" fails type checks;
     // the remaining errors are reported below
     validationLevel: "soft",
+    // No web font imports: MJML would add a Google Fonts link for Roboto, an extra external request in every email
+    fonts: {},
     minify: false,
     beautify: false,
     keepComments: false,

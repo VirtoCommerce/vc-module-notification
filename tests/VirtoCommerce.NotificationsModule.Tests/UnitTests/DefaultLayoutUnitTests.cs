@@ -62,6 +62,7 @@ namespace VirtoCommerce.NotificationsModule.Tests.UnitTests
             Assert.Contains("#e8912a", result);
             Assert.Contains($"&copy; {DateTime.UtcNow.Year} Virto Commerce", result);
             Assert.DoesNotContain("Unsubscribe", result);
+            Assert.DoesNotContain("fonts.googleapis.com", result);
             Assert.DoesNotContain("{{", result);
             Assert.DoesNotContain("{%", result);
         }
