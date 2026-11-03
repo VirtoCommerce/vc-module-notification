@@ -1,0 +1,14 @@
+{% comment %}
+  Email address confirmation. Rendered inside the Default Master layout. Model: url (confirmation link).
+{% endcomment %}
+{%- assign preheader = 'One click to confirm your email address' -%}
+{%- capture content -%}
+  {%- include 'snippets/eyebrow' eyebrow_text: 'Account' -%}
+  {%- include 'snippets/heading' heading_text: 'Confirm your email address' -%}
+  {%- include 'snippets/text' text_body: 'Please confirm that this is your email address, so that we can send you order updates and account notifications.' -%}
+  {%- include 'snippets/button' button_url: url, button_label: 'Confirm email' -%}
+  {%- include 'snippets/spacer' spacer_size: 16 -%}
+  {%- capture confirmation_link_text -%}If the button does not work, copy this link into your browser:<br><a href="{{ url }}">{{ url | escape }}</a>{%- endcapture -%}
+  {%- include 'snippets/text' text_body: confirmation_link_text -%}
+  {%- include 'snippets/text' text_body: 'If you did not create an account, ignore this email.' -%}
+{%- endcapture -%}

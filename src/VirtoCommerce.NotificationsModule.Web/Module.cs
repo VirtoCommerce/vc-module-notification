@@ -197,9 +197,9 @@ namespace VirtoCommerce.NotificationsModule.Web
 
             var defaultTemplatesDirectory = Path.Combine(ModuleInfo.FullPhysicalPath, "NotificationTemplates");
             var registrar = appBuilder.ApplicationServices.GetService<INotificationRegistrar>();
-            registrar.RegisterNotification<ResetPasswordEmailNotification>().WithTemplatesFromPath(defaultTemplatesDirectory);
-            registrar.RegisterNotification<ConfirmationEmailNotification>();
-            registrar.RegisterNotification<RegistrationEmailNotification>();
+            registrar.RegisterNotification<ResetPasswordEmailNotification>().WithTemplatesFromPath(defaultTemplatesDirectory).WithLayout(ModuleConstants.DefaultLayoutName);
+            registrar.RegisterNotification<ConfirmationEmailNotification>().WithTemplatesFromPath(defaultTemplatesDirectory).WithLayout(ModuleConstants.DefaultLayoutName);
+            registrar.RegisterNotification<RegistrationEmailNotification>().WithTemplatesFromPath(defaultTemplatesDirectory).WithLayout(ModuleConstants.DefaultLayoutName);
             registrar.RegisterNotification<RegistrationInvitationEmailNotification>();
             registrar.RegisterNotification<RegistrationInvitationCustomerEmailNotification>();
             registrar.RegisterNotification<RemindUserNameEmailNotification>();

@@ -44,5 +44,6 @@
     </None>
     <None Include="..\..\src\VirtoCommerce.NotificationsModule.Web\NotificationLayouts\**" LinkBase="NotificationLayouts" CopyToOutputDirectory="PreserveNewest" />
     <None Include="..\..\src\VirtoCommerce.NotificationsModule.Web\NotificationSnippets\**" LinkBase="NotificationSnippets" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="..\..\src\VirtoCommerce.NotificationsModule.Web\NotificationTemplates\**" LinkBase="ShippedTemplates" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
 </Project>

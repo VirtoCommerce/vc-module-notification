@@ -1,0 +1,13 @@
+{% comment %}
+  Registration (welcome). Rendered inside the Default Master layout. Model: first_name, last_name, login.
+{% endcomment %}
+{%- assign preheader = 'Your account is ready' -%}
+{%- capture content -%}
+  {%- include 'snippets/eyebrow' eyebrow_text: 'Welcome' -%}
+  {%- capture registration_heading -%}Welcome{% if first_name.size > 0 %}, {{ first_name | escape }}{% endif %}!{%- endcapture -%}
+  {%- include 'snippets/heading' heading_text: registration_heading -%}
+  {%- capture registration_intro -%}Your account has been created. Sign in with your login <strong>{{ login | escape }}</strong> to track orders, reorder and manage your details.{%- endcapture -%}
+  {%- include 'snippets/text' text_body: registration_intro -%}
+  {%- include 'snippets/divider' -%}
+  {%- include 'snippets/text' text_body: 'If you did not create this account, reply to this email and let us know.' -%}
+{%- endcapture -%}
