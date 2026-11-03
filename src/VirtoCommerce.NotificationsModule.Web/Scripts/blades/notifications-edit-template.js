@@ -907,6 +907,17 @@ angular.module('virtoCommerce.notificationsModule')
                 return layouts.searchNotificationLayouts(criteria);
             }
 
+            // The header, footer and brand come from the layout, so the editor links to it
+            $scope.openLayout = function () {
+                var layoutBlade = {
+                    id: 'editNotificationLayout',
+                    currentEntityId: blade.currentEntity.notificationLayoutId,
+                    controller: 'virtoCommerce.notificationsModule.notificationLayoutController',
+                    template: 'Modules/$(VirtoCommerce.Notifications)/Scripts/blades/notification-layout-details.tpl.html'
+                };
+                bladeNavigationService.showBlade(layoutBlade, blade);
+            };
+
             // The bottom OK/Cancel bar is gone, so ✕ is the only Cancel affordance — confirm before
             // discarding edits, the same way the notification details blade does.
             blade.onClose = function (closeCallback) {

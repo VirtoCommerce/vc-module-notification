@@ -67,7 +67,8 @@
           "note-caption": "Important!",
           "note-text": "This template has a predefined source. Once you save your notification, this version will replace the predefined one. You can restore the original template using the appropriate button",
           "layout": "Layout",
-          "layout-blank-note": "Leave this field blank to use selected default layout"
+          "layout-blank-note": "Leave this field blank to use selected default layout",
+          "open-layout": "Open layout (header, footer and brand)"
         },
         "descriptions": {
           "to": "Email recipient address",

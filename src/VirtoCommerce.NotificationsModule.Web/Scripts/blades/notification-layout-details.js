@@ -30,7 +30,8 @@ angular.module('virtoCommerce.notificationsModule')
 
                         layouts.getNotificationLayout({ id: blade.currentEntityId }, initializeBlade);
 
-                        if (parentRefresh) {
+                        // Opened from the template editor, the parent has no list to refresh
+                        if (parentRefresh && blade.parentBlade && angular.isFunction(blade.parentBlade.refresh)) {
                             blade.parentBlade.refresh(true);
                         }
                     }
