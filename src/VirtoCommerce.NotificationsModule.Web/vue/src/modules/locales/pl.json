@@ -50,6 +50,7 @@
       "LIST": {
         "TITLE": "Typy powiadomień",
         "EMPTY": "Nie znaleziono powiadomień",
+        "ACTIVE_ONLY": "Tylko aktywne",
         "COLUMNS": {
           "NAME": "Powiadomienie",
           "KIND": "Rodzaj",
@@ -105,22 +106,6 @@
         "EMPTY": "Brak wiadomości",
         "RESEND": "Wyślij ponownie",
         "SEARCH_IN_BODY": "Szukaj w treści wiadomości",
-        "SEARCH_IN_BODY_YES": "Tak, uwzględnij treść",
-        "PERIOD": "Okres",
-        "PERIODS": {
-          "TODAY": "Dzisiaj",
-          "YESTERDAY": "Wczoraj",
-          "LAST24H": "Ostatnie 24 godziny",
-          "LAST7D": "Ostatnie 7 dni",
-          "LAST30D": "Ostatnie 30 dni"
-        },
-        "SAVED": {
-          "PLACEHOLDER": "Zapisane wyszukiwania",
-          "SAVE": "Zapisz wyszukiwanie",
-          "DELETE": "Usuń zapisane wyszukiwanie",
-          "NAME": "Nazwa",
-          "HINT": "Zapisuje wyszukiwanie „{keyword}” w tej przeglądarce"
-        },
         "COLUMNS": {
           "NOTIFICATION": "Powiadomienie",
           "RECIPIENT": "Odbiorca",

@@ -50,6 +50,7 @@
       "LIST": {
         "TITLE": "Ilmoitustyypit",
         "EMPTY": "Ilmoituksia ei löytynyt",
+        "ACTIVE_ONLY": "Vain aktiiviset",
         "COLUMNS": {
           "NAME": "Ilmoitus",
           "KIND": "Laji",
@@ -105,22 +106,6 @@
         "EMPTY": "Ei viestejä",
         "RESEND": "Lähetä uudelleen",
         "SEARCH_IN_BODY": "Hae viestin sisällöstä",
-        "SEARCH_IN_BODY_YES": "Kyllä, sisällytä sisältö",
-        "PERIOD": "Ajanjakso",
-        "PERIODS": {
-          "TODAY": "Tänään",
-          "YESTERDAY": "Eilen",
-          "LAST24H": "Viimeiset 24 tuntia",
-          "LAST7D": "Viimeiset 7 päivää",
-          "LAST30D": "Viimeiset 30 päivää"
-        },
-        "SAVED": {
-          "PLACEHOLDER": "Tallennetut haut",
-          "SAVE": "Tallenna haku",
-          "DELETE": "Poista tallennettu haku",
-          "NAME": "Nimi",
-          "HINT": "Tallentaa haun ”{keyword}” tähän selaimeen"
-        },
         "COLUMNS": {
           "NOTIFICATION": "Ilmoitus",
           "RECIPIENT": "Vastaanottaja",

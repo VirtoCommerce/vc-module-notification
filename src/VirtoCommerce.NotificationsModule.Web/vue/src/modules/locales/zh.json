@@ -50,6 +50,7 @@
       "LIST": {
         "TITLE": "通知类型",
         "EMPTY": "未找到通知",
+        "ACTIVE_ONLY": "仅启用",
         "COLUMNS": {
           "NAME": "通知",
           "KIND": "种类",
@@ -105,22 +106,6 @@
         "EMPTY": "没有消息",
         "RESEND": "重新发送",
         "SEARCH_IN_BODY": "在消息正文中搜索",
-        "SEARCH_IN_BODY_YES": "是，包含正文",
-        "PERIOD": "时间段",
-        "PERIODS": {
-          "TODAY": "今天",
-          "YESTERDAY": "昨天",
-          "LAST24H": "过去 24 小时",
-          "LAST7D": "过去 7 天",
-          "LAST30D": "过去 30 天"
-        },
-        "SAVED": {
-          "PLACEHOLDER": "已保存的搜索",
-          "SAVE": "保存搜索",
-          "DELETE": "删除已保存的搜索",
-          "NAME": "名称",
-          "HINT": "在此浏览器中保存搜索“{keyword}”"
-        },
         "COLUMNS": {
           "NOTIFICATION": "通知",
           "RECIPIENT": "收件人",

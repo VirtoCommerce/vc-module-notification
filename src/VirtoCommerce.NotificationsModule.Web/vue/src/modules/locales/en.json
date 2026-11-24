@@ -50,6 +50,7 @@
       "LIST": {
         "TITLE": "Notification types",
         "EMPTY": "No notifications found",
+        "ACTIVE_ONLY": "Active only",
         "COLUMNS": {
           "NAME": "Notification",
           "KIND": "Kind",
@@ -105,22 +106,6 @@
         "EMPTY": "No messages",
         "RESEND": "Resend",
         "SEARCH_IN_BODY": "Search in message body",
-        "SEARCH_IN_BODY_YES": "Yes, include the body",
-        "PERIOD": "Period",
-        "PERIODS": {
-          "TODAY": "Today",
-          "YESTERDAY": "Yesterday",
-          "LAST24H": "Last 24 hours",
-          "LAST7D": "Last 7 days",
-          "LAST30D": "Last 30 days"
-        },
-        "SAVED": {
-          "PLACEHOLDER": "Saved searches",
-          "SAVE": "Save search",
-          "DELETE": "Delete saved search",
-          "NAME": "Name",
-          "HINT": "Saves the search \"{keyword}\" in this browser"
-        },
         "COLUMNS": {
           "NOTIFICATION": "Notification",
           "RECIPIENT": "Recipient",

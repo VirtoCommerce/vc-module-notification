@@ -13,11 +13,14 @@
       :total-count="totalCount"
       :pagination="pagination"
       :searchable="true"
+      search-bar
       :state-key="'NOTIFICATIONS_LIST'"
+      :global-filters="globalFilters"
       :active-item-id="activeChildParam"
       :empty-state="{ icon: 'lucide-mail', title: $t('NOTIFICATIONS.PAGES.LIST.EMPTY') }"
       @row-click="(e: { data: NotificationEntity }) => open(e.data)"
       @pagination-click="pagination.goToPage"
+      @filter="onFilter"
     >
       <VcColumn
         id="type"
@@ -59,9 +62,17 @@
 </template>
 
 <script setup lang="ts">
-import { useAsync, useBlade, useDataTablePagination, useFunctions, useTableSearch, type IBladeToolbar } from "@vc-shell/framework";
+import {
+  useAsync,
+  useBlade,
+  useDataTablePagination,
+  useFunctions,
+  useTableSearch,
+  type GlobalFilterConfig,
+  type IBladeToolbar,
+} from "@vc-shell/framework";
 import { VcBlade, VcColumn, VcDataTable, VcIcon, VcStatus } from "@vc-shell/framework/ui";
-import { onMounted, ref, watch } from "vue";
+import { computed, onMounted, ref, watch } from "vue";
 import { useI18n } from "vue-i18n";
 import { displayName, isEmail, useNotificationClients, type NotificationEntity } from "../api";
 
@@ -84,11 +95,40 @@ const totalCount = ref(0);
 const { searchValue } = useTableSearch({ stateKey: "NOTIFICATIONS_LIST" });
 const pagination = useDataTablePagination({ stateKey: "NOTIFICATIONS_LIST", pageSize: PAGE_SIZE, totalCount });
 
+// e-mail or SMS (the API takes a list of kinds), and "active only" (the API can only narrow to active ones)
+const kinds = ref<string[]>([]);
+const activeOnly = ref(false);
+// the search bar takes toggle fields, which vc-shell 2.13 does not yet type in GlobalFilterConfig
+const globalFilters = computed(
+  () =>
+    [
+      {
+        id: "kinds",
+        label: t("NOTIFICATIONS.PAGES.LIST.COLUMNS.KIND"),
+        filter: {
+          multiple: true,
+          options: [
+            { value: "EmailNotification", label: t("NOTIFICATIONS.KIND.EMAIL") },
+            { value: "SmsNotification", label: t("NOTIFICATIONS.KIND.SMS") },
+          ],
+        },
+      },
+      { id: "isActive", label: t("NOTIFICATIONS.PAGES.LIST.ACTIVE_ONLY"), filter: { toggle: true } },
+    ] as unknown as GlobalFilterConfig[],
+);
+
+function onFilter(event: { filters: Record<string, unknown> }) {
+  kinds.value = ([] as string[]).concat((event.filters.kinds as string | string[] | undefined) ?? []);
+  activeOnly.value = event.filters.isActive === true;
+}
+
 const { loading, action: load } = useAsync(async () => {
   const result = await (await clients.notifications()).getNotifications({
     keyword: searchValue.value || undefined,
     tenantId: options.value?.tenantId,
     tenantType: options.value?.tenantType,
+    kinds: kinds.value.length ? kinds.value : undefined,
+    isActive: activeOnly.value || undefined,
     skip: pagination.skip,
     take: PAGE_SIZE,
     responseGroup: "Default",
@@ -109,8 +149,8 @@ const bladeToolbar = ref<IBladeToolbar[]>([
   { id: "refresh", title: t("NOTIFICATIONS.TOOLBAR.REFRESH"), icon: "lucide-refresh-cw", clickHandler: () => load() },
 ]);
 
-watch(searchValue, () => pagination.setPage(1));
-watch([searchValue, () => pagination.skip], debounce(load, 300));
+watch([searchValue, kinds, activeOnly], () => pagination.setPage(1));
+watch([searchValue, kinds, activeOnly, () => pagination.skip], debounce(load, 300));
 onMounted(load);
 
 exposeToChildren({ reload: load });

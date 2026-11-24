@@ -16,6 +16,7 @@
       :total-count="totalCount"
       :pagination="pagination"
       :searchable="true"
+      search-bar
       :state-key="stateKey"
       :active-item-id="activeChildParam"
       :show-all-columns="expanded"
@@ -25,17 +26,6 @@
       @pagination-click="pagination.goToPage"
       @filter="onFilter"
     >
-      <template #search-header-actions>
-        <VcSelect
-          v-if="saved.length"
-          v-model="savedId"
-          class="ntf-saved"
-          :options="saved"
-          option-label="name"
-          size="small"
-          :placeholder="$t('NOTIFICATIONS.PAGES.JOURNAL.SAVED.PLACEHOLDER')"
-        />
-      </template>
       <VcColumn
         id="notificationType"
         :title="$t('NOTIFICATIONS.PAGES.JOURNAL.COLUMNS.NOTIFICATION')"
@@ -84,39 +74,6 @@
       </VcColumn>
     </VcDataTable>
 
-    <VcPopup
-      v-if="naming"
-      :model-value="true"
-      :title="$t('NOTIFICATIONS.PAGES.JOURNAL.SAVED.SAVE')"
-      @update:model-value="naming = false"
-    >
-      <template #content>
-        <form @submit.prevent="saveSearch">
-          <VcInput
-            v-model="savedName"
-            :label="$t('NOTIFICATIONS.PAGES.JOURNAL.SAVED.NAME')"
-            :hint="$t('NOTIFICATIONS.PAGES.JOURNAL.SAVED.HINT', { keyword: searchValue })"
-            required
-          />
-        </form>
-      </template>
-      <template #footer>
-        <div class="ntf-popup-footer">
-          <VcButton
-            variant="secondary"
-            @click="naming = false"
-          >
-            {{ $t("NOTIFICATIONS.TOOLBAR.CANCEL") }}
-          </VcButton>
-          <VcButton
-            :disabled="!savedName.trim()"
-            @click="saveSearch"
-          >
-            {{ $t("NOTIFICATIONS.TOOLBAR.SAVE") }}
-          </VcButton>
-        </div>
-      </template>
-    </VcPopup>
   </VcBlade>
 </template>
 
@@ -130,9 +87,10 @@ import {
   useLoading,
   useTableSearch,
   notification,
+  type GlobalFilterConfig,
   type IBladeToolbar,
 } from "@vc-shell/framework";
-import { VcBlade, VcButton, VcColumn, VcDataTable, VcInput, VcPopup, VcSelect, VcStatus } from "@vc-shell/framework/ui";
+import { VcBlade, VcColumn, VcDataTable, VcStatus } from "@vc-shell/framework/ui";
 import { computed, onMounted, ref, watch } from "vue";
 import { useI18n } from "vue-i18n";
 import { displayName, useNotificationClients, type MessageEntity } from "../api";
@@ -177,78 +135,67 @@ function statusVariant(status?: string) {
 }
 const statusLabel = (status?: string) => t(`NOTIFICATIONS.MESSAGE_STATUS.${(status ?? "Pending").toUpperCase()}`);
 
-// the AngularJS journal filter panel: status, "search in body" and a period (today ... last 30 days, or a range)
-const periods = ["today", "yesterday", "last24h", "last7d", "last30d"] as const;
-function periodRange(period?: string): { startDate?: Date; endDate?: Date } {
-  const now = new Date();
-  const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-  const daysAgo = (n: number) => new Date(today.getFullYear(), today.getMonth(), today.getDate() - n);
-  switch (period) {
-    case "today":
-      return { startDate: today };
-    case "yesterday":
-      return { startDate: daysAgo(1), endDate: today };
-    case "last24h":
-      return { startDate: new Date(now.getTime() - 24 * 60 * 60 * 1000) };
-    case "last7d":
-      return { startDate: daysAgo(7) };
-    case "last30d":
-      return { startDate: daysAgo(30) };
-    default:
-      return {};
-  }
-}
+// The AngularJS journal filter panel: status, "search in body" and a period. The search bar's Created
+// filter has the period presets (today, last 7 / 30 days) and a custom range; the type filter is only
+// on the global journal (a type's own journal is already scoped to it).
+const notificationTypes = ref<string[]>([]);
+const filters = ref<{ notificationType?: string; status?: string; startDate?: Date; endDate?: Date; searchInBody?: boolean }>({});
+// the search bar takes toggle fields, which vc-shell 2.13 does not yet type in GlobalFilterConfig
+const globalFilters = computed(
+  () =>
+    [
+      !options.value?.notificationType && {
+        id: "notificationType",
+        label: t("NOTIFICATIONS.PAGES.JOURNAL.COLUMNS.NOTIFICATION"),
+        filter: { options: notificationTypes.value.map((x) => ({ value: x, label: displayName(x) })) },
+      },
+      {
+        id: "status",
+        label: t("NOTIFICATIONS.PAGES.JOURNAL.COLUMNS.STATUS"),
+        filter: { options: statuses.map((s) => ({ value: s, label: statusLabel(s) })) },
+      },
+      {
+        id: "createdDate",
+        label: t("NOTIFICATIONS.PAGES.JOURNAL.COLUMNS.CREATED"),
+        filter: { range: ["startDate", "endDate"] },
+      },
+      { id: "searchInBody", label: t("NOTIFICATIONS.PAGES.JOURNAL.SEARCH_IN_BODY"), filter: { toggle: true } },
+    ].filter(Boolean) as unknown as GlobalFilterConfig[],
+);
 
-const filters = ref<{ status?: string; startDate?: Date; endDate?: Date; searchInBody?: boolean }>({});
-const globalFilters = computed(() => [
-  {
-    id: "searchInBody",
-    label: t("NOTIFICATIONS.PAGES.JOURNAL.SEARCH_IN_BODY"),
-    filter: { options: [{ value: "yes", label: t("NOTIFICATIONS.PAGES.JOURNAL.SEARCH_IN_BODY_YES") }] },
-  },
-  {
-    id: "period",
-    label: t("NOTIFICATIONS.PAGES.JOURNAL.PERIOD"),
-    filter: { options: periods.map((p) => ({ value: p, label: t(`NOTIFICATIONS.PAGES.JOURNAL.PERIODS.${p.toUpperCase()}`) })) },
-  },
-  {
-    id: "status",
-    label: t("NOTIFICATIONS.PAGES.JOURNAL.COLUMNS.STATUS"),
-    filter: { options: statuses.map((s) => ({ value: s, label: statusLabel(s) })) },
-  },
-  {
-    id: "dateRange",
-    label: t("NOTIFICATIONS.PAGES.JOURNAL.COLUMNS.CREATED"),
-    filter: { range: ["startDate", "endDate"] as [string, string] },
-  },
-]);
+// the search bar sends days (YYYY-MM-DD, both ends included); the API compares times, so the end is that day's last moment
+const localDay = (ymd: unknown, endOfDay = false) => {
+  if (typeof ymd !== "string" || !ymd) return undefined;
+  const day = new Date(`${ymd}T00:00`);
+  return endOfDay ? new Date(day.getFullYear(), day.getMonth(), day.getDate() + 1, 0, 0, 0, -1) : day;
+};
 
 function onFilter(event: { filters: Record<string, unknown> }) {
-  // an explicit Created range wins over the period
-  const range =
-    event.filters.startDate || event.filters.endDate
-      ? {
-          startDate: event.filters.startDate ? new Date(event.filters.startDate as string) : undefined,
-          endDate: event.filters.endDate ? new Date(event.filters.endDate as string) : undefined,
-        }
-      : periodRange(event.filters.period as string);
   filters.value = {
+    notificationType: (event.filters.notificationType as string) || undefined,
     status: (event.filters.status as string) || undefined,
-    searchInBody: event.filters.searchInBody === "yes" || undefined,
-    ...range,
+    searchInBody: event.filters.searchInBody === true || undefined,
+    startDate: localDay(event.filters.startDate),
+    endDate: localDay(event.filters.endDate, true),
   };
   // from page 2 setPage(1) triggers the skip watcher, which loads
   if (pagination.skip) pagination.setPage(1);
   else load();
 }
 
+async function loadNotificationTypes() {
+  if (options.value?.notificationType) return;
+  const result = await (await clients.notifications()).getNotifications({ take: 1000, responseGroup: "Default" });
+  notificationTypes.value = (result.results ?? []).map((x) => x.type!).filter(Boolean).sort((a, b) => displayName(a).localeCompare(displayName(b)));
+}
+
 const { loading: listLoading, action: load } = useAsync(async () => {
   const result = await (await clients.notifications()).getNotificationJournal({
     objectIds: options.value?.objectId ? [options.value.objectId] : undefined,
     objectType: options.value?.objectType,
-    notificationType: options.value?.notificationType,
     keyword: searchValue.value || undefined,
     ...filters.value,
+    notificationType: options.value?.notificationType ?? filters.value.notificationType,
     sort: sortExpression.value,
     skip: pagination.skip,
     take: PAGE_SIZE,
@@ -270,70 +217,8 @@ const { loading: resendLoading, action: resend } = useAsync(async () => {
 
 const loading = useLoading(listLoading, resendLoading);
 
-// Saved searches: the AngularJS journal named keyword filters, kept per browser like its $localStorage list
-type SavedSearch = { id: string; name: string; keyword: string };
-const SAVED_KEY = "NOTIFICATIONS_JOURNAL_SAVED_SEARCHES";
-function readSaved(): SavedSearch[] {
-  try {
-    return JSON.parse(localStorage.getItem(SAVED_KEY) ?? "[]");
-  } catch {
-    return [];
-  }
-}
-const saved = ref<SavedSearch[]>(readSaved());
-const savedId = ref<string>();
-const naming = ref(false);
-const savedName = ref("");
-function writeSaved() {
-  try {
-    localStorage.setItem(SAVED_KEY, JSON.stringify(saved.value));
-  } catch {
-    // storage unavailable: the list just is not kept
-  }
-}
-watch(savedId, (id) => {
-  const found = saved.value.find((x) => x.id === id);
-  if (found) searchValue.value = found.keyword;
-});
-// typing another search deselects the saved one (so picking it again re-applies it)
-watch(searchValue, (value) => {
-  if (savedId.value && saved.value.find((x) => x.id === savedId.value)?.keyword !== value) savedId.value = undefined;
-});
-function saveSearch() {
-  const name = savedName.value.trim();
-  if (!name || !searchValue.value) return;
-  const existing = saved.value.find((x) => x.name === name);
-  const entry = { id: existing?.id ?? String(Date.now()), name, keyword: searchValue.value };
-  saved.value = [...saved.value.filter((x) => x.id !== entry.id), entry];
-  writeSaved();
-  savedId.value = entry.id;
-  naming.value = false;
-}
-function deleteSaved() {
-  saved.value = saved.value.filter((x) => x.id !== savedId.value);
-  writeSaved();
-  savedId.value = undefined;
-}
-
 const bladeToolbar = ref<IBladeToolbar[]>([
   { id: "refresh", title: t("NOTIFICATIONS.TOOLBAR.REFRESH"), icon: "lucide-refresh-cw", clickHandler: () => load() },
-  {
-    id: "saveSearch",
-    title: t("NOTIFICATIONS.PAGES.JOURNAL.SAVED.SAVE"),
-    icon: "lucide-bookmark-plus",
-    disabled: computed(() => !searchValue.value),
-    clickHandler: () => {
-      savedName.value = saved.value.find((x) => x.id === savedId.value)?.name ?? "";
-      naming.value = true;
-    },
-  },
-  {
-    id: "deleteSearch",
-    title: t("NOTIFICATIONS.PAGES.JOURNAL.SAVED.DELETE"),
-    icon: "lucide-bookmark-x",
-    disabled: computed(() => !savedId.value),
-    clickHandler: deleteSaved,
-  },
   {
     id: "resend",
     title: t("NOTIFICATIONS.PAGES.JOURNAL.RESEND"),
@@ -346,11 +231,9 @@ const bladeToolbar = ref<IBladeToolbar[]>([
 
 watch(searchValue, () => pagination.setPage(1));
 watch([sortExpression, searchValue, () => pagination.skip], debounce(load, 300));
-onMounted(load);
+onMounted(() => {
+  load();
+  // the type filter's options; without them the filter just has none to offer
+  loadNotificationTypes().catch(() => undefined);
+});
 </script>
-
-<style lang="scss">
-.ntf-saved {
-  min-width: 180px;
-}
-</style>

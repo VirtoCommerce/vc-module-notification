@@ -50,6 +50,7 @@
       "LIST": {
         "TITLE": "Aviseringstyper",
         "EMPTY": "Inga aviseringar hittades",
+        "ACTIVE_ONLY": "Endast aktiva",
         "COLUMNS": {
           "NAME": "Avisering",
           "KIND": "Slag",
@@ -105,22 +106,6 @@
         "EMPTY": "Inga meddelanden",
         "RESEND": "Skicka om",
         "SEARCH_IN_BODY": "Sök i meddelandets innehåll",
-        "SEARCH_IN_BODY_YES": "Ja, inkludera innehållet",
-        "PERIOD": "Period",
-        "PERIODS": {
-          "TODAY": "I dag",
-          "YESTERDAY": "I går",
-          "LAST24H": "Senaste 24 timmarna",
-          "LAST7D": "Senaste 7 dagarna",
-          "LAST30D": "Senaste 30 dagarna"
-        },
-        "SAVED": {
-          "PLACEHOLDER": "Sparade sökningar",
-          "SAVE": "Spara sökning",
-          "DELETE": "Ta bort sparad sökning",
-          "NAME": "Namn",
-          "HINT": "Sparar sökningen ”{keyword}” i den här webbläsaren"
-        },
         "COLUMNS": {
           "NOTIFICATION": "Avisering",
           "RECIPIENT": "Mottagare",
