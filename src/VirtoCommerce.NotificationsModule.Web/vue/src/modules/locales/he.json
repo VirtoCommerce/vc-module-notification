@@ -106,13 +106,6 @@
         "EMPTY": "אין הודעות",
         "RESEND": "שליחה חוזרת",
         "SEARCH_IN_BODY": "חיפוש בגוף ההודעה",
-        "SAVED": {
-          "PLACEHOLDER": "חיפושים שמורים",
-          "SAVE": "שמירת החיפוש",
-          "DELETE": "מחיקת החיפוש השמור",
-          "NAME": "שם",
-          "HINT": "החיפוש \"{keyword}\" יישמר בדפדפן זה"
-        },
         "COLUMNS": {
           "NOTIFICATION": "התראה",
           "RECIPIENT": "נמען",

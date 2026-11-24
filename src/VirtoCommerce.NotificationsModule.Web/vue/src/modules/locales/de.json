@@ -106,13 +106,6 @@
         "EMPTY": "Keine Nachrichten",
         "RESEND": "Erneut senden",
         "SEARCH_IN_BODY": "Im Nachrichteninhalt suchen",
-        "SAVED": {
-          "PLACEHOLDER": "Gespeicherte Suchen",
-          "SAVE": "Suche speichern",
-          "DELETE": "Gespeicherte Suche löschen",
-          "NAME": "Name",
-          "HINT": "Speichert die Suche „{keyword}“ in diesem Browser"
-        },
         "COLUMNS": {
           "NOTIFICATION": "Benachrichtigung",
           "RECIPIENT": "Empfänger",

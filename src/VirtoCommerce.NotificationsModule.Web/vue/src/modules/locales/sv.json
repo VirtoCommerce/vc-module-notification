@@ -106,13 +106,6 @@
         "EMPTY": "Inga meddelanden",
         "RESEND": "Skicka om",
         "SEARCH_IN_BODY": "Sök i meddelandets innehåll",
-        "SAVED": {
-          "PLACEHOLDER": "Sparade sökningar",
-          "SAVE": "Spara sökning",
-          "DELETE": "Ta bort sparad sökning",
-          "NAME": "Namn",
-          "HINT": "Sparar sökningen ”{keyword}” i den här webbläsaren"
-        },
         "COLUMNS": {
           "NOTIFICATION": "Avisering",
           "RECIPIENT": "Mottagare",

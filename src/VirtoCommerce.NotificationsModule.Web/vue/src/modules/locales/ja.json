@@ -106,13 +106,6 @@
         "EMPTY": "メッセージがありません",
         "RESEND": "再送信",
         "SEARCH_IN_BODY": "メッセージ本文を検索",
-        "SAVED": {
-          "PLACEHOLDER": "保存した検索",
-          "SAVE": "検索を保存",
-          "DELETE": "保存した検索を削除",
-          "NAME": "名前",
-          "HINT": "検索「{keyword}」をこのブラウザーに保存します"
-        },
         "COLUMNS": {
           "NOTIFICATION": "通知",
           "RECIPIENT": "受信者",

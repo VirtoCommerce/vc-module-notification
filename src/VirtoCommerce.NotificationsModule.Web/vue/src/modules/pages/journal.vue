@@ -26,17 +26,6 @@
       @pagination-click="pagination.goToPage"
       @filter="onFilter"
     >
-      <template #search-header-actions>
-        <VcSelect
-          v-if="saved.length"
-          v-model="savedId"
-          class="ntf-saved"
-          :options="saved"
-          option-label="name"
-          size="small"
-          :placeholder="$t('NOTIFICATIONS.PAGES.JOURNAL.SAVED.PLACEHOLDER')"
-        />
-      </template>
       <VcColumn
         id="notificationType"
         :title="$t('NOTIFICATIONS.PAGES.JOURNAL.COLUMNS.NOTIFICATION')"
@@ -85,39 +74,6 @@
       </VcColumn>
     </VcDataTable>
 
-    <VcPopup
-      v-if="naming"
-      :model-value="true"
-      :title="$t('NOTIFICATIONS.PAGES.JOURNAL.SAVED.SAVE')"
-      @update:model-value="naming = false"
-    >
-      <template #content>
-        <form @submit.prevent="saveSearch">
-          <VcInput
-            v-model="savedName"
-            :label="$t('NOTIFICATIONS.PAGES.JOURNAL.SAVED.NAME')"
-            :hint="$t('NOTIFICATIONS.PAGES.JOURNAL.SAVED.HINT', { keyword: searchValue })"
-            required
-          />
-        </form>
-      </template>
-      <template #footer>
-        <div class="ntf-popup-footer">
-          <VcButton
-            variant="secondary"
-            @click="naming = false"
-          >
-            {{ $t("NOTIFICATIONS.TOOLBAR.CANCEL") }}
-          </VcButton>
-          <VcButton
-            :disabled="!savedName.trim()"
-            @click="saveSearch"
-          >
-            {{ $t("NOTIFICATIONS.TOOLBAR.SAVE") }}
-          </VcButton>
-        </div>
-      </template>
-    </VcPopup>
   </VcBlade>
 </template>
 
@@ -134,7 +90,7 @@ import {
   type GlobalFilterConfig,
   type IBladeToolbar,
 } from "@vc-shell/framework";
-import { VcBlade, VcButton, VcColumn, VcDataTable, VcInput, VcPopup, VcSelect, VcStatus } from "@vc-shell/framework/ui";
+import { VcBlade, VcColumn, VcDataTable, VcStatus } from "@vc-shell/framework/ui";
 import { computed, onMounted, ref, watch } from "vue";
 import { useI18n } from "vue-i18n";
 import { displayName, useNotificationClients, type MessageEntity } from "../api";
@@ -261,70 +217,8 @@ const { loading: resendLoading, action: resend } = useAsync(async () => {
 
 const loading = useLoading(listLoading, resendLoading);
 
-// Saved searches: the AngularJS journal named keyword filters, kept per browser like its $localStorage list
-type SavedSearch = { id: string; name: string; keyword: string };
-const SAVED_KEY = "NOTIFICATIONS_JOURNAL_SAVED_SEARCHES";
-function readSaved(): SavedSearch[] {
-  try {
-    return JSON.parse(localStorage.getItem(SAVED_KEY) ?? "[]");
-  } catch {
-    return [];
-  }
-}
-const saved = ref<SavedSearch[]>(readSaved());
-const savedId = ref<string>();
-const naming = ref(false);
-const savedName = ref("");
-function writeSaved() {
-  try {
-    localStorage.setItem(SAVED_KEY, JSON.stringify(saved.value));
-  } catch {
-    // storage unavailable: the list just is not kept
-  }
-}
-watch(savedId, (id) => {
-  const found = saved.value.find((x) => x.id === id);
-  if (found) searchValue.value = found.keyword;
-});
-// typing another search deselects the saved one (so picking it again re-applies it)
-watch(searchValue, (value) => {
-  if (savedId.value && saved.value.find((x) => x.id === savedId.value)?.keyword !== value) savedId.value = undefined;
-});
-function saveSearch() {
-  const name = savedName.value.trim();
-  if (!name || !searchValue.value) return;
-  const existing = saved.value.find((x) => x.name === name);
-  const entry = { id: existing?.id ?? String(Date.now()), name, keyword: searchValue.value };
-  saved.value = [...saved.value.filter((x) => x.id !== entry.id), entry];
-  writeSaved();
-  savedId.value = entry.id;
-  naming.value = false;
-}
-function deleteSaved() {
-  saved.value = saved.value.filter((x) => x.id !== savedId.value);
-  writeSaved();
-  savedId.value = undefined;
-}
-
 const bladeToolbar = ref<IBladeToolbar[]>([
   { id: "refresh", title: t("NOTIFICATIONS.TOOLBAR.REFRESH"), icon: "lucide-refresh-cw", clickHandler: () => load() },
-  {
-    id: "saveSearch",
-    title: t("NOTIFICATIONS.PAGES.JOURNAL.SAVED.SAVE"),
-    icon: "lucide-bookmark-plus",
-    disabled: computed(() => !searchValue.value),
-    clickHandler: () => {
-      savedName.value = saved.value.find((x) => x.id === savedId.value)?.name ?? "";
-      naming.value = true;
-    },
-  },
-  {
-    id: "deleteSearch",
-    title: t("NOTIFICATIONS.PAGES.JOURNAL.SAVED.DELETE"),
-    icon: "lucide-bookmark-x",
-    disabled: computed(() => !savedId.value),
-    clickHandler: deleteSaved,
-  },
   {
     id: "resend",
     title: t("NOTIFICATIONS.PAGES.JOURNAL.RESEND"),
@@ -343,9 +237,3 @@ onMounted(() => {
   loadNotificationTypes().catch(() => undefined);
 });
 </script>
-
-<style lang="scss">
-.ntf-saved {
-  min-width: 180px;
-}
-</style>

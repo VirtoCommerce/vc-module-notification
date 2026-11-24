@@ -106,13 +106,6 @@
         "EMPTY": "Aucun message",
         "RESEND": "Renvoyer",
         "SEARCH_IN_BODY": "Rechercher dans le corps du message",
-        "SAVED": {
-          "PLACEHOLDER": "Recherches enregistrées",
-          "SAVE": "Enregistrer la recherche",
-          "DELETE": "Supprimer la recherche enregistrée",
-          "NAME": "Nom",
-          "HINT": "Enregistre la recherche « {keyword} » dans ce navigateur"
-        },
         "COLUMNS": {
           "NOTIFICATION": "Notification",
           "RECIPIENT": "Destinataire",

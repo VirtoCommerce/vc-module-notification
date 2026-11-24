@@ -106,13 +106,6 @@
         "EMPTY": "Brak wiadomości",
         "RESEND": "Wyślij ponownie",
         "SEARCH_IN_BODY": "Szukaj w treści wiadomości",
-        "SAVED": {
-          "PLACEHOLDER": "Zapisane wyszukiwania",
-          "SAVE": "Zapisz wyszukiwanie",
-          "DELETE": "Usuń zapisane wyszukiwanie",
-          "NAME": "Nazwa",
-          "HINT": "Zapisuje wyszukiwanie „{keyword}” w tej przeglądarce"
-        },
         "COLUMNS": {
           "NOTIFICATION": "Powiadomienie",
           "RECIPIENT": "Odbiorca",

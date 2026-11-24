@@ -106,13 +106,6 @@
         "EMPTY": "No messages",
         "RESEND": "Resend",
         "SEARCH_IN_BODY": "Search in message body",
-        "SAVED": {
-          "PLACEHOLDER": "Saved searches",
-          "SAVE": "Save search",
-          "DELETE": "Delete saved search",
-          "NAME": "Name",
-          "HINT": "Saves the search \"{keyword}\" in this browser"
-        },
         "COLUMNS": {
           "NOTIFICATION": "Notification",
           "RECIPIENT": "Recipient",

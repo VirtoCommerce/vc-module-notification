@@ -106,13 +106,6 @@
         "EMPTY": "没有消息",
         "RESEND": "重新发送",
         "SEARCH_IN_BODY": "在消息正文中搜索",
-        "SAVED": {
-          "PLACEHOLDER": "已保存的搜索",
-          "SAVE": "保存搜索",
-          "DELETE": "删除已保存的搜索",
-          "NAME": "名称",
-          "HINT": "在此浏览器中保存搜索“{keyword}”"
-        },
         "COLUMNS": {
           "NOTIFICATION": "通知",
           "RECIPIENT": "收件人",

@@ -106,13 +106,6 @@
         "EMPTY": "Ingen meldinger",
         "RESEND": "Send på nytt",
         "SEARCH_IN_BODY": "Søk i meldingsinnholdet",
-        "SAVED": {
-          "PLACEHOLDER": "Lagrede søk",
-          "SAVE": "Lagre søk",
-          "DELETE": "Slett lagret søk",
-          "NAME": "Navn",
-          "HINT": "Lagrer søket «{keyword}» i denne nettleseren"
-        },
         "COLUMNS": {
           "NOTIFICATION": "Varsel",
           "RECIPIENT": "Mottaker",

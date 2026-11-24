@@ -106,13 +106,6 @@
         "EMPTY": "Ei viestejä",
         "RESEND": "Lähetä uudelleen",
         "SEARCH_IN_BODY": "Hae viestin sisällöstä",
-        "SAVED": {
-          "PLACEHOLDER": "Tallennetut haut",
-          "SAVE": "Tallenna haku",
-          "DELETE": "Poista tallennettu haku",
-          "NAME": "Nimi",
-          "HINT": "Tallentaa haun ”{keyword}” tähän selaimeen"
-        },
         "COLUMNS": {
           "NOTIFICATION": "Ilmoitus",
           "RECIPIENT": "Vastaanottaja",
