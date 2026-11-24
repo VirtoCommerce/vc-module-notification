@@ -50,6 +50,7 @@
       "LIST": {
         "TITLE": "Varslingstyper",
         "EMPTY": "Fant ingen varsler",
+        "ACTIVE_ONLY": "Bare aktive",
         "COLUMNS": {
           "NAME": "Varsel",
           "KIND": "Art",
@@ -105,22 +106,6 @@
         "EMPTY": "Ingen meldinger",
         "RESEND": "Send på nytt",
         "SEARCH_IN_BODY": "Søk i meldingsinnholdet",
-        "SEARCH_IN_BODY_YES": "Ja, inkluder innholdet",
-        "PERIOD": "Periode",
-        "PERIODS": {
-          "TODAY": "I dag",
-          "YESTERDAY": "I går",
-          "LAST24H": "Siste 24 timer",
-          "LAST7D": "Siste 7 dager",
-          "LAST30D": "Siste 30 dager"
-        },
-        "SAVED": {
-          "PLACEHOLDER": "Lagrede søk",
-          "SAVE": "Lagre søk",
-          "DELETE": "Slett lagret søk",
-          "NAME": "Navn",
-          "HINT": "Lagrer søket «{keyword}» i denne nettleseren"
-        },
         "COLUMNS": {
           "NOTIFICATION": "Varsel",
           "RECIPIENT": "Mottaker",

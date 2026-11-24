@@ -50,6 +50,7 @@
       "LIST": {
         "TITLE": "通知タイプ",
         "EMPTY": "通知が見つかりません",
+        "ACTIVE_ONLY": "有効のみ",
         "COLUMNS": {
           "NAME": "通知",
           "KIND": "種類",
@@ -105,22 +106,6 @@
         "EMPTY": "メッセージがありません",
         "RESEND": "再送信",
         "SEARCH_IN_BODY": "メッセージ本文を検索",
-        "SEARCH_IN_BODY_YES": "はい、本文を含めます",
-        "PERIOD": "期間",
-        "PERIODS": {
-          "TODAY": "今日",
-          "YESTERDAY": "昨日",
-          "LAST24H": "過去 24 時間",
-          "LAST7D": "過去 7 日間",
-          "LAST30D": "過去 30 日間"
-        },
-        "SAVED": {
-          "PLACEHOLDER": "保存した検索",
-          "SAVE": "検索を保存",
-          "DELETE": "保存した検索を削除",
-          "NAME": "名前",
-          "HINT": "検索「{keyword}」をこのブラウザーに保存します"
-        },
         "COLUMNS": {
           "NOTIFICATION": "通知",
           "RECIPIENT": "受信者",
