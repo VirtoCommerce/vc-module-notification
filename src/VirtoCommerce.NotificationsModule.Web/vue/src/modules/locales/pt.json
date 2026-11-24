@@ -50,6 +50,7 @@
       "LIST": {
         "TITLE": "Tipos de notificação",
         "EMPTY": "Nenhuma notificação encontrada",
+        "ACTIVE_ONLY": "Apenas ativas",
         "COLUMNS": {
           "NAME": "Notificação",
           "KIND": "Canal",
@@ -105,15 +106,6 @@
         "EMPTY": "Nenhuma mensagem",
         "RESEND": "Reenviar",
         "SEARCH_IN_BODY": "Pesquisar no corpo da mensagem",
-        "SEARCH_IN_BODY_YES": "Sim, incluir o corpo",
-        "PERIOD": "Período",
-        "PERIODS": {
-          "TODAY": "Hoje",
-          "YESTERDAY": "Ontem",
-          "LAST24H": "Últimas 24 horas",
-          "LAST7D": "Últimos 7 dias",
-          "LAST30D": "Últimos 30 dias"
-        },
         "SAVED": {
           "PLACEHOLDER": "Pesquisas salvas",
           "SAVE": "Salvar pesquisa",

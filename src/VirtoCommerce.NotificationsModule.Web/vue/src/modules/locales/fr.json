@@ -50,6 +50,7 @@
       "LIST": {
         "TITLE": "Types de notification",
         "EMPTY": "Aucune notification trouvée",
+        "ACTIVE_ONLY": "Actives uniquement",
         "COLUMNS": {
           "NAME": "Notification",
           "KIND": "Canal",
@@ -105,15 +106,6 @@
         "EMPTY": "Aucun message",
         "RESEND": "Renvoyer",
         "SEARCH_IN_BODY": "Rechercher dans le corps du message",
-        "SEARCH_IN_BODY_YES": "Oui, inclure le corps",
-        "PERIOD": "Période",
-        "PERIODS": {
-          "TODAY": "Aujourd'hui",
-          "YESTERDAY": "Hier",
-          "LAST24H": "Dernières 24 heures",
-          "LAST7D": "7 derniers jours",
-          "LAST30D": "30 derniers jours"
-        },
         "SAVED": {
           "PLACEHOLDER": "Recherches enregistrées",
           "SAVE": "Enregistrer la recherche",

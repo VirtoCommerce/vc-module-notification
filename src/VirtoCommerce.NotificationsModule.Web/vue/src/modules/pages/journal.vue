@@ -16,6 +16,7 @@
       :total-count="totalCount"
       :pagination="pagination"
       :searchable="true"
+      search-bar
       :state-key="stateKey"
       :active-item-id="activeChildParam"
       :show-all-columns="expanded"
@@ -130,6 +131,7 @@ import {
   useLoading,
   useTableSearch,
   notification,
+  type GlobalFilterConfig,
   type IBladeToolbar,
 } from "@vc-shell/framework";
 import { VcBlade, VcButton, VcColumn, VcDataTable, VcInput, VcPopup, VcSelect, VcStatus } from "@vc-shell/framework/ui";
@@ -177,78 +179,67 @@ function statusVariant(status?: string) {
 }
 const statusLabel = (status?: string) => t(`NOTIFICATIONS.MESSAGE_STATUS.${(status ?? "Pending").toUpperCase()}`);
 
-// the AngularJS journal filter panel: status, "search in body" and a period (today ... last 30 days, or a range)
-const periods = ["today", "yesterday", "last24h", "last7d", "last30d"] as const;
-function periodRange(period?: string): { startDate?: Date; endDate?: Date } {
-  const now = new Date();
-  const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-  const daysAgo = (n: number) => new Date(today.getFullYear(), today.getMonth(), today.getDate() - n);
-  switch (period) {
-    case "today":
-      return { startDate: today };
-    case "yesterday":
-      return { startDate: daysAgo(1), endDate: today };
-    case "last24h":
-      return { startDate: new Date(now.getTime() - 24 * 60 * 60 * 1000) };
-    case "last7d":
-      return { startDate: daysAgo(7) };
-    case "last30d":
-      return { startDate: daysAgo(30) };
-    default:
-      return {};
-  }
-}
+// The AngularJS journal filter panel: status, "search in body" and a period. The search bar's Created
+// filter has the period presets (today, last 7 / 30 days) and a custom range; the type filter is only
+// on the global journal (a type's own journal is already scoped to it).
+const notificationTypes = ref<string[]>([]);
+const filters = ref<{ notificationType?: string; status?: string; startDate?: Date; endDate?: Date; searchInBody?: boolean }>({});
+// the search bar takes toggle fields, which vc-shell 2.13 does not yet type in GlobalFilterConfig
+const globalFilters = computed(
+  () =>
+    [
+      !options.value?.notificationType && {
+        id: "notificationType",
+        label: t("NOTIFICATIONS.PAGES.JOURNAL.COLUMNS.NOTIFICATION"),
+        filter: { options: notificationTypes.value.map((x) => ({ value: x, label: displayName(x) })) },
+      },
+      {
+        id: "status",
+        label: t("NOTIFICATIONS.PAGES.JOURNAL.COLUMNS.STATUS"),
+        filter: { options: statuses.map((s) => ({ value: s, label: statusLabel(s) })) },
+      },
+      {
+        id: "createdDate",
+        label: t("NOTIFICATIONS.PAGES.JOURNAL.COLUMNS.CREATED"),
+        filter: { range: ["startDate", "endDate"] },
+      },
+      { id: "searchInBody", label: t("NOTIFICATIONS.PAGES.JOURNAL.SEARCH_IN_BODY"), filter: { toggle: true } },
+    ].filter(Boolean) as unknown as GlobalFilterConfig[],
+);
 
-const filters = ref<{ status?: string; startDate?: Date; endDate?: Date; searchInBody?: boolean }>({});
-const globalFilters = computed(() => [
-  {
-    id: "searchInBody",
-    label: t("NOTIFICATIONS.PAGES.JOURNAL.SEARCH_IN_BODY"),
-    filter: { options: [{ value: "yes", label: t("NOTIFICATIONS.PAGES.JOURNAL.SEARCH_IN_BODY_YES") }] },
-  },
-  {
-    id: "period",
-    label: t("NOTIFICATIONS.PAGES.JOURNAL.PERIOD"),
-    filter: { options: periods.map((p) => ({ value: p, label: t(`NOTIFICATIONS.PAGES.JOURNAL.PERIODS.${p.toUpperCase()}`) })) },
-  },
-  {
-    id: "status",
-    label: t("NOTIFICATIONS.PAGES.JOURNAL.COLUMNS.STATUS"),
-    filter: { options: statuses.map((s) => ({ value: s, label: statusLabel(s) })) },
-  },
-  {
-    id: "dateRange",
-    label: t("NOTIFICATIONS.PAGES.JOURNAL.COLUMNS.CREATED"),
-    filter: { range: ["startDate", "endDate"] as [string, string] },
-  },
-]);
+// the search bar sends days (YYYY-MM-DD, both ends included); the API compares times, so the end is that day's last moment
+const localDay = (ymd: unknown, endOfDay = false) => {
+  if (typeof ymd !== "string" || !ymd) return undefined;
+  const day = new Date(`${ymd}T00:00`);
+  return endOfDay ? new Date(day.getFullYear(), day.getMonth(), day.getDate() + 1, 0, 0, 0, -1) : day;
+};
 
 function onFilter(event: { filters: Record<string, unknown> }) {
-  // an explicit Created range wins over the period
-  const range =
-    event.filters.startDate || event.filters.endDate
-      ? {
-          startDate: event.filters.startDate ? new Date(event.filters.startDate as string) : undefined,
-          endDate: event.filters.endDate ? new Date(event.filters.endDate as string) : undefined,
-        }
-      : periodRange(event.filters.period as string);
   filters.value = {
+    notificationType: (event.filters.notificationType as string) || undefined,
     status: (event.filters.status as string) || undefined,
-    searchInBody: event.filters.searchInBody === "yes" || undefined,
-    ...range,
+    searchInBody: event.filters.searchInBody === true || undefined,
+    startDate: localDay(event.filters.startDate),
+    endDate: localDay(event.filters.endDate, true),
   };
   // from page 2 setPage(1) triggers the skip watcher, which loads
   if (pagination.skip) pagination.setPage(1);
   else load();
 }
 
+async function loadNotificationTypes() {
+  if (options.value?.notificationType) return;
+  const result = await (await clients.notifications()).getNotifications({ take: 1000, responseGroup: "Default" });
+  notificationTypes.value = (result.results ?? []).map((x) => x.type!).filter(Boolean).sort((a, b) => displayName(a).localeCompare(displayName(b)));
+}
+
 const { loading: listLoading, action: load } = useAsync(async () => {
   const result = await (await clients.notifications()).getNotificationJournal({
     objectIds: options.value?.objectId ? [options.value.objectId] : undefined,
     objectType: options.value?.objectType,
-    notificationType: options.value?.notificationType,
     keyword: searchValue.value || undefined,
     ...filters.value,
+    notificationType: options.value?.notificationType ?? filters.value.notificationType,
     sort: sortExpression.value,
     skip: pagination.skip,
     take: PAGE_SIZE,
@@ -346,7 +337,11 @@ const bladeToolbar = ref<IBladeToolbar[]>([
 
 watch(searchValue, () => pagination.setPage(1));
 watch([sortExpression, searchValue, () => pagination.skip], debounce(load, 300));
-onMounted(load);
+onMounted(() => {
+  load();
+  // the type filter's options; without them the filter just has none to offer
+  loadNotificationTypes().catch(() => undefined);
+});
 </script>
 
 <style lang="scss">
